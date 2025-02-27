@@ -1,0 +1,31 @@
+# 빌드 결과물
+.next
+build
+dist
+out
+
+# 캐시/로그
+*.log
+.cache
+
+# 의존성 모듈
+node_modules
+
+# 자동 생성되는 파일들
+*.generated.*
+src/lib/types/** */
+
+# 기타 제외할 파일
+package-lock.json
+yarn.lock
+.env*
+public
+
+# 설정 파일들
+netlify.*
+*config*.*
+.*
+!.gitignore
+
+# 문서
+*.md
