@@ -6,6 +6,15 @@ const config: StorybookConfig = {
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
   "addons": [
+    "@storybook/addon-links",
+    "@chromatic-com/storybook",
+    "@storybook/addon-interactions",
+    {
+      name: '@storybook/addon-styling',
+      options: {
+        postCss: true,
+      },
+    },
     {
       "name": "@storybook/addon-essentials",
       "options": {
@@ -19,6 +28,7 @@ const config: StorybookConfig = {
   "framework": {
     "name": "@storybook/nextjs",
     "options": {}
-  }
+  },
+  staticDirs: ['../public']
 };
 export default config;

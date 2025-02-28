@@ -45,5 +45,14 @@
         "varsIgnorePattern": "^_"
       }
     ]
+  },
+  "overrides": [
+  {
+    "files": ["*.cjs", "postcss.config.cjs"],
+    "parser": "espree",
+    "parserOptions": {
+      "ecmaVersion": 2020
+    }
   }
+]
 }
