@@ -13,6 +13,7 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
         black: {
           500: 'var(--black-500)',
           400: 'var(--black-400)',
@@ -29,20 +30,20 @@ const config: Config = {
         },
         primary: {
           blue: {
-            400: 'var(--primary-Blue-400)',
-            300: 'var(--primary-Blue-300)',
-            200: 'var(--primary-Blue-200)',
-            100: 'var(--primary-Blue-100)',
-            50: 'var(--primary-Blue-50)',
+            400: 'var(--primary-blue-400)',
+            300: 'var(--primary-blue-300)',
+            200: 'var(--primary-blue-200)',
+            100: 'var(--primary-blue-100)',
+            50: 'var(--primary-blue-50)',
           },
         },
         secondary: {
           yellow: {
-            100: 'var(--Secondary-Yellow-100)',
+            100: 'var(--secondary-yellow-100)',
           },
           red: {
-            200: 'var(--Secondary-Red-200)',
-            100: 'var(--Secondary-Red-100)',
+            200: 'var(--secondary-red-200)',
+            100: 'var(--secondary-red-100)',
           },
         },
         backgroundVariants: {
@@ -76,7 +77,7 @@ const config: Config = {
       },
 
       fontFamily: {
-        pretendard: ['Pretendard', 'sans-serif'],
+        pretendard: ['pretendard', 'sans-serif'],
       },
 
       screens: {
