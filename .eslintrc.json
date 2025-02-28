@@ -48,7 +48,7 @@
   },
   "overrides": [
   {
-    "files": ["*.cjs", "postcss.config.cjs"],
+    "files": ["*.cjs", "postcss.config.cjs","next.config.mjs"],
     "parser": "espree",
     "parserOptions": {
       "ecmaVersion": 2020
