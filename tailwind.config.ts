@@ -38,7 +38,7 @@ const config: Config = {
         },
         secondary: {
           yellow: {
-            100: 'var(--Secondary-yellow-100)',
+            100: 'var(--Secondary-Yellow-100)',
           },
           red: {
             200: 'var(--Secondary-Red-200)',
@@ -58,14 +58,14 @@ const config: Config = {
 
       },
       fontSize: {
-        '3xl': ['32px', { lineHeight: '42px' }], // Text-3xl
-        '2xl': ['24px', { lineHeight: '32px' }], // Text-2xl
-        xl: ['20px', { lineHeight: '32px' }], // Text-xl
-        '2lg': ['18px', { lineHeight: '26px' }], // Text-2lg
-        lg: ['16px', { lineHeight: '26px' }], // Text-lg
-        md: ['14px', { lineHeight: '24px' }], // Text-md
-        sm: ['13px', { lineHeight: '22px' }], // Text-sm
-        xs: ['12px', { lineHeight: '20px' }], // Text-xs
+        '3xl': ['32px', { lineHeight: '42px' }], 
+        '2xl': ['24px', { lineHeight: '32px' }], 
+        xl: ['20px', { lineHeight: '32px' }], 
+        '2lg': ['18px', { lineHeight: '26px' }], 
+        lg: ['16px', { lineHeight: '26px' }], 
+        md: ['14px', { lineHeight: '24px' }], 
+        sm: ['13px', { lineHeight: '22px' }], 
+        xs: ['12px', { lineHeight: '20px' }], 
       },
 
       fontWeight: {
