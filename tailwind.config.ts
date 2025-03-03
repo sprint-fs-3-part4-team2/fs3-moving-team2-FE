@@ -35,6 +35,7 @@ const config: Config = {
             200: 'var(--primary-blue-200)',
             100: 'var(--primary-blue-100)',
             50: 'var(--primary-blue-50)',
+            10 : 'var(--primary-blue-10)',
           },
         },
         secondary: {

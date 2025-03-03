@@ -18,24 +18,25 @@
   --grayscale-200: #dedede;
   --grayscale-50: hsl(0, 0, 100);
 
-  --primary-Blue-400: #242945;
-  --primary-Blue-300: #1b92ff;
-  --primary-Blue-200: #4da9ff;
-  --primary-Blue-100: #e9f4ff;
-  --primary-Blue-50: #f5faff;
+  --primary-blue-400: #242945;
+  --primary-blue-300: #1b92ff;
+  --primary-blue-200: #4da9ff;
+  --primary-blue-100: #e9f4ff;
+  --primary-blue-50: #f5faff;
+  --primary-blue-10: #f2f3f8;
 
-  --Secondary-yellow-100: #ffc149;
+  --secondary-yellow-100: #ffc149;
 
-  --Secondary-Red-200: #ff4f64;
-  --Secondary-Red-100: #ffeef0;
+  --secondary-red-200: #ff4f64;
+  --secondary-red-100: #ffeef0;
 
   --backgroud-400: #f4f7fb;
   --backgroud-300: #efefef;
   --backgroud-200: #f7f7f7;
   --backgroud-100: #fcfcfc;
 
-  --Line-200: #e6e6e6;
-  --Line-100: #f2f2f2;
+  --line-200: #e6e6e6;
+  --line-100: #f2f2f2;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,8 +49,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0px, 260px;
+  font-family: var(--font-pretendard-variable);
 }
 
 @layer utilities {
