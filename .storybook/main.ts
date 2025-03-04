@@ -21,7 +21,6 @@ const config: StorybookConfig = {
         "docs": false
       }
     },
-    "@storybook/addon-onboarding",
     "@chromatic-com/storybook",
     "@storybook/addon-interactions"
   ],

@@ -26,6 +26,7 @@ const config: Config = {
           400: 'var(--grayscale-400)',
           300: 'var(--grayscale-300)',
           200: 'var(--grayscale-200)',
+          100: 'var(--grayscale-100)',
           50: 'var(--grayscale-50)',
         },
         primary: {
@@ -35,6 +36,7 @@ const config: Config = {
             200: 'var(--primary-blue-200)',
             100: 'var(--primary-blue-100)',
             50: 'var(--primary-blue-50)',
+            10 : 'var(--primary-blue-10)',
           },
         },
         secondary: {
@@ -51,6 +53,7 @@ const config: Config = {
           300: 'var(--background-300)',
           200: 'var(--background-200)',
           100: 'var(--background-100)',
+          50 : 'var(--background-50)',
         },
         line: {
           200: 'var(--Line-200)',
