@@ -28,7 +28,7 @@ export default function SliceBox() {
           comment='편리한 이사, 합리적인 이사, 맞춤형 이사'
         >
           <Links href={{ signin: '#', signup: '#' }} />
-          <RoleImg src={'/video/common.mp4'} />
+          <RoleImg src={'/img/select-role/common.gif'} />
           <MobileLink onClick={changeBg}>{partnerText}</MobileLink>
         </SliceContent>
         <SliceContent
@@ -39,7 +39,7 @@ export default function SliceBox() {
           comment='고객들과 더 가깝고 편리하게'
         >
           <Links href={{ signin: '#', signup: '#' }} />
-          <RoleImg src={'/video/mover.mp4'} />
+          <RoleImg src={'/img/select-role/mover.gif'} />
           <MobileLink onClick={changeBg}>{commonText}</MobileLink>
         </SliceContent>
 

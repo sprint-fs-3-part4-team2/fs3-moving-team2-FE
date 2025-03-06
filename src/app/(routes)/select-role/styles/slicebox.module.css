@@ -3,6 +3,7 @@
   --conSize: 70%;
   --conRadius: 4px;
   --backgroundTrans: 0.8s;
+  --shadow: 13px;
 
   position: relative;
   width: 100%;
@@ -12,7 +13,6 @@
 }
 
 .page .container {
-  --shadow: 13px;
   position: absolute;
   top: 50%;
   left: 50%;

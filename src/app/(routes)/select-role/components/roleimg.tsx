@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import ReactPlayer from 'react-player';
 import type { C1 } from '../types/type';
 import cn from '@/utils/cn';
 import { flex_center } from '../styles/tailwind';
+import Image from 'next/image';
 
 interface RoleImgProps extends C1 {
   src: string;
@@ -33,7 +33,7 @@ export default function RoleImg({ src, className = '' }: RoleImgProps) {
   return (
     <li
       className={cn(
-        `${className} group w-[300px] relative ${flex_center}`,
+        `${className} bg-white rounded-md group w-[300px] relative ${flex_center}`,
       ).trim()}
       onMouseOver={onMouseEnterHandler}
       onMouseOut={onMouseLeaveHandler}
@@ -42,16 +42,12 @@ export default function RoleImg({ src, className = '' }: RoleImgProps) {
         className={cn(`${flex_center} w-[300px] overflow-hidden rounded-lg`)}
       >
         <div className={`transition-all duration-500`}>
-          <ReactPlayer
-            url={src}
-            style={{ margin: 'auto', width: '100%' }}
-            // playing={playing}
-            playing={true}
-            loop
-            muted
-            controls={false}
-            width={`100%`}
-            height={`200px`}
+          <Image
+            className={``}
+            src={src}
+            alt='이미지'
+            width={300}
+            height={200}
           />
         </div>
       </div>
