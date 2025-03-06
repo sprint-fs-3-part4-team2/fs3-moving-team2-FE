@@ -25,7 +25,6 @@
   font-weight: 700;
   transition: var(--backgroundTrans);
   color: #fff;
-  transition: 0.5s;
 }
 
 .links .linkBox:hover {

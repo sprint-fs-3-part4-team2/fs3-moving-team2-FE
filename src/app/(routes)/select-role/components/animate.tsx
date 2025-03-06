@@ -1,7 +1,6 @@
 import { C2 } from '../types/type';
 import animate from '../components/style/animate.module.css';
-import cn from '@/utils/cn';
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties } from 'react';
 
 interface AnimateProps extends C2 {
   size?: string;
@@ -22,9 +21,7 @@ export default function Animate({
   };
 
   return (
-    <div
-      className={`${animate.filed} w-full h-full overflow-hidden relative ${className}`.trim()}
-    >
+    <div className={`${animate.filed} ${className}`.trim()}>
       <span
         style={{
           borderTop: size,

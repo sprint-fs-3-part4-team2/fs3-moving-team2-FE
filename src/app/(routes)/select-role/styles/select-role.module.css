@@ -8,7 +8,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #fff;
+  background-color: var(--background-50);
   color: #fff;
 }
 
@@ -85,20 +85,6 @@
   left: 0;
 }
 
-.page .container .moveLink {
-  position: absolute;
-  bottom: 10%;
-  font-size: 18px;
-  font-weight: 600;
-  text-decoration: none;
-  color: var(--grayscale-400);
-  transition: var(--backgroundTrans);
-}
-.page .container .moveLink:hover {
-  font-size: 19px;
-  color: var(--black-500);
-  font-weight: 700;
-}
 .page .container > .background {
   width: var(--backgroundSize);
   height: 100%;
@@ -123,12 +109,26 @@
   border-top-right-radius: var(--conRadius);
   border-bottom-right-radius: var(--conRadius);
 }
+.background:hover > .moveLink {
+  font-size: 19px;
+  color: var(--black-500);
+  font-weight: 700;
+}
 
-.mobileLink {
-  display: none;
+.moveLink {
+  position: absolute;
+  bottom: 10%;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--grayscale-400);
+  transition: var(--backgroundTrans);
 }
 
 @media screen and (max-width: 1200px) {
+  .page {
+    --conRadius: 0;
+  }
   .page .container {
     width: 100%;
     height: 100%;
@@ -162,15 +162,5 @@
   .page .container > .content.active {
     width: 100%;
     opacity: 1;
-  }
-  .mobileLink {
-    margin-top: 30px;
-    display: block;
-    font-size: 20px;
-    font-weight: 600;
-  }
-  .mobileLink:hover {
-    margin-top: 30px;
-    display: block;
   }
 }

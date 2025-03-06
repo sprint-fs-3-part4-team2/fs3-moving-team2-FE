@@ -1,10 +1,13 @@
 'use client';
-import React, { PropsWithChildren, useState } from 'react';
-import s from './styles/slicebox.module.css';
+import React, { useState } from 'react';
+import s from './styles/select-role.module.css';
 import Link from 'next/link';
 import Links from './components/links';
 import RoleImg from './components/roleimg';
 import Image from 'next/image';
+import Content from './components/content';
+import MobileLink from './components/mobile-link';
+import Tooltip from './components/tooltip';
 
 const commonText = '일반유저 보러가기';
 const partnerText = '파트너 보러가기';
@@ -14,13 +17,17 @@ export default function SliceBox() {
 
   function changeBg(e: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) {
     e.preventDefault();
+    e.stopPropagation();
     setLocation((prev) => (prev === s.left ? s.right : s.left));
   }
 
   return (
     <div className={`${s.page}`}>
-      <div className={s.container}>
-        <SliceContent
+      <div
+        className={`${s.container} 
+   `}
+      >
+        <Content
           className={`${s.content} ${s.left} ${
             location !== s.left && s.active
           }`}
@@ -30,8 +37,8 @@ export default function SliceBox() {
           <Links href={{ signin: '#', signup: '#' }} />
           <RoleImg src={'/img/select-role/common.gif'} />
           <MobileLink onClick={changeBg}>{partnerText}</MobileLink>
-        </SliceContent>
-        <SliceContent
+        </Content>
+        <Content
           className={`${s.content} ${s.right} ${
             location !== s.right && s.active
           }`}
@@ -41,12 +48,14 @@ export default function SliceBox() {
           <Links href={{ signin: '#', signup: '#' }} />
           <RoleImg src={'/img/select-role/mover.gif'} />
           <MobileLink onClick={changeBg}>{commonText}</MobileLink>
-        </SliceContent>
+        </Content>
 
         <div
           className={`${s.background} ${location}`}
-          onClick={changeBg}
+          // onClick={changeBg}
         >
+          <Tooltip open={true}>여기를 클릭해주세요</Tooltip>
+
           <Image
             src='/img/logo/logo-with-icon.svg'
             alt='로고'
@@ -62,42 +71,5 @@ export default function SliceBox() {
         </div>
       </div>
     </div>
-  );
-}
-
-interface SliceContentProps extends PropsWithChildren {
-  className?: string;
-  title: string;
-  comment: string;
-}
-function SliceContent({
-  className,
-  children,
-  title,
-  comment,
-}: SliceContentProps) {
-  return (
-    <div className={`${s.content} ${className}`.trim()}>
-      <div className={s.move}>
-        <h2 className={s.title}>{title}</h2>
-        <p className={s.comment}>{comment}</p>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-interface MobileLinkProps extends PropsWithChildren {
-  onClick: React.MouseEventHandler<HTMLAnchorElement>;
-}
-function MobileLink({ children, onClick }: MobileLinkProps) {
-  return (
-    <Link
-      className={s.mobileLink}
-      href={'#'}
-      onClick={onClick}
-    >
-      {children}
-    </Link>
   );
 }
