@@ -1,5 +1,6 @@
 import cn from '@/utils/cn';
 import { CUSTOM_LABEL_STYLE } from './constants';
+import { CustomLabelProps } from './customLabel.types';
 
 export default function CustomLabel({
   styleVariant,
