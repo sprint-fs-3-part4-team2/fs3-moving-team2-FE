@@ -39,14 +39,6 @@
 
   --line-200: #e6e6e6;
   --line-100: #f2f2f2;
-
-  /* select-role */
-  --backgroundSize: 50%;
-  --conSize: 70%;
-  --conRadius: 4px;
-  --backgroundTrans: 0.8s;
-  --shadow: 13px;
-  --rShadow: -13px;
 }
 
 @media (prefers-color-scheme: dark) {

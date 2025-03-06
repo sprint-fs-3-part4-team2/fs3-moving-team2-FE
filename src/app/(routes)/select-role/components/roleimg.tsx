@@ -4,15 +4,14 @@ import ReactPlayer from 'react-player';
 import type { C1 } from '../types/type';
 import cn from '@/utils/cn';
 import { flex_center } from '../styles/tailwind';
-import Animate from './animate';
 
-interface UserTypeProps extends C1 {
+interface RoleImgProps extends C1 {
   src: string;
 }
-export default function UserTypeSelect({ src, className = '' }: UserTypeProps) {
+export default function RoleImg({ src, className = '' }: RoleImgProps) {
   const [playing, setPlaying] = useState(false);
-
   const [isMount, setIsMount] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       setIsMount(true);
@@ -39,25 +38,23 @@ export default function UserTypeSelect({ src, className = '' }: UserTypeProps) {
       onMouseOver={onMouseEnterHandler}
       onMouseOut={onMouseLeaveHandler}
     >
-      <Animate>
-        <div
-          className={cn(`${flex_center} w-[300px] overflow-hidden rounded-lg`)}
-        >
-          <div className={`transition-all duration-500`}>
-            <ReactPlayer
-              url={src}
-              style={{ margin: 'auto', width: '100%' }}
-              // playing={playing}
-              playing={true}
-              loop
-              muted
-              controls={false}
-              width={`100%`}
-              height={`200px`}
-            />
-          </div>
+      <div
+        className={cn(`${flex_center} w-[300px] overflow-hidden rounded-lg`)}
+      >
+        <div className={`transition-all duration-500`}>
+          <ReactPlayer
+            url={src}
+            style={{ margin: 'auto', width: '100%' }}
+            // playing={playing}
+            playing={true}
+            loop
+            muted
+            controls={false}
+            width={`100%`}
+            height={`200px`}
+          />
         </div>
-      </Animate>
+      </div>
     </li>
   );
 }

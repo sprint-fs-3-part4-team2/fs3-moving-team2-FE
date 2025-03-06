@@ -1,21 +1,25 @@
 .page {
+  --backgroundSize: 50%;
+  --conSize: 70%;
+  --conRadius: 4px;
+  --backgroundTrans: 0.8s;
+
   position: relative;
   width: 100%;
   height: 100vh;
   background-color: #fff;
-  /* color: #000; */
   color: #fff;
 }
 
 .page .container {
+  --shadow: 13px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   max-width: 1000px;
-  width: 1000%;
-  /* background-color: #fff; */
+  width: 100%;
   background-color: var(--primary-blue-200);
   height: var(--conSize);
   box-shadow: var(--shadow) var(--shadow) var(--shadow) 10px rgba(0, 0, 0, 0.3);
@@ -23,7 +27,8 @@
   transition: var(--backgroundTrans);
 }
 .page .container:has(.left.active) {
-  box-shadow: var(--rShadow) var(--shadow) var(--shadow) 10px rgba(0, 0, 0, 0.3);
+  --shadow: 13px;
+  box-shadow: -13px var(--shadow) var(--shadow) 10px rgba(0, 0, 0, 0.3);
 }
 
 .page .container > .content {
@@ -58,8 +63,8 @@
 }
 .page .container > .content > .move .comment {
   margin: 10px auto;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 400;
   line-height: 1.5em;
   width: 30ch;
   text-align: center;
@@ -80,23 +85,23 @@
   left: 0;
 }
 
-.page .container > .content .move .moveLink {
+.page .container .moveLink {
   position: absolute;
   bottom: 10%;
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
+  color: var(--grayscale-400);
   transition: var(--backgroundTrans);
 }
-.page .container > .content .move .moveLink:hover {
+.page .container .moveLink:hover {
   font-size: 19px;
-  color: #000;
+  color: var(--black-500);
   font-weight: 700;
 }
 .page .container > .background {
   width: var(--backgroundSize);
   height: 100%;
-  /* background-color: var(--primary-blue-200); */
   background-color: #fff;
   position: absolute;
   top: 0;
@@ -119,7 +124,11 @@
   border-bottom-right-radius: var(--conRadius);
 }
 
-@media screen and (max-width: 1000px) {
+.mobileLink {
+  display: none;
+}
+
+@media screen and (max-width: 1200px) {
   .page .container {
     width: 100%;
     height: 100%;
@@ -140,5 +149,28 @@
   }
   .page .container > .content .move .moveLink:hover {
     font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .page .container > .background {
+    display: none;
+  }
+  .page .container > .content {
+    width: 0;
+  }
+  .page .container > .content.active {
+    width: 100%;
+    opacity: 1;
+  }
+  .mobileLink {
+    margin-top: 30px;
+    display: block;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .mobileLink:hover {
+    margin-top: 30px;
+    display: block;
   }
 }
