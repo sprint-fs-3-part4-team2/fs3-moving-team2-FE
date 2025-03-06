@@ -1,0 +1,59 @@
+.links {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.links a {
+  text-decoration: none;
+}
+
+.links .linkBox {
+  width: 80%;
+  max-width: 225px;
+  height: 45px;
+  /* background-color: var(--primary-blue-300); */
+  /* background-color: #fff; */
+  border: 2px solid #fff;
+  border-radius: 6px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.links .linkBox a {
+  font-size: 18px;
+  font-weight: 700;
+  transition: var(--backgroundTrans);
+  color: #fff;
+  /* color: var(--primary-blue-200); */
+  transition: 0.5s;
+}
+
+.links .linkBox:hover {
+  /* background-color: var(--primary-blue-50); */
+  background-color: #fff;
+  /* box-shadow: 3px 3px 3px 2px #333; */
+}
+.links .linkBox:hover a {
+  font-size: 20px;
+  /* color: #fff; */
+  color: var(--primary-blue-200);
+}
+
+@media screen and (max-width: 1000px) {
+  .links .linkBox {
+    width: 65%;
+    max-width: initial;
+    height: 55px;
+  }
+
+  .links .linkBox a {
+    font-size: 18px;
+    font-weight: 400;
+    transition: var(--backgroundTrans);
+    color: #000;
+    transition: 0.5s;
+  }
+}

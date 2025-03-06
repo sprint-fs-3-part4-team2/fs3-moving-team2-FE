@@ -34,27 +34,26 @@ export default function UserTypeSelect({ src, className = '' }: UserTypeProps) {
   return (
     <li
       className={cn(
-        `${className} group w-[300px] relative h-full ${flex_center}`,
+        `${className} group w-[300px] relative ${flex_center}`,
       ).trim()}
       onMouseOver={onMouseEnterHandler}
       onMouseOut={onMouseLeaveHandler}
     >
       <Animate>
         <div
-          className={cn(
-            `${flex_center} h-full w-[300px] overflow-hidden border-2 border-primary-blue-300  shadow-[7px_7px_0_0_rgba(0,0,0,0.5)]`,
-          )}
+          className={cn(`${flex_center} w-[300px] overflow-hidden rounded-lg`)}
         >
-          <div className={`group-hover:scale-125 transition-all duration-500`}>
+          <div className={`transition-all duration-500`}>
             <ReactPlayer
               url={src}
-              style={{ margin: 'auto' }}
-              playing={playing}
+              style={{ margin: 'auto', width: '100%' }}
+              // playing={playing}
+              playing={true}
               loop
               muted
               controls={false}
-              width={`60%`}
-              height={`230px`}
+              width={`100%`}
+              height={`200px`}
             />
           </div>
         </div>
