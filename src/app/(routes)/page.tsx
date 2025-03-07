@@ -1,6 +1,7 @@
 import Image from 'next/image';
+import React from 'react';
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <div className='animate-fadeIn w-[439px] w-full min-h-screen bg-[var(--background-400)] flex flex-col items-center'>
       <h1 className='animate-fadeIn w-[439px] font-semibold text-[36px] leading-[50px] mt-20 text-[var(--black-500)] text-center'>
@@ -22,12 +23,14 @@ export default function Home() {
           </div>
 
           <div
-            style={{
-              position: 'relative',
-              width: '380px',
-              height: '320px',
-            }}
-            className='animate-shakeVerticalWithAngle transition-transform duration-500 group-hover:-translate-y-2 group-active:translate-y-2" top-[110px] left-[83px] transform transition-all duration-500 group-hover:-translate-y-5 group-active:translate-y-2 animate-moveDown group-active:width-[300px] group-active:height-[290px]'
+            style={
+              {
+                position: 'relative',
+                width: '380px',
+                height: '320px',
+              } as React.CSSProperties
+            }
+            className={firstCardImageStyles}
           >
             <Image
               fill
@@ -35,7 +38,7 @@ export default function Home() {
               alt='소형이사 이미지'
               style={{
                 objectFit: 'cover',
-              }}
+              } as React.CSSProperties}
             />
           </div>
         </div>
@@ -90,3 +93,6 @@ export default function Home() {
 
 const landingPageCardsCommonStyles =
   'transform transition-all duration-500 hover:scale-[1.03] hover:shadow-[4px_4px_8px_-1px_rgba(0,0,0,0.2)] active:shadow-[inset_2px_2px_5px_2px_rgba(0,0,0,0.2)] active:scale-[1] rounded-[32px] shadow-[3px_3px_5px_0px_rgba(0,0,0,0.1)] overflow-hidden group';
+
+const firstCardImageStyles =
+  'animate-shakeVerticalWithAngle transition-transform duration-500 group-hover:-translate-y-2 group-active:translate-y-2" top-[110px] left-[83px] transform transition-all duration-500 group-hover:-translate-y-5 group-active:translate-y-2 animate-moveDown group-active:width-[300px] group-active:height-[290px]'
