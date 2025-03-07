@@ -1,12 +1,12 @@
 'use client';
-import Dropdown from '@/app/dropdown/dropdown';
+import Dropdown from '@/components/dropdown/dropdown';
 
 export default function Test() {
   return (
-    <div className='bg-black-200 h-screen gap-4'>
-      <Dropdown.Service isOpen={true}></Dropdown.Service>
+    <div className='bg-black-200  gap-4'>
+      <Dropdown.Service></Dropdown.Service>
       <br></br>
-      <Dropdown.Area isOpen={true}></Dropdown.Area>
+      <Dropdown.Area></Dropdown.Area>
       <br></br>
       <Dropdown.Alram isOpen={true} />
       <br></br>

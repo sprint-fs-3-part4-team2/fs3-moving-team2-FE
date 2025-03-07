@@ -3,47 +3,13 @@ import Link from 'next/link';
 import Dropdown, { DropdownProps } from './dropdown';
 import cn from '@/utils/cn';
 import { useEffect, useState } from 'react';
-import { CloseBtn } from '../(routes)/select-role/components/tooltip';
+import { CloseBtn } from '@/app/(routes)/select-role/components/tooltip';
 import { formatDistanceToNow } from 'date-fns';
-import { ko } from 'date-fns/locale';
-
-const dummy: AlarmData[] = [
-  {
-    id: 'adsfklafgdf',
-    message: 'test입니다. ',
-    is_read: false,
-    url: '/test/test',
-    create_at: new Date('2025-03-07T12:00:00Z'),
-  },
-  {
-    id: 'aadfgfkdfdlafgdf',
-    message: 'test입니다.2222 ',
-    is_read: false,
-    url: '/test/test',
-    create_at: new Date('2024-03-07T12:00:00Z'),
-  },
-  {
-    id: 'aadfgfkdfdlafgdf',
-    message: 'test입니다.2222 ',
-    is_read: false,
-    url: '/test/test',
-    create_at: new Date('2024-03-07T12:00:00Z'),
-  },
-  {
-    id: 'aadfgfkdfdlafgdf',
-    message: 'test입니다.2222 ',
-    is_read: false,
-    url: '/test/test',
-    create_at: new Date('2022-03-07T12:00:00Z'),
-  },
-  {
-    id: 'aadfgfkdfdlafgdf',
-    message: 'test입니다.2222 ',
-    is_read: false,
-    url: '/test/test',
-    create_at: new Date('2025-03-07T16:00:00Z'),
-  },
-];
+import {
+  ko,
+  FormatDistanceToken,
+  FormatDistanceFnOptions,
+} from 'date-fns/locale';
 
 type AlarmData = {
   id: string;
@@ -55,6 +21,18 @@ type AlarmData = {
 interface ReadAlarmProps {
   id: string;
 }
+// '약' 제거한 커스텀 로케일
+const customKo = {
+  ...ko,
+  formatDistance: (
+    token: FormatDistanceToken,
+    count: number,
+    options?: FormatDistanceFnOptions,
+  ) => {
+    const result = ko.formatDistance(token, count, options);
+    return result.replace(/^약\s/, '');
+  },
+};
 
 function Alarm({ isOpen = false, className }: Omit<DropdownProps, 'children'>) {
   const [open, setOpen] = useState<boolean>(isOpen);
@@ -72,7 +50,10 @@ function Alarm({ isOpen = false, className }: Omit<DropdownProps, 'children'>) {
     // read 상태 변경 api 추가
   }
   function isTime(date: Date) {
-    return formatDistanceToNow(new Date(date), { addSuffix: true, locale: ko });
+    return formatDistanceToNow(new Date(date), {
+      addSuffix: true,
+      locale: customKo,
+    });
   }
 
   return (
@@ -136,5 +117,41 @@ function Alarm({ isOpen = false, className }: Omit<DropdownProps, 'children'>) {
     </Dropdown>
   );
 }
-
+const dummy: AlarmData[] = [
+  {
+    id: 'adsfklafgdf',
+    message: 'test입니다. ',
+    is_read: false,
+    url: '/test/test',
+    create_at: new Date('2025-03-07T12:00:00Z'),
+  },
+  {
+    id: 'aadfgfkdfdla7fgdf',
+    message: 'test입니다.2222 ',
+    is_read: false,
+    url: '/test/test',
+    create_at: new Date('2024-03-07T12:00:00Z'),
+  },
+  {
+    id: 'aadfgfkd3fdlafgdf',
+    message: 'test입니다.2222 ',
+    is_read: false,
+    url: '/test/test',
+    create_at: new Date('2024-03-07T12:00:00Z'),
+  },
+  {
+    id: 'aadfgfkdf4dlafgdf',
+    message: 'test입니다.2222 ',
+    is_read: false,
+    url: '/test/test',
+    create_at: new Date('2022-03-07T12:00:00Z'),
+  },
+  {
+    id: 'aadfgfkdf5dlafgdf',
+    message: 'test입니다.2222 ',
+    is_read: false,
+    url: '/test/test',
+    create_at: new Date('2025-03-07T13:00:00Z'),
+  },
+];
 export default Alarm;
