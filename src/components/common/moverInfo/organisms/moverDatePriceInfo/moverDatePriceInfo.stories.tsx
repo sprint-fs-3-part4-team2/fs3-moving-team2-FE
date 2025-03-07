@@ -14,7 +14,7 @@ const Template: StoryFn<typeof MoverDatePrice> = (args) => (
 const props = {
   imageUrl: null,
   moverName: '김코드',
-  date: new Date(),
+  movingDate: new Date(),
   price: 50000,
 };
 
