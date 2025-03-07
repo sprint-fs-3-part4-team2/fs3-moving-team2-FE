@@ -52,12 +52,12 @@ export default function Home() {
             </h3>
           </div>
 
-          <div className='absolute w-[450px] h-[250px] left-[450px] bottom-[0px]'>
+          <div className='absolute w-[460px] h-[260px] left-[450px] bottom-[-8px] animate-moveForward'>
             <Image
               fill
               src='/img/landing/car-img.svg'
               alt='가정이사 이미지'
-              className='object-cover'
+              className='object-cover animate-float animate-hoverForward'
             />
           </div>
         </div>
