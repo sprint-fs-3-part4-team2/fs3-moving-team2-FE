@@ -1,23 +1,25 @@
 import cn from '@/utils/cn';
 import { DropdownProps, List, d2Class } from './dropdown';
-import service from '@/constants/service';
+import area from '@/constants/area';
 
-export default function Service({ className, isOpen = false }: DropdownProps) {
+const filed = [{ name: '전체' }, ...area];
+
+export default function Area({ className, isOpen }: DropdownProps) {
   if (isOpen)
     return (
       <ul
         className={cn(
           d2Class,
+          'max-h-[180px] lg:max-h-[320px]',
           className && className,
-          'block max-h-[142px] lg:max-h-[256px] overflow-hidden',
         )}
       >
-        <List value='전체' />
-        {service.map((v) => {
+        {filed.map((v) => {
           return (
             <List
-              key={v.name}
+              className='w-1/2'
               value={v.name}
+              key={v.name}
             />
           );
         })}

@@ -1,7 +1,7 @@
 'use client';
 import cn from '@/utils/cn';
 import { CSSProperties, PropsWithChildren, useState } from 'react';
-import { C1 } from '../types/type';
+import { C1 } from '@/lib/types/type';
 
 interface TooltipProps extends PropsWithChildren {
   open: boolean;
@@ -66,7 +66,7 @@ export default function Tooltip({
 interface CloseBtnProps extends C1 {
   onClick: React.MouseEventHandler<HTMLDivElement>;
 }
-function CloseBtn({ onClick, className }: CloseBtnProps) {
+export function CloseBtn({ onClick, className }: CloseBtnProps) {
   const common =
     'absolute w-full h-[2px] rounded-md bg-black-100 top-1/2 transform -translate-y-1/2 transition-all duration-500';
   return (

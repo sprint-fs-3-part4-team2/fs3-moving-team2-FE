@@ -1,4 +1,4 @@
-import { C2 } from '../types/type';
+import { C2 } from '@/lib/types/type';
 import animate from '../components/style/animate.module.css';
 import { CSSProperties } from 'react';
 
