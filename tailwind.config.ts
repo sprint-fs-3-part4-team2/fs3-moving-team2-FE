@@ -86,6 +86,7 @@ const config: Config = {
         sm: '375px',
         md: '744px',
         xl: '1200px',
+        xxl: '1440px',
       },
 
       keyframes: {
