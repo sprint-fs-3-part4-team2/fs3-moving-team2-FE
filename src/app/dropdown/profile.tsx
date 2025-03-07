@@ -2,12 +2,14 @@
 
 import cn from '@/utils/cn';
 import Dropdown, { DropdownProps } from './dropdown';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
 
-interface ProfileProps extends Omit<DropdownProps, 'children'> {}
-function Profile({ isOpen }: ProfileProps) {
+function Profile({ isOpen }: Omit<DropdownProps, 'children'>) {
   const [name, setName] = useState('테스트');
+  useEffect(() => {
+    setName('테스트');
+  }, []);
   return (
     <Dropdown
       isOpen={isOpen}

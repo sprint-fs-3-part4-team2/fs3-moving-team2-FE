@@ -4,7 +4,6 @@ import Dropdown, { DropdownProps } from './dropdown';
 import cn from '@/utils/cn';
 import { useEffect, useState } from 'react';
 import { CloseBtn } from '../(routes)/select-role/components/tooltip';
-import { C1 } from '@/lib/types/type';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -53,13 +52,11 @@ type AlarmData = {
   url: string;
   create_at: Date;
 };
-
-interface AlarmProps extends Omit<DropdownProps, 'children'> {}
 interface ReadAlarmProps {
   id: string;
 }
 
-function Alarm({ isOpen = false, className }: AlarmProps) {
+function Alarm({ isOpen = false, className }: Omit<DropdownProps, 'children'>) {
   const [open, setOpen] = useState<boolean>(isOpen);
   const [alarms, setAlarms] = useState(dummy || []);
 
@@ -103,6 +100,7 @@ function Alarm({ isOpen = false, className }: AlarmProps) {
           alarms.map((v, i) => {
             return (
               <li
+                key={v.id}
                 className={cn(
                   'h-[72px] lg:h-[84px] px-4 py-3 lg:px-6 lg:py-4',
                   i !== alarms.length - 1 && 'border-b border-line-200',
