@@ -9,16 +9,18 @@ import Content from './components/content';
 import MobileLink from './components/mobile-link';
 import Tooltip from './components/tooltip';
 
-const commonText = '일반유저 보러가기';
-const partnerText = '파트너 보러가기';
+const commonText = '일반유저';
+const partnerText = '파트너';
 
 export default function SliceBox() {
   const [location, setLocation] = useState<string>(s.right);
+  const [tt, setTT] = useState(partnerText);
 
   function changeBg(e: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) {
     e.preventDefault();
     e.stopPropagation();
     setLocation((prev) => (prev === s.left ? s.right : s.left));
+    setTT((prev) => (prev === partnerText ? commonText : partnerText));
   }
 
   return (
@@ -54,20 +56,28 @@ export default function SliceBox() {
           className={`${s.background} ${location}`}
           // onClick={changeBg}
         >
-          <Tooltip open={true}>여기를 클릭해주세요</Tooltip>
-
           <Image
             src='/img/logo/logo-with-icon.svg'
             alt='로고'
             width={150}
             height={50}
           />
-          <Link
-            className={s.moveLink}
-            href={'#'}
-          >
-            {location === s.left ? commonText : partnerText}
-          </Link>
+          <div className={s.moveLink}>
+            <Tooltip
+              open={true}
+              bottom={50}
+            >
+              {tt}는 여기
+            </Tooltip>
+
+            <Link
+              className={s.moveLink}
+              onClick={changeBg}
+              href={'#'}
+            >
+              {location === s.left ? commonText : partnerText}
+            </Link>
+          </div>
         </div>
       </div>
     </div>
