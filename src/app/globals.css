@@ -58,4 +58,17 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  @keyframes shakeVerticalWithAngle {
+
+    25% {
+      transform: translateY(-10px) rotate(13deg);
+    }
+  }
+
+  .animate-shakeVerticalWithAngle {
+    animation: shakeVerticalWithAngle 2s ease-in-out 1.2s;
+    display: inline-block;
+    will-change: transform;
+  }
 }
