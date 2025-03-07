@@ -25,7 +25,7 @@ export default function Tooltip({
     return (
       <div
         className={cn(
-          'py-[12px] px-[25px] z-10 max-w-[300px] absolute border-4 border-primary-blue-300  bg-white rounded-2xl',
+          'py-[10px] px-[20px] z-10 max-w-[300px] absolute border-4 border-primary-blue-300  bg-white rounded-2xl',
           o && 'block',
           !o && 'hidden',
           'animate-bounce',
@@ -54,7 +54,7 @@ export default function Tooltip({
         ></div>
         <div
           className={`w-0 h-0 absolute 
-        top-[98%] left-1/2 -translate-x-1/2
+        top-[97%] left-1/2 -translate-x-1/2
         border-l-[8px] border-l-transparent 
         border-r-[8px] border-r-transparent 
         border-t-[8px] border-t-white`}
