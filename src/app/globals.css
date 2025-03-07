@@ -59,32 +59,65 @@ body {
     text-wrap: balance;
   }
 
+  /* Landing Page 애니메이션 */
+  /* 첫 번째 손 이미지 애니메이션 */
   @keyframes shakeVerticalWithAngle {
-    25% {
-      transform: translateY(-10px) rotate(13deg);
+    35% {
+      transform: translateY(-10px) rotate(8deg);
     }
   }
 
   .animate-shakeVerticalWithAngle {
-    animation: shakeVerticalWithAngle 2s ease-in-out 1s;
+    animation: shakeVerticalWithAngle 1.5s ease-in-out 1s;
     display: inline-block;
     will-change: transform;
   }
 
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
+  @keyframes moveForward {
+    0% {
+      transform: translateX(300px);
     }
-    50% {
-      transform: translateY(-5px);
+
+    100% {
+      transform: translateX(0);
     }
   }
-  
+
+  /* 두 번째 자동차 이미지 애니메이션 */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-7px);
+    }
+  }
+
   @layer utilities {
-    .animate-float {
-      animation: float 0.7s ease-in-out 2; 
+    .animate-moveForward {
+      animation: moveForward 2.5s ease-out forwards;
       display: inline-block;
       will-change: transform;
+    }
+
+    .animate-float {
+      animation: float 0.7s ease-in-out 3;
+      display: inline-block;
+      will-change: transform;
+    }
+  }
+
+  @layer utilities {
+    .animate-hoverForward {
+      transition: transform 0.3s ease-out;
+    }
+    .group:hover .animate-hoverForward {
+      transform: translateX(-22px) scale(1.001);
+    }
+    .group:active .animate-hoverForward {
+      transform: translateZ(0);
     }
   }
 }
