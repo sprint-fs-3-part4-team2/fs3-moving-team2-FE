@@ -60,7 +60,6 @@ body {
   }
 
   @keyframes shakeVerticalWithAngle {
-
     25% {
       transform: translateY(-10px) rotate(13deg);
     }
