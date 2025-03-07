@@ -20,6 +20,24 @@ export default function Home() {
               원룸, 투룸, 20평대 미만
             </h3>
           </div>
+
+          <div
+            style={{
+              position: 'relative',
+              width: '380px',
+              height: '320px',
+            }}
+            className='animate-shakeVerticalWithAngle transition-transform duration-500 group-hover:-translate-y-2 group-active:translate-y-2" top-[110px] left-[83px] transform transition-all duration-500 group-hover:-translate-y-5 group-active:translate-y-2 animate-moveDown group-active:width-[300px] group-active:height-[290px]'
+          >
+            <Image
+              fill
+              src='/img/landing/lundury-img.svg'
+              alt='소형이사 이미지'
+              style={{
+                objectFit: 'cover',
+              }}
+            />
+          </div>
         </div>
 
         {/* 가로 박스1 */}
@@ -27,11 +45,20 @@ export default function Home() {
           className={`col-span-2 rounded-[32px]  bg-[var(--background)] ${landingPageCardsCommonStyles}`}
         >
           {/* Text Box */}
-          <div className='flex flex-col justify-center mt-[45px] ml-[42px]'>
+          <div className='relative flex flex-col justify-center mt-[45px] ml-[42px]'>
             <h2 className='font-semibold text-[30px]'>가정이사</h2>
             <h3 className='text-[20px] text-[var(--grayscale-400)] mt-[9px]'>
               쓰리룸, 20평대 미만
             </h3>
+          </div>
+
+          <div className='absolute w-[450px] h-[250px] left-[450px] bottom-[0px]'>
+            <Image
+              fill
+              src='/img/landing/car-img.svg'
+              alt='가정이사 이미지'
+              className='object-cover'
+            />
           </div>
         </div>
 
@@ -46,6 +73,15 @@ export default function Home() {
               사무실, 상업공간
             </h3>
           </div>
+
+          <div className='absolute w-[570px] h-[240px] left-[320px] bottom-[0px]'>
+            <Image
+              fill
+              src='/img/landing/building-img.svg'
+              alt='기업, 사무실 이사 이미지'
+              className='object-cover'
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -53,4 +89,4 @@ export default function Home() {
 }
 
 const landingPageCardsCommonStyles =
-  'transform transition-all duration-500 hover:scale-[1.03] hover:shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)] active:shadow-[inset_4px_4px_8px_0px_rgba(0,0,0,0.2)] active:scale-[1] rounded-[32px] shadow-[3px_3px_5px_0px_rgba(0,0,0,0.1)]';
+  'transform transition-all duration-500 hover:scale-[1.03] hover:shadow-[4px_4px_8px_-1px_rgba(0,0,0,0.2)] active:shadow-[inset_2px_2px_5px_2px_rgba(0,0,0,0.2)] active:scale-[1] rounded-[32px] shadow-[3px_3px_5px_0px_rgba(0,0,0,0.1)] overflow-hidden group';
