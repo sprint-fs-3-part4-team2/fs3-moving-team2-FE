@@ -74,12 +74,12 @@ export default function Home() {
             </h3>
           </div>
 
-          <div className='absolute w-[570px] h-[240px] left-[320px] bottom-[0px]'>
+          <div className='absolute w-[570px] h-[240px] left-[320px] bottom-[0px] animate-enlargeAndShake'>
             <Image
               fill
               src='/img/landing/building-img.svg'
               alt='기업, 사무실 이사 이미지'
-              className='object-cover'
+              className='object-cover animate-hoverScale transition-transform'
             />
           </div>
         </div>
