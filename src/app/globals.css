@@ -85,7 +85,6 @@ body {
   }
 
   @keyframes float {
-
     0%,
     100% {
       transform: translateY(0);
@@ -181,11 +180,11 @@ body {
     .transition-transform {
       transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
-  
+
     .group:hover .animate-hoverScale {
       transform: scale(1.1);
     }
-  
+
     .group:active .animate-hoverScale {
       transform: scale(1);
     }
