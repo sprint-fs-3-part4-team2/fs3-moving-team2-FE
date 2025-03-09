@@ -2,7 +2,7 @@ import small from '@/public/icons/moving-types/small.svg';
 import home from '@/public/icons/moving-types/home.svg';
 import office from '@/public/icons/moving-types/office.svg';
 import custom from '@/public/icons/moving-types/custom-quote.svg';
-import { MOVING_TYPES } from '@/constants/movingTypes';
+import { MOVING_STATE, MOVING_TYPES } from '@/constants/movingTypes';
 
 const BADGE_STYLES = {
   blue: 'bg-primary-blue-100 text-primary-blue-300',
@@ -26,18 +26,18 @@ export const options = {
     style: BADGE_STYLES.blue,
     icon: home,
   },
-  [MOVING_TYPES.custom.key]: {
-    text: MOVING_TYPES.custom.value,
+  [MOVING_STATE.custom.key]: {
+    text: MOVING_STATE.custom.value,
     style: BADGE_STYLES.red,
     icon: custom,
   },
-  [MOVING_TYPES.confirmedQuotes.key]: {
-    text: MOVING_TYPES.confirmedQuotes.value,
+  [MOVING_STATE.confirmedQuote.key]: {
+    text: MOVING_STATE.confirmedQuote.value,
     style: BADGE_STYLES.gray,
     icon: undefined,
   },
-  [MOVING_TYPES.pendingQuote.key]: {
-    text: MOVING_TYPES.pendingQuote.value,
+  [MOVING_STATE.pendingQuote.key]: {
+    text: MOVING_STATE.pendingQuote.value,
     style: BADGE_STYLES.gray,
     icon: undefined,
   },
