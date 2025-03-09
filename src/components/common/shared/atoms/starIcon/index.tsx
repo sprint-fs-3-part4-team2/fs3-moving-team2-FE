@@ -15,7 +15,7 @@ export default function StarIcon({
 
   return (
     <Image
-      className={cn(className, handleClick !== null && 'cursor-pointer')}
+      className={cn(className, onClick && 'cursor-pointer')}
       onClick={handleClick}
       src={filled ? filledStar : emptyStar}
       alt='별점 아이콘'
