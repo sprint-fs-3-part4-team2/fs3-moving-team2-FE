@@ -35,6 +35,7 @@ export default function Area({ className }: Omit<DropdownProps, 'isOpen'>) {
           {filed.map((v) => {
             return (
               <List
+                onClick={ListHandle}
                 className='w-1/2'
                 value={v.name}
                 key={v.name}
