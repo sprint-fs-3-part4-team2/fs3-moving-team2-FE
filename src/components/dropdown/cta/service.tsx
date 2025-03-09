@@ -1,0 +1,21 @@
+'use client';
+import cn from '@/utils/cn';
+import { DropdownCtaProps, DropdownCta } from '../dropdown';
+import service from '@/constants/service';
+
+export default function Service({
+  className,
+  isOpen,
+  dispatch,
+}: Omit<DropdownCtaProps, 'data'>) {
+  return (
+    <DropdownCta
+      name='service'
+      className={cn(className && className)}
+      isOpen={isOpen}
+      data={service}
+      dispatch={dispatch}
+      dropClassName={cn('max-h-[142px] lg:max-h-[256px]')}
+    />
+  );
+}
