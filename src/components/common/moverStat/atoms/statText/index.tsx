@@ -5,7 +5,6 @@ export default function StatText({ children, variant }: TextProps) {
   return (
     <span
       className={cn(
-        'text-[13px] md:text-[13px] xl:text-[16px] font-medium',
         variant === 'primary' ? 'text-black-300' : 'text-grayscale-300',
       )}
     >

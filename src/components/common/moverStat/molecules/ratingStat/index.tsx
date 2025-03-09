@@ -3,7 +3,10 @@ import StatText from '../../atoms/statText';
 import { RatingProps } from './rating.types';
 import StatContainer from '../../atoms/statContainer';
 
-export default function Rating({ rating, ratingCount: count }: RatingProps) {
+export default function RatingStat({
+  rating,
+  ratingCount: count,
+}: RatingProps) {
   return (
     <StatContainer>
       <StarIcon
