@@ -117,10 +117,6 @@ body {
     .group:hover .animate-hoverForward {
       transform: translateX(-22px) scale(1.001);
     }
-
-    .group:active .animate-hoverForward {
-      transform: translateZ(0);
-    }
   }
 
   /* 세 번째 건물 이미지 애니메이션 */
@@ -183,10 +179,6 @@ body {
 
     .group:hover .animate-hoverScale {
       transform: scale(1.1);
-    }
-
-    .group:active .animate-hoverScale {
-      transform: scale(1);
     }
   }
 }
