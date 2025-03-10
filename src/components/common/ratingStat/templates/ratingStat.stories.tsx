@@ -1,5 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 import RatingStat from './ratingStat';
+import { RatingStatCodeSnippet } from './codeExample';
 
 export default {
   title: 'common/RatingStat',
@@ -11,7 +12,7 @@ const Template: StoryFn<typeof RatingStat> = (args) => <RatingStat {...args} />;
 
 export const Rating = Template.bind({});
 
-Rating.args = {
+const RatingProps = {
   ratingCounts: {
     5: 500,
     4: 500,
@@ -21,6 +22,11 @@ Rating.args = {
   },
   averageRating: 4.5,
   totalCount: 1500,
+};
+
+Rating.args = RatingProps;
+Rating.parameters = {
+  codeExample: RatingStatCodeSnippet(RatingProps),
 };
 
 Rating.decorators = (Story) => (
