@@ -1,6 +1,6 @@
-import { QuotePriceV2Props } from './quotePriceV2.types';
+import { QuotePriceForListProps } from './quotePriceForList.types';
 
-export default function QuotePriceV2({ price }: QuotePriceV2Props) {
+export default function QuotePriceForList({ price }: QuotePriceForListProps) {
   return (
     <div className='flex text-black-400 gap-2 md:gap-2 xl:gap-4 items-center'>
       <span className='text-[14px] md:text-[14px] xl:text-[18px] font-medium'>

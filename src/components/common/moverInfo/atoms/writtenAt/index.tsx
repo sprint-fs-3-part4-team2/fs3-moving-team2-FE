@@ -3,7 +3,7 @@ import { WrittenAtProps } from './writtenAt.types';
 import cn from '@/utils/cn';
 
 export default function WrittenAt({ writtenDate, className }: WrittenAtProps) {
-  const formattedDate = formatDate(writtenDate);
+  const formattedDate = formatDate(writtenDate, false);
   return (
     <div
       className={cn(
