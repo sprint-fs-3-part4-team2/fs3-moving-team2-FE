@@ -1,5 +1,3 @@
-import { RatingStarsProps } from './ratingStars.types';
-
 export const RatingStarsCodeSnippet = () => {
   return `
 \`\`\`tsx
