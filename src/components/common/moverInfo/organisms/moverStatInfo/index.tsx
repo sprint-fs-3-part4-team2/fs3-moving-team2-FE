@@ -14,7 +14,7 @@ export default function MoverStatInfo({
   isFavorite,
   favoriteCount,
   quoteCount,
-  isFavoriteMoverInfo,
+  isFavoriteMoverList: isFavoriteMoverInfo,
 }: MoverStatInfoProps) {
   return (
     <div

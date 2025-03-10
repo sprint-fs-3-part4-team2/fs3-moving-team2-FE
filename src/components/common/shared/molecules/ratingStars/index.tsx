@@ -1,7 +1,11 @@
 import StarIcon from '../../atoms/starIcon';
 import { RatingStarsProps } from './ratingStars.types';
 
-export default function RatingStars({ rating, onClick }: RatingStarsProps) {
+export default function RatingStars({
+  rating,
+  onClick,
+  iconClassName,
+}: RatingStarsProps) {
   const filledStarArray = Array.from(
     { length: Math.min(rating, 5) },
     (_, index) => index + 1,
@@ -11,24 +15,22 @@ export default function RatingStars({ rating, onClick }: RatingStarsProps) {
     (_, index) => filledStarArray.length + index + 1,
   );
 
-  const handleClick = (value: number) => {
-    if (onClick) onClick(value);
-  };
-
   return (
     <div className='flex'>
       {filledStarArray.map((value) => (
         <StarIcon
           key={value}
           filled={true}
-          onClick={() => handleClick(value)}
+          onClick={onClick ? () => onClick(value) : undefined}
+          className={iconClassName}
         />
       ))}
       {emptyStarArray.map((value) => (
         <StarIcon
           key={value}
           filled={false}
-          onClick={() => handleClick(value)}
+          onClick={onClick ? () => onClick(value) : undefined}
+          className={iconClassName}
         />
       ))}
     </div>
