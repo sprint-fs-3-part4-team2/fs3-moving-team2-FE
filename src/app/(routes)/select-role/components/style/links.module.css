@@ -1,0 +1,58 @@
+.links {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.links a {
+  text-decoration: none;
+}
+
+.links .linkBox {
+  width: 80%;
+  max-width: 225px;
+  height: 45px;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.links .linkBox a {
+  font-size: 18px;
+  font-weight: 700;
+  transition: var(--backgroundTrans);
+  color: #fff;
+}
+
+.links .linkBox:hover {
+  background-color: #fff;
+}
+.links .linkBox:hover a {
+  font-size: 20px;
+  color: var(--primary-blue-200);
+}
+
+@media screen and (max-width: 1000px) {
+  .links .linkBox {
+    width: 65%;
+    max-width: initial;
+  }
+
+  .links .linkBox a {
+    font-size: 18px;
+    font-weight: 400;
+    transition: var(--backgroundTrans);
+    transition: 0.5s;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .links .linkBox {
+    width: 55%;
+    max-width: 275px;
+    height: 50px;
+  }
+}
