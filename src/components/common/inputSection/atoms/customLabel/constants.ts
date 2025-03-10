@@ -1,0 +1,5 @@
+export const CUSTOM_LABEL_STYLE = {
+  primary:
+    'font-regular text-black-400 text-[14px] md:text-[14px] xl:text-[20px]',
+  secondary: 'font-semibold md:text-[16px] xl:text-[20px] gap-1',
+};
