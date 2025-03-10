@@ -21,6 +21,7 @@ type AlarmData = {
 interface ReadAlarmProps {
   id: string;
 }
+
 // '약' 제거한 커스텀 로케일
 const customKo = {
   ...ko,
@@ -33,20 +34,16 @@ const customKo = {
     return result.replace(/^약\s/, '');
   },
 };
+interface AlarmProps extends Omit<DropdownProps, 'dispatch'> {
+  data: AlarmData[];
+}
 
-function Alarm({
-  isOpen = false,
-  className,
-  children,
-}: Omit<DropdownProps, 'dispatch'>) {
+function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
   const [open, setOpen] = useState<boolean>(isOpen);
-  const [alarms, setAlarms] = useState(dummy || []);
-
-  useEffect(() => {
-    setAlarms(dummy);
-  }, []);
+  const [alarms, setAlarms] = useState(data || dummy);
 
   function closeAlarm(e: React.MouseEvent<any>) {
+    e.preventDefault();
     setOpen(false);
   }
 
@@ -74,7 +71,7 @@ function Alarm({
       <Dropdown
         isOpen={open}
         className={cn(
-          'absolute block h-auto max-h-[314px] lg:max-h-[352px] max-w-[312px] lg:max-w-[360px] py-[6px] z-5',
+          'absolute block px-4 h-auto max-h-[314px] lg:max-h-[352px] max-w-[312px] lg:max-w-[360px] py-[6px] z-5',
         )}
       >
         <div className='py-[14px] pl-4 lg:pl-6 h-[54px] relative'>

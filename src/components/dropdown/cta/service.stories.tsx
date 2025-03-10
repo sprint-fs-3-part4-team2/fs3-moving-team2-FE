@@ -26,8 +26,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function SerivceWrapper({}) {
-  const [value, setValue] = useState<any>('');
-  return <Service dispatch={setValue} />;
+  const [value, setValue] = useState<string | object>('');
+  return (
+    <>
+      <Service dispatch={setValue} />
+      {value && '선택 값:' + value}
+    </>
+  );
 }
 
 export const Default: Story = {

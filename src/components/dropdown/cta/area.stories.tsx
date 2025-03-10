@@ -26,7 +26,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function AreaWrapper({}) {
-  const [value, setValue] = useState<any>('');
+  const [value, setValue] = useState<string | object>('');
   return (
     <div>
       <Area dispatch={setValue} />
