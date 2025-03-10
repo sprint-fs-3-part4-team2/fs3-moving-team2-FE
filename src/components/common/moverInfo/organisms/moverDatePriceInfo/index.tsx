@@ -10,7 +10,7 @@ import RatingStars from '@/components/common/shared/molecules/ratingStars';
 export default function MoverDatePrice({
   moverName,
   imageUrl,
-  movingDate: date,
+  movingDate,
   price,
   rating,
 }: MoverDatePriceInfoProps) {
@@ -32,7 +32,7 @@ export default function MoverDatePrice({
         />
         <div className={cn('flex gap-4', rating && 'mb-2')}>
           <MovingDate
-            date={date}
+            date={movingDate}
             showDayOfWeek={false}
           />
           <VerticalDivider />
