@@ -26,7 +26,7 @@ const baseProps = {
 
 FavoriteMoverInfo.args = {
   ...baseProps,
-  isFavoriteMoverInfo: true,
+  isFavoriteMoverList: true,
 };
 
 FavoriteMoverInfo.decorators = [
@@ -41,7 +41,7 @@ export const MoverInfo = Template.bind({});
 
 MoverInfo.args = {
   ...baseProps,
-  isFavoriteMoverInfo: false,
+  isFavoriteMoverList: false,
 };
 
 MoverInfo.decorators = [

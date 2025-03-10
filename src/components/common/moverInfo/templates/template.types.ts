@@ -13,15 +13,23 @@ export interface TemplateBaseProps {
   quoteState?: Exclude<MovingStates, 'custom'>;
 }
 
+export type MoverProfileProps = MoverStatInfoProps &
+  TemplateBaseProps & {
+    variant: 'moverList';
+  };
+
 export type CompletedQuoteProps = MoverStatInfoProps &
   TemplateBaseProps & {
     variant: 'quote';
     subVariant: 'completed';
-    description: string;
+    description?: string;
     price?: number;
   };
 
-export type PendingQuoteProps = MoverStatInfoProps &
+export type PendingQuoteProps = Omit<
+  MoverStatInfoProps,
+  'isFavoriteMoverList'
+> &
   TemplateBaseProps & {
     variant: 'quote';
     subVariant: 'pending';
