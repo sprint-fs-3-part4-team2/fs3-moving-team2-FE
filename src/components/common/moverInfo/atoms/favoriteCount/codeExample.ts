@@ -1,8 +1,7 @@
 import { FavoriteCountProps } from './favoriteCount.types';
 
 export const FavoriteCountCodeExample = (props: FavoriteCountProps) => {
-  let code = `
-  
+  return `
 \`\`\`tsx
 import FavoriteCountProps from '@/components/common/moverInfo/atoms/favoriteCount';
 
@@ -13,6 +12,4 @@ import FavoriteCountProps from '@/components/common/moverInfo/atoms/favoriteCoun
         iconClassName="" // optional 아이콘에 적용할 클래스
     />
 `;
-
-  return code;
 };
