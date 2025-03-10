@@ -47,6 +47,7 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
             alt='링크 공유'
             width={24}
             height={24}
+            className='md:w-9 md:h-9'
           />
         </button>
 
@@ -61,6 +62,7 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
             alt='카카오톡 공유'
             width={24}
             height={24}
+            className='md:w-7 md:h-7'
           />
         </button>
 
@@ -75,6 +77,7 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
             alt='페이스북 공유'
             width={12}
             height={23}
+            className='md:w-7 md:h-7'
           />
         </button>
       </div>
