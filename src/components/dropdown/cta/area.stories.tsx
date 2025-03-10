@@ -40,4 +40,21 @@ export const Default: Story = {
   args: {
     dispatch: () => {},
   },
+  parameters: {
+    doc: {
+      source: {
+        code: `
+        import { DropdownCta } from './dropdown';
+        import { useState } from 'react';
+        
+        const Example = () => {
+          const [selected, setSelected] = useState(null);
+          
+          return <DropdownCta data={[{ name: 'Option 1' }, { name: 'Option 2' }]} dispatch={setSelected} />;
+        };
+        `,
+        language: 'tsx', // 코드 블록의 언어 설정
+      },
+    },
+  },
 };

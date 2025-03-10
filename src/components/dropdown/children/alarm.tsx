@@ -22,7 +22,7 @@ interface ReadAlarmProps {
   id: string;
 }
 
-// '약' 제거한 커스텀 로케일
+// '약' 제거
 const customKo = {
   ...ko,
   formatDistance: (
@@ -82,6 +82,7 @@ function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
             className={cn(
               'top-1/2 right-5 transform -translate-y-1/2',
               'w-4 h-4',
+              'cursor-pointer',
             )}
             onClick={closeAlarm}
           />
