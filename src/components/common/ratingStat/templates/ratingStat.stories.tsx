@@ -13,13 +13,14 @@ export const Rating = Template.bind({});
 
 Rating.args = {
   ratingCounts: {
-    5: 356,
-    4: 252,
-    3: 356,
-    2: 200,
-    1: 5,
+    5: 500,
+    4: 500,
+    3: 300,
+    2: 100,
+    1: 100,
   },
   averageRating: 4.5,
+  totalCount: 1500,
 };
 
 Rating.decorators = (Story) => (

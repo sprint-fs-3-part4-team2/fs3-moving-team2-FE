@@ -7,6 +7,7 @@ export default function RatingRow({
   rating,
   count,
   highlighted,
+  percentage,
 }: RatingRowProps) {
   return (
     <div className='flex gap-[16px] md:gap-[16px] xl:gap-[30px] items-center h-[24px] md:h-[24px] xl:h-[32px]'>
@@ -14,7 +15,7 @@ export default function RatingRow({
         rating={rating}
         highlighted={highlighted}
       />
-      <RatingBar percentage={5} />
+      <RatingBar percentage={percentage} />
       <RatingCount
         count={count}
         highlighted={highlighted}

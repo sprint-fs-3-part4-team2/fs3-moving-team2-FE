@@ -12,7 +12,7 @@ export default function AverageRatingOrganism({
       <AverageRating averageRating={averageRating} />
       <RatingStars
         rating={starCount}
-        className='w-[24px] md:w-[24px] xl:w-[40px] h-[24px] md:h-[24px] xl:h-[40px]'
+        iconClassName='w-[24px] md:w-[24px] xl:w-[40px] h-[24px] md:h-[24px] xl:h-[40px]'
       />
     </div>
   );
