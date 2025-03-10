@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 
 export default function Home(): JSX.Element {
@@ -12,7 +11,6 @@ export default function Home(): JSX.Element {
       {/* Main Grid */}
       <div className='mt-[40px] mb-[100px] grid grid-cols-1 gap-[36px] auto-rows-fr xxl:grid-cols-3 gap-[24px] cursor-pointer'>
         {/* 세로 박스 */}
-        {/* <Link> */}
         <div
           className={`w-[327px] h-[240px] xxl:w-[432px] xxl:h-[589px] xxl:col-span-1 xxl:row-span-2 bg-[var(--primary-blue-100)] ${landingPageCardsCommonStyles}`}
         >
@@ -33,10 +31,8 @@ export default function Home(): JSX.Element {
             />
           </div>
         </div>
-        {/* </Link> */}
 
         {/* 가로 박스1 */}
-        {/* <Link> */}
         <div
           className={`xxl:col-span-2 rounded-[32px]  bg-[var(--background)] ${landingPageCardsCommonStyles}`}
         >
@@ -55,10 +51,8 @@ export default function Home(): JSX.Element {
             />
           </div>
         </div>
-        {/* </Link> */}
 
         {/* 가로 박스2 */}
-        {/* <Link> */}
         <div
           className={`xxl:col-span-2 rounded-[32px]  bg-[var(--background)] ${landingPageCardsCommonStyles}`}
         >
@@ -77,7 +71,6 @@ export default function Home(): JSX.Element {
             />
           </div>
         </div>
-        {/* </Link> */}
       </div>
     </div>
   );
