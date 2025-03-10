@@ -56,8 +56,8 @@ const config: Config = {
           50 : 'var(--background-50)',
         },
         line: {
-          200: 'var(--Line-200)',
-          100: 'var(--Line-100)',
+          200: 'var(--line-200)',
+          100: 'var(--line-100)',
         },
 
       },
