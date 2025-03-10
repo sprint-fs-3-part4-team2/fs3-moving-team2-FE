@@ -1,7 +1,7 @@
 'use client';
 import cn from '@/utils/cn';
 import { DropdownCtaProps, DropdownCta } from '../dropdown';
-import area from '@/constants/area';
+import area from '@/constants/dropdown/area';
 
 export default function Area({
   className,

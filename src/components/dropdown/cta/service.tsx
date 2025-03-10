@@ -1,7 +1,7 @@
 'use client';
 import cn from '@/utils/cn';
 import { DropdownCtaProps, DropdownCta } from '../dropdown';
-import service from '@/constants/service';
+import service from '@/constants/dropdown/service';
 
 export default function Service({
   className,
