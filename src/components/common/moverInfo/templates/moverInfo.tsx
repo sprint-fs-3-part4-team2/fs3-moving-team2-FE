@@ -1,3 +1,5 @@
+'use client';
+
 import WrittenAt from '../atoms/writtenAt';
 import MoverDatePrice from '../organisms/moverDatePriceInfo';
 import MoverStatInfo from '../organisms/moverStatInfo';

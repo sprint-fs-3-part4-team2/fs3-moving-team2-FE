@@ -1,3 +1,5 @@
+'use client';
+
 import cn from '@/utils/cn';
 import VerticalDivider from '../../../moverStat/atoms/verticalDivider';
 import ProfileImage from '../../../shared/atoms/profileImage';

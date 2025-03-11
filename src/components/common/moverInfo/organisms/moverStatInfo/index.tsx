@@ -1,3 +1,5 @@
+'use client';
+
 import cn from '@/utils/cn';
 import MoverStat from '../../../moverStat/organisms/moverStat';
 import ProfileImage from '../../../shared/atoms/profileImage';
