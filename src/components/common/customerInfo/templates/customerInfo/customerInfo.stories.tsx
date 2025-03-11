@@ -32,7 +32,7 @@ const commonProps = {
 export const Requested = Template.bind({});
 
 const RequestedProps = {
-  ...COMMON_PROPS,
+  ...commonProps,
   variant: 'requested',
   onSubmit: () => alert(''),
   onDecline: () => alert(''),
@@ -44,7 +44,7 @@ Requested.args = RequestedProps;
 export const SubmittedWithPrice = Template.bind({});
 
 const SubmittedProps = {
-  ...COMMON_PROPS,
+  ...commonProps,
   variant: 'submitted',
   quotePrice: 50000,
 } as CustomerInfoProps;
@@ -54,7 +54,7 @@ SubmittedWithPrice.args = SubmittedProps;
 export const SubmittedWithoutPrice = Template.bind({});
 
 const SubmittedWithoutPriceProps = {
-  ...COMMON_PROPS,
+  ...commonProps,
   variant: 'submitted',
 } as CustomerInfoProps;
 
