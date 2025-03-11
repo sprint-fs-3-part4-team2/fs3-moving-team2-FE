@@ -4,7 +4,7 @@ import {
 } from '@/components/common/shared/atoms/movingTypeBadge/movingTypeBadge.types';
 
 export interface CustomerInfoBaseProps {
-  movingType: MovingTypes;
+  movingType: MovingTypes[];
   quoteState: MovingStates;
   isCustomQuote: boolean;
   customerName: string;

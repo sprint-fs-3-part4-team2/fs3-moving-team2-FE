@@ -9,7 +9,7 @@ import MoverInfo from '@/components/common/moverInfo/templates/moverInfo
         variant="${props.variant}"
         subVariant="${props.subVariant}"
         moverName= "${props.moverName}", 
-        movingType= "${props.movingType}", // 이사유형
+        movingType= ["${props.movingType.join('","')}"], // 이사유형 (배열 형태로 입력)
         isCustomQuote= ${props.isCustomQuote}, // 지정견적요청 여부
         quoteState= "${props.quoteState}", // 견적상태 ["confirmedQuote","pendingQuote"]`;
 

@@ -5,6 +5,6 @@ import {
 
 export interface MovingTypeGroupProps {
   quoteState?: MovingStates;
-  movingType: MovingTypes;
+  movingType: MovingTypes[];
   isCustomQuote: boolean;
 }
