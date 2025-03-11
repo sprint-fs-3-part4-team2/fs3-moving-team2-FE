@@ -1,5 +1,5 @@
 import CommonBtn from '@/components/common/commonBtn/commonBtn';
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof CommonBtn> = {
   title: 'common/commonBtn',
@@ -21,7 +21,7 @@ const meta: Meta<typeof CommonBtn> = {
       control: 'radio',
       options: ['white', 'gray', 'blue', 'dynamic'],
     },
-    BorderColorsType: {
+    borderColorsType: {
       control: 'radio',
       options: ['blue', 'gray'],
     },
@@ -39,12 +39,5 @@ export const Default: Story = {
     heightType: 'primary',
     backgroundColorType: 'blue',
     textColorType: 'white',
-  },
-};
-
-export const FullWidth: Story = {
-  args: {
-    children: '전체 넓이',
-    widthType: 'full ',
   },
 };
