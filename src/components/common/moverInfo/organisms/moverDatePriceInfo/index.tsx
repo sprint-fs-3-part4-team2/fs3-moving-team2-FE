@@ -30,7 +30,12 @@ export default function MoverDatePrice({
           moverName={moverName}
           sizeVariant='primary'
         />
-        <div className={cn('flex gap-4', rating && 'mb-2')}>
+        <div
+          className={cn(
+            'flex gap-[5px] md:gap-[12.5px] xl:gap-4',
+            rating && 'mb-2',
+          )}
+        >
           <MovingDate
             date={movingDate}
             showDayOfWeek={false}
