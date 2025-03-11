@@ -88,6 +88,9 @@ const config: Config = {
         md: '744px',
         xl: '1200px',
       },
+      boxShadow:{
+        'primary' : '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',
+      }
     },
   },
   plugins: [forms],
