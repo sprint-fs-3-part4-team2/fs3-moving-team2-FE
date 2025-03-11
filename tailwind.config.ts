@@ -95,9 +95,11 @@ const config: Config = {
           '100%': { opacity: '1' },
         },
       },
-
       animation: {
         fadeIn: 'fadeIn 2.5s ease-in-out forwards',
+      },
+      boxShadow:{
+        'primary' : '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',
       },
     },
   },

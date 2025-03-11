@@ -1,4 +1,3 @@
-import MovingTypeBadge from '../../shared/atoms/movingTypeBadge';
 import WrittenAt from '../atoms/writtenAt';
 import MoverDatePrice from '../organisms/moverDatePriceInfo';
 import MoverStatInfo from '../organisms/moverStatInfo';
@@ -6,6 +5,8 @@ import { MoverInfoTemplateProps } from './template.types';
 import ReviewContent from '../atoms/reviewContent';
 import QuotePriceForList from '../../shared/atoms/quotePriceForList';
 import MovingInfo from '../organisms/movingInfo';
+import PendingQuoteButtons from '../molecules/pendingQuoteButtons';
+import MovingTypeGroup from '../../shared/molecules/movingTypeGroup';
 
 export default function MoverInfo(props: MoverInfoTemplateProps) {
   const commonProps = {
@@ -14,12 +15,14 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
   };
 
   return (
-    <div className='flex flex-col px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 gap-[10px] md:gap-[10px] xl:gap-6 w-full'>
+    <div className='flex flex-col px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 gap-[10px] md:gap-[10px] xl:gap-6 w-full shadow-primary'>
       <div className='flex justify-between'>
         <div className='flex gap-2 md:gap-2 xl:gap-3'>
-          {props.quoteState && <MovingTypeBadge type={props.quoteState} />}
-          <MovingTypeBadge type={props.movingType} />
-          {<MovingTypeBadge type={'custom'} />}
+          <MovingTypeGroup
+            quoteState={props.quoteState}
+            movingType={props.movingType}
+            isCustomQuote={props.isCustomQuote}
+          />
         </div>
         {props.variant === 'review' && props.subVariant === 'written' && (
           <WrittenAt
@@ -61,20 +64,10 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
             </div>
           )}
           {props.subVariant === 'pending' && (
-            <div className='flex justify-between items-center gap-5'>
-              <button
-                className='w-1/2 bg-primary-blue-300 text-gray-50 py-4 rounded-[16px]'
-                onClick={props.onConfirmClick}
-              >
-                견적 확정하기
-              </button>
-              <button
-                className='w-1/2 border-[1px] border-primary-blue-300 text-primary-blue-300 text-gray-50 py-4 rounded-[16px]'
-                onClick={props.onDetailClick}
-              >
-                상세보기
-              </button>
-            </div>
+            <PendingQuoteButtons
+              onConfirmClick={props.onConfirmClick}
+              onDetailClick={props.onDetailClick}
+            />
           )}
         </>
       )}

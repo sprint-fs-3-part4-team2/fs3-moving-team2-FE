@@ -1,8 +1,8 @@
 import VerticalDivider from '@/components/common/moverStat/atoms/verticalDivider';
-import InfoContainer from '../../atoms/infos/infoContainer';
-import DateInfo from '../../atoms/infos/movingDateInfo';
-import StringInfo from '../../atoms/infos/stringInfo';
-import InfoTitle from '../../atoms/infoTitle';
+import InfoContainer from '../../../shared/atoms/listInfos/infoContainer';
+import DateInfo from '../../../shared/atoms/listInfos/movingDateInfo';
+import StringInfo from '../../../shared/atoms/listInfos/stringInfo';
+import InfoTitle from '../../../shared/atoms/listInfoTitle';
 import { MovingInfoProps } from './moveInfo.types';
 import cn from '@/utils/cn';
 import { CONTAINER_STYLE } from './constants';
@@ -15,7 +15,7 @@ export default function MovingInfo({
 }: MovingInfoProps) {
   return (
     <div
-      className={cn('flex flex-col md:flex-col xl:flex-row', CONTAINER_STYLE)}
+      className={cn('flex flex-col md:flex-row xl:flex-row', CONTAINER_STYLE)}
     >
       <InfoContainer>
         <InfoTitle>이사일</InfoTitle>
