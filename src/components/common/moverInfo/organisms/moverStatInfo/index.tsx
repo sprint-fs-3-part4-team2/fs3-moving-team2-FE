@@ -14,13 +14,13 @@ export default function MoverStatInfo({
   isFavorite,
   favoriteCount,
   quoteCount,
-  isFavoriteMoverList: isFavoriteMoverInfo,
+  isFavoriteMoverList,
 }: MoverStatInfoProps) {
   return (
     <div
       className={cn(
         'flex relative items-center',
-        isFavoriteMoverInfo
+        isFavoriteMoverList
           ? 'gap-3 px-[10px] py-[10px]'
           : 'gap-6 px-[10px] md:px-[10px] xl:px-[18px] py-[10px] md:py-[10px] xl:py-[16px]',
         'border-[1px] border-line-100 rounded-[6px]',
@@ -30,14 +30,14 @@ export default function MoverStatInfo({
         imageUrl={imageUrl}
         className={cn(
           'w-[46px]  h-[46px]',
-          !isFavoriteMoverInfo &&
+          !isFavoriteMoverList &&
             'md:w-[46px] xl:w-[56px] md:h-[46px] xl:h-[56px]',
         )}
       />
       <div className='flex flex-col gap-2'>
         <div className='flex justify-between items-center'>
           <MoverName
-            sizeVariant={isFavoriteMoverInfo ? 'tertiary' : 'secondary'}
+            sizeVariant={isFavoriteMoverList ? 'tertiary' : 'secondary'}
             moverName={moverName}
           />
         </div>
@@ -47,14 +47,14 @@ export default function MoverStatInfo({
             ratingCount={ratingCount}
             quoteCount={quoteCount}
             years={experienceYears}
-            isFavoriteMoverInfo={isFavoriteMoverInfo}
+            isFavoriteMoverInfo={isFavoriteMoverList}
           />
         </div>
       </div>
       <div
         className={cn(
           'absolute',
-          isFavoriteMoverInfo
+          isFavoriteMoverList
             ? 'right-[10px] top-[10px]'
             : 'right-[18px] top-[16px]',
         )}
@@ -64,7 +64,7 @@ export default function MoverStatInfo({
           isFavorite={isFavorite}
           iconClassName={'w-[24px] h-[24px]'}
           textClassName={
-            isFavoriteMoverInfo
+            isFavoriteMoverList
               ? 'text-[13px] md:text-[13px] xl:text-[13px]'
               : 'text-[13px] md:text-[13px] xl:text-[18px]'
           }
