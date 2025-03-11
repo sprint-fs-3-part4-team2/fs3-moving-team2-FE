@@ -1,11 +1,14 @@
 'use client';
 import InputSection from '@/components/common/inputSection/molecules';
-import ServiceBadge from '@/components/common/shared/atoms/serviceBadge';
-import area from '@/constants/dropdown/area';
-import service from '@/constants/dropdown/service';
+
 import cn from '@/utils/cn';
-import { InputHTMLAttributes, useEffect, useState } from 'react';
-import { FieldErrors, FieldValues, useForm } from 'react-hook-form';
+import { InputHTMLAttributes, useState } from 'react';
+import {
+  type FieldErrors,
+  type FieldValues,
+  type UseFormSetValue,
+  useForm,
+} from 'react-hook-form';
 
 const slicebox = cn('w-full', 'lg:w-1/2');
 const li = cn('pt-5 pb-8 border-t border-line-100');
@@ -15,9 +18,6 @@ const innreH2 = cn(
 );
 
 export default function Page() {
-  const [sValue, setService] = useState<string[]>([]);
-  const [aValue, setArea] = useState<string[]>([]);
-
   const {
     register,
     handleSubmit,
@@ -26,6 +26,7 @@ export default function Page() {
     setValue,
     formState: { errors },
   } = useForm();
+  const commonAtt = {};
 
   const onSubmit = (data: any) => {
     // console.log(data);
@@ -36,54 +37,25 @@ export default function Page() {
     console.log(getValues());
   };
 
-  const handleClick = (
-    value: string,
-    dispatch: React.Dispatch<React.SetStateAction<string[]>>,
-  ) => {
-    dispatch((prev) => {
-      const newValue = prev.includes(value)
-        ? prev.filter((s) => s !== value)
-        : [...prev, value];
-
-      setValue('service', newValue); // react-hook-form 값 업데이트
-      return newValue;
-    });
-  };
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
       className={cn('w-full px-6 py-4')}
     >
       <h2 className={cn('mb-[16px] text-[18px] font-bold text-black-400')}>
-        프로필 수정
+        기본정보 수정
       </h2>
       <div className={cn('flex w-full flex-wrap', 'lg:flex-nowrap')}>
         <ul className={cn(slicebox)}>
           <li className={cn(li)}>
             <InputSection
-              content='별명'
+              content='이름'
               styleVariant='secondary'
-              placeholder='사이트에 노출될 이름을 입력해주세요'
-              name='alias'
+              placeholder='이름'
+              name='name'
               validation={{
-                required: '별명 필수 입니다.',
+                required: '이름은 필수 입니다.',
               }}
-              register={register}
-              errors={errors}
-              inputVariant='form'
-            />
-          </li>
-          <li className={cn(li)}>이미지들어갈 곳</li>
-          <li className={cn(li)}>
-            <InputSection
-              content='경력'
-              styleVariant='secondary'
-              placeholder='기사님의 경력을 입력해주세요'
-              validation={{
-                required: '경력은 필수 입니다.',
-              }}
-              name='experience_years'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -91,13 +63,10 @@ export default function Page() {
           </li>
           <li className={cn(li)}>
             <InputSection
-              content='한 줄 소개'
+              content='이메일'
               styleVariant='secondary'
-              placeholder='한 줄 소개를 입력해주세요'
-              validation={{
-                required: '한 줄 소개를 입력하세요.',
-              }}
-              name='introduction'
+              placeholder='이메일을 입력해주세요'
+              name='email'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -105,24 +74,79 @@ export default function Page() {
           </li>
           <li className={cn(li)}>
             <InputSection
-              content='상세 설명'
+              content='전화번호'
               styleVariant='secondary'
-              placeholder='상세 내용을 입력해주세요'
+              placeholder='전화번호를 입력해주세요 (- 제외)'
               validation={{
-                required: '상세 내용을 입력하세요.',
+                required: '전화번호를 입력',
               }}
-              name='description'
-              inputType='textarea'
+              name='phone_number'
               register={register}
               errors={errors}
               inputVariant='form'
             />
           </li>
-          <ServiceBadgeForm
+          <li className={cn(li)}>
+            <InputSection
+              content='현재 비밀번호'
+              styleVariant='secondary'
+              placeholder='현재 비밀번호를 입력해주세요'
+              validation={{
+                required: '비밀 번호를 입력해주세요',
+              }}
+              name='password'
+              register={register}
+              errors={errors}
+              inputVariant='form'
+            />
+          </li>
+          <li className={cn(li)}>
+            <InputSection
+              content='새 비밀번호'
+              styleVariant='secondary'
+              placeholder='새 비밀번호를 입력해주세요'
+              validation={{
+                required: '비밀번호를 입력해주세요',
+              }}
+              name='new_password'
+              register={register}
+              errors={errors}
+              inputVariant='form'
+            />
+          </li>
+          <li className={cn(li)}>
+            <InputSection
+              content='새 비밀번호 확인'
+              styleVariant='secondary'
+              placeholder='새 비밀번호 확인을 입력해주세요'
+              validation={{
+                required: '새 비밀번호 확인을 입력해주세요',
+              }}
+              name='new_password_confirm'
+              register={register}
+              errors={errors}
+              inputVariant='form'
+            />
+          </li>
+        </ul>
+      </div>
+      <div className={cn('flex flex-wrap justify-between')}>
+        <div className='w-full border mb-2'>
+          <button type='submit'>수정하기</button>
+        </div>
+        <div className='w-full border'>
+          <button>취소</button>
+        </div>
+      </div>
+    </form>
+  );
+}
+
+/* <ServiceBadgeForm
             data={service}
             title={'제공 서비스'}
             value={sValue}
-            onSelect={handleClick}
+            setValue={setValue}
             dispatch={setService}
             inputProps={{
               ...register('service', {
@@ -135,113 +159,86 @@ export default function Page() {
             data={area}
             title={'서비스 가능 지역'}
             value={aValue}
-            onSelect={handleClick}
+            setValue={setValue}
             dispatch={setService}
             inputProps={{
               ...register('service', {
                 required: '서비스 가능 지역을 체크해주세요',
               }),
             }}
+            className={['', cn('mb-3')]}
             error={errors}
-          />
-          {/* <li className={cn(li)}>
-            <h2 className={innreH2}>서비스 가능 지역</h2>
-            <ul className={cn(innerUl)}>
-              <li className='hidden'>
-                <input
-                  name='area'
-                  type='hidden'
-                  value={aValue}
-                  readOnly
-                />
-              </li>
-              {area.map((v) => {
-                return (
-                  <li
-                    key={v.en}
-                    className={cn('mr-3 mb-[18px]')}
-                  >
-                    <ServiceBadge
-                      selected={aValue.includes(v.name)}
-                      onSelect={() => {
-                        handleClick(v.name, setArea);
-                      }}
-                    >
-                      {v.name}
-                    </ServiceBadge>
-                  </li>
-                );
-              })}
-            </ul>
-          </li> */}
-        </ul>
-        <ul className={cn(slicebox)}></ul>
-      </div>
-      <div className={cn('flex justify-between')}>
-        <button type='submit'>수정하기</button>
-        <button>취소</button>
-      </div>
-    </form>
-  );
-}
+          /> */
+// interface ServiceBadgeFormProps {
+//   data: { name: string; en: string }[];
+//   title: string;
+//   inputProps: InputHTMLAttributes<HTMLInputElement>;
+//   value: InputHTMLAttributes<HTMLInputElement>['value'][];
+//   error: FieldErrors<FieldValues>;
+//   setValue: UseFormSetValue<FieldValues>;
+//   dispatch: React.Dispatch<React.SetStateAction<string[]>>;
+//   className?: string[];
+// }
+// function ServiceBadgeForm({
+//   data,
+//   title,
+//   value,
+//   inputProps,
+//   error,
+//   setValue,
+//   dispatch,
+//   className = [],
+// }: ServiceBadgeFormProps) {
+//   const handleClick = (
+//     value: string,
+//     dispatch: React.Dispatch<React.SetStateAction<string[]>>,
+//   ) => {
+//     dispatch((prev) => {
+//       const newValue = prev.includes(value)
+//         ? prev.filter((s) => s !== value)
+//         : [...prev, value];
 
-interface ServiceBadgeFormProps {
-  data: { name: string; en: string }[];
-  title: string;
-  inputProps: InputHTMLAttributes<HTMLInputElement>;
-  value: InputHTMLAttributes<HTMLInputElement>['value'][];
-  error: FieldErrors<FieldValues>;
-  onSelect: (
-    value: string,
-    dispatch: React.Dispatch<React.SetStateAction<string[]>>,
-  ) => void;
-  dispatch: React.Dispatch<React.SetStateAction<string[]>>;
-}
-function ServiceBadgeForm({
-  data,
-  title,
-  value,
-  inputProps,
-  error,
-  onSelect,
-  dispatch,
-}: ServiceBadgeFormProps) {
-  return (
-    <li className={cn(li)}>
-      <h2 className={innreH2}>{title}</h2>
-      <ul className={cn(innerUl)}>
-        <li className='hidden'>
-          <input
-            type='hidden'
-            // value={JSON.stringify(value)}
-            {...inputProps}
-          />
-        </li>
-        <li>
-          <span>
-            {inputProps['name'] && error[inputProps['name']]
-              ? String(error[inputProps['name']]?.message)
-              : ''}
-          </span>
-        </li>
-        {data.map((v) => {
-          return (
-            <li
-              key={v.en}
-              className={cn('mr-3')}
-            >
-              <ServiceBadge
-                selected={value?.includes(v.name)}
-                onSelect={() => {
-                  onSelect(v.name, dispatch);
-                }}
-              >
-                {v.name}
-              </ServiceBadge>
-            </li>
-          );
-        })}
-      </ul>
-    </li>
-  );
-}
+//       setValue('service', newValue); // react-hook-form 값 업데이트
+//       return newValue;
+//     });
+//   };
+
+//   return (
+//     <li className={cn(li, className[0] && className[0])}>
+//       <h2 className={innreH2}>{title}</h2>
+//       <ul className={cn(innerUl)}>
+//         <li className='hidden'>
+//           <input
+//             type='hidden'
+//             // value={JSON.stringify(value)}
+//             {...inputProps}
+//           />
+//         </li>
+//         <li>
+//           <span>
+//             {inputProps['name'] && error[inputProps['name']]
+//               ? String(error[inputProps['name']]?.message)
+//               : ''}
+//           </span>
+//         </li>
+//         {data.map((v) => {
+//           return (
+//             <li
+//               key={v.en}
+//               className={cn('mr-3', className[1] && className[1])}
+//             >
+//               <ServiceBadge
+//                 selected={value?.includes(v.name)}
+//                 onSelect={() => {
+//                   handleClick(v.name, dispatch);
+//                 }}
+//               >
+//                 {v.name}
+//               </ServiceBadge>
+//             </li>
+//           );
+//         })}
+//       </ul>
+//     </li>
+//   );
+// }
