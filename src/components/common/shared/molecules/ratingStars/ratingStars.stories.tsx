@@ -1,9 +1,10 @@
 import { Meta, StoryFn, StoryObj } from '@storybook/react';
 import RatingStars from '.';
 import { useState } from 'react';
+import { RatingStarsCodeSnippet } from './codeExample';
 
 export default {
-  title: 'common/shared/molecules/Rating',
+  title: 'common/shared/molecules/RatingStars',
   component: RatingStars,
   tags: ['autodocs'],
 } satisfies Meta<typeof RatingStars>;
@@ -17,5 +18,8 @@ export const RatingExample: StoryObj<typeof RatingStars> = {
         onClick={setRating}
       />
     );
+  },
+  parameters: {
+    codeExample: RatingStarsCodeSnippet(),
   },
 };

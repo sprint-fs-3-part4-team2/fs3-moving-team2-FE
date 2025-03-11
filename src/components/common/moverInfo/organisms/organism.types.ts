@@ -4,7 +4,7 @@ export interface OrganismBaseProps {
 }
 
 export interface MoverDatePriceInfoProps extends OrganismBaseProps {
-  date: Date;
+  movingDate: Date;
   price: number;
   rating?: number;
 }
@@ -16,5 +16,5 @@ export interface MoverStatInfoProps extends OrganismBaseProps {
   isFavorite: boolean;
   favoriteCount: number;
   quoteCount: number;
-  isFavoriteMoverInfo: boolean;
+  isFavoriteMoverList: boolean;
 }

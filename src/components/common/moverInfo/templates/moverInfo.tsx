@@ -4,7 +4,7 @@ import MoverDatePrice from '../organisms/moverDatePriceInfo';
 import MoverStatInfo from '../organisms/moverStatInfo';
 import { MoverInfoTemplateProps } from './template.types';
 import ReviewContent from '../atoms/reviewContent';
-import QuotePriceV2 from '../atoms/quotePriceV2';
+import QuotePriceForList from '../../shared/atoms/quotePriceForList';
 import MovingInfo from '../organisms/movingInfo';
 
 export default function MoverInfo(props: MoverInfoTemplateProps) {
@@ -30,7 +30,11 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
       </div>
       {props.variant === 'quote' && (
         <>
-          {props.subVariant === 'completed' && <div>{props.description}</div>}
+          {props.subVariant === 'completed' && props.description && (
+            <div className='text-[14px] md:text-[14px] xl:text-[24px] font-semibold'>
+              {props.description}
+            </div>
+          )}
           <div>
             <MoverStatInfo
               {...commonProps}
@@ -38,7 +42,7 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
               ratingCount={props.ratingCount}
               experienceYears={props.experienceYears}
               isFavorite={props.isFavorite}
-              isFavoriteMoverInfo={props.isFavoriteMoverInfo}
+              isFavoriteMoverList={false}
               favoriteCount={props.favoriteCount}
               quoteCount={props.quoteCount}
             />
@@ -48,23 +52,24 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
               movingDate={props.movingDate}
               departure={props.departure}
               arrival={props.arrival}
+              showDayOfWeek={true}
             />
           )}
           {props.price && (
             <div className='flex justify-end'>
-              <QuotePriceV2 price={props.price} />
+              <QuotePriceForList price={props.price} />
             </div>
           )}
           {props.subVariant === 'pending' && (
             <div className='flex justify-between items-center gap-5'>
               <button
-                className='w-1/2'
+                className='w-1/2 bg-primary-blue-300 text-gray-50 py-4 rounded-[16px]'
                 onClick={props.onConfirmClick}
               >
                 견적 확정하기
               </button>
               <button
-                className='w-1/2 bg-primary-blue-200'
+                className='w-1/2 border-[1px] border-primary-blue-300 text-primary-blue-300 text-gray-50 py-4 rounded-[16px]'
                 onClick={props.onDetailClick}
               >
                 상세보기
@@ -78,7 +83,7 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
         <>
           <MoverDatePrice
             {...commonProps}
-            date={props.date}
+            movingDate={props.movingDate}
             price={props.price}
             rating={props.rating}
           />

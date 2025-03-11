@@ -11,6 +11,7 @@ export default function MovingInfo({
   movingDate,
   departure,
   arrival,
+  showDayOfWeek,
 }: MovingInfoProps) {
   return (
     <div
@@ -18,7 +19,10 @@ export default function MovingInfo({
     >
       <InfoContainer>
         <InfoTitle>이사일</InfoTitle>
-        <DateInfo date={movingDate} />
+        <DateInfo
+          date={movingDate}
+          showDayOfWeek={showDayOfWeek}
+        />
       </InfoContainer>
       <VerticalDivider className='hidden md:hidden xl:block' />
       <div className={cn('flex', CONTAINER_STYLE)}>

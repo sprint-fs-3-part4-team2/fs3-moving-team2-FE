@@ -38,7 +38,7 @@ Custom.args = {
 export const ConfirmedQuote = Template.bind({});
 
 ConfirmedQuote.args = {
-  type: 'confirmedQuotes',
+  type: 'confirmedQuote',
 };
 
 export const PendingQuote = Template.bind({});
