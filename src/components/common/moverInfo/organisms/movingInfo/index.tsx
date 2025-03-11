@@ -15,7 +15,7 @@ export default function MovingInfo({
 }: MovingInfoProps) {
   return (
     <div
-      className={cn('flex flex-col md:flex-col xl:flex-row', CONTAINER_STYLE)}
+      className={cn('flex flex-col md:flex-row xl:flex-row', CONTAINER_STYLE)}
     >
       <InfoContainer>
         <InfoTitle>이사일</InfoTitle>
