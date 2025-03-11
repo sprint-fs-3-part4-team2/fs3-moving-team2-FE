@@ -2,7 +2,6 @@
 import { useState, DragEvent, ChangeEvent, useRef } from 'react';
 import ImageUpload from '@/components/profile/ImageUpload';
 import BtGrid from '@/components/profile/BtGrid';
-import Image from 'next/image';
 
 export default function Page() {
   // user 타입
