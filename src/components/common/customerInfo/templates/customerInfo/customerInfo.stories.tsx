@@ -19,8 +19,8 @@ const Template: StoryFn<typeof CustomerInfo> = (args) => (
   <CustomerInfo {...args} />
 );
 
-const COMMON_PROPS = {
-  movingType: 'small',
+const commonProps = {
+  movingType: ['small'],
   quoteState: 'confirmedQuote',
   isCustomQuote: true,
   customerName: '김코드',
