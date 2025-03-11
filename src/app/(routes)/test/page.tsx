@@ -1,9 +1,9 @@
-import ShareButtons from '@/components/ShareButtons';
+import SnsLogin from '@/components/common/SnsLogin';
 
 export default function TestPage() {
   return (
-    <div className='flex-col ml-10 flex justify-center h-screen'>
-      <ShareButtons text='나만 알기엔 아쉬운 기사님인가요?' />
+    <div className='flex flex-col items-center justify-center h-screen'>
+      <SnsLogin />
     </div>
   );
 }
