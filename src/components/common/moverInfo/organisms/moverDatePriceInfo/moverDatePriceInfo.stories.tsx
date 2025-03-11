@@ -2,7 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import MoverDatePrice from '.';
 
 export default {
-  title: 'common/MoverInfo/MoverDatePrice',
+  title: 'Common/MoverInfo/Organisms/MoverDatePrice',
   component: MoverDatePrice,
   tags: ['autodocs'],
 } satisfies Meta<typeof MoverDatePrice>;

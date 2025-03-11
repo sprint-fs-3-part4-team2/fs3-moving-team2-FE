@@ -1,10 +1,10 @@
 import { Meta, StoryFn } from '@storybook/react';
 import MoverInfo from './moverInfo';
-import { MoverInfoTemplateProps, CompletedQuoteProps } from './template.types';
+import { MoverInfoTemplateProps } from './template.types';
 import { MoverInfoCodeSnippet } from './codeExample';
 
 export default {
-  title: 'common/MoverInfo/Templates',
+  title: 'common/MoverInfo/Templates/MoverInfo',
   component: MoverInfo,
   tags: ['autodocs'],
   decorators: [
@@ -71,6 +71,32 @@ const CompletedQuoteInfoProps: MoverInfoTemplateProps = {
 CompletedQuoteInfo.args = CompletedQuoteInfoProps;
 CompletedQuoteInfo.parameters = {
   codeExample: MoverInfoCodeSnippet(CompletedQuoteInfoProps),
+};
+
+export const CompletedWithoutDescriptionAndPrice = Template.bind({});
+
+const CompletedWithoutDescriptionAndPriceProps: MoverInfoTemplateProps = {
+  variant: 'quote',
+  subVariant: 'completed',
+  moverName: '김코드',
+  imageUrl: null,
+  movingType: 'small',
+  isCustomQuote: true,
+  quoteState: 'confirmedQuote',
+  rating: 5,
+  ratingCount: 500,
+  isFavoriteMoverList: false,
+  experienceYears: 3,
+  isFavorite: true,
+  quoteCount: 500,
+  favoriteCount: 500,
+};
+
+CompletedWithoutDescriptionAndPrice.args =
+  CompletedWithoutDescriptionAndPriceProps;
+
+CompletedWithoutDescriptionAndPrice.parameters = {
+  codeExample: MoverInfoCodeSnippet(CompletedWithoutDescriptionAndPriceProps),
 };
 
 export const PendingReviewInfo = Template.bind({});

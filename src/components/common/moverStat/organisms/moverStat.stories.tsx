@@ -2,7 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import MoverStat from './moverStat';
 
 export default {
-  title: 'common/MoverStat/template',
+  title: 'common/MoverStat/Templates/MoverStat',
   component: MoverStat,
   tags: ['autodocs'],
 } satisfies Meta<typeof MoverStat>;

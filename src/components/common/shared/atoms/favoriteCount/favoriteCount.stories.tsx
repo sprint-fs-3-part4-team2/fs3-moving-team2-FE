@@ -4,7 +4,7 @@ import { FavoriteCountCodeExample } from './codeExample';
 import { FavoriteCountProps } from './favoriteCount.types';
 
 export default {
-  title: 'common/shared/atoms/FavoriteCount',
+  title: 'common/Shared/atoms/FavoriteCount',
   component: FavoriteCount,
   tags: ['autodocs'],
 } satisfies Meta<typeof FavoriteCount>;

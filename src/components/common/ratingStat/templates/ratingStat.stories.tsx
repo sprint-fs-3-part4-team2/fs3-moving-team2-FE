@@ -3,7 +3,7 @@ import RatingStat from './ratingStat';
 import { RatingStatCodeSnippet } from './codeExample';
 
 export default {
-  title: 'common/RatingStat',
+  title: 'common/RatingStat/Templates/RatingStat',
   component: RatingStat,
   tags: ['autodocs'],
 } satisfies Meta<typeof RatingStat>;
