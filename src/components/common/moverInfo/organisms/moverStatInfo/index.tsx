@@ -1,7 +1,7 @@
 import cn from '@/utils/cn';
 import MoverStat from '../../../moverStat/organisms/moverStat';
 import ProfileImage from '../../../shared/atoms/profileImage';
-import FavoriteCount from '../../atoms/favoriteCount';
+import FavoriteCount from '../../../shared/atoms/favoriteCount';
 import MoverName from '../../atoms/moverName';
 import { MoverStatInfoProps } from '../organism.types';
 

@@ -1,6 +1,6 @@
-import DateInfo from '../../atoms/infos/movingDateInfo';
-import InfoContainer from '../../atoms/infos/infoContainer';
-import InfoTitle from '../../atoms/infoTitle';
+import DateInfo from '../../../shared/atoms/listInfos/movingDateInfo';
+import InfoContainer from '../../../shared/atoms/listInfos/infoContainer';
+import InfoTitle from '../../../shared/atoms/listInfoTitle';
 import { MovingDateProps } from './movingDate.types';
 
 export default function MovingDate({ date, showDayOfWeek }: MovingDateProps) {
