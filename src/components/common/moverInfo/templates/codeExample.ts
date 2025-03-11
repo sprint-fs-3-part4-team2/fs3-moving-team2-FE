@@ -18,7 +18,7 @@ import MoverInfo from '@/components/common/moverInfo/templates/moverInfo
         rating= ${props.rating}, // 별점
         experienceYears= ${props.experienceYears}, // 경력
         quoteCount= ${props.quoteCount}, // 견적수
-        isFavorite= ${props.isFavorite} // 찜 여부
+        isFavorite= props.isFavorite // 찜 여부 optional 찜 여부를 입력하지 않으면 검은색 하트로 표시됨
         favoriteCount= ${props.favoriteCount}, // 찜 개수
         ratingCount= ${props.ratingCount} // 리뷰 개수
         price= ${props.price}, // 견적가 optional 견적가를 표시하고 싶으면 입력해주세요.`;

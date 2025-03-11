@@ -61,7 +61,6 @@ const CompletedQuoteInfoProps: MoverInfoTemplateProps = {
   ratingCount: 500,
   isFavoriteMoverList: false,
   experienceYears: 3,
-  isFavorite: true,
   quoteCount: 500,
   favoriteCount: 500,
   price: 50000,
@@ -87,7 +86,6 @@ const CompletedWithoutDescriptionAndPriceProps: MoverInfoTemplateProps = {
   ratingCount: 500,
   isFavoriteMoverList: false,
   experienceYears: 3,
-  isFavorite: true,
   quoteCount: 500,
   favoriteCount: 500,
 };
