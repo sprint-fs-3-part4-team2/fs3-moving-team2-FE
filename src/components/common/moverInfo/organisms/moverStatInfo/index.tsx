@@ -34,11 +34,21 @@ export default function MoverStatInfo({
             'md:w-[46px] xl:w-[56px] md:h-[46px] xl:h-[56px]',
         )}
       />
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-2 w-full'>
         <div className='flex justify-between items-center'>
           <MoverName
             sizeVariant={isFavoriteMoverList ? 'tertiary' : 'secondary'}
             moverName={moverName}
+          />
+          <FavoriteCount
+            favoriteCount={favoriteCount}
+            isFavorite={isFavorite}
+            iconClassName={'w-[24px] h-[24px]'}
+            textClassName={
+              isFavoriteMoverList
+                ? 'text-[13px]'
+                : 'text-[13px] md:text-[13px] xl:text-[18px]'
+            }
           />
         </div>
         <div>
@@ -50,25 +60,6 @@ export default function MoverStatInfo({
             isFavoriteMoverInfo={isFavoriteMoverList}
           />
         </div>
-      </div>
-      <div
-        className={cn(
-          'absolute',
-          isFavoriteMoverList
-            ? 'right-[10px] top-[10px]'
-            : 'right-[18px] top-[16px]',
-        )}
-      >
-        <FavoriteCount
-          favoriteCount={favoriteCount}
-          isFavorite={isFavorite}
-          iconClassName={'w-[24px] h-[24px]'}
-          textClassName={
-            isFavoriteMoverList
-              ? 'text-[13px] md:text-[13px] xl:text-[13px]'
-              : 'text-[13px] md:text-[13px] xl:text-[18px]'
-          }
-        />
       </div>
     </div>
   );

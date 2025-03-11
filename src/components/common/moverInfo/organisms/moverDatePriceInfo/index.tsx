@@ -17,7 +17,7 @@ export default function MoverDatePrice({
   return (
     <div
       className={cn(
-        'flex items-center gap-4 md:gap-4 xl:gap-6 border-0 md:border-0 xl:border-[1px] xl:border-line-200 rounded-[6px]',
+        'flex items-center gap-3 md:gap-4 xl:gap-6 border-0 md:border-0 xl:border-[1px] xl:border-line-200 rounded-[6px]',
         'px-[8px] py-[10px] md:px-[8px] md:py-[8px] xl:px-[18px] xl:py-[16px]',
       )}
     >
