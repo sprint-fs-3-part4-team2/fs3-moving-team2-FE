@@ -23,7 +23,7 @@ const meta: Meta<typeof CommonBtn> = {
     },
     borderColorsType: {
       control: 'radio',
-      options: ['blue', 'gray'],
+      options: ['blue', 'gray', 'none'],
     },
     onClick: { action: 'clicked' },
   },

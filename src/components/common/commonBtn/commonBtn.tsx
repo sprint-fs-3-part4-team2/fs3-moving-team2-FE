@@ -4,21 +4,21 @@ import cn from '@/utils/cn';
 const backgroundColors = {
   blue: 'bg-primary-blue-300',
   white: 'bg-gray-50',
-  gray: 'bg-gray-100',
+  gray: 'bg-grayscale-100',
   dynamic: '',
 };
 
 const textColors = {
   white: 'text-gray-50',
-  gray: 'text-gray-300',
+  gray: 'text-grayscale-100',
   black: 'text-black',
   blue: 'text-primary-blue-300',
   dynamic: '',
 };
 
 const borderColors = {
-  blue: 'border-primary-blue-300',
-  gray: 'border-gray-300',
+  blue: 'border-[1px] border-primary-blue-300',
+  gray: 'border-[1px] border-grayscale-100',
   none: '',
 };
 
@@ -37,8 +37,10 @@ export default function CommonButton({
     <button
       type={type}
       className={cn(
-        'bg-primary-blue-300  rounded-2xl text-[20px] text-white',
-        'cursor-pointer',
+        backgroundColors[backgroundColorType] || 'bg-blue',
+        textColors[textColorType] || 'text-white',
+        borderColorsType !== 'none' ? borderColors[borderColorsType] : '',
+        'rounded-2xl text-[20px] cursor-pointer',
         {
           'w-full': widthType === 'full',
           'w-1/2': widthType === 'half',
