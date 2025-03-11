@@ -3,7 +3,7 @@ import CustomerInfo from '.';
 import { CustomerInfoProps } from './customerInfo.types';
 
 export default {
-  title: 'common/CustomerInfo/Templates',
+  title: 'common/CustomerInfo/Templates/CustomerInfo',
   component: CustomerInfo,
   tags: ['autodocs'],
   decorators: [
