@@ -144,7 +144,7 @@ export default function Page() {
             }}
             error={errors}
           />
-          <li className={cn(li)}>
+          {/* <li className={cn(li)}>
             <h2 className={innreH2}>서비스 가능 지역</h2>
             <ul className={cn(innerUl)}>
               <li className='hidden'>
@@ -173,7 +173,7 @@ export default function Page() {
                 );
               })}
             </ul>
-          </li>
+          </li> */}
         </ul>
         <ul className={cn(slicebox)}></ul>
       </div>
