@@ -1,0 +1,73 @@
+.filed {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.filed span {
+  --full: 100%;
+  transition: 0.1s;
+}
+.filed span:nth-child(1) {
+  top: 0;
+  left: 0;
+  right: var(--full);
+}
+
+.filed:hover span:nth-child(1) {
+  right: 0%;
+}
+
+.filed span:nth-child(2) {
+  top: 0;
+  right: 0;
+  bottom: var(--full);
+}
+.filed:hover span:nth-child(2) {
+  bottom: 0%;
+}
+
+.filed span:nth-child(3) {
+  bottom: 0;
+  right: 0;
+  left: var(--full);
+}
+.filed:hover span:nth-child(3) {
+  left: 0%;
+}
+
+.filed span:nth-child(4) {
+  top: var(--full);
+  left: 0;
+  bottom: 0;
+}
+.filed:hover span:nth-child(4) {
+  top: 0%;
+}
+
+.filed span:nth-child(1) {
+  transition-delay: 0.3s;
+}
+.filed:hover span:nth-child(1) {
+  transition-delay: 0s;
+}
+
+.filed span:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.filed:hover span:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.filed span:nth-child(3) {
+  transition-delay: 0.1s;
+}
+.filed:hover span:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.filed span:nth-child(4) {
+  transition-delay: 0s;
+}
+.filed:hover span:nth-child(4) {
+  transition-delay: 0.3s;
+}
