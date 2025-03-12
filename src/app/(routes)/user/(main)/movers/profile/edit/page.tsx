@@ -1,52 +1,47 @@
 'use client';
 import InputSection from '@/components/common/inputSection/molecules';
-
 import cn from '@/utils/cn';
-import { InputHTMLAttributes, useState } from 'react';
-import {
-  type FieldErrors,
-  type FieldValues,
-  type UseFormSetValue,
-  useForm,
-} from 'react-hook-form';
+import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
+import moverEditApi from './api/moverEdit';
 
-const slicebox = cn('w-full', 'lg:w-1/2');
-const li = cn('pt-5 pb-8 border-t border-line-100');
-const innerUl = cn('flex flex-wrap');
-const innreH2 = cn(
-  'flex mb-4 font-semibold md:text-[16px] xl:text-[20px] gap-1',
-);
+const ul = cn('w-full', 'lg:flex lg:flex-wrap lg:justify-between');
+const li = cn('pt-5 pb-8 border-t border-line-100 w-full', 'lg:w-[48%]');
 
-export default function Page() {
+export default function MoverBasicInfoEdit() {
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
-    setValue,
+    setFocus,
     formState: { errors },
   } = useForm();
-  const commonAtt = {};
 
-  const onSubmit = (data: any) => {
-    // console.log(data);
-    console.log(getValues());
+  const onSubmit = async (data: FieldValues) => {
+    const res = await moverEditApi(data);
+    console.log(res);
   };
-  const onError = (errors: any) => {
-    console.log('오류 발생:', errors);
-    console.log(getValues());
+  const onError = (errors: FieldErrors) => {
+    console.log(errors);
+    Object.keys(errors).forEach((v) => {
+      if (errors[String(v)]) {
+        setFocus(String(v));
+      }
+    });
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className={cn('w-full px-6 py-4')}
+      className={cn(
+        'w-full px-6 py-4 m-auto',
+        'md:max-w-[650px]',
+        'lg:max-w-[1400px]',
+      )}
     >
       <h2 className={cn('mb-[16px] text-[18px] font-bold text-black-400')}>
         기본정보 수정
       </h2>
-      <div className={cn('flex w-full flex-wrap', 'lg:flex-nowrap')}>
-        <ul className={cn(slicebox)}>
+      <div className={cn('flex w-full flex-wrap')}>
+        <ul className={cn(ul)}>
           <li className={cn(li)}>
             <InputSection
               content='이름'
@@ -67,6 +62,9 @@ export default function Page() {
               styleVariant='secondary'
               placeholder='이메일을 입력해주세요'
               name='email'
+              validation={{
+                required: '이메일은 필수 입니다.',
+              }}
               register={register}
               errors={errors}
               inputVariant='form'
@@ -94,7 +92,7 @@ export default function Page() {
               validation={{
                 required: '비밀 번호를 입력해주세요',
               }}
-              name='password'
+              name='current_password'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -122,7 +120,7 @@ export default function Page() {
               validation={{
                 required: '새 비밀번호 확인을 입력해주세요',
               }}
-              name='new_password_confirm'
+              name='new_confirm_password'
               register={register}
               errors={errors}
               inputVariant='form'
