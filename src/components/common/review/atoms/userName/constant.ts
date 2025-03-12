@@ -1,0 +1,1 @@
+export const USER_NAME_STYLES ='font-regular text-md xxl:text-21g';
