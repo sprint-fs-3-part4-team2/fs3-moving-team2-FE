@@ -1,6 +1,7 @@
+import cn from '@/utils/cn';
 import { REVIEW_DATE_STYLES } from './constant';
 import { ReviewDateProp } from './reviewDate.type';
 
-export default function ReviwDate({ date }: ReviewDateProp) {
-  return <span className={REVIEW_DATE_STYLES}>{date}</span>;
+export default function ReviwDate({ date, className }: ReviewDateProp) {
+  return <span className={cn(REVIEW_DATE_STYLES, className)}>{date}</span>;
 }
