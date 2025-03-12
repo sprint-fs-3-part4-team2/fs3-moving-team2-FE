@@ -1,6 +1,6 @@
-import InfoContainer from '../../atoms/infos/infoContainer';
-import PriceInfo from '../../atoms/infos/priceInfo';
-import InfoTitle from '../../atoms/infoTitle';
+import InfoContainer from '../../../shared/atoms/listInfos/infoContainer';
+import PriceInfo from '../../../shared/atoms/listInfos/priceInfo';
+import InfoTitle from '../../../shared/atoms/listInfoTitle';
 import { quotePriceProps } from './quotePrice.types';
 
 export default function QuotePrice({ price }: quotePriceProps) {

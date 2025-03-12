@@ -1,3 +1,5 @@
+'use client';
+
 import cn from '@/utils/cn';
 import VerticalDivider from '../../../moverStat/atoms/verticalDivider';
 import ProfileImage from '../../../shared/atoms/profileImage';
@@ -17,7 +19,7 @@ export default function MoverDatePrice({
   return (
     <div
       className={cn(
-        'flex items-center gap-4 md:gap-4 xl:gap-6 border-0 md:border-0 xl:border-[1px] xl:border-line-200 rounded-[6px]',
+        'flex items-center gap-3 md:gap-4 xl:gap-6 border-0 md:border-0 xl:border-[1px] xl:border-line-200 rounded-[6px]',
         'px-[8px] py-[10px] md:px-[8px] md:py-[8px] xl:px-[18px] xl:py-[16px]',
       )}
     >
@@ -30,7 +32,12 @@ export default function MoverDatePrice({
           moverName={moverName}
           sizeVariant='primary'
         />
-        <div className={cn('flex gap-4', rating && 'mb-2')}>
+        <div
+          className={cn(
+            'flex gap-[5px] md:gap-[12.5px] xl:gap-4',
+            rating && 'mb-2',
+          )}
+        >
           <MovingDate
             date={movingDate}
             showDayOfWeek={false}

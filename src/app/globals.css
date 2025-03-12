@@ -43,8 +43,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #040404;
   }
 }
 
@@ -57,5 +57,128 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Landing Page 애니메이션 */
+  /* 첫 번째 손 이미지 애니메이션 */
+  @keyframes shakeVerticalWithAngle {
+    35% {
+      transform: translateY(-10px) rotate(8deg);
+    }
+  }
+
+  .animate-shakeVerticalWithAngle {
+    animation: shakeVerticalWithAngle 1.5s ease-in-out 1s;
+    display: inline-block;
+    will-change: transform;
+  }
+
+  /* 두 번째 자동차 이미지 애니메이션 */
+  @keyframes moveForward {
+    0% {
+      transform: translateX(300px);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-7px);
+    }
+  }
+
+  @layer utilities {
+    .animate-moveForward {
+      animation: moveForward 2.5s ease-out forwards;
+      display: inline-block;
+      will-change: transform;
+    }
+
+    .animate-float {
+      animation: float 0.7s ease-in-out 3;
+      display: inline-block;
+      will-change: transform;
+    }
+  }
+
+  @layer utilities {
+    .animate-hoverForward {
+      transition: transform 0.3s ease-out;
+    }
+
+    .group:hover .animate-hoverForward {
+      transform: translateX(-22px) scale(1.001);
+    }
+  }
+
+  /* 세 번째 건물 이미지 애니메이션 */
+  @keyframes enlargeAndShake {
+    0% {
+      transform: translateX(0);
+    }
+
+    10% {
+      transform: translateX(-3px);
+    }
+
+    20% {
+      transform: translateX(3px);
+    }
+
+    30% {
+      transform: translateX(-3px);
+    }
+
+    40% {
+      transform: translateX(3px);
+    }
+
+    50% {
+      transform: translateX(-2px);
+    }
+
+    60% {
+      transform: translateX(2px);
+    }
+
+    70% {
+      transform: translateX(-1px);
+    }
+
+    80% {
+      transform: translateX(1px);
+    }
+
+    90% {
+      transform: translateX(-0.5px);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @layer utilities {
+    .animate-enlargeAndShake {
+      animation: enlargeAndShake 3s ease-out forwards;
+      display: inline-block;
+      will-change: transform;
+    }
+
+    .transition-transform {
+      transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .group:hover .animate-hoverScale {
+      transform: scale(1.1);
+    }
   }
 }

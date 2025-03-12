@@ -1,10 +1,10 @@
-import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import RatingStars from '.';
 import { useState } from 'react';
 import { RatingStarsCodeSnippet } from './codeExample';
 
 export default {
-  title: 'common/shared/molecules/RatingStars',
+  title: 'Common/Shared/Molecules/RatingStars',
   component: RatingStars,
   tags: ['autodocs'],
 } satisfies Meta<typeof RatingStars>;

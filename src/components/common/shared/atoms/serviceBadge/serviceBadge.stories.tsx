@@ -2,7 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import ServiceBadge from '.';
 
 export default {
-  title: 'common/shared/atoms/ServiceBadge',
+  title: 'Common/Shared/Atoms/ServiceBadge',
   component: ServiceBadge,
   tags: ['autodocs'],
 } satisfies Meta<typeof ServiceBadge>;
