@@ -1,18 +1,18 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
 
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
 
         black: {
           500: 'var(--black-500)',
@@ -36,7 +36,7 @@ const config: Config = {
             200: 'var(--primary-blue-200)',
             100: 'var(--primary-blue-100)',
             50: 'var(--primary-blue-50)',
-            10 : 'var(--primary-blue-10)',
+            10: 'var(--primary-blue-10)',
           },
         },
         secondary: {
@@ -53,23 +53,22 @@ const config: Config = {
           300: 'var(--background-300)',
           200: 'var(--background-200)',
           100: 'var(--background-100)',
-          50 : 'var(--background-50)',
+          50: 'var(--background-50)',
         },
         line: {
           200: 'var(--line-200)',
           100: 'var(--line-100)',
         },
-
       },
       fontSize: {
-        '3xl': ['32px', { lineHeight: '42px' }], 
-        '2xl': ['24px', { lineHeight: '32px' }], 
-        xl: ['20px', { lineHeight: '32px' }], 
-        '2lg': ['18px', { lineHeight: '26px' }], 
-        lg: ['16px', { lineHeight: '26px' }], 
-        md: ['14px', { lineHeight: '24px' }], 
-        sm: ['13px', { lineHeight: '22px' }], 
-        xs: ['12px', { lineHeight: '20px' }], 
+        '3xl': ['32px', { lineHeight: '42px' }],
+        '2xl': ['24px', { lineHeight: '32px' }],
+        xl: ['20px', { lineHeight: '32px' }],
+        '2lg': ['18px', { lineHeight: '26px' }],
+        lg: ['16px', { lineHeight: '26px' }],
+        md: ['14px', { lineHeight: '24px' }],
+        sm: ['13px', { lineHeight: '22px' }],
+        xs: ['12px', { lineHeight: '20px' }],
       },
 
       fontWeight: {
@@ -87,6 +86,20 @@ const config: Config = {
         sm: '375px',
         md: '744px',
         xl: '1200px',
+        xxl: '1440px',
+      },
+
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 2.5s ease-in-out forwards',
+      },
+      boxShadow:{
+        'primary' : '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',
       },
     },
   },

@@ -13,7 +13,7 @@ export interface MoverStatInfoProps extends OrganismBaseProps {
   rating: number;
   ratingCount: number;
   experienceYears: number;
-  isFavorite: boolean;
+  isFavorite?: boolean;
   favoriteCount: number;
   quoteCount: number;
   isFavoriteMoverList: boolean;

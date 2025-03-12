@@ -2,7 +2,7 @@ import ProfileImage from '.';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'common/shared/atoms/ProfileImage',
+  title: 'Common/Shared/Atoms/ProfileImage',
   component: ProfileImage,
   tags: ['autodocs'],
 } satisfies Meta<typeof ProfileImage>;

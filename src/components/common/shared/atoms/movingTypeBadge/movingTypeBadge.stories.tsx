@@ -2,7 +2,7 @@ import MovingTypeBadge from '.';
 import { Meta, StoryFn } from '@storybook/react';
 
 export default {
-  title: 'common/shared/atoms/MovingTypeBadge',
+  title: 'Common/Shared/Atoms/MovingTypeBadge',
   component: MovingTypeBadge,
   tags: ['autodocs'],
 } satisfies Meta<typeof MovingTypeBadge>;

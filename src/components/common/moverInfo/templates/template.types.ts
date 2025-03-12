@@ -8,7 +8,7 @@ import {
 } from '../../shared/atoms/movingTypeBadge/movingTypeBadge.types';
 
 export interface TemplateBaseProps {
-  movingType: MovingTypes;
+  movingType: MovingTypes[];
   isCustomQuote: boolean;
   quoteState?: Exclude<MovingStates, 'custom'>;
 }

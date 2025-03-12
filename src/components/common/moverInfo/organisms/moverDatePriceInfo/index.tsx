@@ -1,11 +1,13 @@
+'use client';
+
 import cn from '@/utils/cn';
-import VerticalDivider from '../../../moverStat/atoms/verticalDivider';
+import VerticalDivider from '../../../shared/atoms/verticalDivider';
 import ProfileImage from '../../../shared/atoms/profileImage';
 import MoverName from '../../atoms/moverName';
-import MovingDate from '../../molecules/movingDate';
-import QuotePrice from '../../molecules/quotePrice';
 import { MoverDatePriceInfoProps } from '../organism.types';
 import RatingStars from '@/components/common/shared/molecules/ratingStars';
+import ListInfo from '@/components/common/shared/molecules/listInfo';
+import formatDate from '@/utils/formatDate';
 
 export default function MoverDatePrice({
   moverName,
@@ -14,10 +16,13 @@ export default function MoverDatePrice({
   price,
   rating,
 }: MoverDatePriceInfoProps) {
+  const formattedDate = formatDate(movingDate, true, false);
+  const formattedPrice = `${price.toLocaleString()}원`;
+
   return (
     <div
       className={cn(
-        'flex items-center gap-4 md:gap-4 xl:gap-6 border-0 md:border-0 xl:border-[1px] xl:border-line-200 rounded-[6px]',
+        'flex items-center gap-3 md:gap-4 xl:gap-6 border-0 md:border-0 xl:border-[1px] xl:border-line-200 rounded-[6px]',
         'px-[8px] py-[10px] md:px-[8px] md:py-[8px] xl:px-[18px] xl:py-[16px]',
       )}
     >
@@ -30,13 +35,21 @@ export default function MoverDatePrice({
           moverName={moverName}
           sizeVariant='primary'
         />
-        <div className={cn('flex gap-4', rating && 'mb-2')}>
-          <MovingDate
-            date={movingDate}
-            showDayOfWeek={false}
+        <div
+          className={cn(
+            'flex gap-[5px] md:gap-[12.5px] xl:gap-4',
+            rating && 'mb-2',
+          )}
+        >
+          <ListInfo
+            title='이사일'
+            content={formattedDate}
           />
           <VerticalDivider />
-          <QuotePrice price={price} />
+          <ListInfo
+            title='견적가'
+            content={formattedPrice}
+          />
         </div>
         {rating && <RatingStars rating={rating} />}
       </div>

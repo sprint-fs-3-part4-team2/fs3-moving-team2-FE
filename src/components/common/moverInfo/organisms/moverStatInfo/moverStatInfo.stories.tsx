@@ -2,7 +2,7 @@ import { Meta, StoryFn } from '@storybook/react';
 import MoverStatInfo from '.';
 
 export default {
-  title: 'common/MoverInfo/moverStatInfo',
+  title: 'Common/MoverInfo/Organisms/MoverStatInfo',
   component: MoverStatInfo,
   tags: ['autodocs'],
 } satisfies Meta<typeof MoverStatInfo>;
@@ -46,7 +46,7 @@ MoverInfo.args = {
 
 MoverInfo.decorators = [
   (Story) => (
-    <div className='w-[1000px]'>
+    <div className='xl:w-[1000px]'>
       <Story />
     </div>
   ),
