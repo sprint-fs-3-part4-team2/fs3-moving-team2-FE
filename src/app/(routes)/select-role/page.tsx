@@ -56,13 +56,19 @@ export default function SliceBox() {
           className={`${s.background} ${location}`}
           // onClick={changeBg}
         >
-          <Image
-            src='/img/logo/logo-with-icon.svg'
-            alt='로고'
-            width={150}
-            height={50}
-          />
-          <div className={s.moveLink}>
+          <Link href={'/'}>
+            <Image
+              src='/img/logo/logo-with-icon.svg'
+              alt='로고'
+              width={150}
+              height={50}
+            />
+          </Link>
+          <Link
+            href='#'
+            onClick={changeBg}
+            className={s.moveLink}
+          >
             <Tooltip
               open={true}
               bottom={50}
@@ -72,12 +78,11 @@ export default function SliceBox() {
 
             <Link
               className={s.moveLink}
-              onClick={changeBg}
               href={'#'}
             >
               {location === s.left ? commonText : partnerText}
             </Link>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
