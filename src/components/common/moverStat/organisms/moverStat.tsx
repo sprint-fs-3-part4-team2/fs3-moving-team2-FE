@@ -1,5 +1,5 @@
 import cn from '@/utils/cn';
-import VerticalDivider from '../atoms/verticalDivider';
+import VerticalDivider from '../../shared/atoms/verticalDivider';
 import ConfirmedQuotesCount from '../molecules/confirmedQuotesCount';
 import ExperienceYears from '../molecules/experienceYears';
 import RatingStat from '../molecules/ratingStat';
