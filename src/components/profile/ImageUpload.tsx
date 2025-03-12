@@ -37,7 +37,7 @@ export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
     <div className='flex items-center gap-4'>
       {/* 이미지 미리보기 */}
       <div
-        className='w-[160px] h-[160px] border-1 rounded-md border-gray-400 cursor-pointer relative'
+        className='sm:w-[100px] h-[100px] xl:w-[160px] xl:h-[160px] border-1 rounded-md border-gray-400 cursor-pointer relative'
         onClick={handleImageClick}
       >
         {image ? (
@@ -58,7 +58,7 @@ export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
 
       {/* 드래그 앤 드롭 */}
       <div
-        className='w-[300px] h-[160px] border-2 border-dashed border-gray-400 flex cursor-pointer items-center justify-center'
+        className='sm:w-[200] sm:h-[100px] xl:w-[300px] xl:h-[160px] border-2 border-dashed border-gray-400 flex cursor-pointer items-center justify-center'
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       >
