@@ -46,7 +46,7 @@ MoverInfo.args = {
 
 MoverInfo.decorators = [
   (Story) => (
-    <div className='w-[1000px]'>
+    <div className='xl:w-[1000px]'>
       <Story />
     </div>
   ),
