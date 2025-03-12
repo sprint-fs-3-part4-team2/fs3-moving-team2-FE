@@ -14,7 +14,6 @@ export default function QuoteCard({ children, quotePrice, className }: Props) {
     <div className={classNames}>
       <QuoteTitle>{children}</QuoteTitle>
       <QuotePrice quotePrice={quotePrice} />
-      <div>성공!!</div>
     </div>
   );
 }
