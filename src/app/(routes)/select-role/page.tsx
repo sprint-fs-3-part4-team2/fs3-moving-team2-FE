@@ -76,12 +76,9 @@ export default function SliceBox() {
               {tt}는 여기
             </Tooltip>
 
-            <Link
-              className={s.moveLink}
-              href={'#'}
-            >
+            <p className={s.moveLink}>
               {location === s.left ? commonText : partnerText}
-            </Link>
+            </p>
           </Link>
         </div>
       </div>

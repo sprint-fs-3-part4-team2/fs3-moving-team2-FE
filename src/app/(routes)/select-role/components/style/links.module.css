@@ -11,6 +11,7 @@
   max-width: 225px;
   height: 45px;
   border: 2px solid #fff;
+  background-color: #fff;
   border-radius: 6px;
   margin: 20px auto;
   display: flex;
@@ -22,15 +23,17 @@
 
 .links .linkBox a {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 400;
   transition: var(--backgroundTrans);
-  color: #fff;
+  /* color: #fff; */
+  color: black;
 }
 
 .links .linkBox:hover {
   background-color: #fff;
 }
 .links .linkBox:hover a {
+  font-weight: 700;
   font-size: 20px;
   color: var(--primary-blue-200);
 }
