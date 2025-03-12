@@ -6,7 +6,7 @@ import MoverStatInfo from '../organisms/moverStatInfo';
 import { MoverInfoTemplateProps } from './template.types';
 import ReviewContent from '../atoms/reviewContent';
 import QuotePriceForList from '../../shared/atoms/quotePriceForList';
-import MovingInfo from '../organisms/movingInfo';
+import MovingInfoForList from '../organisms/movingInfo';
 import PendingQuoteButtons from '../molecules/pendingQuoteButtons';
 import MovingTypeGroup from '../../shared/molecules/movingTypeGroup';
 
@@ -53,7 +53,7 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
             />
           </div>
           {props.subVariant === 'pending' && (
-            <MovingInfo
+            <MovingInfoForList
               movingDate={props.movingDate}
               departure={props.departure}
               arrival={props.arrival}

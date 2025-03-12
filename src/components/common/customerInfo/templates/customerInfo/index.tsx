@@ -1,6 +1,6 @@
 'use client';
 
-import MovingInfo from '@/components/common/moverInfo/organisms/movingInfo';
+import MovingInfoForList from '@/components/common/moverInfo/organisms/movingInfo';
 import MovingTypeGroup from '../../../shared/molecules/movingTypeGroup';
 import CustomerName from '../../atoms/customerName';
 import HorizontalDivider from '../../atoms/horizontalDivider';
@@ -20,7 +20,7 @@ export default function CustomerInfo(props: CustomerInfoProps) {
       </div>
       <CustomerName name={props.customerName} />
       <HorizontalDivider />
-      <MovingInfo
+      <MovingInfoForList
         movingDate={props.movingDate}
         departure={props.departure}
         arrival={props.arrival}

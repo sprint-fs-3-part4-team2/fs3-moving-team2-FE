@@ -3,16 +3,16 @@ import InfoContainer from '../../../shared/atoms/listInfos/infoContainer';
 import DateInfo from '../../../shared/atoms/listInfos/movingDateInfo';
 import StringInfo from '../../../shared/atoms/listInfos/stringInfo';
 import InfoTitle from '../../../shared/atoms/listInfoTitle';
-import { MovingInfoProps } from './moveInfo.types';
+import { MovingInfoForListProps } from './moveInfo.types';
 import cn from '@/utils/cn';
 import { CONTAINER_STYLE } from './constants';
 
-export default function MovingInfo({
+export default function MovingInfoForList({
   movingDate,
   departure,
   arrival,
   showDayOfWeek,
-}: MovingInfoProps) {
+}: MovingInfoForListProps) {
   return (
     <div
       className={cn('flex flex-col md:flex-row xl:flex-row', CONTAINER_STYLE)}
