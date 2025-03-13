@@ -7,11 +7,11 @@ import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 
 export default function Page() {
   return (
-    <div className='relative flex flex-col mx-auto w-full items-center'>
-      <div className='flex w-full px-6 md:px-[72px] xl:px-[100px] max-w-[1600px]'>
+    <div className='relative flex flex-col mx-auto w-full items-center px-6 md:px-[72px] xl:px-0 max-w-[1400px]'>
+      <div className='w-full'>
         <PageHeader>견적 상세</PageHeader>
       </div>
-      <div className='flex w-full px-6 md:px-[72px] xl:px-[100px] max-w-[1600px] gap-[117px]'>
+      <div className='flex w-full gap-[117px]'>
         <div className='flex flex-col gap-10 w-full'>
           <CustomerInfo
             quoteId='1'
