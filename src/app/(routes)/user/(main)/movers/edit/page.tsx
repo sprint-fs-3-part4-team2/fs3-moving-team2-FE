@@ -17,6 +17,7 @@ export default function MoverBasicInfoEdit() {
     watch,
     formState: { errors },
   } = useForm();
+  const currentPassowrd = watch('current_password');
   const newPassword = watch('new_password');
 
   const onSubmit = async (data: FieldValues) => {
@@ -131,7 +132,12 @@ export default function MoverBasicInfoEdit() {
               styleVariant='secondary'
               placeholder='새 비밀번호를 입력해주세요'
               validation={{
-                required: '비밀번호를 입력해주세요',
+                required: '새 비밀번호를 입력해주세요',
+                validate: (v) => {
+                  if (v === currentPassowrd) {
+                    return '이전 비밀번호와 다르게 설정하세요';
+                  }
+                },
               }}
               name='new_password'
               register={register}
@@ -147,7 +153,7 @@ export default function MoverBasicInfoEdit() {
               validation={{
                 required: '새 비밀번호 확인을 입력해주세요',
                 validate: (v) =>
-                  v === newPassword || '비밀번호가 일치 하지 않습니다.',
+                  v === newPassword || '새 비밀번호가 일치 하지 않습니다.',
               }}
               name='new_confirm_password'
               register={register}

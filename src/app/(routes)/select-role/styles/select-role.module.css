@@ -4,6 +4,7 @@
   --conRadius: 4px;
   --backgroundTrans: 0.8s;
   --shadow: 13px;
+  --textShadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
 
   position: relative;
   width: 100%;
@@ -18,18 +19,18 @@
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  max-width: 1000px;
+  /* max-width: 1000px; */
   width: 100%;
   background-color: var(--primary-blue-200);
-  height: 80%;
-  min-height: 660px;
-  box-shadow: var(--shadow) var(--shadow) var(--shadow) 10px rgba(0, 0, 0, 0.3);
+  height: 100%;
+  /* min-height: 660px; */
+  /* box-shadow: var(--shadow) var(--shadow) var(--shadow) 10px rgba(0, 0, 0, 0.3); */
   border-radius: var(--conRadius);
   transition: var(--backgroundTrans);
 }
 .page .container:has(.left.active) {
-  --shadow: 13px;
-  box-shadow: -13px var(--shadow) var(--shadow) 10px rgba(0, 0, 0, 0.3);
+  /* --shadow: 13px; */
+  /* box-shadow: -13px var(--shadow) var(--shadow) 10px rgba(0, 0, 0, 0.3); */
 }
 
 .page .container > .content {
@@ -59,15 +60,18 @@
   flex-flow: column;
 }
 .page .container > .content > .move .title {
-  font-size: 40px;
+  font-size: 70px;
   font-weight: 700;
+  text-shadow: var(--textShadow);
+  /* color: var(--grayscale-400); */
 }
 .page .container > .content > .move .comment {
-  margin: 10px auto;
-  font-size: 18px;
+  margin: 15px auto;
+  font-size: 22px;
   font-weight: 400;
   line-height: 1.5em;
   width: 30ch;
+  text-shadow: var(--textShadow);
   text-align: center;
   word-wrap: break-word;
   white-space: normal;
@@ -110,11 +114,6 @@
   border-top-right-radius: var(--conRadius);
   border-bottom-right-radius: var(--conRadius);
 }
-.moveLink:hover p {
-  font-size: 19px;
-  color: var(--black-500);
-  font-weight: 700;
-}
 
 .moveLink {
   position: absolute;
@@ -140,6 +139,12 @@
   color: var(--grayscale-400);
   transition: var(--backgroundTrans);
 }
+.moveLink:hover p {
+  font-size: 19px;
+  color: var(--black-500);
+  font-weight: 700;
+}
+
 @media screen and (max-width: 1200px) {
   .page {
     --conRadius: 0;
@@ -174,6 +179,11 @@
   }
   .page .container > .content {
     width: 0;
+  }
+  .page .container > .content > .move .comment {
+    margin: 10px auto;
+    font-size: 18px;
+    line-height: 1.5em;
   }
   .page .container > .content.active {
     width: 100%;

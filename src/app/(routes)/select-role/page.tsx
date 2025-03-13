@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import s from './styles/select-role.module.css';
 import Link from 'next/link';
 import Links from './components/links';
@@ -24,7 +24,7 @@ export default function SliceBox() {
   }
 
   return (
-    <div className={`${s.page}`}>
+    <div className={`${s.page} bg-backgroundVariants-50`}>
       <div
         className={`${s.container} 
    `}
@@ -33,55 +33,73 @@ export default function SliceBox() {
           className={`${s.content} ${s.left} ${
             location !== s.left && s.active
           }`}
-          title='COMMON'
+          title='Customer'
           comment='편리한 이사, 합리적인 이사, 맞춤형 이사'
         >
           <Links href={{ signin: '#', signup: '#' }} />
-          <RoleImg src={'/img/select-role/common.gif'} />
           <MobileLink onClick={changeBg}>{partnerText}</MobileLink>
         </Content>
         <Content
           className={`${s.content} ${s.right} ${
             location !== s.right && s.active
           }`}
-          title='PARTNER'
+          title='Mover'
           comment='고객들과 더 가깝고 편리하게'
         >
           <Links href={{ signin: '#', signup: '#' }} />
-          <RoleImg src={'/img/select-role/mover.gif'} />
           <MobileLink onClick={changeBg}>{commonText}</MobileLink>
         </Content>
 
-        <div
-          className={`${s.background} ${location}`}
-          // onClick={changeBg}
+        <Background
+          location={location}
+          onClick={changeBg}
         >
-          <Link href={'/'}>
-            <Image
-              src='/img/logo/logo-with-icon.svg'
-              alt='로고'
-              width={150}
-              height={50}
-            />
-          </Link>
-          <Link
-            href='#'
-            onClick={changeBg}
-            className={s.moveLink}
+          <Tooltip
+            open={true}
+            bottom={50}
           >
-            <Tooltip
-              open={true}
-              bottom={50}
-            >
-              {tt}는 여기
-            </Tooltip>
-
-            <p className={s.moveLink}>
-              {location === s.left ? commonText : partnerText}
-            </p>
-          </Link>
-        </div>
+            {tt}는 여기
+          </Tooltip>
+        </Background>
       </div>
+    </div>
+  );
+}
+
+function Background({
+  onClick,
+  children,
+  location,
+}: {
+  onClick: React.MouseEventHandler<HTMLAnchorElement>;
+  location: string;
+} & PropsWithChildren) {
+  return (
+    <div
+      className={`${s.background} ${location}`}
+      // onClick={changeBg}
+    >
+      <Link
+        href={'/'}
+        className={s.bgLogo}
+      >
+        <Image
+          src='/img/logo/logo-with-icon.svg'
+          alt='로고'
+          width={150}
+          height={50}
+        />
+      </Link>
+      <Link
+        href='#'
+        onClick={onClick}
+        className={s.moveLink}
+      >
+        {children}
+        <p className={s.moveLink}>
+          {location === s.left ? commonText : partnerText}
+        </p>
+      </Link>
     </div>
   );
 }
