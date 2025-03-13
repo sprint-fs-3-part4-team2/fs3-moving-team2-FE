@@ -45,13 +45,33 @@ export default function Page() {
   }, []);
 
   const handleReviewButtonClick = () => {
-    alert('리뷰작성모달 연결 예정!');
+    alert('리뷰 작성하기 모달 구현중!');
   };
 
-  // 페이지네이션 관련 상태 및 계산
+  // 기존 페이지네이션 관련 상태 및 계산
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  // const itemsPerPage: number = 6;
+  // const totalPages: number = Math.ceil((estimates?.length || 0) / itemsPerPage);
+
+  // 반응형 페이지네이션 관련 상태 및 계산
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage: number = 6;
-  const totalPages: number = Math.ceil((estimates?.length || 0) / itemsPerPage);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(6);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      const newItemsPerPage = window.innerWidth >= 1200 ? 6 : 4; // 1200px 이상: 6개, 이하: 4개
+      setItemsPerPage(newItemsPerPage);
+    };
+
+    updateItemsPerPage();
+    window.addEventListener('resize', updateItemsPerPage);
+    return () => window.removeEventListener('resize', updateItemsPerPage);
+  }, []);
+
+  useEffect(() => {
+    setTotalPages(Math.ceil((estimates?.length || 0) / itemsPerPage));
+  }, [estimates, itemsPerPage]); // estimates나 itemsPerPage가 바뀔 때 totalPages 다시 계산
 
   // 현재 페이지의 데이터 슬라이싱
   const startIndex = (currentPage - 1) * itemsPerPage;
