@@ -1,5 +1,6 @@
 export interface OrganismBaseProps {
   imageUrl: string | null;
+  moverName?: string;
 }
 
 export interface MoverDatePriceInfoProps extends OrganismBaseProps {

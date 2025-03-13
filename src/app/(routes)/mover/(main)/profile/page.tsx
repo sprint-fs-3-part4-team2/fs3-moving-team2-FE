@@ -5,7 +5,7 @@ import MoverStatInfo from './profile/component';
 
 export default function myPage() {
   return (
-    <div className='mx-200'>
+    <div className='mx-260'>
       <MoverStatInfo
         imageUrl='/profile-placeholder.png' // 실제 프로필 이미지 경로
         rating={4.8} // 평점
@@ -17,7 +17,7 @@ export default function myPage() {
         isFavoriteMoverList={false} // 즐겨찾기 리스트 여부
       />
       <ReviewStar />
-      <div className='p-6 bg-white rounded-lg shadow-md'>
+      <div className='p-6 bg-white rounded-lg '>
         {MockData.map((review) => (
           <ReviewItem
             key={review.id}
