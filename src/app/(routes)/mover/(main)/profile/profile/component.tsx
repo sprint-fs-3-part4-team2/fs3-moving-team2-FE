@@ -8,6 +8,8 @@ import { MoverProfileProps } from './profile.types';
 import ListInfoTitle from '@/components/common/shared/atoms/listInfoTitle';
 import MoverName from '../moverName';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
+import Image from 'next/image';
+// import { EditIcon } from '@/public/icons/edit.svg';
 
 export default function MoverStatInfo({
   imageUrl,
@@ -21,8 +23,8 @@ export default function MoverStatInfo({
   isFavoriteMoverList,
 }: MoverProfileProps) {
   return (
-    <div className='bg-gray-100 pb-6'>
-      <div>
+    <div className='bg-gray-100 p-[24px]'>
+      <div className='flex justify-between gap-y-[24px] px-[24px]'>
         <div className='flex flex-col'>
           <MoverName
             moverName={moverName}
@@ -30,15 +32,24 @@ export default function MoverStatInfo({
           />
           <div>고객님의 물품을 소중하고 안전하게 운송하여 드립니다.</div>
         </div>
-        <div>
+        <div className='flex gap-[16px] w-1/2 '>
           <CommonButton
             widthType='half'
             heightType='secondary'
             backgroundColorType='white'
             borderColorsType='gray'
-            textColorType='white'
+            textColorType='gray'
           >
-            기본 정보 수정
+            <div className='flex items-center justify-center gap-2'>
+              기본 정보 수정
+              <Image
+                src='/icons/edit.svg'
+                alt='수정 아이콘'
+                width={24}
+                height={24}
+                className='grayscale brightness-50'
+              />
+            </div>
           </CommonButton>
           <CommonButton
             widthType='half'
@@ -47,13 +58,21 @@ export default function MoverStatInfo({
             borderColorsType='none'
             textColorType='white'
           >
-            내 프로필 수정
+            <div className='flex items-center justify-center gap-2'>
+              내 프로필 수정
+              <Image
+                src='/icons/edit.svg'
+                alt='수정 아이콘'
+                width={24}
+                height={24}
+              />
+            </div>
           </CommonButton>
         </div>
       </div>
       <div
         className={cn(
-          'pb-6 flex relative items-center bg-backgroundVariants-100 border-line-200 mx-24 ',
+          ' flex relative  border-1 items-center bg-backgroundVariants-100 border-line-200 mt-24 ',
           isFavoriteMoverList
             ? 'gap-3 px-[10px] py-[10px]'
             : 'gap-4 md:gap-4 xl:ga-6 px-[10px] md:px-[10px] xl:px-[18px] py-[10px] md:py-[10px] xl:py-[16px]',
