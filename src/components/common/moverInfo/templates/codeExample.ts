@@ -24,6 +24,7 @@ import MoverInfo from '@/components/common/moverInfo/templates/moverInfo
         price= ${props.price}, // 견적가 optional 견적가를 표시하고 싶으면 입력해주세요.`;
   if (props.variant === 'quote' && props.subVariant === 'pending')
     code += `    
+        quoteId="${props.quoteId}" // 견적 ID
         movingDate=${props.movingDate}, // 이사날짜 Date 객체
         departure="${props.departure}", // 출발지
         arrival="${props.arrival}", // 도착지
