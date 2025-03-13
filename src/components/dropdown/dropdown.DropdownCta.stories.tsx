@@ -23,13 +23,33 @@ const meta = {
       description: 'useState`의 `setState` 함수 (예: `setValue`)',
     },
   },
+  parameters: {
+    codeExample: `\`\`\`tsx
+      const [selected, setSelected] = useState<any | null>(null);
+
+      // className?: string;
+      // data: { name: string }[];
+      // isOpen?: boolean;
+      return (
+        <div>
+          <DropdownCta
+            className={className}
+            isOpen={isOpen}
+            data={data}
+            name='area'
+            dispatch={setSelected}
+          />
+          {selected && <p>선택된 값: {selected}</p>}
+        </div>
+      );
+    `,
+  },
 } satisfies Meta<typeof DropdownCta>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// ✅ 상태를 관리하는 Wrapper 컴포넌트
 const DropdownWrapper = ({
   data,
   className,
