@@ -9,6 +9,7 @@ const config: StorybookConfig = {
     "@storybook/addon-links", 
     "@storybook/addon-interactions", 
     "./addon/register",
+    '@storybook/addon-docs',
     {
     name: '@storybook/addon-styling',
     options: {
