@@ -11,7 +11,7 @@ export default function FavoriteCount({
   textClassName,
   iconClassName,
 }: FavoriteCountProps) {
-  const formattedLikeCount = favoriteCount.toLocaleString();
+  const formattedLikeCount = favoriteCount > 999 ? '+999' : favoriteCount;
 
   return (
     <div className='flex items-center gap-[2px] md:gap-[2px] xl:gap-1'>
