@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { getPendingReviews } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
@@ -277,16 +276,6 @@ export default function Page() {
   if (loading) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
-          <Link href='/user/reviews/pending'>
-            <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
-              작성 가능한 리뷰
-            </div>
-          </Link>
-          <Link href=''>
-            <div className='text-gray-400'>내가 작성한 리뷰</div>
-          </Link>
-        </div>
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
@@ -308,16 +297,6 @@ export default function Page() {
   if (error) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
-          <Link href='/user/reviews/pending'>
-            <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
-              작성 가능한 리뷰
-            </div>
-          </Link>
-          <Link href=''>
-            <div className='text-gray-400'>내가 작성한 리뷰</div>
-          </Link>
-        </div>
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
@@ -337,18 +316,8 @@ export default function Page() {
 
   return (
     <div>
-      <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
-        <Link href='/user/reviews/pending'>
-          <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
-            작성 가능한 리뷰
-          </div>
-        </Link>
-        <Link href=''>
-          <div className='text-gray-400'>내가 작성한 리뷰</div>
-        </Link>
-      </div>
       {estimates && estimates.length > 0 ? (
-        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto'>
+        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1400px] xl:mx-auto'>
           <div className='grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
             {currentEstimates.map((data) => (
               <div key={data.id}>
