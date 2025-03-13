@@ -1,13 +1,13 @@
 'use client';
 
 import cn from '@/utils/cn';
-import VerticalDivider from '../../../moverStat/atoms/verticalDivider';
+import VerticalDivider from '../../../shared/atoms/verticalDivider';
 import ProfileImage from '../../../shared/atoms/profileImage';
 import MoverName from '../../atoms/moverName';
-import MovingDate from '../../molecules/movingDate';
-import QuotePrice from '../../molecules/quotePrice';
 import { MoverDatePriceInfoProps } from '../organism.types';
 import RatingStars from '@/components/common/shared/molecules/ratingStars';
+import ListInfo from '@/components/common/shared/molecules/listInfo';
+import formatDate from '@/utils/formatDate';
 
 export default function MoverDatePrice({
   moverName,
@@ -16,6 +16,9 @@ export default function MoverDatePrice({
   price,
   rating,
 }: MoverDatePriceInfoProps) {
+  const formattedDate = formatDate(movingDate, true, false);
+  const formattedPrice = `${price.toLocaleString()}원`;
+
   return (
     <div
       className={cn(
@@ -38,12 +41,15 @@ export default function MoverDatePrice({
             rating && 'mb-2',
           )}
         >
-          <MovingDate
-            date={movingDate}
-            showDayOfWeek={false}
+          <ListInfo
+            title='이사일'
+            content={formattedDate}
           />
           <VerticalDivider />
-          <QuotePrice price={price} />
+          <ListInfo
+            title='견적가'
+            content={formattedPrice}
+          />
         </div>
         {rating && <RatingStars rating={rating} />}
       </div>

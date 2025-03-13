@@ -1,7 +1,7 @@
 import cn from '@/utils/cn';
 import { InfoTitleProps } from './infoTitle.types';
 
-export default function InfoTitle({ children }: InfoTitleProps) {
+export default function ListInfoTitle({ children }: InfoTitleProps) {
   return (
     <span
       className={cn(
