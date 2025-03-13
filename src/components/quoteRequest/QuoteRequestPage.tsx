@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { StepType } from '../movingStep.types';
+import { StepType } from './quoteStep.types';
 import RequestMessage from './RequestMessage';
 import { MovingType } from './MovingType';
 import { MovingDate } from './MovingDate';
