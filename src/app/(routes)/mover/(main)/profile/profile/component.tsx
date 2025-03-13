@@ -7,6 +7,7 @@ import FavoriteCount from '@/components/common/shared/atoms/favoriteCount';
 import { MoverProfileProps } from './profile.types';
 import ListInfoTitle from '@/components/common/shared/atoms/listInfoTitle';
 import MoverName from '../moverName';
+import CommonButton from '@/components/common/commonBtn/commonBtn';
 
 export default function MoverStatInfo({
   imageUrl,
@@ -21,12 +22,34 @@ export default function MoverStatInfo({
 }: MoverProfileProps) {
   return (
     <div className='bg-gray-100 pb-6'>
-      <div className='flex flex-col'>
-        <MoverName
-          moverName={moverName}
-          sizeVariant='primary'
-        />
-        <div>고객님의 물품을 소중하고 안전하게 운송하여 드립니다.</div>
+      <div>
+        <div className='flex flex-col'>
+          <MoverName
+            moverName={moverName}
+            sizeVariant='primary'
+          />
+          <div>고객님의 물품을 소중하고 안전하게 운송하여 드립니다.</div>
+        </div>
+        <div>
+          <CommonButton
+            widthType='half'
+            heightType='secondary'
+            backgroundColorType='white'
+            borderColorsType='gray'
+            textColorType='white'
+          >
+            기본 정보 수정
+          </CommonButton>
+          <CommonButton
+            widthType='half'
+            heightType='secondary'
+            backgroundColorType='blue'
+            borderColorsType='none'
+            textColorType='white'
+          >
+            내 프로필 수정
+          </CommonButton>
+        </div>
       </div>
       <div
         className={cn(

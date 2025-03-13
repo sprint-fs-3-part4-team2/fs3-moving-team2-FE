@@ -10,7 +10,7 @@ const backgroundColors = {
 
 const textColors = {
   white: 'text-gray-50',
-  gray: 'text-grayscale-100',
+  gray: 'text-grayscale-300',
   black: 'text-black',
   blue: 'text-primary-blue-300',
   dynamic: '',
