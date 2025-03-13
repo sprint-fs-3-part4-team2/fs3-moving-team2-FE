@@ -6,7 +6,7 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { ko } from 'date-fns/locale';
 import formatKoreanDate from '@/utils/formatKoreanDate';
 import { getStepIndex } from './QuoteRequestPage';
-import { MovingStepProps } from '../movingStep.types';
+import { MovingStepProps } from './quoteStep.types';
 
 export function MovingDate({
   onNext,
