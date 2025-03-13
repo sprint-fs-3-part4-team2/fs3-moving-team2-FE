@@ -1,4 +1,4 @@
 export interface ReviewTextProp {
-  comment: string;
+  content: string;
   className?: string;
 }

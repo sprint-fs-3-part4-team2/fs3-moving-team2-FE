@@ -1,4 +1,4 @@
 export interface ReviewDateProp {
-  date: string;
+  writtenAt: string;
   className?: string;
 }
