@@ -32,13 +32,13 @@ export type PendingQuoteProps = Omit<
 > &
   TemplateBaseProps & {
     variant: 'quote';
+    quoteId: string;
     subVariant: 'pending';
     price?: number;
     movingDate: Date;
     departure: string;
     arrival: string;
     onConfirmClick: () => void;
-    onDetailClick: () => void;
   };
 
 export type WrittenReviewProps = MoverDatePriceInfoProps &
