@@ -5,7 +5,7 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import formatKoreanTime from '@/utils/formatKoreanTime';
 import { getStepIndex } from './QuoteRequestPage';
 import TimePicker from './TimePicker';
-import { MovingStepProps } from '../movingStep.types';
+import { MovingStepProps } from './quoteStep.types';
 
 export function MovingTime({
   onNext,
