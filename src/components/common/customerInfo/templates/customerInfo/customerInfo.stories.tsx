@@ -47,6 +47,7 @@ const SubmittedProps = {
   ...commonProps,
   variant: 'submitted',
   quotePrice: 50000,
+  completed: false,
 } as CustomerInfoProps;
 
 SubmittedWithPrice.args = SubmittedProps;
@@ -56,6 +57,7 @@ export const SubmittedWithoutPrice = Template.bind({});
 const SubmittedWithoutPriceProps = {
   ...commonProps,
   variant: 'submitted',
+  completed: true,
 } as CustomerInfoProps;
 
 SubmittedWithoutPrice.args = SubmittedWithoutPriceProps;

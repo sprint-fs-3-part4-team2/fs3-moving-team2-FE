@@ -22,6 +22,7 @@ export const MoverStatInfo = Template.bind({});
 
 const MoverStatInfoProps: MoverInfoTemplateProps = {
   variant: 'quote',
+  quoteId: '1',
   subVariant: 'pending',
   moverName: '김코드',
   imageUrl: null,
@@ -39,7 +40,6 @@ const MoverStatInfoProps: MoverInfoTemplateProps = {
   departure: '서울 중구',
   arrival: '경기도 김포시',
   onConfirmClick: () => alert(''),
-  onDetailClick: () => alert(''),
 };
 
 MoverStatInfo.args = MoverStatInfoProps;
