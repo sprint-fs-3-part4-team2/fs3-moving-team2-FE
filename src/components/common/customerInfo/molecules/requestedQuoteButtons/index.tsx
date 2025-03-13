@@ -1,3 +1,5 @@
+'use client';
+
 import { RequestedQuoteButtonsProps } from './requestedQuoteButtons.types';
 import CommonBtn from '@/components/common/commonBtn/commonBtn';
 import editIcon from '@/public/icons/edit.svg';
