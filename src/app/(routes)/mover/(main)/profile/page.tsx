@@ -2,6 +2,8 @@ import ReviewStar from './reviewRating';
 import ReviewItem from './reviewlist/review';
 import { MockData } from './reviewlist/reviewMockdata';
 import MoverStatInfo from './profile/component';
+import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
+import ReviewPage from './reviewlist/review';
 
 export default function myPage() {
   return (
@@ -17,12 +19,13 @@ export default function myPage() {
         isFavoriteMoverList={false} // 즐겨찾기 리스트 여부
       />
       <ReviewStar />
-      <div className='p-6 bg-white rounded-lg '>
+
+      <div className='p-6 space-y-4'>
         {MockData.map((review) => (
-          <ReviewItem
+          <ReviewBlock
             key={review.id}
-            nickname={review.nickname}
-            data={review.date}
+            name={review.name}
+            writtenAt={review.writtenAt}
             rating={review.rating}
             content={review.content}
           />
