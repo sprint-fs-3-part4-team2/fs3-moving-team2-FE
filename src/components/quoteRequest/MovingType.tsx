@@ -5,7 +5,7 @@ import Image from 'next/image';
 import cn from '@/utils/cn';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { getStepIndex } from './QuoteRequestPage';
-import { MovingStepProps } from '../movingStep.types';
+import { MovingStepProps } from './quoteStep.types';
 
 const arr = [
   '소형이사 (원룸, 투룸, 20평대 미만)',
