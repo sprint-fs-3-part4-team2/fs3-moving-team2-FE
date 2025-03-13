@@ -9,15 +9,17 @@ import QuotePriceForList from '../../shared/atoms/quotePriceForList';
 import MovingInfo from '../organisms/movingInfo';
 import PendingQuoteButtons from '../molecules/pendingQuoteButtons';
 import MovingTypeGroup from '../../shared/molecules/movingTypeGroup';
+import { useRouter } from 'next/navigation';
 
 export default function MoverInfo(props: MoverInfoTemplateProps) {
   const commonProps = {
     moverName: props.moverName,
     imageUrl: props.imageUrl,
   };
+  const router = useRouter();
 
   return (
-    <div className='flex flex-col px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 gap-[10px] md:gap-[10px] xl:gap-6 w-full shadow-primary'>
+    <div className='flex flex-col px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 gap-[14px] md:gap-[14px] xl:gap-6 w-full shadow-primary'>
       <div className='flex justify-between'>
         <div className='flex gap-2 md:gap-2 xl:gap-3'>
           <MovingTypeGroup
@@ -68,7 +70,7 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
           {props.subVariant === 'pending' && (
             <PendingQuoteButtons
               onConfirmClick={props.onConfirmClick}
-              onDetailClick={props.onDetailClick}
+              onDetailClick={() => router.push(`/user/quotes/${props.quoteId}`)}
             />
           )}
         </>

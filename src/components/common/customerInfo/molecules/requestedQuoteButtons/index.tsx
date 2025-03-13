@@ -1,5 +1,10 @@
-import cn from '@/utils/cn';
+'use client';
+
 import { RequestedQuoteButtonsProps } from './requestedQuoteButtons.types';
+import CommonBtn from '@/components/common/commonBtn/commonBtn';
+import editIcon from '@/public/icons/edit.svg';
+import cn from '@/utils/cn';
+import Image from 'next/image';
 
 export default function RequestedQuoteButtons({
   onSubmit,
@@ -8,22 +13,38 @@ export default function RequestedQuoteButtons({
 }: RequestedQuoteButtonsProps) {
   return (
     <div className='flex flex-col md:flex-row xl:flex-row w-full justify-between gap-[11px]'>
-      <button
-        className={cn(
-          'bg-primary-blue-300 text-gray-50 rounded-[16px] h-[48px] md:h-[48px] xl:h-[54px]',
-          isCustomQuote ? 'w-1/2' : 'w-full',
-        )}
+      <CommonBtn
+        widthType='dynamic'
+        heightType='primary'
         onClick={onSubmit}
+        className={cn(
+          'flex items-center justify-center w-full',
+          isCustomQuote && 'md:w-1/2 xl:w-1/2',
+        )}
       >
         견적 보내기
-      </button>
+        <Image
+          src={editIcon}
+          alt='견적 보내기 아이콘'
+          width={24}
+          height={24}
+        />
+      </CommonBtn>
       {isCustomQuote && (
-        <button
-          className='text-primary-blue-300 w-1/2 rounded-[16px] h-[48px] md:h-[48px] xl:h-[54px] border-[1px] border-primary-blue-300'
+        <CommonBtn
+          widthType='dynamic'
+          heightType='primary'
+          className={cn(
+            'flex items-center justify-center w-full',
+            isCustomQuote && 'md:w-1/2 xl:w-1/2',
+          )}
+          backgroundColorType='white'
+          textColorType='blue'
+          borderColorsType='blue'
           onClick={onDecline}
         >
           반려
-        </button>
+        </CommonBtn>
       )}
     </div>
   );

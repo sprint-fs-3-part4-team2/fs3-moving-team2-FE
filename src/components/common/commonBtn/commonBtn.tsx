@@ -3,7 +3,7 @@ import cn from '@/utils/cn';
 
 const backgroundColors = {
   blue: 'bg-primary-blue-300',
-  white: 'bg-gray-50',
+  white: 'bg-white',
   gray: 'bg-grayscale-100',
   dynamic: '',
 };
@@ -40,7 +40,7 @@ export default function CommonButton({
         backgroundColors[backgroundColorType] || 'bg-blue',
         textColors[textColorType] || 'text-white',
         borderColorsType !== 'none' ? borderColors[borderColorsType] : '',
-        'rounded-2xl text-[20px] cursor-pointer',
+        'rounded-2xl text-base md:text-base xl:text-xl cursor-pointer font-semibold',
         {
           'w-full': widthType === 'full',
           'w-1/2': widthType === 'half',
