@@ -34,7 +34,7 @@ export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
   };
 
   return (
-    <div className='flex items-center gap-4'>
+    <div className='flex items-center gap-5'>
       {/* 이미지 미리보기 */}
       <div
         className='sm:w-[100px] h-[100px] xl:w-[160px] xl:h-[160px] border-1 rounded-md border-gray-400 cursor-pointer relative'
