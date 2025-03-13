@@ -2,11 +2,13 @@ import Image from 'next/image';
 
 export default function StarIcon(): JSX.Element {
   return (
-    <Image
-      src='/icons/star/filled.svg'
-      alt='star icon'
-      width={20}
-      height={20}
-    />
+    <div className='relative w-[14px] h-[14px] mr-1.5'>
+      <Image
+        src='/icons/star/filled.svg'
+        alt='star icon'
+        fill
+        className='object-contain'
+      />
+    </div>
   );
 }
