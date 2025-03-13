@@ -27,20 +27,20 @@ export default function Page() {
   }
 
   const [estimates, setEstimates] = useState<ReviewableEstimate[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     getPendingReviews()
       .then((data) => {
         setEstimates(data);
-        // setLoading(false);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching estimates:', error);
-        // setError('리뷰 데이터를 불러오지 못했습니다.');
-        // setLoading(false);
+        setError('에러가 발생했어요.\n리뷰 데이터를 불러오지 못했습니다.');
+        setLoading(false);
       });
   }, []);
 
@@ -273,13 +273,67 @@ export default function Page() {
     return renderLongPages();
   };
 
-  // if (loading) {
-  //   return <div>로딩 중...</div>;
-  // }
+  //로딩중
+  if (loading) {
+    return (
+      <div>
+        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
+          <Link href='/user/reviews/pending'>
+            <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
+              작성 가능한 리뷰
+            </div>
+          </Link>
+          <Link href=''>
+            <div className='text-gray-400'>내가 작성한 리뷰</div>
+          </Link>
+        </div>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+          <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
+            <Image
+              src='/img/logo/logo-with-icon.svg'
+              alt='logo'
+              fill
+              // style={{ objectFit: 'cover' }}
+            />
+          </div>
+          <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
+            로딩중입니다...
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  // if (error) {
-  //   return <div>{error}</div>;
-  // }
+  // 에러
+  if (error) {
+    return (
+      <div>
+        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
+          <Link href='/user/reviews/pending'>
+            <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
+              작성 가능한 리뷰
+            </div>
+          </Link>
+          <Link href=''>
+            <div className='text-gray-400'>내가 작성한 리뷰</div>
+          </Link>
+        </div>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+          <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
+            <Image
+              src='/img/logo/logo-with-icon.svg'
+              alt='logo'
+              fill
+              // style={{ objectFit: 'cover' }}
+            />
+          </div>
+          <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px] whitespace-pre-line text-center'>
+            {error}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -289,7 +343,7 @@ export default function Page() {
             작성 가능한 리뷰
           </div>
         </Link>
-        <Link href='./completed'>
+        <Link href=''>
           <div className='text-gray-400'>내가 작성한 리뷰</div>
         </Link>
       </div>
