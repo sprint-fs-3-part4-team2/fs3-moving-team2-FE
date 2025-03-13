@@ -14,6 +14,7 @@ export default function Page() {
       <div className='flex w-full px-6 md:px-[72px] xl:px-[100px] max-w-[1600px] gap-[117px]'>
         <div className='flex flex-col gap-10 w-full'>
           <CustomerInfo
+            quoteId='1'
             variant='submitted'
             movingType={['small']}
             quoteState='confirmedQuote'
@@ -22,6 +23,8 @@ export default function Page() {
             movingDate={new Date()}
             arrival='경기 김포'
             departure='서울 중구'
+            completed={false}
+            declined={false}
           />
           <div className='flex-col gap-10 flex md:flex xl:hidden'>
             <ShareButtons text='견적서 공유하기' />
