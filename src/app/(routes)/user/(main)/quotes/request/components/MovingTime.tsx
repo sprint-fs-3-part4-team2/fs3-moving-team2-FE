@@ -1,0 +1,90 @@
+import { useMemo, useState } from 'react';
+import useQuoteRequestStore from '@/store/quoteRequestStore';
+import RequestMessage from './RequestMessage';
+import CommonButton from '@/components/common/commonBtn/commonBtn';
+import formatKoreanTime from '@/utils/formatKoreanTime';
+import { getStepIndex } from './QuoteRequestPage';
+import TimePicker from './TimePicker';
+import { MovingStepProps } from '../movingStep.types';
+
+export function MovingTime({
+  onNext,
+  onEdit,
+  onExitEdit,
+  step,
+  maxCompletedStep,
+}: MovingStepProps) {
+  const [date, setDate] = useState<string | null>(null);
+  const { registerData, setRegisterData } = useQuoteRequestStore();
+
+  if (maxCompletedStep === undefined || maxCompletedStep === null) {
+    console.error('maxCompletedStep props is required');
+    return null;
+  }
+
+  // 수정 완료 시, 작성한 단계로 이동하는 함수
+  const handleCompleteEdit = () => {
+    if (date) {
+      console.log('Updating moveType to:', date);
+      setRegisterData({ moveTime: date });
+    }
+    // 수정 모드라면 작성한 단계로 이동
+    if (getStepIndex('이사예정시간') < maxCompletedStep) {
+      // 수정 완료 시, 작성한 단계로 이동
+      onExitEdit();
+    } else {
+      // 일반 next 동작
+      onNext();
+    }
+  };
+
+  const handleEdit = () => {
+    window.scrollTo({ top: 470, behavior: 'smooth' });
+    onEdit();
+  };
+
+  return (
+    <>
+      <RequestMessage align='left'>
+        이사 예정시간을 선택해 주세요.
+      </RequestMessage>
+      {step === '이사예정시간' ? (
+        <RequestMessage
+          align='right'
+          {...(getStepIndex('이사예정시간') < maxCompletedStep
+            ? { onExitEdit }
+            : {})}
+        >
+          <TimePicker
+            value={date || ''}
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <CommonButton
+            widthType={'full'}
+            heightType={'primary'}
+            onClick={handleCompleteEdit}
+            disabled={date ? false : true}
+            backgroundColorType={date ? 'blue' : 'gray'}
+            className='mt-6'
+          >
+            선택완료
+          </CommonButton>
+        </RequestMessage>
+      ) : (
+        <RequestMessage
+          align='right'
+          {...(getStepIndex('이사예정시간') !== maxCompletedStep
+            ? { onEdit: handleEdit }
+            : {})}
+          color='blue'
+        >
+          <p>
+            {registerData.moveTime
+              ? formatKoreanTime(registerData.moveTime)
+              : date}
+          </p>
+        </RequestMessage>
+      )}
+    </>
+  );
+}
