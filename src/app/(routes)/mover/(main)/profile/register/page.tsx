@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import ImageUpload from '@/components/profile/ImageUpload';
 import BtGrid from '@/components/profile/BtGrid';
+import CommonButton from '@/components/common/commonBtn/commonBtn';
 
 export default function Page() {
   // user 타입
@@ -79,7 +80,7 @@ export default function Page() {
   };
   // 프로필 등록
   const handleSubmit = () => {
-    console.log('등록 정보:', formData);
+    console.log('등록된 정보:', formData);
   };
 
   return (
@@ -88,14 +89,14 @@ export default function Page() {
         <div className='flex flex-col align-center items-center gap-[56px] sm:w-[375px] md:w-[744px] lg:w-[1400px] p-8'>
           <div className='flex flex-col sm:items-center md:items-center xl:items-start sm:gap-[24px] xl:gap-[48px] '>
             <div className='flex flex-col sm:gap-[16px] xl:gap-[32px] sm:w-[327px] xl:w-[640px]'>
-              <div className='sm:text-2lg md:text-2lg xl:text-3xl font-semibold'>
+              <div className='sm:text-2lg md:text-2lg xl:text-3xl xl:font-semibold sm:font-bold'>
                 기사님 프로필 등록
               </div>
               <div className='sm:text-xs xl:text-xl font-regular text-black-200 '>
                 추가 정보를 입력하여 회원가입을 완료해주세요.
               </div>
             </div>
-            <div className='border-b border-solid border-gray-400 sm:w-[327px] xl:w-[1352px]'></div>
+            <div className='border-b border-solid border-gray-200 sm:w-[327px] xl:w-[1352px]'></div>
 
             <div className='flex sm:gap-4 sm:flex-col xl:items-start xl:flex-row xl:justify-between sm:items-center md:items-center xl:w-[1352px]'>
               {/* 왼쪽 */}
@@ -110,20 +111,31 @@ export default function Page() {
                     onChange={(image) => updateFormData('image', image)}
                   />
                 </div>
-                <div className='border-b border-solid border-gray-400'></div>
+                <div className='border-b border-solid border-gray-200'></div>
                 {/* 별명 */}
                 <div className='flex flex-col gap-4 text-xl'>
-                  <span>별명</span>
+                  <div className='flex gap-1'>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      별명
+                    </span>
+                    <span className='text-blue-500'>*</span>
+                  </div>
+
                   <input
                     className='h-[64px]'
                     value={formData.nickname}
                     onChange={(e) => updateFormData('nickname', e.target.value)}
                   ></input>
                 </div>
-                <div className='border-b border-solid border-gray-400'></div>
+                <div className='border-b border-solid border-gray-200'></div>
                 {/* 경력 */}
                 <div className='flex flex-col gap-4 text-xl'>
-                  <span>경력</span>
+                  <div className='flex gap-1'>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      경력
+                    </span>
+                    <span className='text-blue-500'>*</span>
+                  </div>
                   <input
                     className='h-[64px]'
                     value={formData.experience}
@@ -132,10 +144,15 @@ export default function Page() {
                     }
                   ></input>
                 </div>
-                <div className='border-b border-solid border-gray-400'></div>
+                <div className='border-b border-solid border-gray-200'></div>
                 {/* 한 줄 소개 */}
                 <div className='flex flex-col gap-4 text-xl'>
-                  <span>한 줄 소개</span>
+                  <div className='flex gap-1'>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      한 줄 소개
+                    </span>
+                    <span className='text-blue-500'>*</span>
+                  </div>
                   <input
                     className='h-[64px]'
                     value={formData.shortIntro}
@@ -148,7 +165,12 @@ export default function Page() {
               {/* 오른쪽 */}
               <div className='flex flex-col sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
                 <div className='flex flex-col gap-4 text-xl'>
-                  <span>상세 설명</span>
+                  <div className='flex gap-1'>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      상세설명
+                    </span>
+                    <span className='text-blue-500'>*</span>
+                  </div>
                   <textarea
                     className='h-[160px]'
                     value={formData.description}
@@ -158,20 +180,32 @@ export default function Page() {
                   ></textarea>
                 </div>
 
-                <div className='border-b border-solid border-gray-400'></div>
+                <div className='border-b border-solid border-gray-200'></div>
                 {/* 이용 서비스 선택 */}
+
+                <div className='flex gap-1'>
+                  <span className='sm:text-lg xl:text-xl font-semibold'>
+                    제공 서비스
+                  </span>
+                  <span className='text-blue-500'>*</span>
+                </div>
+
                 <BtGrid
-                  title='제공 서비스'
                   options={moveType}
                   selectedOptions={formData.selectedMoveTypes}
                   onSelect={toggleMoveType}
-                  columns={4}
+                  columns={3}
                 />
-                <div className='border-b border-solid border-gray-400'></div>
+                <div className='border-b border-solid border-gray-200'></div>
 
                 {/* 지역 선택 */}
+                <div className='flex gap-1'>
+                  <span className='sm:text-lg xl:text-xl font-semibold'>
+                    서비스 가능 지역
+                  </span>
+                  <span className='text-blue-500'>*</span>
+                </div>
                 <BtGrid
-                  title='서비스 가능 지역'
                   options={regions}
                   selectedOptions={formData.selectedRegions}
                   onSelect={toggleRegion}
@@ -180,17 +214,19 @@ export default function Page() {
               </div>
             </div>
             <div className='flex justify-end w-full'>
-              <button
-                className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] rounded-2xl ${
-                  isFormValid
-                    ? 'bg-blue-500 cursor-pointer'
-                    : 'bg-gray-400 cursor-not-allowed'
-                }`}
+              <CommonButton
+                widthType='half'
+                heightType='primary'
+                backgroundColorType='gray'
+                borderColorsType='none'
+                type='button'
+                className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] ${
+                  isFormValid ? 'bg-blue-500 cursor-pointer' : ''
+                } `}
                 onClick={handleSubmit}
-                disabled={!isFormValid}
               >
                 시작하기
-              </button>
+              </CommonButton>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import ImageUpload from '@/components/profile/ImageUpload';
 import BtGrid from '@/components/profile/BtGrid';
+import CommonButton from '@/components/common/commonBtn/commonBtn';
 
 export default function Page() {
   // user 타입
@@ -74,18 +75,18 @@ export default function Page() {
         <div className='flex flex-col align-center items-center gap-[56px] sm:w-[375px] md:w-[744px] lg:w-[1400px] p-[24px] pb-[40px]'>
           <div className='flex flex-col items-center sm:gap-[16px] xl:gap-[64px] xl:w-[1352px] '>
             <div className='flex flex-col sm:gap-[16px] xl:gap-[32px] w-full sm:max-w-[327px] xl:max-w-[640px]'>
-              <div className='sm:text-2lg md:text-2lg xl:text-3xl font-semibold'>
+              <div className='sm:text-2lg md:text-2lg xl:text-3xl xl:font-semibold sm:font-bold'>
                 프로필 등록
               </div>
               <div className='sm:text-xs xl:text-xl font-regular text-black-200 '>
                 추가 정보를 입력하여 회원가입을 완료해주세요.
               </div>
-              <div className='border-b border-solid border-gray-400'></div>
+              <div className='border-b border-solid border-gray-200 sm:w-[327px] xl:w-[640px]'></div>
             </div>
             <div className='flex flex-col sm:gap-5 xl:gap-8 w-full sm:max-w-[327px] xl:max-w-[640px]'>
               {/* 이미지 업로더 */}
               <div className='flex flex-col gap-6 '>
-                <div className='w-auto text-xl font-semibold'>
+                <div className='sm:text-lg xl:text-xl font-semibold'>
                   프로필 이미지
                 </div>
                 <ImageUpload
@@ -93,23 +94,35 @@ export default function Page() {
                   onChange={(image) => updateFormData('image', image)}
                 />
               </div>
-              <div className='border-b border-solid border-gray-400'></div>
+              <div className='border-b border-solid border-gray-200'></div>
 
               {/* 이용 서비스 선택 */}
+              <div className='flex flex-col gap-2'>
+                <div className='sm:text-lg xl:text-xl font-semibold'>
+                  이용 서비스
+                </div>
+                <div className='sm:text-xs xl:text-lg font-regular text-gray-400'>
+                  *이용 서비스는 중복 선택 가능해요!
+                </div>
+              </div>
               <BtGrid
-                title='이용 서비스'
-                description='*이용 서비스는 중복 선택 가능해요!'
                 options={moveType}
                 selectedOptions={formData.selectedMoveTypes}
                 onSelect={toggleMoveType}
-                columns={4}
+                columns={3}
               />
-              <div className='border-b border-solid border-gray-400'></div>
+              <div className='border-b border-solid border-gray-200'></div>
 
               {/* 지역 선택 */}
+              <div className='flex flex-col gap-2'>
+                <div className='sm:text-lg xl:text-xl font-semibold'>
+                  내가 사는 지역
+                </div>
+                <div className='sm:text-xs xl:text-lg font-regular text-gray-400'>
+                  *내가 사는 지역은 언제든 수정 가능해요!
+                </div>
+              </div>
               <BtGrid
-                title='내가 사는 지역'
-                description='*내가 사는 지역은 언제든 수정 가능해요!'
                 options={regions}
                 selectedOptions={formData.selectedRegions}
                 onSelect={toggleRegion}
@@ -117,17 +130,21 @@ export default function Page() {
               />
             </div>
           </div>
-          <button
-            className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] rounded-2xl ${
+          <CommonButton
+            widthType='half'
+            heightType='primary'
+            backgroundColorType='gray'
+            borderColorsType='none'
+            type='button'
+            className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] ${
               isFormValid
                 ? 'bg-blue-500 cursor-pointer'
                 : 'bg-gray-400 cursor-not-allowed'
-            }`}
+            } `}
             onClick={handleSubmit}
-            disabled={!isFormValid}
           >
             시작하기
-          </button>
+          </CommonButton>
         </div>
       </div>
     </>
