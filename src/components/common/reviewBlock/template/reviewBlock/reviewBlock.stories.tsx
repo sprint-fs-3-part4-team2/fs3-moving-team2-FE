@@ -1,10 +1,14 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import ReviewBlock from './index';
+import { ReviewBlockCodeSnippet } from './codeExample';
 
 const meta = {
-  title: 'ReviewBlock',
+  title: 'common/ReviewBlock/template/ReviewBlock',
   component: ReviewBlock,
+  parameters: {
+    codeExample: ReviewBlockCodeSnippet,
+  },
   argTypes: {
     name: {
       control: 'text',
@@ -33,13 +37,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Review: Story = {
   render: (args) => <ReviewBlock {...args} />,
   args: {
-    name: '안재성',
-    writtenAt: '2022.01.01',
-    rating: 4,
-    content: '리뷰 내용',
+    name: '안성재',
+    writtenAt: '2025-03-33',
+    rating: 3,
+    content: '정말 멋진 이사였습니다. 이븐한 이사라고 할 수 있겠네요.',
     className: '',
   },
 };
