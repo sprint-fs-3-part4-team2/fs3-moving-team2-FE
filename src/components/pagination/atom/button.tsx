@@ -14,6 +14,7 @@ export default function Button({ children, className = '', onClick }: Props) {
       onClick={onClick}
     >
       {children}
+      test
     </button>
   );
 }
