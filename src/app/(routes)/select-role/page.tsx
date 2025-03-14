@@ -2,12 +2,11 @@
 import React, { PropsWithChildren, useState } from 'react';
 import s from './styles/select-role.module.css';
 import Link from 'next/link';
-import Links from './components/links';
-import RoleImg from './components/roleimg';
+import Links from '../../../components/select-role/links';
 import Image from 'next/image';
-import Content from './components/content';
-import MobileLink from './components/mobile-link';
-import Tooltip from './components/tooltip';
+import Content from './content';
+import MobileLink from '../../../components/select-role/mobile-link';
+import Tooltip from '../../../components/select-role/tooltip';
 
 const commonText = '일반유저';
 const partnerText = '파트너';

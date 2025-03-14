@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Dropdown, { DropdownProps } from '../dropdown';
 import cn from '@/utils/cn';
 import { useEffect, useState } from 'react';
-import { CloseBtn } from '@/app/(routes)/select-role/components/tooltip';
+import { CloseBtn } from '@/components/select-role/tooltip';
 import { formatDistanceToNow } from 'date-fns';
 import {
   ko,

@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import s from '../styles/select-role.module.css';
+import s from './styles/select-role.module.css';
 import cn from '@/utils/cn';
 
 interface ContentProps extends PropsWithChildren {
