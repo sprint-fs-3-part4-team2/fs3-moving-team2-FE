@@ -4,7 +4,7 @@ import cn from '@/utils/cn';
 const backgroundColors = {
   blue: 'bg-primary-blue-300',
   white: 'bg-white',
-  gray: 'bg-grayscale-100',
+  gray: 'bg-grayscale-200',
   dynamic: '',
 };
 
