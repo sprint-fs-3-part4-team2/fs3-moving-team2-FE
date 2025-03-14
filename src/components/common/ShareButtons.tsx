@@ -51,7 +51,7 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
         content: {
           title: document.title || '무빙 서비스 견적',
           description: text || '이사 견적을 확인해보세요',
-          // imageUrl: 'https://your-service-domain.com/og-image.jpg',
+          imageUrl: 'https://d3h2ixicz4w2p.cloudfront.net/logo-with-icon.jpg',
           link: {
             mobileWebUrl: currentUrl,
             webUrl: currentUrl,
