@@ -33,13 +33,13 @@ export default function Pagination({
 
   const prevButtonClassNames = `transition-opacity duration-300 ${
     currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'text-black-500'
-  } rounded-lg`;
+  } rounded-lg xl:w-[48px] xl:h-[48px] w-[34px] h-[34px] text-2lg`;
 
   const nextButtonClassNames = `transition-opacity duration-300 ${
     currentPage === totalPages
       ? 'cursor-not-allowed opacity-50'
       : 'text-black-500'
-  } rounded-lg`;
+  } rounded-lg xl:w-[48px] xl:h-[48px] w-[34px] h-[34px] text-2lg`;
 
   const pageButtonClassNames = (page: number) => {
     return `${
@@ -111,7 +111,7 @@ export default function Pagination({
       pageNumbers.push(
         <span
           key='ellipsis-end'
-          className='flex items-center justify-center w-[48px] h-[48px] text-gray-400 cursor-default'
+          className='flex items-center justify-center text-gray-400 cursor-default xl:w-[48px] xl:h-[48px] w-[34px] h-[34px] text-2lg'
         >
           ...
         </span>,
@@ -138,7 +138,7 @@ export default function Pagination({
       pageNumbers.push(
         <span
           key='ellipsis-start'
-          className='flex items-center justify-center w-[48px] h-[48px] text-gray-400 cursor-default'
+          className='flex items-center justify-center text-gray-400 cursor-default xl:w-[48px] xl:h-[48px] w-[34px] h-[34px] text-2lg'
         >
           ...
         </span>,
@@ -168,7 +168,7 @@ export default function Pagination({
         pageNumbers.push(
           <span
             key='left-ellipsis'
-            className='flex items-center justify-center w-[48px] h-[48px] text-gray-400 cursor-default'
+            className='flex items-center justify-center text-gray-400 cursor-default xl:w-[48px] xl:h-[48px] w-[34px] h-[34px] text-2lg'
           >
             ...
           </span>,
@@ -189,7 +189,7 @@ export default function Pagination({
         pageNumbers.push(
           <span
             key='right-ellipsis'
-            className='flex items-center justify-center w-[48px] h-[48px] text-gray-400 cursor-default'
+            className='flex items-center justify-center text-gray-400 cursor-default xl:w-[48px] xl:h-[48px] w-[34px] h-[34px] text-2lg'
           >
             ...
           </span>,
