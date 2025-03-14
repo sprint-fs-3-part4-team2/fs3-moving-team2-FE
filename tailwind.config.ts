@@ -10,6 +10,10 @@ const config: Config = {
 
   theme: {
     extend: {
+      spacing:{
+        260: '260px',
+        24: '24px',
+      },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
