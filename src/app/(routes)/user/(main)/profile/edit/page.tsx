@@ -13,7 +13,7 @@ type FormData = {
   passwordCurrent: string;
   passwordNew: string;
   passwordNewCheck: string;
-  profileImage: FileList;
+  profileImage: File;
 };
 
 export default function Page() {
@@ -24,7 +24,7 @@ export default function Page() {
     formState: { errors, isValid },
   } = useForm<FormData>({ mode: 'onChange' });
   // user 타입
-  const userType: string = 'mover';
+  const userType: string = 'user';
 
   const [formData, setFormData] = useState({
     image: null as string | null,
@@ -119,7 +119,9 @@ export default function Page() {
                 <div className='flex flex-col sm:gap-5 xl:gap-8 sm:w-[327px] xl:w-[640px]'>
                   {/* 이름 */}
                   <div className='flex flex-col gap-4 text-xl'>
-                    <span>이름</span>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      이름
+                    </span>
 
                     <FormInput
                       register={register}
@@ -136,7 +138,9 @@ export default function Page() {
                   <div className='border-b border-solid border-gray-100'></div>
                   {/* 이메일 */}
                   <div className='flex flex-col gap-4 text-xl'>
-                    <span>이메일</span>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      이메일
+                    </span>
                     <FormInput
                       register={register}
                       errors={errors}
@@ -152,7 +156,9 @@ export default function Page() {
                   <div className='border-b border-solid border-gray-100'></div>
                   {/* 전화번호*/}
                   <div className='flex flex-col gap-4 text-xl'>
-                    <span>전화번호</span>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      전화번호
+                    </span>
                     <FormInput
                       register={register}
                       errors={errors}
@@ -168,7 +174,9 @@ export default function Page() {
                   <div className='border-b border-solid border-gray-100'></div>
                   {/* 현재 비밀번호 */}
                   <div className='flex flex-col gap-4 text-xl'>
-                    <span>현재 비밀번호</span>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      현재 비밀번호
+                    </span>
                     <FormInput
                       register={register}
                       errors={errors}
@@ -184,7 +192,9 @@ export default function Page() {
                   <div className='border-b border-solid border-gray-100'></div>
                   {/* 새 비밀번호 */}
                   <div className='flex flex-col gap-4 text-xl'>
-                    <span>새 비밀번호</span>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      새 비밀번호
+                    </span>
                     <FormInput
                       register={register}
                       errors={errors}
@@ -200,7 +210,9 @@ export default function Page() {
                   <div className='border-b border-solid border-gray-100'></div>
                   {/* 새 비밀번호 확인 */}
                   <div className='flex flex-col gap-4 text-xl'>
-                    <span>새 비밀번호 확인</span>
+                    <span className='sm:text-lg xl:text-xl font-semibold'>
+                      새 비밀번호 확인
+                    </span>
                     <FormInput
                       register={register}
                       errors={errors}
@@ -218,7 +230,7 @@ export default function Page() {
                 <div className='flex flex-col sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
                   {/* 이미지 업로더 */}
                   <div className='flex flex-col gap-6 '>
-                    <div className='w-auto text-xl font-semibold'>
+                    <div className='sm:text-lg xl:text-xl font-semibold'>
                       프로필 이미지
                     </div>
                     <ImageUpload
