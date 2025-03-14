@@ -10,7 +10,7 @@ export default function Home() {
         borderColorsType='blue'
         
       >
-        시작하기 // text입력 해주세요
+        회원가입 // text입력 해주세요
       </CommonButton>
     </div>
   );

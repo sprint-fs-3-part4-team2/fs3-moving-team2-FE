@@ -18,6 +18,19 @@ const meta = {
       description: 'HTML (React.ReactNode)',
     },
   },
+  parameters: {
+    codeExample: `\`\`\`tsx
+
+      // className?: string;
+      // data: { name: string }[];
+      // isOpen?: boolean;
+      return (
+        <Profile isOpen={true} className="" >
+          <button>버튼</button>
+        </Profile>
+      );\
+    `,
+  },
 } satisfies Meta<typeof Profile>;
 
 export default meta;
@@ -28,6 +41,7 @@ export const Default: Story = {
   render: (args) => <Profile {...args}></Profile>,
   args: {
     isOpen: false,
+    className: '',
     children: <button>버튼</button>,
   },
 };

@@ -19,7 +19,7 @@ const meta: Meta<typeof CommonBtn> = {
     },
     textColorType: {
       control: 'radio',
-      options: ['white', 'gray', 'blue', 'dynamic'],
+      options: ['white', 'gray', 'blue', 'black', 'dynamic'],
     },
     borderColorsType: {
       control: 'radio',
