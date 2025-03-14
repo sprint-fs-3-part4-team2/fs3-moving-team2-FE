@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getPendingReviews } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
+import ReviewModal from '@/components/modal/children/ReviewModal';
 
 export default function Page() {
   const moveTypeLabels = {
@@ -28,6 +29,9 @@ export default function Page() {
   const [estimates, setEstimates] = useState<ReviewableEstimate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEstimate, setSelectedEstimate] =
+    useState<ReviewableEstimate | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -43,14 +47,10 @@ export default function Page() {
       });
   }, []);
 
-  const handleReviewButtonClick = () => {
-    alert('리뷰 작성하기 모달 구현중!');
+  const handleReviewButtonClick = (estimate: ReviewableEstimate) => {
+    setSelectedEstimate(estimate);
+    setIsModalOpen(true);
   };
-
-  // 기존 페이지네이션 관련 상태 및 계산
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // const itemsPerPage: number = 6;
-  // const totalPages: number = Math.ceil((estimates?.length || 0) / itemsPerPage);
 
   // 반응형 페이지네이션 관련 상태 및 계산
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -276,7 +276,7 @@ export default function Page() {
   if (loading) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/logo/logo-with-icon.svg'
@@ -297,13 +297,13 @@ export default function Page() {
   if (error) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
-              src='/img/logo/logo-with-icon.svg'
-              alt='logo'
+              src='/img/no-review.svg'
+              alt='no-review'
               fill
-              // style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'cover' }}
             />
           </div>
           <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px] whitespace-pre-line text-center'>
@@ -320,7 +320,10 @@ export default function Page() {
         <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1400px] xl:mx-auto'>
           <div className='grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
             {currentEstimates.map((data) => (
-              <div key={data.id}>
+              <div
+                key={data.id}
+                className='bg-white'
+              >
                 <MoverInfo
                   variant='review'
                   subVariant='pending'
@@ -329,9 +332,7 @@ export default function Page() {
                   isCustomQuote={data.isTargeted}
                   movingDate={new Date(data.serviceDate)}
                   price={data.estimatePrice}
-                  onClickReviewButton={() => {
-                    handleReviewButtonClick();
-                  }}
+                  onClickReviewButton={() => handleReviewButtonClick(data)}
                   imageUrl={data.driverProfileImage}
                 />
               </div>
@@ -379,7 +380,7 @@ export default function Page() {
           )}
         </div>
       ) : (
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] flex flex-col justify-center items-center'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/no-review.svg'
@@ -392,6 +393,13 @@ export default function Page() {
             작성 가능한 리뷰가 없어요
           </div>
         </div>
+      )}
+      {/* 모달 렌더링 */}
+      {isModalOpen && selectedEstimate && (
+        <ReviewModal
+          estimate={selectedEstimate}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </div>
   );
