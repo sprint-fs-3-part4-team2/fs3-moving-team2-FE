@@ -52,10 +52,7 @@ export default function ModalWrapper({
       open
     >
       <div
-        className={cn(
-          'bg-white rounded-3xl p-6 w-11/12 max-w-md animate-slideUp',
-          className,
-        )}
+        className={cn('bg-white rounded-3xl p-6 animate-slideUp', className)}
       >
         <div className='flex justify-between items-center'>
           <h2 className='font-bold text-xl'>{title}</h2>
