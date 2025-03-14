@@ -103,6 +103,7 @@ const config: Config = {
       animation: {
         fadeIn: 'fadeIn 2.5s ease-in-out forwards',
         slideUp: 'slideUp 0.5s ease-out forwards',
+        wran:'wran 1s ease-in-out forwards'
       },
       boxShadow:{
         'primary' : '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',

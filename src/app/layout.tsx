@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import ToasterProvider from '@/hooks/useToaster/useToster';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -20,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='Ko'>
-      <body className={`${pretendard.variable} antialiased`}>{children}</body>
+      <body className={`${pretendard.variable} antialiased`}>
+        <ToasterProvider>{children}</ToasterProvider>
+      </body>
     </html>
   );
 }

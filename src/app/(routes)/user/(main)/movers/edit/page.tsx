@@ -4,12 +4,14 @@ import cn from '@/utils/cn';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
 import moverEditApi from './api/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
+import { useToaster } from '@/hooks/useToaster/useToster';
 
 const ul = cn('w-full', 'lg:flex lg:flex-wrap lg:w-[47%]');
 const li = cn('pt-5 pb-8 border-t border-line-100 w-full');
 const button = cn('w-full even:mb-3 odd:order-2', 'lg:even:mb-0 lg:w-[49%]');
 
 export default function MoverBasicInfoEdit() {
+  const toaster = useToaster();
   const {
     register,
     handleSubmit,
@@ -26,8 +28,9 @@ export default function MoverBasicInfoEdit() {
       user_type: 'MOVER', // 나중 유저의 값에서 타입 가져오기
       ...rest,
     };
-    const res = await moverEditApi(body);
-    console.log(res);
+    // const res = await moverEditApi(body);
+    // console.log(res);
+    toaster('info', '수정 됐습니다.');
   };
   const onError = (errors: FieldErrors) => {
     Object.keys(errors).forEach((v) => {
@@ -35,6 +38,7 @@ export default function MoverBasicInfoEdit() {
         setFocus(String(v));
       }
     });
+    toaster('warn', '필수 정보를 입력해주세요.');
   };
 
   return (
