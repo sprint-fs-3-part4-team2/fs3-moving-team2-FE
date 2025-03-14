@@ -253,10 +253,12 @@ export default function Page() {
                 widthType='half'
                 heightType='primary'
                 backgroundColorType='gray'
-                borderColorsType='none'
+                borderColorsType='gray'
                 type='button'
                 className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] ${
-                  isFormValid ? 'bg-blue-500 cursor-pointer' : ''
+                  isFormValid
+                    ? 'bg-blue-500 cursor-pointer'
+                    : 'bg-gray-300 cursor-not-allowed'
                 } `}
                 onClick={handleSubmit}
               >

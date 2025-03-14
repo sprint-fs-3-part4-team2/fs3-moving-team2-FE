@@ -125,6 +125,7 @@ export default function Page() {
                   />
                 </div>
                 <div className='border-b border-solid border-gray-200'></div>
+
                 {/* 별명 */}
                 <div className='flex flex-col gap-4 text-xl'>
                   <div className='flex gap-1'>
@@ -249,10 +250,10 @@ export default function Page() {
                 widthType='half'
                 heightType='primary'
                 backgroundColorType='gray'
-                borderColorsType='none'
+                borderColorsType='gray'
                 type='button'
                 className={`sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px] ${
-                  isFormValid ? 'bg-blue-500 cursor-pointer' : ''
+                  isFormValid ? 'bg-blue-500 cursor-pointer' : 'bg-gray-300'
                 } `}
                 onClick={handleSubmit}
               >
@@ -262,7 +263,7 @@ export default function Page() {
                 widthType='half'
                 heightType='primary'
                 backgroundColorType='gray'
-                borderColorsType='none'
+                borderColorsType='gray'
                 type='button'
                 className='text-gray-400 sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px]'
               >
