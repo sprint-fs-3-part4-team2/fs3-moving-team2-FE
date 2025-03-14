@@ -6,10 +6,10 @@ import ProfileImage from '@/components/common/shared/atoms/profileImage';
 import FavoriteCount from '@/components/common/shared/atoms/favoriteCount';
 import { MoverProfileProps } from './profile.types';
 import ListInfoTitle from '@/components/common/shared/atoms/listInfoTitle';
-import MoverName from '../moverName';
+import MoverName from '../common/moverInfo/atoms/moverName';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import Image from 'next/image';
-import PageHeader from '@/components/common/shared/atoms/pageHeader';
+import PageHeader from '../common/shared/atoms/pageHeader';
 
 export default function MoverStatInfo({
   imageUrl,
@@ -23,22 +23,24 @@ export default function MoverStatInfo({
   isFavoriteMoverList,
 }: MoverProfileProps) {
   return (
-    <div>
+    <div className=''>
       <PageHeader>마이페이지</PageHeader>
-      <div className='bg-gray-100 p-[24px]'>
-        <div className='flex justify-between gap-y-[24px] px-[24px]'>
+      <div className='bg-background-100 border border-grayscale-100 p-[24px] rounded-[16px]'>
+        <div className='flex justify-between gap-y-[24px] '>
           <div className='flex flex-col'>
             <MoverName
               moverName={moverName}
               sizeVariant='primary'
             />
-            <div>고객님의 물품을 소중하고 안전하게 운송하여 드립니다.</div>
+            <div className='text-gray-400'>
+              고객님의 물품을 소중하고 안전하게 운송하여 드립니다.
+            </div>
           </div>
-          <div className='flex gap-[16px] w-1/2 '>
+          <div className='flex gap-[16px] w-[576px] '>
             <CommonButton
               widthType='half'
               heightType='secondary'
-              backgroundColorType='white'
+              backgroundColorType='gray'
               borderColorsType='gray'
               textColorType='gray'
             >
@@ -74,7 +76,7 @@ export default function MoverStatInfo({
         </div>
         <div
           className={cn(
-            ' flex relative  border-1 items-center bg-backgroundVariants-100 border-line-200 mt-24 ',
+            ' flex relative items-center bg-background-100 border-line-200 mt-24 ',
             isFavoriteMoverList
               ? 'gap-3 px-[10px] py-[10px]'
               : 'gap-4 md:gap-4 xl:ga-6 px-[10px] md:px-[10px] xl:px-[18px] py-[10px] md:py-[10px] xl:py-[16px]',
