@@ -1,7 +1,7 @@
 'use client';
 
 import cn from '@/utils/cn';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface ModalWrapperProps {
   title: string;
@@ -17,12 +17,26 @@ export default function ModalWrapper({
   className,
 }: ModalWrapperProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [isBackdropPressed, setIsBackdropPressed] = useState(false);
 
   // 모달 열릴 때 스크롤 비활성화, 닫힐 때 복원
+  // useEffect(() => {
+  //   document.body.style.overflow = 'hidden';
+  //   return () => {
+  //     document.body.style.overflow = 'auto';
+  //   };
+  // }, []);
   useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
     document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = originalStyle;
+      document.body.style.paddingRight = '0px';
     };
   }, []);
 
@@ -38,16 +52,33 @@ export default function ModalWrapper({
   }, [onClose]);
 
   // backdrop 클릭 시 닫기
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+  // const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+  //   if (e.target === dialogRef.current) {
+  //     onClose();
+  //   }
+  // };
+
+  // 백드롭에서 클릭 시작
+  const handleMouseDown = (e: React.MouseEvent<HTMLDialogElement>) => {
     if (e.target === dialogRef.current) {
+      setIsBackdropPressed(true);
+    }
+  };
+
+  // 백드롭에서 클릭 종료 시 모달 닫기
+  const handleMouseUp = (e: React.MouseEvent<HTMLDialogElement>) => {
+    if (e.target === dialogRef.current && isBackdropPressed) {
       onClose();
     }
+    setIsBackdropPressed(false);
   };
 
   return (
     <dialog
       ref={dialogRef}
-      onClick={handleBackdropClick}
+      // onClick={handleBackdropClick}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       className='fixed inset-0 flex items-center justify-center bg-[#141414] bg-opacity-60 z-50 w-full h-full'
       open
     >
