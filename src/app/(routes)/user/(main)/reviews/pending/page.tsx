@@ -52,6 +52,13 @@ export default function Page() {
     setIsModalOpen(true);
   };
 
+  // 리뷰 제출 후 estimates에서 해당 리뷰 제거
+  const handleReviewSubmit = (estimateId: string) => {
+    setEstimates((prev) =>
+      prev.filter((estimate) => estimate.id !== estimateId),
+    );
+  };
+
   // 반응형 페이지네이션 관련 상태 및 계산
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(6);
@@ -399,6 +406,7 @@ export default function Page() {
         <ReviewModal
           estimate={selectedEstimate}
           onClose={() => setIsModalOpen(false)}
+          onSubmit={handleReviewSubmit} // 제출 후 콜백 전달
         />
       )}
     </div>

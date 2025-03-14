@@ -28,9 +28,14 @@ interface ReviewableEstimate {
 interface ReviewModalProps {
   estimate: ReviewableEstimate;
   onClose: () => void;
+  onSubmit?: (estimateId: string) => void; // 콜백 prop 추가
 }
 
-export default function ReviewModal({ estimate, onClose }: ReviewModalProps) {
+export default function ReviewModal({
+  estimate,
+  onClose,
+  onSubmit,
+}: ReviewModalProps) {
   const [rating, setRating] = useState(0); // 별점 상태
   const [comment, setComment] = useState(''); // 코멘트 상태
   const [isDragging, setIsDragging] = useState(false); // 드래그 중인지 여부
@@ -53,6 +58,7 @@ export default function ReviewModal({ estimate, onClose }: ReviewModalProps) {
         comment,
       });
       console.log('리뷰가 제출되었습니다!');
+      onSubmit?.(estimate.id); // 부모page에 제출완료 알림
       onClose();
     } catch (error) {
       console.error('리뷰 제출 실패:', error);
