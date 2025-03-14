@@ -5,6 +5,7 @@ import ModalWrapper from '@/components/modal/ModalWrapper';
 import RatingStars from '@/components/common/shared/molecules/ratingStars';
 import MovingTypeGroup from '@/components/common/shared/molecules/movingTypeGroup';
 import MoverDatePrice from '@/components/common/moverInfo/organisms/moverDatePriceInfo';
+import { submitReview } from '@/services/reviewsService';
 
 const moveTypeLabels = {
   SMALL_MOVE: 'small',
@@ -35,7 +36,7 @@ export default function ReviewModal({ estimate, onClose }: ReviewModalProps) {
   const [isDragging, setIsDragging] = useState(false); // 드래그 중인지 여부
   const ratingRef = useRef<HTMLDivElement>(null); // 별점 컨테이너 참조
 
-  // 리뷰 제출 함수 (추후 API 연동)
+  // 리뷰 제출 함수
   const handleSubmit = async () => {
     if (rating === 0) {
       console.log('별점을 선택해주세요.');
@@ -46,8 +47,7 @@ export default function ReviewModal({ estimate, onClose }: ReviewModalProps) {
       return;
     }
     try {
-      // 예: await submitReview({ estimateId: estimate.id, rating, comment });
-      console.log('Review submitted:', {
+      await submitReview({
         estimateId: estimate.id,
         rating,
         comment,
@@ -56,7 +56,7 @@ export default function ReviewModal({ estimate, onClose }: ReviewModalProps) {
       onClose();
     } catch (error) {
       console.error('리뷰 제출 실패:', error);
-      console.log('리뷰 제출에 실패했습니다.');
+      console.log('리뷰 제출에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
