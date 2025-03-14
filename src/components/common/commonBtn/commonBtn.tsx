@@ -10,7 +10,7 @@ const backgroundColors = {
 
 const textColors = {
   white: 'text-gray-50',
-  gray: 'text-grayscale-100',
+  gray: 'text-grayscale-300',
   black: 'text-black',
   blue: 'text-primary-blue-300',
   dynamic: '',
@@ -41,9 +41,11 @@ export default function CommonButton({
         textColors[textColorType] || 'text-white',
         borderColorsType !== 'none' ? borderColors[borderColorsType] : '',
         'rounded-2xl text-base md:text-base xl:text-xl cursor-pointer font-semibold',
+
         {
           'w-full': widthType === 'full',
           'w-1/2': widthType === 'half',
+          dynamic: widthType === 'dynamic',
         },
         {
           'h-[54px] md:h-[54px] xl:h-[64px]': heightType === 'primary',
