@@ -19,10 +19,23 @@ export default function ModalWrapper({
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   // 모달 열릴 때 스크롤 비활성화, 닫힐 때 복원
+  // useEffect(() => {
+  //   document.body.style.overflow = 'hidden';
+  //   return () => {
+  //     document.body.style.overflow = 'auto';
+  //   };
+  // }, []);
   useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
     document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = originalStyle;
+      document.body.style.paddingRight = '0px';
     };
   }, []);
 
@@ -53,7 +66,7 @@ export default function ModalWrapper({
     >
       <div
         className={cn(
-          'bg-white rounded-3xl p-6 w-11/12 max-w-md animate-slideUp',
+          'bg-white rounded-3xl p-6 w-11/12 animate-slideUp',
           className,
         )}
       >
