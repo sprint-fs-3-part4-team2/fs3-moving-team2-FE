@@ -15,6 +15,7 @@ const config: Config = {
         foreground: 'var(--foreground)',
 
         black: {
+          'opacity-64' : 'var(--background-opacity-64)',
           500: 'var(--black-500)',
           400: 'var(--black-400)',
           300: 'var(--black-300)',
