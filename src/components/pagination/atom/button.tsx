@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function Button({ children, className = '', onClick }: Props) {
-  const classNames = `w-[34px] h-[34px] text-lg text-black-400 font-semibold ${className} xl:w-[48px] h-[48px] text-2lg`;
+  const classNames = `w-[34px] h-[34px] text-lg text-black-400 font-semibold xl:w-[48px] xl:h-[48px] xl:text-2lg ${className}`;
   return (
     <button
       className={classNames}
