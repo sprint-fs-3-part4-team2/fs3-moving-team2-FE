@@ -18,6 +18,7 @@ export default function myPage() {
         quoteCount={320} // 견적 요청 수
         isFavoriteMoverList={false} // 즐겨찾기 리스트 여부
       />
+      <div className='border-t border-gray-300 mt-10'></div>
       <ReviewStar />
 
       <div className='p-6 space-y-4'>
