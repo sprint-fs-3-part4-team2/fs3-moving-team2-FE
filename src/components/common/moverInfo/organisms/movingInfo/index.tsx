@@ -1,40 +1,37 @@
-import VerticalDivider from '@/components/common/moverStat/atoms/verticalDivider';
-import InfoContainer from '../../../shared/atoms/listInfos/infoContainer';
-import DateInfo from '../../../shared/atoms/listInfos/movingDateInfo';
-import StringInfo from '../../../shared/atoms/listInfos/stringInfo';
-import InfoTitle from '../../../shared/atoms/listInfoTitle';
-import { MovingInfoForListProps } from './moveInfo.types';
+import VerticalDivider from '@/components/common/shared/atoms/verticalDivider';
+import { MovingInfoProps } from './moveInfo.types';
 import cn from '@/utils/cn';
 import { CONTAINER_STYLE } from './constants';
+import ListInfo from '@/components/common/shared/molecules/listInfo';
+import formatDate from '@/utils/formatDate';
 
 export default function MovingInfoForList({
   movingDate,
   departure,
   arrival,
   showDayOfWeek,
-}: MovingInfoForListProps) {
+}: MovingInfoProps) {
+  const formattedDate = formatDate(movingDate, showDayOfWeek, false);
+
   return (
     <div
       className={cn('flex flex-col md:flex-row xl:flex-row', CONTAINER_STYLE)}
     >
-      <InfoContainer>
-        <InfoTitle>이사일</InfoTitle>
-        <DateInfo
-          date={movingDate}
-          showDayOfWeek={showDayOfWeek}
-        />
-      </InfoContainer>
+      <ListInfo
+        title='이사일'
+        content={formattedDate}
+      />
       <VerticalDivider className='hidden md:hidden xl:block' />
       <div className={cn('flex', CONTAINER_STYLE)}>
-        <InfoContainer>
-          <InfoTitle>출발</InfoTitle>
-          <StringInfo>{departure}</StringInfo>
-        </InfoContainer>
+        <ListInfo
+          title='출발'
+          content={departure}
+        />
         <VerticalDivider />
-        <InfoContainer>
-          <InfoTitle>도착</InfoTitle>
-          <StringInfo>{arrival}</StringInfo>
-        </InfoContainer>
+        <ListInfo
+          title='도착'
+          content={arrival}
+        />
       </div>
     </div>
   );

@@ -7,10 +7,16 @@ import HorizontalDivider from '../../atoms/horizontalDivider';
 import { CustomerInfoProps } from './customerInfo.types';
 import RequestedQuoteButtons from '../../molecules/requestedQuoteButtons';
 import QuotePriceForList from '@/components/common/shared/atoms/quotePriceForList';
+import IsCompletedQuote from '../../molecules/isCompletedQuote';
+import IsDeclinedQuote from '../../molecules/isDeclinedQuote';
 
 export default function CustomerInfo(props: CustomerInfoProps) {
   return (
-    <div className='flex flex-col gap-4 shadow-primary px-4 md:px-4 xl:px-6 py-4 md:py-4 xl:py-5 rounded-[16px]'>
+    <div className='relative flex flex-col gap-4 shadow-primary px-4 md:px-4 xl:px-6 py-4 md:py-4 xl:py-5 rounded-[16px] bg-white'>
+      {props.variant === 'submitted' && props.completed && (
+        <IsCompletedQuote quoteId={props.quoteId} />
+      )}
+      {props.variant === 'submitted' && props.declined && <IsDeclinedQuote />}
       <div className='flex justify-between'>
         <MovingTypeGroup
           isCustomQuote={props.isCustomQuote}

@@ -10,11 +10,16 @@ const config: Config = {
 
   theme: {
     extend: {
+      spacing:{
+        260: '260px',
+        24: '24px',
+      },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
 
         black: {
+          'opacity-64' : 'var(--background-opacity-64)',
           500: 'var(--black-500)',
           400: 'var(--black-400)',
           300: 'var(--black-300)',
@@ -94,9 +99,14 @@ const config: Config = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        slideUp: {
+          '0%': { transform: 'translateY(10%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        }
       },
       animation: {
         fadeIn: 'fadeIn 2.5s ease-in-out forwards',
+        slideUp: 'slideUp 0.5s ease-out forwards',
       },
       boxShadow:{
         'primary' : '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',

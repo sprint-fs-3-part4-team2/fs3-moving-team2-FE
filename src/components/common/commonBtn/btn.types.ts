@@ -6,7 +6,7 @@ type CommonBtnHeightType = 'primary' | 'secondary' | 'tertiary' | 'dynamic';
 
 type CommonBtnBackgroundColorType = 'gray' | 'blue' | 'white' | 'dynamic';
 
-type CommonBtnTextColorType = 'white' | 'dynamic';
+type CommonBtnTextColorType = 'white' | 'blue' | 'black' | 'gray' | 'dynamic';
 
 type CommonBtnBorderColorsType = 'blue' | 'gray' | 'none';
 

@@ -1,5 +1,5 @@
 import cn from '@/utils/cn';
-import VerticalDivider from '../atoms/verticalDivider';
+import VerticalDivider from '../../shared/atoms/verticalDivider';
 import ConfirmedQuotesCount from '../molecules/confirmedQuotesCount';
 import ExperienceYears from '../molecules/experienceYears';
 import RatingStat from '../molecules/ratingStat';
@@ -18,7 +18,7 @@ export default function MoverStat({
         'flex font-medium',
         isFavoriteMoverInfo
           ? 'text-[13px] gap-[9.5px]'
-          : 'text-[13px] md:text-[13px] xl:text-[16px] gap-[9.5px] md:gap-[9.5px] xl:gap-[14px]',
+          : 'text-[13px] md:text-[13px] xl:text-[16px] gap-[3.5px] md:gap-[9.5px] xl:gap-[14px]',
       )}
     >
       <RatingStat

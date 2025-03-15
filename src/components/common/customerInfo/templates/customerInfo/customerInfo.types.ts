@@ -4,6 +4,7 @@ import {
 } from '@/components/common/shared/atoms/movingTypeBadge/movingTypeBadge.types';
 
 export interface CustomerInfoBaseProps {
+  quoteId: string;
   movingType: MovingTypes[];
   quoteState?: MovingStates;
   isCustomQuote: boolean;
@@ -23,6 +24,8 @@ export interface RequestedQuoteProps extends CustomerInfoBaseProps {
 export interface SubmittedQuoteProps extends CustomerInfoBaseProps {
   variant: 'submitted';
   quotePrice?: number;
+  completed: boolean;
+  declined: boolean;
 }
 
 export type CustomerInfoProps = RequestedQuoteProps | SubmittedQuoteProps;

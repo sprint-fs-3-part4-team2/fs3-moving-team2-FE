@@ -25,7 +25,7 @@ function LinkBox({ href, children }: LinkBoxProps) {
   return (
     <Animate
       className={s.linkBox}
-      color='#fff'
+      color='#4da9ff'
     >
       <Link href={href}>{children}</Link>
     </Animate>
