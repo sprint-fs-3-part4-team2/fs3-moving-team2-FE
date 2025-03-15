@@ -17,6 +17,7 @@ export default function MoverStatInfo({
   favoriteCount,
   quoteCount,
   isFavoriteMoverList,
+  onFavoriteClick,
 }: MoverStatInfoProps) {
   return (
     <div
@@ -51,6 +52,7 @@ export default function MoverStatInfo({
                 ? 'text-[13px]'
                 : 'text-[13px] md:text-[13px] xl:text-[18px]'
             }
+            onClick={onFavoriteClick}
           />
         </div>
         <div>

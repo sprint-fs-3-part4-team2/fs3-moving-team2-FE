@@ -17,4 +17,5 @@ export interface MoverStatInfoProps extends OrganismBaseProps {
   favoriteCount: number;
   quoteCount: number;
   isFavoriteMoverList: boolean;
+  onFavoriteClick?: () => void;
 }

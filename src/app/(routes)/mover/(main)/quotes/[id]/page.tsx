@@ -6,17 +6,8 @@ import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import ShareButtons from '@/components/common/ShareButtons';
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
-import { useQuery } from '@tanstack/react-query';
-import { getQuoteByCustomer } from '@/services/quotes';
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
-  const { data } = useQuery({
-    queryKey: ['quotes', id],
-    queryFn: async () => getQuoteByCustomer(id),
-  });
-  console.log(data);
-
   return (
     <div className='relative flex flex-col mx-auto w-full items-center px-6 md:px-[72px] xl:px-0 max-w-[1400px]'>
       <div className='w-full'>
