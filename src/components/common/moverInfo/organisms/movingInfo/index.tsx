@@ -1,5 +1,5 @@
 import VerticalDivider from '@/components/common/shared/atoms/verticalDivider';
-import { MovingInfoProps } from './moveInfo.types';
+import { MovingInfoForListProps } from './moveInfo.types';
 import cn from '@/utils/cn';
 import { CONTAINER_STYLE } from './constants';
 import ListInfo from '@/components/common/shared/molecules/listInfo';
@@ -10,7 +10,7 @@ export default function MovingInfoForList({
   departure,
   arrival,
   showDayOfWeek,
-}: MovingInfoProps) {
+}: MovingInfoForListProps) {
   const formattedDate = formatDate(movingDate, showDayOfWeek, false);
 
   return (
