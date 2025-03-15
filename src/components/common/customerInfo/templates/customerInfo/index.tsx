@@ -18,7 +18,7 @@ export default function CustomerInfo(props: CustomerInfoProps) {
         <IsCompletedQuote quoteId={props.quoteId} />
       )}
       {props.variant === 'submitted' && props.declined && <IsDeclinedQuote />}
-      <div className='flex justify-between'>
+      <div className='flex justify-between items-center'>
         <MovingTypeGroup
           isCustomQuote={props.isCustomQuote}
           movingType={props.movingType}
