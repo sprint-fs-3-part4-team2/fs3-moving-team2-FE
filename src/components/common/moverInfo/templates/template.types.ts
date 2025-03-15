@@ -10,7 +10,7 @@ import {
 export interface TemplateBaseProps {
   movingType: MovingTypes[];
   isCustomQuote: boolean;
-  quoteState?: Exclude<MovingStates, 'custom'>;
+  quoteState?: MovingStates;
 }
 
 export type MoverProfileProps = MoverStatInfoProps &

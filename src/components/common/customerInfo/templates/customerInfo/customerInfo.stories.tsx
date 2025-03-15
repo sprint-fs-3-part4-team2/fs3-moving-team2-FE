@@ -21,8 +21,7 @@ const Template: StoryFn<typeof CustomerInfo> = (args) => (
 
 const commonProps = {
   movingType: ['small'],
-  quoteState: 'confirmedQuote',
-  isCustomQuote: true,
+  isCustomQuote: false,
   customerName: '김코드',
   movingDate: new Date(),
   departure: '서울 중구',
