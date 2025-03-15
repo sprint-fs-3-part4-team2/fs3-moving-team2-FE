@@ -10,6 +10,7 @@ import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { useQuery } from '@tanstack/react-query';
 import { getQuoteByCustomer } from '@/services/quotes';
 import { MOVING_TYPES } from '@/constants/movingTypes';
+import { useMemo } from 'react';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -18,7 +19,10 @@ export default function Page({ params }: { params: { id: string } }) {
     queryFn: async () => getQuoteByCustomer(id),
   });
 
-  const movingType = data?.request.moveType as keyof typeof MOVING_TYPES;
+  const movingType = useMemo(
+    () => data?.request.moveType as keyof typeof MOVING_TYPES,
+    [data],
+  );
 
   return (
     data && (
