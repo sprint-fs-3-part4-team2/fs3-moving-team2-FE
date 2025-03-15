@@ -9,6 +9,7 @@ import RequestedQuoteButtons from '../../molecules/requestedQuoteButtons';
 import QuotePriceForList from '@/components/common/shared/atoms/quotePriceForList';
 import IsCompletedQuote from '../../molecules/isCompletedQuote';
 import IsDeclinedQuote from '../../molecules/isDeclinedQuote';
+import RequestedAt from '../../atoms/requestedAt';
 
 export default function CustomerInfo(props: CustomerInfoProps) {
   return (
@@ -23,6 +24,9 @@ export default function CustomerInfo(props: CustomerInfoProps) {
           movingType={props.movingType}
           quoteState={props.quoteState}
         />
+        {props.variant === 'requested' && (
+          <RequestedAt requestedAt={props.requestedAt} />
+        )}
       </div>
       <CustomerName name={props.customerName} />
       <HorizontalDivider />
