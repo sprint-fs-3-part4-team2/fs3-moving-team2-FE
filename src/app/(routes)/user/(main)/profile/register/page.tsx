@@ -3,21 +3,32 @@ import { useState, useRef } from 'react';
 import ImageUpload from '@/components/profile/ImageUpload';
 import BtGrid from '@/components/profile/BtGrid';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
+import { useForm } from 'react-hook-form';
+import { createCustomerProfile } from '@/services/profileService';
+
+type FormData = {
+  profileImage: File | null;
+  selectedMoveTypes: string[];
+  selectedRegions: string[];
+};
 
 export default function Page() {
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'onTouched',
+    defaultValues: {
+      profileImage: null,
+      selectedMoveTypes: [],
+      selectedRegions: [],
+    },
+  });
   // user 타입
   const userType: string = 'customer';
-
-  const [formData, setFormData] = useState({
-    image: null as string | null,
-    selectedMoveTypes: [] as string[],
-    selectedRegions: [] as string[],
-  });
-
-  const isFormValid =
-    formData.image !== null &&
-    formData.selectedMoveTypes.length > 0 &&
-    formData.selectedRegions.length > 0;
 
   const moveType = ['소형 이사', '중형 이사', '대형 이사'];
 
@@ -41,32 +52,48 @@ export default function Page() {
     '제주',
   ];
 
-  const updateFormData = (key: keyof typeof formData, value: any) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  const selectedMoveTypes = watch('selectedMoveTypes', []);
+  const selectedRegions = watch('selectedRegions', []);
+  const profileImage = watch('profileImage');
 
+  const isValid =
+    selectedMoveTypes.length > 0 &&
+    selectedRegions.length > 0 &&
+    profileImage !== null;
+
+  // 이사 유형 바뀌나아
   const toggleMoveType = (value: string) => {
-    updateFormData(
+    setValue(
       'selectedMoveTypes',
-      formData.selectedMoveTypes.includes(value)
-        ? formData.selectedMoveTypes.filter((v) => v !== value)
-        : [...formData.selectedMoveTypes, value],
+      selectedMoveTypes.includes(value)
+        ? selectedMoveTypes.filter((v) => v !== value)
+        : [...selectedMoveTypes, value],
+      { shouldValidate: true },
     );
   };
 
+  // 지역 바뀌나아
   const toggleRegion = (value: string) => {
-    updateFormData(
+    setValue(
       'selectedRegions',
       userType === 'mover'
-        ? formData.selectedRegions.includes(value)
-          ? formData.selectedRegions.filter((v) => v !== value)
-          : [...formData.selectedRegions, value]
+        ? selectedRegions.includes(value)
+          ? selectedRegions.filter((v) => v !== value)
+          : [...selectedRegions, value]
         : [value], // 단일 선택
+      { shouldValidate: true },
     );
   };
+
   // 프로필 등록
-  const handleSubmit = () => {
-    console.log('등록 정보:', formData);
+  const onSubmit = async (data: FormData) => {
+    try {
+      console.log('Submitted data:', data);
+      const response = await createCustomerProfile(data);
+      console.log('프로필 등록 성공', response);
+    } catch (error) {
+      console.error('프로필 수정 실패:', error);
+    }
   };
 
   return (
@@ -83,68 +110,74 @@ export default function Page() {
               </div>
               <div className='border-b border-solid border-gray-200 sm:w-[327px] xl:w-[640px]'></div>
             </div>
-            <div className='flex flex-col sm:gap-5 xl:gap-8 w-full sm:max-w-[327px] xl:max-w-[640px]'>
-              {/* 이미지 업로더 */}
-              <div className='flex flex-col gap-6 '>
-                <div className='sm:text-lg xl:text-xl font-semibold'>
-                  프로필 이미지
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className='flex flex-col gap-[48px]'
+            >
+              <div className='flex flex-col sm:gap-5 xl:gap-8 w-full sm:max-w-[327px] xl:max-w-[640px]'>
+                {/* 이미지 업로더 */}
+                <div className='flex flex-col gap-6 '>
+                  <div className='sm:text-lg xl:text-xl font-semibold'>
+                    프로필 이미지
+                  </div>
+                  <ImageUpload
+                    image={profileImage}
+                    onChange={(file) =>
+                      setValue('profileImage', file, { shouldValidate: true })
+                    }
+                  />
                 </div>
-                <ImageUpload
-                  image={formData.image}
-                  onChange={(image) => updateFormData('image', image)}
+                <div className='border-b border-solid border-gray-200'></div>
+
+                {/* 이용 서비스 선택 */}
+                <div className='flex flex-col gap-2'>
+                  <div className='sm:text-lg xl:text-xl font-semibold'>
+                    이용 서비스
+                  </div>
+                  <div className='sm:text-xs xl:text-lg font-regular text-gray-400'>
+                    *이용 서비스는 중복 선택 가능해요!
+                  </div>
+                </div>
+                <BtGrid
+                  options={moveType}
+                  selectedOptions={selectedMoveTypes}
+                  onSelect={toggleMoveType}
+                  columns={3}
+                />
+                <div className='border-b border-solid border-gray-200'></div>
+
+                {/* 지역 선택 */}
+                <div className='flex flex-col gap-2'>
+                  <div className='sm:text-lg xl:text-xl font-semibold'>
+                    내가 사는 지역
+                  </div>
+                  <div className='sm:text-xs xl:text-lg font-regular text-gray-400'>
+                    *내가 사는 지역은 언제든 수정 가능해요!
+                  </div>
+                </div>
+                <BtGrid
+                  options={regions}
+                  selectedOptions={selectedRegions}
+                  onSelect={toggleRegion}
+                  columns={5}
                 />
               </div>
-              <div className='border-b border-solid border-gray-200'></div>
-
-              {/* 이용 서비스 선택 */}
-              <div className='flex flex-col gap-2'>
-                <div className='sm:text-lg xl:text-xl font-semibold'>
-                  이용 서비스
-                </div>
-                <div className='sm:text-xs xl:text-lg font-regular text-gray-400'>
-                  *이용 서비스는 중복 선택 가능해요!
-                </div>
-              </div>
-              <BtGrid
-                options={moveType}
-                selectedOptions={formData.selectedMoveTypes}
-                onSelect={toggleMoveType}
-                columns={3}
-              />
-              <div className='border-b border-solid border-gray-200'></div>
-
-              {/* 지역 선택 */}
-              <div className='flex flex-col gap-2'>
-                <div className='sm:text-lg xl:text-xl font-semibold'>
-                  내가 사는 지역
-                </div>
-                <div className='sm:text-xs xl:text-lg font-regular text-gray-400'>
-                  *내가 사는 지역은 언제든 수정 가능해요!
-                </div>
-              </div>
-              <BtGrid
-                options={regions}
-                selectedOptions={formData.selectedRegions}
-                onSelect={toggleRegion}
-                columns={5}
-              />
-            </div>
+              <CommonButton
+                widthType='half'
+                heightType='primary'
+                backgroundColorType='gray'
+                borderColorsType='none'
+                type='submit'
+                className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] ${
+                  isValid
+                    ? 'bg-blue-500 cursor-pointer'
+                    : 'bg-gray-300 cursor-not-allowed'
+                } `}
+              >
+                시작하기
+              </CommonButton>
+            </form>
           </div>
-          <CommonButton
-            widthType='half'
-            heightType='primary'
-            backgroundColorType='gray'
-            borderColorsType='none'
-            type='button'
-            className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] ${
-              isFormValid
-                ? 'bg-blue-500 cursor-pointer'
-                : 'bg-gray-300 cursor-not-allowed'
-            } `}
-            onClick={handleSubmit}
-          >
-            시작하기
-          </CommonButton>
         </div>
       </div>
     </>

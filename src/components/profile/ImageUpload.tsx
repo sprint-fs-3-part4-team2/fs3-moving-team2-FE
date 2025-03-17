@@ -3,18 +3,18 @@ import { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import Image from 'next/image';
 
 interface ImageUploaderProps {
-  image: string | null;
-  onChange: (image: string | null) => void;
+  image: File | null;
+  onChange: (file: File | null) => void;
 }
 
 export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // 파일을 읽고 미리보기 설정
+
+  // 파일을 읽고 onChange 호출
   const handleFile = (file: File) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => onChange(reader.result as string);
+    onChange(file);
   };
+
   // 드래그 앤 드롭
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -42,7 +42,7 @@ export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
       >
         {image ? (
           <img
-            src={image}
+            src={URL.createObjectURL(image)}
             alt='Uploaded'
             className='w-full h-full object-cover'
           />
