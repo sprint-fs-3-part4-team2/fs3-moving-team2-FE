@@ -53,6 +53,7 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
               isFavoriteMoverList={false}
               favoriteCount={props.favoriteCount}
               quoteCount={props.quoteCount}
+              onFavoriteClick={props.onFavoriteClick}
             />
           </div>
           {props.subVariant === 'pending' && (

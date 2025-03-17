@@ -10,13 +10,14 @@ export default function FavoriteCount({
   isFavorite,
   textClassName,
   iconClassName,
+  onClick,
 }: FavoriteCountProps) {
   const formattedLikeCount = favoriteCount > 999 ? '+999' : favoriteCount;
 
   return (
     <div className='flex items-center gap-[2px] md:gap-[2px] xl:gap-1'>
       <Image
-        className={cn(iconClassName)}
+        className={cn(iconClassName, onClick && 'cursor-pointer')}
         src={
           isFavorite === undefined
             ? filled
@@ -27,6 +28,7 @@ export default function FavoriteCount({
         alt='좋아요 아이콘'
         width={0}
         height={0}
+        onClick={onClick}
       />
       <span
         className={cn(

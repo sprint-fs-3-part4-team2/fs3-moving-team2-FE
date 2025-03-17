@@ -3,4 +3,5 @@ export interface FavoriteCountProps {
   isFavorite?: boolean;
   textClassName?: string;
   iconClassName?: string;
+  onClick?: () => void;
 }
