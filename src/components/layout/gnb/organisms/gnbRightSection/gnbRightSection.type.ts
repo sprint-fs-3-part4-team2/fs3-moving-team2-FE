@@ -4,5 +4,7 @@ import { ProfileSecrionProps } from '../../molecules/profileSecrion/profileSecri
 
 export interface GNBRightSectionProps
   extends NotificationProps,
-  ProfileSecrionProps,
-    MenuIconProp {}
+    ProfileSecrionProps,
+    MenuIconProp {
+  isUserAuthorized: boolean;
+}

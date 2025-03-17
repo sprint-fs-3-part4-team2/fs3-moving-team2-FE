@@ -14,13 +14,14 @@ export default function GNB({
   hasNotification,
 }: GNBProps) {
   return (
-    <div className='w-full'>
+    <div className='w-full border-b-[1px] border-line-100'>
       <GNBLayout>
         <div className='flex items-center gap-[70px]'>
           <GNBLogo isUserAuthorized={isUserAuthorized} />
           <GNBMenu userType={userType} />
         </div>
         <GNBRightSection
+          isUserAuthorized={isUserAuthorized}
           hasNotification={hasNotification}
           userName={userName}
           imageUrl={imageUrl}
