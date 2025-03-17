@@ -9,7 +9,7 @@ import ShareButtons from '@/components/common/ShareButtons';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { useQuery } from '@tanstack/react-query';
 import { getQuoteByCustomer } from '@/services/quotes';
-import { MOVING_TYPE_DECODER } from '@/constants/movingTypes';
+import { MOVING_TYPE_DECODER, MOVING_TYPES } from '@/constants/movingTypes';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -17,6 +17,11 @@ export default function Page({ params }: { params: { id: string } }) {
     queryKey: ['quotes', id],
     queryFn: async () => getQuoteByCustomer(id),
   });
+
+  const movingType =
+    MOVING_TYPE_DECODER[
+      data?.request.moveType as keyof typeof MOVING_TYPE_DECODER
+    ];
 
   return (
     data && (
@@ -31,11 +36,7 @@ export default function Page({ params }: { params: { id: string } }) {
               subVariant='completed'
               moverName={data.mover.moverName}
               imageUrl={data.mover.profileImage}
-              movingType={[
-                MOVING_TYPE_DECODER[
-                  data.request.moveType as keyof typeof MOVING_TYPE_DECODER
-                ],
-              ]}
+              movingType={[movingType]}
               isCustomQuote={data.customRequest}
               quoteState={data.matched ? 'confirmedQuote' : 'pendingQuote'}
               rating={data.mover.averageRating}
@@ -57,7 +58,7 @@ export default function Page({ params }: { params: { id: string } }) {
               movingDate={data.request.moveDate}
               departure={data.request.departure}
               arrival={data.request.arrival}
-              movingType={data.request.moveType}
+              movingType={MOVING_TYPES[movingType].value}
             />
           </div>
           <div className='w-[328px] gap-[40px] hidden md:hidden xl:flex flex-col'>
