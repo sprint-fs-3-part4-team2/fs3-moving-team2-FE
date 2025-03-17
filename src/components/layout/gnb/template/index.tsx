@@ -4,6 +4,7 @@ import GNBLayout from '../atoms/layout/gnbLayout';
 import GNBLogo from '../molecules/gnbLogo';
 import GNBMenu from '../molecules/gnbMenu';
 import GNBRightSection from '../organisms/gnbRightSection';
+import { GNB_STYLES } from './constant';
 import { GNBProps } from './gnb.type';
 
 export default function GNB({
@@ -14,7 +15,7 @@ export default function GNB({
   hasNotification,
 }: GNBProps) {
   return (
-    <div className='w-full border-b-[1px] border-line-100'>
+    <div className={GNB_STYLES}>
       <GNBLayout>
         <div className='flex items-center gap-[70px]'>
           <GNBLogo isUserAuthorized={isUserAuthorized} />
@@ -25,6 +26,7 @@ export default function GNB({
           hasNotification={hasNotification}
           userName={userName}
           imageUrl={imageUrl}
+          userType={userType}
         />
       </GNBLayout>
     </div>
