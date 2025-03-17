@@ -9,7 +9,7 @@ import ShareButtons from '@/components/common/ShareButtons';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { useQuery } from '@tanstack/react-query';
 import { getQuoteByCustomer } from '@/services/quotes';
-import { MOVING_TYPE_DECODER, MOVING_TYPES } from '@/constants/movingTypes';
+import { MOVING_TYPES } from '@/constants/movingTypes';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -18,10 +18,7 @@ export default function Page({ params }: { params: { id: string } }) {
     queryFn: async () => getQuoteByCustomer(id),
   });
 
-  const movingType =
-    MOVING_TYPE_DECODER[
-      data?.request.moveType as keyof typeof MOVING_TYPE_DECODER
-    ];
+  const movingType = data?.request.moveType as keyof typeof MOVING_TYPES;
 
   return (
     data && (
