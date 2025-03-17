@@ -14,7 +14,7 @@ export default function ProfileIcon({
         src={profilImageUrl ? profilImageUrl : '/icons/gnb/default-profile.svg'}
         alt='profile icon'
         fill
-        className='object-contain'
+        className='object-contain rounded-full'
       />
     </div>
   );
