@@ -17,7 +17,7 @@ export default function GNBRightSection({
   imageUrl,
   userType,
 }: GNBRightSectionProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenSideNavBar, setIsOpenSideNavBar] = useState<boolean>(false);
   const router = useRouter();
 
   const handleOnClick = () => {
@@ -33,7 +33,7 @@ export default function GNBRightSection({
             userName={userName}
             imageUrl={imageUrl ? imageUrl : '/icons/gnb/default-profile.svg'}
           />
-          <MenuIcon menuOnClick={() => setIsOpen(true)} />
+          <MenuIcon menuOnClick={() => setIsOpenSideNavBar(true)} />
         </div>
       ) : (
         <div className='w-[116px]'>
@@ -49,11 +49,11 @@ export default function GNBRightSection({
           </CommonButton>
         </div>
       )}
-      {isOpen && (
+      {isOpenSideNavBar && (
         <SideNavigationBar
           userType={userType}
-          setIsOpen={setIsOpen}
-          isOpen={isOpen}
+          setIsOpen={setIsOpenSideNavBar}
+          isOpen={isOpenSideNavBar}
         />
       )}
     </div>
