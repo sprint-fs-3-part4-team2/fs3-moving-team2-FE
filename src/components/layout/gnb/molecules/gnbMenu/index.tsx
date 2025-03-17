@@ -10,5 +10,5 @@ export default function GNBMenu({ userType }: GnbMenuProps): JSX.Element {
     mover: <MoverMenu />,
   };
 
-  return <div className='flex gap-10'>{menuMap[userType] || <GuestMenu />}</div>;
+  return <div className='hidden xl:flex xl:gap-10 '>{menuMap[userType] || <GuestMenu />}</div>;
 }
