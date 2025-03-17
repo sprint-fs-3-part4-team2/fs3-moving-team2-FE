@@ -6,7 +6,7 @@ import {
 export interface CustomerInfoBaseProps {
   quoteId: string;
   movingType: MovingTypes[];
-  quoteState: MovingStates;
+  quoteState?: MovingStates;
   isCustomQuote: boolean;
   customerName: string;
   movingDate: Date;

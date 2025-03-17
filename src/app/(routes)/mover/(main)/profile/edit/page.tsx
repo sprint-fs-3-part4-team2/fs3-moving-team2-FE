@@ -6,11 +6,20 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import FormInput from '@/components/common/inputSection/atoms/customInput/inputs/formInput';
 import { useForm } from 'react-hook-form';
 
+type FormData = {
+  nickname: string;
+  experience: number;
+  shortIntro: string;
+  description: string;
+  profileImage: File;
+};
+
 export default function Page() {
   const {
     register,
-    formState: { errors },
-  } = useForm();
+    watch,
+    formState: { errors, isValid },
+  } = useForm<FormData>({ mode: 'onChange' });
 
   // user 타입
   const userType: string = 'mover';
@@ -116,6 +125,7 @@ export default function Page() {
                   />
                 </div>
                 <div className='border-b border-solid border-gray-200'></div>
+
                 {/* 별명 */}
                 <div className='flex flex-col gap-4 text-xl'>
                   <div className='flex gap-1'>
@@ -127,9 +137,9 @@ export default function Page() {
                   <FormInput
                     register={register}
                     errors={errors}
-                    placeholder='사이트에 노출될 이름을 입력해 주세요'
-                    name='name'
-                    type='password'
+                    placeholder='사이트에 노출될 별명을 입력해 주세요'
+                    name='nickname'
+                    type='text'
                     validation={{ required: '별명을 입력해 주세요.' }}
                     inputType='input'
                     styleVariant='primary'
@@ -149,9 +159,9 @@ export default function Page() {
                     register={register}
                     errors={errors}
                     placeholder='기사님의 경력을 입력해 주세요'
-                    name='name'
-                    type='password'
-                    validation={{ required: '숫자만 입력해 주세요.' }}
+                    name='experience'
+                    type='number'
+                    validation={{ required: '숫자만 입력해주세요.' }}
                     inputType='input'
                     styleVariant='primary'
                     inputVariant='form'
@@ -170,9 +180,9 @@ export default function Page() {
                     register={register}
                     errors={errors}
                     placeholder='한 줄 소개를 입력해 주세요'
-                    name='name'
-                    type='password'
-                    validation={{ required: '8자 이상 입력해 주세요.' }}
+                    name='shortIntro'
+                    type='text'
+                    validation={{ required: '8자 이상 입력해주세요.' }}
                     inputType='input'
                     styleVariant='primary'
                     inputVariant='form'
@@ -187,13 +197,18 @@ export default function Page() {
                     </span>
                     <span className='text-blue-500'>*</span>
                   </div>
-                  <textarea
-                    className='h-[160px]'
-                    value={formData.description}
-                    onChange={(e) =>
-                      updateFormData('description', e.target.value)
-                    }
-                  ></textarea>
+                  <FormInput
+                    register={register}
+                    errors={errors}
+                    placeholder='상세 내용을 입력해 주세요'
+                    name='description'
+                    type='textarea'
+                    rows={5}
+                    validation={{ required: '10자 이상 입력해주세요.' }}
+                    inputType='input'
+                    styleVariant='primary'
+                    inputVariant='form'
+                  />
                 </div>
               </div>
               {/* 오른쪽 */}
@@ -235,10 +250,10 @@ export default function Page() {
                 widthType='half'
                 heightType='primary'
                 backgroundColorType='gray'
-                borderColorsType='none'
+                borderColorsType='gray'
                 type='button'
                 className={`sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px] ${
-                  isFormValid ? 'bg-blue-500 cursor-pointer' : ''
+                  isFormValid ? 'bg-blue-500 cursor-pointer' : 'bg-gray-300'
                 } `}
                 onClick={handleSubmit}
               >
@@ -248,7 +263,7 @@ export default function Page() {
                 widthType='half'
                 heightType='primary'
                 backgroundColorType='gray'
-                borderColorsType='none'
+                borderColorsType='gray'
                 type='button'
                 className='text-gray-400 sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px]'
               >

@@ -1,3 +1,5 @@
+import ServiceBadge from '../common/shared/atoms/serviceBadge';
+
 interface ButtonGridProps {
   options: string[];
   selectedOptions: string[];
@@ -14,23 +16,18 @@ export default function ButtonGrid({
   return (
     <div className='flex flex-col gap-8 w-auto'>
       <div
-        className={`grid gap-3 sm:w-[277px] xl:w-[416px]`}
+        className={`grid gap-3 sm:w-[277px] xl:w-[416px] text-nowrap`}
         style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
       >
         {options.map((value) => (
-          <button
-            type='button'
+          <ServiceBadge
             key={value}
-            className={` px-2 py-2 border rounded-[100px] whitespace-nowrap sm:text-md sm:font-medium xl:text-2lg xl:font-regular text-center
-              ${
-                selectedOptions.includes(value)
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-blue-950'
-              }`}
-            onClick={() => onSelect(value)}
+            selected={selectedOptions.includes(value)}
+            color={selectedOptions.includes(value) ? 'blue' : 'gray'}
+            onSelect={() => onSelect(value)}
           >
             {value}
-          </button>
+          </ServiceBadge>
         ))}
       </div>
     </div>

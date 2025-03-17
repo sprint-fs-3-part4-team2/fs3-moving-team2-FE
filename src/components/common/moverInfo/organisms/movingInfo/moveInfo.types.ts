@@ -1,4 +1,4 @@
-export interface MovingInfoProps {
+export interface MovingInfoForListProps {
   movingDate: Date;
   departure: string;
   arrival: string;

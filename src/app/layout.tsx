@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import QueryProvider from './queryProvider';
 import GNB from '@/components/layout/gnb/template';
 
 const pretendard = localFont({
@@ -20,6 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <QueryProvider>
+      <html lang='Ko'>
+        <body className={`${pretendard.variable} antialiased`}>{children}</body>
+      </html>
+    </QueryProvider>
     <html lang='Ko'>
       <body className={`${pretendard.variable} antialiased`}>
         <GNB

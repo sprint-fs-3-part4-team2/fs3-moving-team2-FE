@@ -1,3 +1,5 @@
+'use client';
+
 import HorizontalDivider from '@/components/common/customerInfo/atoms/horizontalDivider';
 import MovingInfo from '@/components/common/movingInfo/organisms/movingInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
@@ -5,7 +7,7 @@ import ShareButtons from '@/components/common/ShareButtons';
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className='relative flex flex-col mx-auto w-full items-center px-6 md:px-[72px] xl:px-0 max-w-[1400px]'>
       <div className='w-full'>
