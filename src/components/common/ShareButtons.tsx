@@ -23,7 +23,7 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
     script.async = true;
     script.onload = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init('e37ad5eb9d777fdc772bfec0c290ddcd');
+        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
       }
     };
     document.head.appendChild(script);
@@ -49,8 +49,8 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
       window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
-          title: document.title || '무빙 서비스 견적',
-          description: text || '이사 견적을 확인해보세요',
+          title: document.title,
+          description: '이사 견적을 확인해보세요',
           imageUrl: 'https://d3h2ixicz4w2p.cloudfront.net/logo-with-icon.jpg',
           link: {
             mobileWebUrl: currentUrl,

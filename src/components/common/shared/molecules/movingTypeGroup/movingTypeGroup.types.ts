@@ -4,7 +4,7 @@ import {
 } from '../../atoms/movingTypeBadge/movingTypeBadge.types';
 
 export interface MovingTypeGroupProps {
-  quoteState?: MovingStates;
+  quoteState?: Exclude<MovingStates, 'custom'>;
   movingType: MovingTypes[];
   isCustomQuote: boolean;
 }
