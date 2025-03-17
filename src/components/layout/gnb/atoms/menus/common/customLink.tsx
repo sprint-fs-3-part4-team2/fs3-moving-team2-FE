@@ -13,6 +13,7 @@ export default function CustomLink({
     <Link
       href={href}
       key={href}
+      className='transition-transform duration-300 transform hover:scale-[1.2]'
     >
       {children}
     </Link>
