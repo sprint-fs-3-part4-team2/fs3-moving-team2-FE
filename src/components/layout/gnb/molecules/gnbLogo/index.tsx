@@ -1,14 +1,14 @@
 import { GNBLogoProps } from './gnbLogo.type';
 import LogoUnauthorized from '../../atoms/logos/logoUnauthorized';
 import LogoAuthorized from '../../atoms/logos/logoAuthorized';
-import Link from 'next/link';
+import CustomLink from '../../atoms/menus/common/customLink';
 
 export default function GNBLogo({
   isUserAuthorized,
 }: GNBLogoProps): JSX.Element {
   return (
-    <Link href='/'>
+    <CustomLink href='/'>
       {isUserAuthorized ? <LogoAuthorized /> : <LogoUnauthorized />}
-    </Link>
+    </CustomLink>
   );
 }
