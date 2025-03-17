@@ -6,6 +6,7 @@ import { GNBCodeSnippet } from './codeExample';
 const meta = {
   title: 'layout/GNB/template/GNB',
   component: GNB,
+  tags: ['autodocs'],
   parameters: {
     codeExample: GNBCodeSnippet,
   },
@@ -16,7 +17,7 @@ const meta = {
     },
     userType: {
       control: {
-        type: 'select',
+        type: 'radio',
         options: ['user', 'mover', 'guest'],
       },
       description: '유저 타입',
