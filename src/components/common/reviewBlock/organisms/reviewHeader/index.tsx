@@ -1,7 +1,7 @@
 import cn from '@/utils/cn';
 import NameDateDisplay from '../../molecules/nameDateDisplay';
-import StarRating from '../../molecules/starRating';
 import { ReviewHeaderProp } from './reviewHeader.type';
+import RatingStars from '@/components/common/shared/molecules/ratingStars';
 
 export default function ReviewHeader({
   name,
@@ -9,13 +9,16 @@ export default function ReviewHeader({
   rating,
   className,
 }: ReviewHeaderProp): JSX.Element {
+  
   return (
     <div className={cn('flex flex-col space-y-2', className)}>
       <NameDateDisplay
         name={name}
         writtenAt={writtenAt}
       />
-      <StarRating rating={rating} />
+      <RatingStars
+        rating={rating}
+      />
     </div>
   );
 }
