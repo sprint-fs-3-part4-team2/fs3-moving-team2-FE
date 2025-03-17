@@ -23,20 +23,17 @@ export default function RootLayout({
   return (
     <QueryProvider>
       <html lang='Ko'>
-        <body className={`${pretendard.variable} antialiased`}>{children}</body>
+        <body className={`${pretendard.variable} antialiased`}>
+          <GNB
+            isUserAuthorized={true}
+            userType='user'
+            userName={'안성재'}
+            imageUrl={'/img/sample-profile/sample-2.svg'}
+            hasNotification={true}
+          />
+          {children}
+        </body>
       </html>
     </QueryProvider>
-    <html lang='Ko'>
-      <body className={`${pretendard.variable} antialiased`}>
-        <GNB
-          isUserAuthorized={true}
-          userType='user'
-          userName={'안성재'}
-          imageUrl={'/img/sample-profile/sample-2.svg'}
-          hasNotification={true}
-        />
-        {children}
-      </body>
-    </html>
   );
 }
