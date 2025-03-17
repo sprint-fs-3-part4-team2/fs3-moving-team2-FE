@@ -10,6 +10,7 @@ import MovingInfoForList from '../organisms/movingInfo';
 import PendingQuoteButtons from '../molecules/pendingQuoteButtons';
 import MovingTypeGroup from '../../shared/molecules/movingTypeGroup';
 import { useRouter } from 'next/navigation';
+import CommonButton from '../../commonBtn/commonBtn';
 
 export default function MoverInfo(props: MoverInfoTemplateProps) {
   const commonProps = {
@@ -19,7 +20,7 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
   const router = useRouter();
 
   return (
-    <div className='flex flex-col px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 gap-[14px] md:gap-[14px] xl:gap-6 w-full shadow-primary'>
+    <div className='flex flex-col px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 gap-[14px] md:gap-[14px] xl:gap-6 w-full shadow-primary cursor-default'>
       <div className='flex justify-between'>
         <div className='flex gap-2 md:gap-2 xl:gap-3'>
           <MovingTypeGroup
@@ -89,12 +90,14 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
               <ReviewContent>{props.reviewContent}</ReviewContent>
             )}
             {props.subVariant === 'pending' && (
-              <button
+              <CommonButton
                 onClick={props.onClickReviewButton}
-                className='w-full bg-primary-blue-300 text-gray-50 py-4 rounded-[16px]'
+                widthType='full'
+                heightType='primary'
+                className='rounded-[16px]'
               >
                 리뷰 작성하기
-              </button>
+              </CommonButton>
             )}
           </div>
           <div className='flex w-full justify-end'>
