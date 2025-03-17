@@ -7,13 +7,17 @@ import Profile from '../../molecules/profileSecrion';
 import { GNB_RIGHT_SECTION_BOX_STYLES } from './constant';
 import { GNBRightSectionProps } from './gnbRightSection.type';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import SideNavigationBar from '@/components/sideMenuBar/organisms';
 
 export default function GNBRightSection({
   isUserAuthorized,
   hasNotification,
   userName,
   imageUrl,
+  userType,
 }: GNBRightSectionProps) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
 
   const handleOnClick = () => {
@@ -29,7 +33,7 @@ export default function GNBRightSection({
             userName={userName}
             imageUrl={imageUrl ? imageUrl : '/icons/gnb/default-profile.svg'}
           />
-          <MenuIcon />
+          <MenuIcon menuOnClick={() => setIsOpen(true)} />
         </div>
       ) : (
         <div className='w-[116px]'>
@@ -44,6 +48,13 @@ export default function GNBRightSection({
             로그인
           </CommonButton>
         </div>
+      )}
+      {isOpen && (
+        <SideNavigationBar
+          userType={userType}
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+        />
       )}
     </div>
   );
