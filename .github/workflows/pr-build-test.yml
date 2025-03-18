@@ -1,9 +1,13 @@
-# .github/workflows/pr-build-test.yml
 name: PR Build Test
 
 on:
   pull_request:
     branches: [ main ]
+
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
 
 jobs:
   build:
