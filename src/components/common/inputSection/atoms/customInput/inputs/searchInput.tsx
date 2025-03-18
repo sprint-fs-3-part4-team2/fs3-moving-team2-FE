@@ -9,12 +9,16 @@ export default function SearchInput({
   styleVariant: inputStyle,
 }: SearchTypeProps) {
   const inputProps = {
-    className: cn(INPUT_STYLES.common, INPUT_STYLES[inputStyle], 'pl-[68px]'),
+    className: cn(
+      INPUT_STYLES.common,
+      INPUT_STYLES[inputStyle],
+      'pl-[68px] xl:text-2lg',
+    ),
     placeholder,
   };
 
   return (
-    <div className='relative flex items-center'>
+    <div className={cn('relative flex items-center')}>
       <SearchButton onClick={onSearch} />
       <input {...inputProps} />
     </div>
