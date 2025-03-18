@@ -5,7 +5,7 @@ import QueryProvider from './queryProvider';
 import dynamic from 'next/dynamic';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
-  ssr: true,
+  ssr: false,
 });
 
 const pretendard = localFont({
