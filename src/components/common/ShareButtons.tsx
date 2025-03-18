@@ -40,14 +40,14 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
         <button
           onClick={handleCopyLink}
           className='flex items-center justify-center w-10 h-10 rounded-lg border border-grayscale-200 bg-grayscale-50
-          md:w-16 md:h-16 md:rounded-2xl'
+          xl:w-16 xl:h-16 xl:rounded-2xl'
         >
           <Image
             src='/icons/share/clip.svg'
             alt='링크 공유'
             width={24}
             height={24}
-            className='md:w-9 md:h-9'
+            className='xl:w-9 xl:h-9'
           />
         </button>
 
@@ -55,14 +55,14 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
         <button
           onClick={shareOnKakao}
           className='flex items-center justify-center w-10 h-10 rounded-lg bg-[#FAE100]
-          md:w-16 md:h-16 md:rounded-2xl'
+          xl:w-16 xl:h-16 xl:rounded-2xl'
         >
           <Image
             src='/icons/share/kakao.svg'
             alt='카카오톡 공유'
             width={24}
             height={24}
-            className='md:w-7 md:h-7'
+            className='xl:w-7 xl:h-7'
           />
         </button>
 
@@ -70,14 +70,14 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
         <button
           onClick={shareOnFacebook}
           className='flex items-center justify-center w-10 h-10 rounded-lg bg-[#4285F4]
-          md:w-16 md:h-16 md:rounded-2xl'
+          xl:w-16 xl:h-16 xl:rounded-2xl'
         >
           <Image
             src='/icons/share/facebook.svg'
             alt='페이스북 공유'
             width={12}
             height={23}
-            className='md:w-7 md:h-7'
+            className='xl:w-7 xl:h-7'
           />
         </button>
       </div>
