@@ -24,13 +24,13 @@ export default function RootLayout({
     <QueryProvider>
       <html lang='Ko'>
         <body className={`${pretendard.variable} antialiased`}>
-          {/* <GNB
+          <GNB
             isUserAuthorized={true}
             userType='user'
             userName={'안성재'}
             imageUrl={'/img/sample-profile/sample-2.svg'}
             hasNotification={true}
-          /> */}
+          />
           {children}
         </body>
       </html>
