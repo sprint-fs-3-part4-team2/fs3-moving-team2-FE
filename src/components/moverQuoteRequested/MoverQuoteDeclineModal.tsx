@@ -22,6 +22,8 @@ export default function MoverQuoteDeclineModal(
     formState: { errors, isValid },
   } = useForm<FieldValues>({ mode: 'onChange' });
 
+  const quoteCommentValue = watch('quoteComment') || '';
+
   return (
     <ModalWrapper
       title='요청 반려'
@@ -63,6 +65,9 @@ export default function MoverQuoteDeclineModal(
           inputType='textarea'
           styleVariant='primary'
         />
+        <p className='text-xs text-gray-500 mt-1'>
+          {quoteCommentValue.length} / 10자 이상
+        </p>
         <CommonButton
           type='submit'
           className='mt-8'
