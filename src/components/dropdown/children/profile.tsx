@@ -4,6 +4,31 @@ import Dropdown, { DropdownProps } from '../dropdown';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
 
+interface ProfileListProps extends PropsWithChildren {
+  href: LinkProps['href'];
+}
+
+export default Profile;
+
+function ProfileList({ href, children }: ProfileListProps) {
+  return (
+    <li
+      className={cn(
+        'h-10 py-2 pl-3',
+        'lg:h-[54px] lg:py-[14px] lg:pl-6',
+        'hover:bg-grayscale-100',
+      )}
+    >
+      <Link
+        className={cn('text-black-400 text-md font-medium', 'lg:text-lg')}
+        href={href}
+      >
+        {children}
+      </Link>
+    </li>
+  );
+}
+
 function Profile({
   isOpen,
   children,
@@ -65,27 +90,3 @@ function Profile({
     </div>
   );
 }
-
-interface ProfileListProps extends PropsWithChildren {
-  href: LinkProps['href'];
-}
-function ProfileList({ href, children }: ProfileListProps) {
-  return (
-    <li
-      className={cn(
-        'h-10 py-2 pl-3',
-        'lg:h-[54px] lg:py-[14px] lg:pl-6',
-        'hover:bg-grayscale-100',
-      )}
-    >
-      <Link
-        className={cn('text-black-400 text-md font-medium', 'lg:text-lg')}
-        href={href}
-      >
-        {children}
-      </Link>
-    </li>
-  );
-}
-
-export default Profile;
