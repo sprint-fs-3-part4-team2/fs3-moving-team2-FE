@@ -8,7 +8,7 @@ export default function SearchButton({ onClick }: SearchButtonProps) {
     <button
       onClick={onClick}
       type='button'
-      className={cn('absolute cursor-pointer top-[14px] left-6')}
+      className={cn('absolute cursor-pointer top-[12px] left-6')}
     >
       <Image
         src={search}

@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import QueryProvider from './queryProvider';
-import GNB from '@/components/layout/gnb/template';
+import dynamic from 'next/dynamic';
+
+const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
+  ssr: false,
+});
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
