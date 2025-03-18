@@ -67,9 +67,8 @@ export default function MoverReceivedRequestFilterModal({
         </>
       }
       onClose={onClose}
-      // className='w-full sm:absolute sm:bottom-0 md:relative'
     >
-      <div className='w-[328px] flex justify-between items-center mt-5 border-b pb-4 px-4'>
+      <div className='w-full flex justify-between items-center mt-5 border-b pb-4 px-4'>
         <h2 className='text-lg font-medium text-grayscale-300'>
           전체 선택 ( 20 )
         </h2>
