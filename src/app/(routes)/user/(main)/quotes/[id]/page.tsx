@@ -64,16 +64,18 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
           <div className='w-[328px] gap-[40px] hidden md:hidden xl:flex flex-col'>
             {!data.matched && (
-              <CommonBtn
-                widthType='full'
-                heightType='primary'
-                backgroundColorType='blue'
-                textColorType='white'
-              >
-                견적 확정하기
-              </CommonBtn>
+              <>
+                <CommonBtn
+                  widthType='full'
+                  heightType='primary'
+                  backgroundColorType='blue'
+                  textColorType='white'
+                >
+                  견적 확정하기
+                </CommonBtn>
+                <HorizontalDivider />
+              </>
             )}
-            <HorizontalDivider />
             <ShareButtons text='견적서 공유하기' />
           </div>
         </div>
