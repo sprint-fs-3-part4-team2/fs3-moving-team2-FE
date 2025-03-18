@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import QueryProvider from './queryProvider';
+import dynamic from 'next/dynamic';
+
+const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
+  ssr: false,
+});
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -19,8 +25,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='Ko'>
-      <body className={`${pretendard.variable} antialiased`}>{children}</body>
-    </html>
+    <QueryProvider>
+      <html lang='Ko'>
+        <body className={`${pretendard.variable} antialiased`}>
+          <GNB
+            isUserAuthorized={true}
+            userType='user'
+            userName={'안성재'}
+            imageUrl={'/img/sample-profile/sample-2.svg'}
+            hasNotification={true}
+          />
+          {children}
+        </body>
+      </html>
+    </QueryProvider>
   );
 }

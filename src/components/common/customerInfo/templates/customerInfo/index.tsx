@@ -1,6 +1,6 @@
 'use client';
 
-import MovingInfo from '@/components/common/moverInfo/organisms/movingInfo';
+import MovingInfoForList from '@/components/common/moverInfo/organisms/movingInfo';
 import MovingTypeGroup from '../../../shared/molecules/movingTypeGroup';
 import CustomerName from '../../atoms/customerName';
 import HorizontalDivider from '../../atoms/horizontalDivider';
@@ -9,6 +9,7 @@ import RequestedQuoteButtons from '../../molecules/requestedQuoteButtons';
 import QuotePriceForList from '@/components/common/shared/atoms/quotePriceForList';
 import IsCompletedQuote from '../../molecules/isCompletedQuote';
 import IsDeclinedQuote from '../../molecules/isDeclinedQuote';
+import RequestedAt from '../../atoms/requestedAt';
 
 export default function CustomerInfo(props: CustomerInfoProps) {
   return (
@@ -17,16 +18,19 @@ export default function CustomerInfo(props: CustomerInfoProps) {
         <IsCompletedQuote quoteId={props.quoteId} />
       )}
       {props.variant === 'submitted' && props.declined && <IsDeclinedQuote />}
-      <div className='flex justify-between'>
+      <div className='flex justify-between items-center'>
         <MovingTypeGroup
           isCustomQuote={props.isCustomQuote}
           movingType={props.movingType}
           quoteState={props.quoteState}
         />
+        {props.variant === 'requested' && (
+          <RequestedAt requestedAt={props.requestedAt} />
+        )}
       </div>
       <CustomerName name={props.customerName} />
       <HorizontalDivider />
-      <MovingInfo
+      <MovingInfoForList
         movingDate={props.movingDate}
         departure={props.departure}
         arrival={props.arrival}

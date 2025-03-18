@@ -1,3 +1,5 @@
+'use client';
+
 import cn from '@/utils/cn';
 import ReviewHeader from '../../organisms/reviewHeader';
 import { REVIEW_BLOCK_STYLES } from './constant';

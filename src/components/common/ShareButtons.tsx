@@ -1,13 +1,37 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 interface ShareButtonsProps {
   text: string;
 }
 
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
 const ShareButtons = ({ text }: ShareButtonsProps) => {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+
+  useEffect(() => {
+    // 카카오 SDK 스크립트 로드
+    const script = document.createElement('script');
+    script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+      }
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   // 링크 공유
   const handleCopyLink = async () => {
@@ -21,8 +45,31 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
 
   // 카카오 공유
   const shareOnKakao = () => {
-    const kakaoUrl = `https://sharer.kakao.com/talk/friends/picker/link?app_key=e37ad5eb9d777fdc772bfec0c290ddcd&target_id_type=URL&target_id=${encodeURIComponent(currentUrl)}`;
-    window.open(kakaoUrl, '_blank', 'width=600,height=600');
+    if (window.Kakao && window.Kakao.Share) {
+      window.Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: document.title,
+          description: '이사 견적을 확인해보세요',
+          imageUrl: 'https://d3h2ixicz4w2p.cloudfront.net/logo-with-icon.jpg',
+          link: {
+            mobileWebUrl: currentUrl,
+            webUrl: currentUrl,
+          },
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: currentUrl,
+              webUrl: currentUrl,
+            },
+          },
+        ],
+      });
+    } else {
+      alert('카카오톡 SDK가 로드되지 않았습니다.');
+    }
   };
 
   // 페이스북 공유

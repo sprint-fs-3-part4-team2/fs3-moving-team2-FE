@@ -11,9 +11,9 @@ export default function Layout({
   };
 
   return (
-    <div>
+    <>
       <TabNav tab={tabs} />
       {children}
-    </div>
+    </>
   );
 }
