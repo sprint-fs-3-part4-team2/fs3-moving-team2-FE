@@ -10,6 +10,7 @@ import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { useQuery } from '@tanstack/react-query';
 import { getQuoteByCustomer } from '@/services/quotes';
 import { MOVING_TYPES } from '@/constants/movingTypes';
+import { useMemo } from 'react';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -18,7 +19,10 @@ export default function Page({ params }: { params: { id: string } }) {
     queryFn: async () => getQuoteByCustomer(id),
   });
 
-  const movingType = data?.request.moveType as keyof typeof MOVING_TYPES;
+  const movingType = useMemo(
+    () => data?.request.moveType as keyof typeof MOVING_TYPES,
+    [data],
+  );
 
   return (
     data && (
@@ -60,16 +64,18 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
           <div className='w-[328px] gap-[40px] hidden md:hidden xl:flex flex-col'>
             {!data.matched && (
-              <CommonBtn
-                widthType='full'
-                heightType='primary'
-                backgroundColorType='blue'
-                textColorType='white'
-              >
-                견적 확정하기
-              </CommonBtn>
+              <>
+                <CommonBtn
+                  widthType='full'
+                  heightType='primary'
+                  backgroundColorType='blue'
+                  textColorType='white'
+                >
+                  견적 확정하기
+                </CommonBtn>
+                <HorizontalDivider />
+              </>
             )}
-            <HorizontalDivider />
             <ShareButtons text='견적서 공유하기' />
           </div>
         </div>

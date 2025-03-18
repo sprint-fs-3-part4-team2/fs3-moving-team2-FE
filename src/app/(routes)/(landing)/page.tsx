@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import cn from '@/utils/cn';
 import {
+  LANDING_PAGE_STYLES,
   FIRST_IMAGE_BOX_STYLES,
   GRID_BOX_STYLES,
   LANDING_CARDS_COMMON_STYLES,
@@ -17,11 +18,7 @@ import {
 
 export default function Home(): JSX.Element {
   return (
-    <div
-      className={cn(
-        'animate-fadeIn  w-full min-h-screen bg-[var(--background-400)] flex flex-col items-center',
-      )}
-    >
+    <div className={cn(LANDING_PAGE_STYLES)}>
       <h1 className={cn(LANDING_DESCRIPTION_STYLES)}>
         원하는 이사 서비스를 요청하고 견적을 받아보세요
       </h1>
