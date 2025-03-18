@@ -13,7 +13,7 @@ export default function ServiceBadge({
   return (
     <div
       className={cn(
-        'inline-flex px-3 md:px-3 xl:px-5 py-[6px] md:py-[6px] xl:py-[10px] border rounded-full text-[14px] md:text-[14px] xl:tex-[18px] font-medium select-none',
+        'justify-center inline-flex px-3 md:px-3 xl:px-5 py-[6px] md:py-[6px] xl:py-[10px] border rounded-full text-[14px] md:text-[14px] xl:tex-[18px] font-medium select-none',
         selected && (selected === true ? BADGE_COLOR.blue : BADGE_COLOR.gray),
         color && BADGE_COLOR[color],
         onSelect && 'cursor-pointer',

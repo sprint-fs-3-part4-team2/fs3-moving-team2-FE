@@ -15,7 +15,7 @@ export default function ReviewStar() {
   };
 
   return (
-    <div className='p-10'>
+    <div>
       <h1 className='text-2xl font-bold mb-4'></h1>
       <RatingStat
         averageRating={ratingData.averageRating}
