@@ -1,9 +1,9 @@
+import { Dispatch, SetStateAction } from 'react';
 import {
   FilterOption,
   filterTypes,
   moveTypes,
-} from '@/app/(routes)/mover/(main)/quotes/requested/page';
-import { Dispatch, SetStateAction } from 'react';
+} from './MoverQuoteFilterOption.types';
 
 // 이사 유형 필터 컴포넌트
 interface MoverReceivedRequestFilterProps {
