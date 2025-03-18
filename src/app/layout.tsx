@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import QueryProvider from './queryProvider';
+import GNB from '@/components/layout/gnb/template';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -22,7 +23,16 @@ export default function RootLayout({
   return (
     <QueryProvider>
       <html lang='Ko'>
-        <body className={`${pretendard.variable} antialiased`}>{children}</body>
+        <body className={`${pretendard.variable} antialiased`}>
+          <GNB
+            isUserAuthorized={true}
+            userType='user'
+            userName={'안성재'}
+            imageUrl={'/img/sample-profile/sample-2.svg'}
+            hasNotification={true}
+          />
+          {children}
+        </body>
       </html>
     </QueryProvider>
   );
