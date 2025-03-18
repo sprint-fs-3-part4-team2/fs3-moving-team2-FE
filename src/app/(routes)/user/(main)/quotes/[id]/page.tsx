@@ -15,7 +15,7 @@ import { useMemo } from 'react';
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const { data } = useQuery({
-    queryKey: ['quotes', id],
+    queryKey: ['quotes', 'customer', id],
     queryFn: async () => getQuoteByCustomer(id),
   });
 
@@ -46,7 +46,7 @@ export default function Page({ params }: { params: { id: string } }) {
               favoriteCount={data.mover.totalCustomerFavorite}
               ratingCount={data.mover.totalReviews}
               isFavoriteMoverList={false}
-              description={data.mover.description}
+              description={data.mover.introduction}
             />
             <div className='flex-col gap-10 flex md:flex xl:hidden'>
               <ShareButtons text='견적서 공유하기' />
@@ -57,8 +57,8 @@ export default function Page({ params }: { params: { id: string } }) {
             <MovingInfo
               requestedDate={data.request.createdAt}
               movingDate={data.request.moveDate}
-              departure={data.request.departure}
-              arrival={data.request.arrival}
+              departure={data.request.departure.fullAddress}
+              arrival={data.request.arrival.fullAddress}
               movingType={MOVING_TYPES[movingType].value}
             />
           </div>
