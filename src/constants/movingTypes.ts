@@ -9,9 +9,3 @@ export const MOVING_STATE = {
   confirmedQuote: { key: 'confirmedQuote', value: '확정 견적' },
   pendingQuote: { key: 'pendingQuote', value: '견적 대기' },
 } as const;
-
-export const MOVING_TYPE_DECODER = {
-  SMALL_MOVE: 'small',
-  OFFICE_MOVE: 'office',
-  HOME_MOVE: 'home',
-} as const;
