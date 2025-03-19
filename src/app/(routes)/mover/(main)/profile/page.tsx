@@ -6,7 +6,7 @@ import MoverStatInfo from '@/components/moverMypage/component';
 import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
 import Pagination from '@/components/pagination/molecule/pagination';
 
-export default function myPage() {
+export default function MyPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const totalPages = Math.ceil(MockData.length / itemsPerPage);
