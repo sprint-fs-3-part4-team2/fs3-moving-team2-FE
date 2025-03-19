@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Dropdown, { DropdownProps } from '../dropdown';
 import cn from '@/utils/cn';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CloseBtn } from '@/app/(routes)/select-role/components/tooltip';
 import { formatDistanceToNow } from 'date-fns';
 import {
@@ -71,7 +71,8 @@ function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
       <Dropdown
         isOpen={open}
         className={cn(
-          'absolute block px-4 h-auto max-h-[314px] lg:max-h-[352px] max-w-[312px] lg:max-w-[360px] py-[6px] z-5',
+          'absolute block right-0 px-4 top-[115%] w-[312px] h-auto max-h-[314px] py-[6px] z-5',
+          'xl:max-h-[352px] xl:max-w-[360px]',
         )}
       >
         <div className='py-[14px] pl-4 lg:pl-6 h-[54px] relative'>
