@@ -22,3 +22,10 @@ export interface QuoteBase {
   customRequest: boolean;
   matched: boolean;
 }
+
+export interface QuoteRequest {
+  moveType: string;
+  moveDate: string;
+  arrival: string;
+  departure: string;
+}
