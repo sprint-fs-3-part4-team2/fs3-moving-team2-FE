@@ -38,7 +38,7 @@ export default function Page({ params }: { params: { id: string } }) {
               moverName={data.mover.moverName}
               imageUrl={data.mover.profileImage}
               movingType={[movingType]}
-              isCustomQuote={data.customRequest}
+              isCustomQuote={data.isCustomRequest}
               quoteState={data.matched ? 'confirmedQuote' : 'pendingQuote'}
               rating={data.mover.averageRating}
               experienceYears={data.mover.experienceYears}
