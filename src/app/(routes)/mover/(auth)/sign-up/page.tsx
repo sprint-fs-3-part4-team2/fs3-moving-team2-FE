@@ -10,7 +10,7 @@ export default function Page() {
     <AuthPageLayout>
       <LogoSection
         userType='mover'
-        moveToPage='mover/sign-up'
+        moveToPage='user/sign-up'
       />
 
       <FormGroupSection formType='signUp' />
