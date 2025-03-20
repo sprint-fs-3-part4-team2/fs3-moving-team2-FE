@@ -40,9 +40,10 @@ export default function MoverStatInfo({
             <CommonButton
               widthType='half'
               heightType='secondary'
-              backgroundColorType='gray'
+              backgroundColorType='dynamic'
               borderColorsType='gray'
               textColorType='gray'
+              className='bg-bg-[var(--background-200)]'
             >
               <div className='flex items-center justify-center gap-2'>
                 기본 정보 수정

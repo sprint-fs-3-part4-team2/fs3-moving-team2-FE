@@ -3,6 +3,7 @@ import cn from '@/utils/cn';
 import Dropdown, { DropdownProps } from '../dropdown';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
+import { usePathname } from 'next/navigation';
 
 function Profile({
   isOpen,
@@ -11,10 +12,15 @@ function Profile({
 }: Omit<DropdownProps, 'dispatch'>) {
   const [open, setOpen] = useState(isOpen || false);
   const [name, setName] = useState('테스트');
+  const pathname = usePathname();
   useEffect(() => {
     // 지울 코드
+    // 주스탄드로 전역으로 유저정보 처리 할 것
     setName('테스트');
   }, []);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
   function openHandle(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault();
     setOpen((prev) => !prev);
@@ -30,8 +36,9 @@ function Profile({
       <Dropdown
         isOpen={open}
         className={cn(
-          'absolute block max-w-[152px]  min-h-[224px] px-[6px] pt-[10px] pb-2 top-full z-5',
-          'lg:max-w-[248px] lg:pt-3 lg:pb-[6px] lg:px-1',
+          'absolute left-1/2 transform -translate-x-1/2',
+          'block w-[152px] min-h-[224px] px-[6px] pt-[10px] pb-2 top-[140%] z-[100]',
+          'xl:rightw-[248px] xl:pt-3 xl:pb-[6px] xl:px-1',
         )}
       >
         <h2 className='text-black-400 py-[10px] pl-3 lg:py-[14px] lg:pl-6 font-bold text-lg lg:text-[18px]'>
@@ -44,13 +51,13 @@ function Profile({
           <li
             className={cn(
               'h-[38px] flex items-center justify-center border-t border-grayscale-50 mt-2',
-              'lg:h-[46px] lg:mt-3 ',
+              'xl:h-[46px] xl:mt-3 ',
             )}
           >
             <Link
               className={cn(
                 'text-grayscale-500 text-xs font-normal',
-                'lg:text-lg lg:font-medium ',
+                'xl:text-lg xl:font-medium ',
               )}
               href='#'
               onClick={() => {
@@ -69,17 +76,18 @@ function Profile({
 interface ProfileListProps extends PropsWithChildren {
   href: LinkProps['href'];
 }
+
 function ProfileList({ href, children }: ProfileListProps) {
   return (
     <li
       className={cn(
         'h-10 py-2 pl-3',
-        'lg:h-[54px] lg:py-[14px] lg:pl-6',
+        'xl:h-[54px] xl:py-[14px] xl:pl-6',
         'hover:bg-grayscale-100',
       )}
     >
       <Link
-        className={cn('text-black-400 text-md font-medium', 'lg:text-lg')}
+        className={cn('text-black-400 text-md font-medium', 'xl:text-lg')}
         href={href}
       >
         {children}
