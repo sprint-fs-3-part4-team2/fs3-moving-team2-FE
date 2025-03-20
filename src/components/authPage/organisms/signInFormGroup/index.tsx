@@ -18,7 +18,7 @@ export default function SignInFormGroup() {
     register,
     handleSubmit,
     setFocus,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
   });
