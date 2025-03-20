@@ -1,10 +1,23 @@
+'use client';
+import { useState } from 'react';
 import ReviewStar from './reviewRating';
 import { MockData } from '@/components/moverMypage/reviewMockdata';
 import MoverStatInfo from '@/components/moverMypage/component';
 import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
-import PageHeader from '@/components/common/shared/atoms/pageHeader';
+import Pagination from '@/components/pagination/molecule/pagination';
 
-export default function myPage() {
+export default function MyPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(MockData.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = MockData.slice(startIndex, endIndex);
   return (
     <div>
       <div className='max-w-[1920px]'></div>
@@ -24,7 +37,7 @@ export default function myPage() {
         <ReviewStar />
 
         <div className='max-w-[955px]'>
-          {MockData.map((review) => (
+          {currentData.map((review) => (
             <ReviewBlock
               key={review.id}
               name={review.name}
@@ -33,6 +46,16 @@ export default function myPage() {
               content={review.content}
             />
           ))}
+        </div>
+        <div className='flex justify-center mt-[40px] mb-[59px]'>
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              className='mx-auto'
+            />
+          )}
         </div>
       </div>
     </div>

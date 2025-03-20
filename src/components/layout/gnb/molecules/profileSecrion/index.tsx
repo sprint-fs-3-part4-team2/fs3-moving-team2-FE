@@ -8,13 +8,8 @@ export default function ProfileSecrion({
   userName,
   imageUrl,
 }: ProfileSecrionProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
-    <Profile
-      isOpen={true}
-      className=''
-    >
+    <Profile className=''>
       <div className={PROFILE_STYLES}>
         <ProfileIcon profilImageUrl={imageUrl} />
         <span className={PROFILE_NAME_STYLES}>{userName}</span>

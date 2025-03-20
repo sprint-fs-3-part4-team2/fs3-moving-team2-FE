@@ -10,6 +10,7 @@ import {
   FormatDistanceToken,
   FormatDistanceFnOptions,
 } from 'date-fns/locale';
+import { usePathname } from 'next/navigation';
 
 type AlarmData = {
   id: string;
@@ -41,8 +42,12 @@ interface AlarmProps extends Omit<DropdownProps, 'dispatch'> {
 function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
   const [open, setOpen] = useState<boolean>(isOpen);
   const [alarms, setAlarms] = useState(data || dummy);
+  const pathname = usePathname();
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
-  function closeAlarm(e: React.MouseEvent<any>) {
+  function closeAlarm(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault();
     setOpen(false);
   }
@@ -71,7 +76,8 @@ function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
       <Dropdown
         isOpen={open}
         className={cn(
-          'absolute block px-4 h-auto max-h-[314px] lg:max-h-[352px] max-w-[312px] lg:max-w-[360px] py-[6px] z-5',
+          'absolute block right-0 px-4 top-[140%] w-[312px] h-auto max-h-[314px] py-[6px] z-[99]',
+          'xl:max-h-[352px] xl:w-[360px]',
         )}
       >
         <div className='py-[14px] pl-4 lg:pl-6 h-[54px] relative'>
