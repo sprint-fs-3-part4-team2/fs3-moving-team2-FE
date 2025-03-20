@@ -36,7 +36,7 @@ export default function Page({ params }: { params: { id: string } }) {
               variant='submitted'
               movingType={[movingType]}
               quoteState={data.matched ? 'confirmedQuote' : 'pendingQuote'}
-              isCustomQuote={data.customRequest}
+              isCustomQuote={data.isCustomRequest}
               customerName={data.customerName}
               movingDate={data.request.moveDate}
               arrival={data.request.arrival.sido}
