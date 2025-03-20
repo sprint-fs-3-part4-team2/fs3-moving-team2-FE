@@ -1,3 +1,5 @@
+import { MOVING_TYPES } from '@/constants/movingTypes';
+
 export interface Address {
   sido: string;
   sigungu: string;
@@ -8,7 +10,7 @@ export interface Address {
 export interface Request {
   id: string;
   customerId: string;
-  moveType: string;
+  moveType: keyof typeof MOVING_TYPES;
   moveDate: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -19,7 +21,7 @@ export interface Request {
 export interface QuoteBase {
   price: number;
   request: Request;
-  customRequest: boolean;
+  isCustomRequest: boolean;
   matched: boolean;
 }
 
