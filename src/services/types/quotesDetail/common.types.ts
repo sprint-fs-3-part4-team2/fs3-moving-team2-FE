@@ -5,11 +5,15 @@ export interface Address {
   fullAddress: string;
 }
 
-export interface QuoteRequest {
+export interface Request {
+  id: string;
+  customerId: string;
   moveType: string;
-  moveDate: string;
-  arrival: string;
-  departure: string;
+  moveDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  arrival: Address;
+  departure: Address;
 }
 
 export interface QuoteBase {
@@ -17,4 +21,11 @@ export interface QuoteBase {
   request: Request;
   customRequest: boolean;
   matched: boolean;
+}
+
+export interface QuoteRequest {
+  moveType: string;
+  moveDate: string;
+  arrival: string;
+  departure: string;
 }
