@@ -12,7 +12,6 @@ export default function QuoteRequestInProgressPage() {
     return <div>견적 요청 데이터가 없습니다.</div>;
   }
 
-  console.log(registerData);
   return (
     <main className='min-h-screen flex flex-col'>
       <nav className='px-6 md:px-[72px] '>
