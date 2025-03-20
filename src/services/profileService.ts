@@ -15,7 +15,7 @@ export const createCustomerProfile = async (data: any) => {
 export const createMoverProfile = async (data: any) => {
   try {
     const response = await axiosInstance.post('/profile/mover/register', data);
-    return response.data;
+    return response;
   } catch (err) {
     console.error('API 요청 오류:', err);
     throw err;
@@ -26,7 +26,7 @@ export const createMoverProfile = async (data: any) => {
 export const updateCustomerProfile = async (data: any) => {
   try {
     const response = await axiosInstance.patch('/profile/user/edit', data);
-    return response.data;
+    return response;
   } catch (err) {
     console.error('API 요청 오류:', err);
     throw err;
@@ -36,8 +36,8 @@ export const updateCustomerProfile = async (data: any) => {
 // 기사 프로필 수정
 export const updateMoverProfile = async (data: any) => {
   try {
-    const response = await axiosInstance.patch('/profile/user/edit', data);
-    return response.data;
+    const response = await axiosInstance.patch('/profile/mover/edit', data);
+    return response;
   } catch (err) {
     console.error('API 요청 오류:', err);
     throw err;

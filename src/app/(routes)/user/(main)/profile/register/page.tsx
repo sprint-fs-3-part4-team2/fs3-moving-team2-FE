@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { createCustomerProfile } from '@/services/profileService';
 
 type FormData = {
-  profileImage: File | null;
+  profileImage: string | null;
   selectedMoveTypes: string[];
   selectedRegions: string[];
 };
@@ -30,7 +30,7 @@ export default function Page() {
   // user 타입
   const userType: string = 'customer';
 
-  const moveType = ['소형 이사', '중형 이사', '대형 이사'];
+  const moveType = ['소형이사', '가정이사', '사무실이사'];
 
   const regions = [
     '서울',
@@ -121,9 +121,9 @@ export default function Page() {
                     프로필 이미지
                   </div>
                   <ImageUpload
-                    image={profileImage}
-                    onChange={(file) =>
-                      setValue('profileImage', file, { shouldValidate: true })
+                    imageUrl={profileImage}
+                    onChange={(url) =>
+                      setValue('profileImage', url, { shouldValidate: true })
                     }
                   />
                 </div>

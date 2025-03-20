@@ -12,7 +12,7 @@ type FormData = {
   experience: number;
   shortIntro: string;
   description: string;
-  profileImage: File | null;
+  profileImage: string | null;
   selectedMoveTypes: string[];
   selectedRegions: string[];
 };
@@ -40,7 +40,7 @@ export default function Page() {
   // user 타입
   const userType: string = 'mover';
 
-  const moveType = ['소형 이사', '가정 이사', '사무실 이사'];
+  const moveType = ['소형이사', '가정이사', '사무실이사'];
 
   const regions = [
     '서울',
@@ -140,9 +140,9 @@ export default function Page() {
                       프로필 이미지
                     </div>
                     <ImageUpload
-                      image={profileImage}
-                      onChange={(file) =>
-                        setValue('profileImage', file, { shouldValidate: true })
+                      imageUrl={profileImage}
+                      onChange={(url) =>
+                        setValue('profileImage', url, { shouldValidate: true })
                       }
                     />
                   </div>
