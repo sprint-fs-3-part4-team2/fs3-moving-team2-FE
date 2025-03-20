@@ -19,6 +19,7 @@ interface Mover {
   favoriteCount: number;
   ratingCount: number;
   isFavoriteMoverList: boolean;
+  profileImage: string;
 }
 
 export default function Page() {
@@ -83,7 +84,7 @@ export default function Page() {
           <MoverInfo
             key={mover.id}
             {...mover}
-            imageUrl={null}
+            imageUrl={mover.profileImage}
             variant='quote'
             subVariant='completed'
             onFavoriteClick={() => handleFavoriteToggle(mover.id)}
