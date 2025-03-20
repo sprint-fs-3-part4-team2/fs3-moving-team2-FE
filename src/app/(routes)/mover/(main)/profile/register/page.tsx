@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { createMoverProfile } from '@/services/profileService';
 
 type FormData = {
-  nickname: string;
   experience: number;
   shortIntro: string;
   description: string;
@@ -26,7 +25,6 @@ export default function Page() {
   } = useForm<FormData>({
     mode: 'onTouched',
     defaultValues: {
-      nickname: '',
       experience: undefined,
       shortIntro: '',
       description: '',
@@ -61,7 +59,6 @@ export default function Page() {
   ];
 
   // 리액트 훅 폼 지켜보기이..
-  const nickname = watch('nickname');
   const experience = watch('experience');
   const shortIntro = watch('shortIntro');
   const description = watch('description');
@@ -70,7 +67,6 @@ export default function Page() {
   const profileImage = watch('profileImage');
 
   const isValid =
-    nickname.trim() !== '' &&
     experience !== undefined &&
     shortIntro.trim().length >= 8 &&
     description.trim().length >= 10 &&
@@ -148,27 +144,7 @@ export default function Page() {
                     />
                   </div>
                   <div className='border-b border-solid border-gray-200'></div>
-                  {/* 별명 */}
-                  <div className='flex flex-col gap-4 text-xl'>
-                    <div className='flex gap-1'>
-                      <span className='sm:text-lg xl:text-xl font-semibold'>
-                        별명
-                      </span>
-                      <span className='text-blue-500'>*</span>
-                    </div>
-                    <FormInput
-                      register={register}
-                      errors={errors}
-                      placeholder='사이트에 노출될 별명을 입력해 주세요'
-                      name='nickname'
-                      type='text'
-                      validation={{ required: '별명을 입력해 주세요.' }}
-                      inputType='input'
-                      styleVariant='primary'
-                      inputVariant='form'
-                    />
-                  </div>
-                  <div className='border-b border-solid border-gray-200'></div>
+
                   {/* 경력 */}
                   <div className='flex flex-col gap-4 text-xl'>
                     <div className='flex gap-1'>
