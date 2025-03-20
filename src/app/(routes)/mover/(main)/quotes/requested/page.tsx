@@ -105,6 +105,7 @@ export default function Page() {
             <h3 className='font-semibold'>전체 {totalCustomerRequests}건</h3>
             <div className='flex'>
               <DropdownCta
+                // border={false}
                 className={'mr-4 '}
                 isOpen={isOpen}
                 data={[

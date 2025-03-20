@@ -24,3 +24,10 @@ export interface QuoteBase {
   isCustomRequest: boolean;
   matched: boolean;
 }
+
+export interface QuoteRequest {
+  moveType: string;
+  moveDate: string;
+  arrival: string;
+  departure: string;
+}

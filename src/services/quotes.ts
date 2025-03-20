@@ -3,7 +3,8 @@ import {
   QuoteForCustomer,
   QuoteForMover,
 } from './types/quotesDetail/quotesDetail.types';
-import { SubmittedQuotes } from './types/matchedQuotes/matchedQuotes.types';
+import { QuoteRequest } from './types/quotesDetail/common.types';
+import { SubmittedQuotes } from './types/submittedQuotes/submittedQuotes.types';
 
 export const getQuoteByCustomer = async (quoteId: string) => {
   try {
@@ -29,7 +30,7 @@ export const getQuoteByMover = async (quoteId: string) => {
 
 export const getSubmittedQuotesList = async ({
   page = 1,
-  pageSize = 10,
+  pageSize = 4,
   moverId,
 }: {
   page: number;
@@ -49,5 +50,23 @@ export const getSubmittedQuotesList = async ({
     return data;
   } catch {
     console.error('완료된 견적 목록 불러오기 실패');
+  }
+};
+
+export const createQuoteRequest = async ({
+  moveType,
+  moveDate,
+  departure,
+  arrival,
+}: QuoteRequest) => {
+  try {
+    await axiosInstance.post<QuoteRequest>(`/quotes/request`, {
+      moveType,
+      moveDate,
+      departure,
+      arrival,
+    });
+  } catch (error: any) {
+    console.error('견적 요청 실패', error);
   }
 };
