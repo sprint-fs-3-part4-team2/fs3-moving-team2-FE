@@ -3,7 +3,7 @@ import {
   QuoteForCustomer,
   QuoteForMover,
 } from './types/quotesDetail/quotesDetail.types';
-import { matchedQuotes } from './types/matchedQuotes/matchedQuotes.types';
+import { SubmittedQuotes } from './types/matchedQuotes/matchedQuotes.types';
 
 export const getQuoteByCustomer = async (quoteId: string) => {
   try {
@@ -37,7 +37,7 @@ export const getSubmittedQuotesList = async ({
   moverId: string;
 }) => {
   try {
-    const { data } = await axiosInstance.get<matchedQuotes>(
+    const { data } = await axiosInstance.get<SubmittedQuotes>(
       `/quotes/${moverId}/submitted`,
       {
         params: {
