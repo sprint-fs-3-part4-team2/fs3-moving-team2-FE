@@ -11,7 +11,7 @@ export default function VisibleButton({
     <button
       type='button'
       onClick={onClick}
-      className='absolute right-[14px] top-[20px] cursor-pointer'
+      className='absolute right-[14px] cursor-pointer'
     >
       <Image
         src={showPassword ? visible : invisible}
