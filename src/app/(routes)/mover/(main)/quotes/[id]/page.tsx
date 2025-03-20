@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className='flex w-full gap-[117px]'>
           <div className='flex flex-col gap-10 w-full'>
             <CustomerInfo
-              quoteId='1'
+              quoteId={data.id}
               variant='submitted'
               movingType={[movingType]}
               quoteState={data.matched ? 'confirmedQuote' : 'pendingQuote'}
