@@ -6,7 +6,7 @@ import { maxStep } from './QuoteRequestPage';
 import formatKoreanTime from '@/utils/formatKoreanTime';
 import service from '@/constants/dropdown/service';
 import axiosInstance from '@/lib/axiosInstance';
-import { createQuoteRequest } from '@/services/quotes';
+import { createQuoteRequest } from '@/services/moverQuotes';
 
 interface QuoteConfirmationModalProps {
   setShowModal: (value: boolean) => void;
