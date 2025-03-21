@@ -119,7 +119,7 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await updateCustomerProfile(data);
       console.log('프로필 수정 성공', response);
-      router.push('/user/quotes/request');
+      router.push('/user/quotes/requested');
     } catch (error) {
       console.error('프로필 수정 실패:', error);
     }
