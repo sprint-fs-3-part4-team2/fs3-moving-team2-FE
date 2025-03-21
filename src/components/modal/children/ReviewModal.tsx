@@ -93,17 +93,17 @@ export default function ReviewModal({
     <ModalWrapper
       title='리뷰 쓰기'
       onClose={onClose}
-      className='w-[608px]'
+      className='w-[375px] md:w-[407px] xl:w-[608px] absolute bottom-0 md:relative'
     >
       {/* 라벨 */}
-      <div className='pt-[44px]'>
+      <div className='pt-[28px] xl:pt-[44px]'>
         <MovingTypeGroup
           movingType={[moveTypeLabels[estimate.moveType]]}
           isCustomQuote={estimate.isTargeted}
         />
       </div>
       {/* 무버 정보 */}
-      <div className='pt-[24px]'>
+      <div className='pt-[14px] xl:pt-[24px]'>
         <MoverDatePrice
           moverName={estimate.driverName}
           imageUrl={estimate.driverProfileImage}
@@ -114,7 +114,7 @@ export default function ReviewModal({
       {/* 별점 */}
       <div className='pt-[32px]'>
         <div className='pb-[20px]'>
-          <label className='text-black-300 font-[600] text-[20px]'>
+          <label className='text-black-300 font-[600] text-[16px] xl:text-[20px]'>
             평점을 선택해 주세요
           </label>
         </div>
@@ -135,15 +135,15 @@ export default function ReviewModal({
           <RatingStars
             rating={rating}
             onClick={setRating}
-            iconClassName='text-yellow-400 w-[40px] h-[40px]'
+            iconClassName='text-yellow-400 xl:w-[40px] xl:h-[40px] w-[32px] h-[32px]'
           />
         </div>
-        <div className='border-t-[1px] border-line-100'></div>
+        <div className='border-b-[1px]  border-line-100 h-[20px] xl:h-[32px]'></div>
       </div>
 
       {/* 코멘트 입력 */}
-      <div className='pt-[32px]'>
-        <label className='text-black-300 font-[600] text-[20px]'>
+      <div className='pt-[20px] xl:pt-[32px]'>
+        <label className='text-black-300 font-[600] text-[16px] xl:text-[20px]'>
           상세 후기를 작성해 주세요
         </label>
         <div className='pt-[16px]'>
@@ -151,7 +151,7 @@ export default function ReviewModal({
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder='최소 10자 이상 입력해주세요'
-            className='bg-backgroundVariants-200 placeholder-gray-300 text-black-400 w-full h-[160px] px-[24px] py-[14px] rounded-[16px] resize-none border-none focus:border-none focus:outline-none'
+            className='bg-backgroundVariants-200 placeholder-gray-300 text-black-400 text-[16px] xl:text-[20px] w-full h-[160px] px-[16px] xl:px-[24px] py-[14px] rounded-[16px] resize-none border-none focus:border-none focus:outline-none'
           />
         </div>
         <p
@@ -171,7 +171,7 @@ export default function ReviewModal({
       <button
         onClick={handleSubmit}
         disabled={rating === 0 || comment.length < 10}
-        className={`mt-[16px] w-full y-[64px] rounded-[16px] font-[600] text-[20px]/[64px] ${
+        className={`mt-[16px] w-full y-[54px] xl:y-[64px] rounded-[16px] font-[600] text-[16px]/[54px] xl:text-[20px]/[64px] ${
           rating === 0 || comment.length < 10
             ? 'bg-grayscale-100 text-white'
             : 'bg-primary-blue-300 text-white'
