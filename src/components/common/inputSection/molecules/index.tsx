@@ -8,12 +8,12 @@ export default function InputSection<T extends FieldValues>({
   ...props
 }: InputSectionProps<T>) {
   return (
-    <>
+    <div>
       <CustomLabel
         styleVariant={props.styleVariant}
         content={content}
       />
       <CustomInput {...props} />
-    </>
+    </div>
   );
 }
