@@ -104,10 +104,20 @@ const config: Config = {
           '0%': { transform: 'translateY(10%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
+        slideDown: {
+          '0%': { transform: 'translateY(-10%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideToRight: {
+          '0%': { transform: 'translateX(10%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 2.5s ease-in-out forwards',
         slideUp: 'slideUp 0.5s ease-out forwards',
+        slideDown: 'slideDown 0.8s ease-out forwards',
+        slideToRight: 'slideToRight 0.5s ease-out forwards',
       },
       boxShadow: {
         primary:
