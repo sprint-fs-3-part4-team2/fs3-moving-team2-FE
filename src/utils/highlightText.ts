@@ -1,7 +1,4 @@
-import { usePathname } from 'next/navigation';
-
-export function highlightText(linkHref: string[]) {
-  const pathname = usePathname();
+export function highlightText(linkHref: string[], pathname: string) {
 
   const highlight = Array.isArray(linkHref)
     ? linkHref.includes(pathname)
