@@ -8,7 +8,7 @@ import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import ShareButtons from '@/components/common/ShareButtons';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { useQuery } from '@tanstack/react-query';
-import { getQuoteByCustomer } from '@/services/quotes';
+import { getQuoteByCustomer } from '@/services/moverQuotes';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { useMemo } from 'react';
 
