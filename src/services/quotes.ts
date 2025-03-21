@@ -30,16 +30,14 @@ export const getQuoteByMover = async (quoteId: string) => {
 
 export const getSubmittedQuotesList = async ({
   page = 1,
-  pageSize = 4,
-  moverId,
+  pageSize = 6,
 }: {
   page: number;
   pageSize: number;
-  moverId: string;
 }) => {
   try {
     const { data } = await axiosInstance.get<SubmittedQuotes>(
-      `/quotes/${moverId}/submitted`,
+      `/quotes/submitted`,
       {
         params: {
           page,
