@@ -1,7 +1,7 @@
 'use client';
 
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
-import { getSubmittedQuotesList } from '@/services/quotes';
+import { getSubmittedQuotesList } from '@/services/moverQuotes';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Pagination from '../pagination/molecule/pagination';
