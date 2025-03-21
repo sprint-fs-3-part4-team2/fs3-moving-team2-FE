@@ -5,6 +5,7 @@ import BtGrid from '@/components/profile/BtGrid';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useForm } from 'react-hook-form';
 import { createCustomerProfile } from '@/services/profileService';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   profileImage: string | null;
@@ -13,6 +14,7 @@ type FormData = {
 };
 
 export default function Page() {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -91,6 +93,7 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await createCustomerProfile(data);
       console.log('프로필 등록 성공', response);
+      router.push('/user/quotes/request');
     } catch (error) {
       console.error('프로필 수정 실패:', error);
     }

@@ -5,6 +5,7 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import FormInput from '@/components/common/inputSection/atoms/customInput/inputs/formInput';
 import { useForm } from 'react-hook-form';
 import { createMoverProfile } from '@/services/profileService';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   experience: number;
@@ -16,6 +17,7 @@ type FormData = {
 };
 
 export default function Page() {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -105,6 +107,7 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await createMoverProfile(data);
       console.log('프로필 등록 성공', response);
+      router.push('/mover/quotes/requested');
     } catch (error) {
       console.error('프로필 등록 실패:', error);
     }

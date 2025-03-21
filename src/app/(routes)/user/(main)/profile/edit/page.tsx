@@ -5,6 +5,7 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import FormInput from '@/components/common/inputSection/atoms/customInput/inputs/formInput';
 import { useForm } from 'react-hook-form';
 import { updateCustomerProfile } from '@/services/profileService';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
   name: string;
@@ -19,6 +20,8 @@ type FormData = {
 };
 
 export default function Page() {
+  const router = useRouter();
+
   const {
     register,
     watch,
@@ -110,15 +113,21 @@ export default function Page() {
       { shouldValidate: true },
     );
   };
-  // 프로필 수정
+  // 프로필 수정 버튼
   const onSubmit = async (data: FormData) => {
     try {
       console.log('Submitted data:', data);
       const response = await updateCustomerProfile(data);
       console.log('프로필 수정 성공', response);
+      router.push('/user/quotes/request');
     } catch (error) {
       console.error('프로필 수정 실패:', error);
     }
+  };
+
+  // 취소 버튼
+  const cancel = () => {
+    router.back(); // 이전 페이지로 이동
   };
 
   return (
@@ -330,6 +339,7 @@ export default function Page() {
                   borderColorsType='gray'
                   type='button'
                   className='text-gray-400 sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px]'
+                  onClick={cancel}
                 >
                   취소
                 </CommonButton>
