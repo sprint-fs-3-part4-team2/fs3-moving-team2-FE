@@ -7,7 +7,7 @@ import ShareButtons from '@/components/common/ShareButtons';
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { useQuery } from '@tanstack/react-query';
-import { getQuoteByMover } from '@/services/quotes';
+import { getQuoteByMover } from '@/services/moverQuotes';
 import { useMemo } from 'react';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 
