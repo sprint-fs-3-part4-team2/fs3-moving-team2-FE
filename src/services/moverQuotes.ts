@@ -6,10 +6,12 @@ import {
 import { QuoteRequest } from './types/quotesDetail/common.types';
 import { SubmittedQuotes } from './types/submittedQuotes/submittedQuotes.types';
 
+const MOVER_QUOTE_URL = '/mover-quotes';
+
 export const getQuoteByCustomer = async (quoteId: string) => {
   try {
     const { data } = await axiosInstance.get<QuoteForCustomer>(
-      `/quotes/${quoteId}/customer`,
+      `${MOVER_QUOTE_URL}/${quoteId}/customer`,
     );
     return data;
   } catch {
@@ -20,7 +22,7 @@ export const getQuoteByCustomer = async (quoteId: string) => {
 export const getQuoteByMover = async (quoteId: string) => {
   try {
     const { data } = await axiosInstance.get<QuoteForMover>(
-      `/quotes/${quoteId}/mover`,
+      `${MOVER_QUOTE_URL}${quoteId}/mover`,
     );
     return data;
   } catch {
@@ -30,16 +32,14 @@ export const getQuoteByMover = async (quoteId: string) => {
 
 export const getSubmittedQuotesList = async ({
   page = 1,
-  pageSize = 4,
-  moverId,
+  pageSize = 6,
 }: {
   page: number;
   pageSize: number;
-  moverId: string;
 }) => {
   try {
     const { data } = await axiosInstance.get<SubmittedQuotes>(
-      `/quotes/${moverId}/submitted`,
+      `${MOVER_QUOTE_URL}/submitted`,
       {
         params: {
           page,
@@ -60,7 +60,7 @@ export const createQuoteRequest = async ({
   arrival,
 }: QuoteRequest) => {
   try {
-    await axiosInstance.post<QuoteRequest>(`/quotes/request`, {
+    await axiosInstance.post<QuoteRequest>(`/quote-requests`, {
       moveType,
       moveDate,
       departure,

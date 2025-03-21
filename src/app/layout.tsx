@@ -27,7 +27,9 @@ export default function RootLayout({
   return (
     <QueryProvider>
       <html lang='Ko'>
-        <body className={`${pretendard.variable} antialiased`}>
+        <body
+          className={`${pretendard.variable} antialiased h-screen flex flex-col`}
+        >
           <GNB
             isUserAuthorized={true}
             userType='user'
