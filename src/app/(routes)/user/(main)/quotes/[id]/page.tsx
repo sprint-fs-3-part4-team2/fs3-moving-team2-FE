@@ -27,7 +27,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     data && (
       <div className='relative flex flex-col mx-auto w-full items-center overflow-auto pb-24'>
-        <div className='flex w-full px-6 md:px-[72px] xl:px-[100px] max-w-[1600px]'>
+        <div className='flex w-full px-6 md:px-[72px] xl:px-0 max-w-[1400px]'>
           <PageHeader>견적 상세</PageHeader>
         </div>
         <div className='flex w-full px-6 md:px-[72px] xl:px-[100px] max-w-[1600px] gap-[117px]'>
@@ -38,7 +38,7 @@ export default function Page({ params }: { params: { id: string } }) {
               moverName={data.mover.moverName}
               imageUrl={data.mover.profileImage}
               movingType={[movingType]}
-              isCustomQuote={data.customRequest}
+              isCustomQuote={data.isCustomRequest}
               quoteState={data.matched ? 'confirmedQuote' : 'pendingQuote'}
               rating={data.mover.averageRating}
               experienceYears={data.mover.experienceYears}
@@ -79,8 +79,8 @@ export default function Page({ params }: { params: { id: string } }) {
             <ShareButtons text='견적서 공유하기' />
           </div>
         </div>
-        <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-6 md:px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
-          {!data.matched && (
+        {!data.matched && (
+          <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-6 md:px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
             <CommonBtn
               widthType='full'
               heightType='primary'
@@ -89,8 +89,8 @@ export default function Page({ params }: { params: { id: string } }) {
             >
               견적 확정하기
             </CommonBtn>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     )
   );

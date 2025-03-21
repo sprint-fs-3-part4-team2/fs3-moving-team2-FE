@@ -37,6 +37,7 @@ export default function Page() {
               reviewContent={data.reviewContent}
               rating={data.rating}
               writtenAt={data.writtenAt}
+              imageUrl={''}
             />
           </div>
         ))}

@@ -15,6 +15,8 @@ export interface QuoteForCustomer extends QuoteBase {
   mover: Mover;
 }
 
-export interface QuoteFormMover extends QuoteBase {
+export interface QuoteForMover extends QuoteBase {
+  id: string;
   customerName: string;
+  completed: boolean;
 }
