@@ -7,6 +7,7 @@ export const VALIDATION_MESSAGES = {
   INVALID_EMAIL: '이메일 형식이 아닙니다.',
   // phone number
   REQUIRED_PHONE_NUMBER: '전화번호는 필수 입니다.',
+  MIN_LENGTH_PHONE_NUMBER: '숫자만 입력해주세요.',
   INVALID_PHONE_NUMBER: '올바른 핸드폰 번호를 입력해주세요.',
   // password
   REQUIRED_PASSWORD: '비밀번호를 입력해주세요.',
@@ -26,3 +27,5 @@ export const VALIDATION_PATTERN = {
 export const BUTTON_BASIC_STYLES = 'font-semibold text-lg mt-[16px]';
 export const BUTTON_DESCTOP_STYLES = 'xl:text-xl xl:mt-[24px]';
 export const BUTTON_DISABLED_STYLES = 'bg-grayscale-100 border-none';
+export const PHONE_NUMBER_INPUT_CLASS_NAME =
+  '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none';
