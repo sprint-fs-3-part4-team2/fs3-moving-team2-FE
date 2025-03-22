@@ -25,11 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <html lang='Ko'>
-        <body
-          className={`${pretendard.variable} antialiased h-screen flex flex-col`}
-        >
+    <html lang='Ko'>
+      <body
+        className={`${pretendard.variable} antialiased h-screen flex flex-col`}
+      >
+        <QueryProvider>
           <GNB
             isUserAuthorized={true}
             userType='user'
@@ -38,8 +38,8 @@ export default function RootLayout({
             hasNotification={true}
           />
           {children}
-        </body>
-      </html>
-    </QueryProvider>
+        </QueryProvider>
+      </body>
+    </html>
   );
 }
