@@ -17,6 +17,7 @@ export const createQuoteRequest = async ({
     });
   } catch (error: any) {
     console.error('견적 요청 실패', error);
+    throw error;
   }
 };
 
@@ -28,5 +29,15 @@ export const getQuoteRequest = async () => {
     return data;
   } catch (error: any) {
     console.error('견적 요청 조회 실패', error);
+    throw error;
+  }
+};
+
+export const cancelQuoteRequest = async (requestId: string) => {
+  try {
+    await axiosInstance.delete('/quote-request');
+  } catch (error: any) {
+    console.error('견적 요청 취소 실패', error);
+    throw error;
   }
 };
