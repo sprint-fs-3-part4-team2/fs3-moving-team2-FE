@@ -14,7 +14,8 @@ export default function FormInput<T extends FieldValues>({
   validation,
   inputType,
   rows,
-  styleVariant: inputStyle,
+  styleVariant,
+  inputClassName,
 }: FormTypeProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = name.includes('password');
@@ -23,8 +24,9 @@ export default function FormInput<T extends FieldValues>({
     type: isPassword ? (showPassword ? 'text' : 'password') : type,
     className: cn(
       INPUT_STYLES.common,
-      INPUT_STYLES[inputStyle],
+      INPUT_STYLES[styleVariant],
       errors[name] && 'border border-secondary-red-200 bg-gray-50',
+      inputClassName,
     ),
     placeholder,
     ...register(name, validation),
@@ -49,7 +51,7 @@ export default function FormInput<T extends FieldValues>({
         )}
       </div>
       {errors[name]?.message && (
-        <span className='text-secondary-red-200 font-medium absolute right-[8px]'>
+        <span className='text-secondary-red-200 font-medium absolute right-[8px] mt-1 md:mt-1 xl:mt-2'>
           {String(errors[name]?.message)}
         </span>
       )}
