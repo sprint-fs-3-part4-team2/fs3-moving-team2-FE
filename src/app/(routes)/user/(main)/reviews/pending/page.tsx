@@ -7,6 +7,21 @@ import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import ReviewModal from '@/components/modal/children/ReviewModal';
 
 export default function Page() {
+  // 예: n개의 목데이터 생성
+  // const createMockData = (count: number) => {
+  //   return Array.from({ length: count }, (_, index) => ({
+  //     id: `cm8drulsx00g5wam0xj25y9${index.toString().padStart(2, '0')}`, // 고유 ID 생성
+  //     driverName: "흑",
+  //     driverProfileImage: "/img/sample-profile/sample-1.svg",
+  //     serviceDate: "2025-03-24",
+  //     estimatePrice: 170000,
+  //     moveType: "HOME_MOVE",
+  //     isTargeted: true,
+  //   }));
+  // };
+
+  // const mockData = createMockData(100);
+
   const moveTypeLabels = {
     SMALL_MOVE: 'small',
     HOME_MOVE: 'home',
@@ -93,13 +108,43 @@ export default function Page() {
 
   // 버튼 스타일 정의 (중복 제거)
   const getButtonStyle = (isActive: boolean) => ({
-    fontWeight: isActive ? 'bold' : 'normal',
-    color: isActive ? '#000' : '#ccc',
-    padding: '5px 10px',
-    background: 'none',
-    border: 'none',
+    fontWeight: isActive ? '600' : '400',
+    color: isActive ? '#1F1F1F' : '#C4C4C4',
+    fontSize: '18px',
+    width: '48px',
+    height: '48px',
     cursor: 'pointer',
   });
+
+  /**
+   * 생략 기호 정의 및 key값
+   * @param {keyName} - React의 key 속성 (고유식별자)
+   * <ThreeDots keyName="ellipsis-start" />
+   * <ThreeDots keyName="ellipsis-end" />
+   * <ThreeDots keyName="left-ellipsis" />
+   * <ThreeDots keyName="right-ellipsis" />
+   */
+  const ThreeDots = ({
+    keyName,
+  }: {
+    keyName:
+      | 'ellipsis-start'
+      | 'ellipsis-end'
+      | 'left-ellipsis'
+      | 'right-ellipsis';
+  }) => (
+    <span
+      key={keyName}
+      className='py-[22.5px] px-[17.5px]'
+    >
+      <Image
+        src='/icons/pagination/three-dots.svg'
+        width={13}
+        height={3}
+        alt='생략기호'
+      />
+    </span>
+  );
 
   // 페이지가 5개 이하일 때 로직
   const renderShortPages = (): JSX.Element[] => {
@@ -167,14 +212,7 @@ export default function Page() {
           </button>,
         );
       }
-      pageNumbers.push(
-        <span
-          key='ellipsis-end'
-          style={{ margin: '0 5px', color: '#ccc' }}
-        >
-          ...
-        </span>,
-      );
+      pageNumbers.push(<ThreeDots keyName='ellipsis-end' />);
       pageNumbers.push(
         <button
           key={totalPages}
@@ -185,7 +223,7 @@ export default function Page() {
         </button>,
       );
     } else if (currentPage >= totalPages - 3) {
-      // 현재 페이지가 N-4~N일 때: "1 ... N-4 N-3 N-2 N-1 N"
+      // 현재 페이지가 (N-4)~N일 때: "1 ... N-4 N-3 N-2 N-1 N"
       pageNumbers.push(
         <button
           key={1}
@@ -195,14 +233,7 @@ export default function Page() {
           1
         </button>,
       );
-      pageNumbers.push(
-        <span
-          key='ellipsis-start'
-          style={{ margin: '0 5px', color: '#ccc' }}
-        >
-          ...
-        </span>,
-      );
+      pageNumbers.push(<ThreeDots keyName='ellipsis-start' />);
       for (let i = totalPages - 4; i <= totalPages; i++) {
         pageNumbers.push(
           <button
@@ -226,14 +257,7 @@ export default function Page() {
         </button>,
       );
       if (currentPage - 1 > 2) {
-        pageNumbers.push(
-          <span
-            key='left-ellipsis'
-            style={{ margin: '0 5px', color: '#ccc' }}
-          >
-            ...
-          </span>,
-        );
+        pageNumbers.push(<ThreeDots keyName='left-ellipsis' />);
       }
       for (let i = currentPage - 1; i <= currentPage + 1; i++) {
         pageNumbers.push(
@@ -247,14 +271,7 @@ export default function Page() {
         );
       }
       if (totalPages - currentPage > 2) {
-        pageNumbers.push(
-          <span
-            key='right-ellipsis'
-            style={{ margin: '0 5px', color: '#ccc' }}
-          >
-            ...
-          </span>,
-        );
+        pageNumbers.push(<ThreeDots keyName='right-ellipsis' />);
       }
       pageNumbers.push(
         <button
@@ -269,10 +286,11 @@ export default function Page() {
     return pageNumbers;
   };
 
-  // 페이지 번호 렌더링 함수
-  // renderShortPages: 총 페이지 갯수가 5개 이하 (페이지 모두 표시)
-  // renderSixPages: 총 페이지 갯수가 6개일 때 (한번에 5페이지 까지만 표시)
-  // renderLongPages: 총 페이지 갯수가 7개 이상 (... 생략 기능)
+  /** 페이지 번호 렌더링 함수
+   * renderShortPages: 총 페이지 갯수가 5개 이하 (페이지 모두 표시)
+   * renderSixPages: 총 페이지 갯수가 6개일 때 (한번에 5페이지 까지만 표시)
+   * renderLongPages: 총 페이지 갯수가 7개 이상 (... 생략 기능)
+   */
   const renderPageNumbers = (): JSX.Element[] => {
     if (totalPages <= 5) return renderShortPages();
     if (totalPages === 6) return renderSixPages();
@@ -346,42 +364,31 @@ export default function Page() {
             ))}
           </div>
           {totalPages >= 1 && (
-            <div
-              style={{
-                margin: '20px 0',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '10px',
-              }}
-            >
+            <div className='my-[30px] flex justify-center items-center gap-[4px]'>
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                style={{
-                  padding: '5px 10px',
-                  background: 'none',
-                  border: 'none',
-                  cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-                  opacity: currentPage === 1 ? 0.5 : 1,
-                }}
+                className='p-[12px] rounded-[8px] text-center border-none mr-[6px]'
               >
-                {'<'}
+                <Image
+                  src={`/icons/pagination/chevron-left-${currentPage === 1 ? 'gray' : 'black'}.svg`}
+                  width={24}
+                  height={24}
+                  alt='왼쪽 화살표'
+                />
               </button>
               {renderPageNumbers()}
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                style={{
-                  padding: '5px 10px',
-                  background: 'none',
-                  border: 'none',
-                  cursor:
-                    currentPage === totalPages ? 'not-allowed' : 'pointer',
-                  opacity: currentPage === totalPages ? 0.5 : 1,
-                }}
+                className='p-[12px] rounded-[8px] text-center border-none ml-[6px]'
               >
-                {'>'}
+                <Image
+                  src={`/icons/pagination/chevron-right-${currentPage === totalPages ? 'gray' : 'black'}.svg`}
+                  width={24}
+                  height={24}
+                  alt='오른쪽 화살표'
+                />
               </button>
             </div>
           )}
