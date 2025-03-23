@@ -395,7 +395,7 @@ export default function Page() {
           )}
         </div>
       ) : (
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/no-review.svg'
