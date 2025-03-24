@@ -11,6 +11,7 @@ import PendingQuoteButtons from '../molecules/pendingQuoteButtons';
 import MovingTypeGroup from '../../shared/molecules/movingTypeGroup';
 import { useRouter } from 'next/navigation';
 import CommonButton from '../../commonBtn/commonBtn';
+import cn from '@/utils/cn';
 
 export default function MoverInfo(props: MoverInfoTemplateProps) {
   const commonProps = {
@@ -20,7 +21,16 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
   const router = useRouter();
 
   return (
-    <div className='flex flex-col px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 gap-[14px] md:gap-[14px] xl:gap-6 w-full shadow-primary cursor-default'>
+    <div
+      className={cn(
+        'flex flex-col gap-[14px] md:gap-[14px] xl:gap-6 w-full shadow-primary cursor-default',
+        props.variant === 'quote' &&
+          props.subVariant === 'completed' &&
+          props.isFavoriteMoverList
+          ? 'px-[14px] py-[16px] xl:gap-[14px]'
+          : 'px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5',
+      )}
+    >
       <div className='flex justify-between'>
         <div className='flex gap-2 md:gap-2 xl:gap-3'>
           <MovingTypeGroup
@@ -39,7 +49,14 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
       {props.variant === 'quote' && (
         <>
           {props.subVariant === 'completed' && props.description && (
-            <div className='text-[14px] md:text-[14px] xl:text-[24px] font-semibold'>
+            <div
+              className={cn(
+                ' font-semibold',
+                props.isFavoriteMoverList
+                  ? 'text-[14px]'
+                  : 'text-[14px] md:text-[14px] xl:text-[24px]',
+              )}
+            >
               {props.description}
             </div>
           )}
@@ -50,7 +67,11 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
               ratingCount={props.ratingCount}
               experienceYears={props.experienceYears}
               isFavorite={props.isFavorite}
-              isFavoriteMoverList={false}
+              isFavoriteMoverList={
+                props.subVariant === 'completed'
+                  ? props.isFavoriteMoverList
+                  : false
+              }
               favoriteCount={props.favoriteCount}
               quoteCount={props.quoteCount}
               onFavoriteClick={props.onFavoriteClick}

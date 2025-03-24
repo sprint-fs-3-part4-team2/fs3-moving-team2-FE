@@ -4,8 +4,6 @@ import combineDateTime from '@/utils/combineDateTime';
 import formatKoreanDate from '@/utils/formatKoreanDate';
 import { maxStep } from './QuoteRequestPage';
 import formatKoreanTime from '@/utils/formatKoreanTime';
-import service from '@/constants/dropdown/service';
-import axiosInstance from '@/lib/axiosInstance';
 import { createQuoteRequest } from '@/services/moverQuotes';
 
 interface QuoteConfirmationModalProps {

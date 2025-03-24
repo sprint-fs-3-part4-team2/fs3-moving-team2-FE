@@ -24,7 +24,7 @@ export default function NoQuoteRequest() {
           className='px-6 py-[14px] md:py-[14px] xl:py-4'
           onClick={() => router.push('/user/quotes/request')}
         >
-          견적 요청하러가기
+          견적 요청 하러가기
         </CommonButton>
       </div>
     </div>

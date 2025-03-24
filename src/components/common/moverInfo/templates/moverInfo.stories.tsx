@@ -58,14 +58,20 @@ const CompletedQuoteInfoProps: MoverInfoTemplateProps = {
   isCustomQuote: true,
   quoteState: 'confirmedQuote',
   rating: 5,
-  ratingCount: 500,
-  isFavoriteMoverList: false,
+  ratingCount: 178,
+  isFavoriteMoverList: true,
   experienceYears: 3,
-  quoteCount: 500,
+  quoteCount: 334,
   favoriteCount: 500,
   price: 50000,
   description: '최선을 다해 모시겠습니다.',
 };
+
+CompletedQuoteInfo.decorators = (Story) => (
+  <div className='xl:w-[327px]'>
+    <Story />
+  </div>
+);
 
 CompletedQuoteInfo.args = CompletedQuoteInfoProps;
 CompletedQuoteInfo.parameters = {

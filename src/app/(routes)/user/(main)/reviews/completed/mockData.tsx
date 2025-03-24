@@ -9,6 +9,7 @@ export interface MockDataType {
   reviewContent: string; // 리뷰 내용
   rating: number; // 별점
   writtenAt: Date; // 리뷰 작성 날짜
+  imageUrl: string | null;
 }
 
 // Mock 데이터 적용
@@ -24,8 +25,12 @@ export const MockDataList: MockDataType[] = [
       '처음 견적 받아봤는데, 엄청 친절하시고 꼼꼼하세요! 원룸 이사는 믿고 맡기세요! :)',
     rating: 5,
     writtenAt: new Date('2024-07-02'),
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '김철수',
     movingType: ['home'],
     isCustomQuote: false,
@@ -37,6 +42,8 @@ export const MockDataList: MockDataType[] = [
     writtenAt: new Date('2024-06-16'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '박영희',
     movingType: ['small', 'home'],
     isCustomQuote: true,
@@ -48,6 +55,8 @@ export const MockDataList: MockDataType[] = [
     writtenAt: new Date('2024-05-21'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '이민호',
     movingType: ['office'],
     isCustomQuote: false,
@@ -60,6 +69,8 @@ export const MockDataList: MockDataType[] = [
     writtenAt: new Date('2024-08-02'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '정수빈',
     movingType: ['home', 'office'],
     isCustomQuote: true,
@@ -71,6 +82,8 @@ export const MockDataList: MockDataType[] = [
     writtenAt: new Date('2024-09-11'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '한지훈',
     movingType: ['small'],
     isCustomQuote: false,
@@ -78,10 +91,12 @@ export const MockDataList: MockDataType[] = [
     movingDate: new Date('2024-10-05'),
     price: 190000,
     reviewContent: '친절하고 빠르게 이사 도와주셔서 너무 감사했습니다!',
-    rating: 4.7,
+    rating: 0.5,
     writtenAt: new Date('2024-10-06'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '최유진',
     movingType: ['home', 'small'],
     isCustomQuote: true,
@@ -93,6 +108,8 @@ export const MockDataList: MockDataType[] = [
     writtenAt: new Date('2024-11-21'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '조성훈',
     movingType: ['office'],
     isCustomQuote: false,
@@ -104,6 +121,8 @@ export const MockDataList: MockDataType[] = [
     writtenAt: new Date('2024-12-02'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '강민석',
     movingType: ['home'],
     isCustomQuote: true,
@@ -115,6 +134,8 @@ export const MockDataList: MockDataType[] = [
     writtenAt: new Date('2025-01-11'),
   },
   {
+    imageUrl:
+      'https://d3h2ixicz4w2p.cloudfront.net/uploads/1742216810416-%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-01-03%20131708.png',
     driverName: '오지혜',
     movingType: ['small', 'office'],
     isCustomQuote: false,
