@@ -24,7 +24,7 @@ export default function MoverStatInfo({
       className={cn(
         'flex relative items-center',
         isFavoriteMoverList
-          ? 'gap-3 px-[10px] py-[10px]'
+          ? 'gap-3 px-[10px] py-[16px]'
           : 'gap-3 md:gap-4 xl:ga-6 px-[10px] md:px-[10px] xl:px-[18px] py-[10px] md:py-[10px] xl:py-[16px]',
         'border-[1px] border-line-100 rounded-[6px]',
       )}
@@ -49,7 +49,7 @@ export default function MoverStatInfo({
             iconClassName={'w-[24px] h-[24px]'}
             textClassName={
               isFavoriteMoverList
-                ? 'text-[13px]'
+                ? 'text-[13px] md:text-[13px] xl:text-[13px]'
                 : 'text-[13px] md:text-[13px] xl:text-[18px]'
             }
             onClick={onFavoriteClick}

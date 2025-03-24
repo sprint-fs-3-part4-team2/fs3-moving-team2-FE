@@ -16,6 +16,7 @@ export default function Page() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentData = MockDataList.slice(startIndex, endIndex);
+  console.log(currentData[0].imageUrl);
 
   return (
     <div className='flex flex-col items-center mx-auto'>
@@ -37,7 +38,7 @@ export default function Page() {
               reviewContent={data.reviewContent}
               rating={data.rating}
               writtenAt={data.writtenAt}
-              imageUrl={''}
+              imageUrl={data.imageUrl}
             />
           </div>
         ))}
