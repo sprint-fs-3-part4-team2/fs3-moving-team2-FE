@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
@@ -9,24 +9,20 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { getCompletedReviews } from '@/services/reviewsService';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 
-export interface Mover {
-  id: string;
-  driverName: string;
-  movingType: (keyof typeof MOVING_TYPES)[];
-  isCustomQuote: boolean;
-  movingDate: Date;
-  price: number;
-  reviewContent: string;
-  rating: number;
-  writtenAt: Date;
-  imageUrl: string;
-}
-
 export default function Page() {
   const router = useRouter();
+  // const { id } = useParams() as { id: string };
+  const id = 'cm8mvrwbd0032a7afaywgnjq7';
+
+  const moveTypeLabels = {
+    SMALL_MOVE: 'small',
+    HOME_MOVE: 'home',
+    OFFICE_MOVE: 'office',
+  } as const;
+  type MoveType = keyof typeof moveTypeLabels;
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const id = 'cm8h32o8a000ua7ax89gla4ja';
   const [emptyData, setEmptyData] = useState(false);
 
   const {
@@ -39,7 +35,19 @@ export default function Page() {
     enabled: !!id,
   });
 
-  console.log(movers);
+  interface Mover {
+    id: string;
+    driverName: string;
+    movingType: (keyof typeof MOVING_TYPES)[];
+    isCustomQuote: boolean;
+    movingDate: Date;
+    price: number;
+    reviewContent: string;
+    rating: number;
+    writtenAt: Date;
+    imageUrl: string;
+  }
+
   useEffect(() => {
     if (!isLoading && (!movers || movers.length === 0 || error)) {
       setEmptyData(true);
@@ -78,7 +86,7 @@ export default function Page() {
       </div>
     );
 
-  const totalPages = Math.ceil(movers?.length ?? 0 / itemsPerPage);
+  const totalPages = Math.ceil((movers?.length ?? 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = movers?.slice(startIndex, startIndex + itemsPerPage);
 
@@ -87,13 +95,10 @@ export default function Page() {
   };
 
   return (
-    <div className='flex flex-col items-center mx-auto'>
+    <div className=' flex flex-col items-center mx-auto '>
       <div className='max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
         {currentData?.map((data: Mover) => (
-          <div
-            key={data.id}
-            className='bg-white'
-          >
+          <div key={data.id}>
             <MoverInfo
               variant='review'
               subVariant='written'
