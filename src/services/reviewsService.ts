@@ -20,7 +20,7 @@ export const submitReview = (reviewData: {
 export const getCompletedReviews = async (id: string) => {
   try {
     const response = await axiosInstance.get(`/reviews/completed/${id}`);
-
+    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
