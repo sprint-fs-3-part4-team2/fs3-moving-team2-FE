@@ -5,15 +5,21 @@ import CustomInput from '../atoms/customInput';
 
 export default function InputSection<T extends FieldValues>({
   content,
+  inputClassName,
+  labelClassName,
   ...props
 }: InputSectionProps<T>) {
   return (
-    <>
+    <div>
       <CustomLabel
         styleVariant={props.styleVariant}
         content={content}
+        labelClassName={labelClassName}
       />
-      <CustomInput {...props} />
-    </>
+      <CustomInput
+        inputClassName={inputClassName}
+        {...props}
+      />
+    </div>
   );
 }

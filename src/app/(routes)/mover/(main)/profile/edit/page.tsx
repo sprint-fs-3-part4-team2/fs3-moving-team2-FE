@@ -5,49 +5,41 @@ import BtGrid from '@/components/profile/BtGrid';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import FormInput from '@/components/common/inputSection/atoms/customInput/inputs/formInput';
 import { useForm } from 'react-hook-form';
-
+import { updateMoverProfile } from '@/services/profileService';
+import { useRouter } from 'next/navigation';
 type FormData = {
-  nickname: string;
   experience: number;
   shortIntro: string;
   description: string;
-  profileImage: File;
+  profileImage: string | null;
+  selectedMoveTypes: string[];
+  selectedRegions: string[];
 };
 
 export default function Page() {
+  const router = useRouter();
   const {
+    handleSubmit,
     register,
+    setValue,
     watch,
-    formState: { errors, isValid },
-  } = useForm<FormData>({ mode: 'onChange' });
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'onTouched',
+    defaultValues: {
+      experience: undefined,
+      shortIntro: '',
+      description: '',
+      profileImage: null,
+      selectedMoveTypes: [],
+      selectedRegions: [],
+    },
+  });
 
   // user 타입
   const userType: string = 'mover';
 
-  const [formData, setFormData] = useState({
-    image: null as string | null,
-    nickname: '',
-    experience: '',
-    shortIntro: '',
-    description: '',
-    selectedMoveTypes: [] as string[],
-    selectedRegions: [] as string[],
-  });
-
-  const isFormValid =
-    formData.image !== null &&
-    formData.nickname.trim() !== '' &&
-    formData.experience.trim() !== '' &&
-    formData.shortIntro.trim() !== '' &&
-    formData.description.trim() !== '' &&
-    formData.selectedMoveTypes.length > 0 &&
-    formData.selectedRegions.length > 0;
-
-  const moveType = ['소형 이사', '가정 이사', '사무실 이사'];
-
-  const updateFormData = (key: keyof typeof formData, value: any) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  const moveType = ['소형이사', '가정이사', '사무실이사'];
 
   const regions = [
     '서울',
@@ -69,34 +61,60 @@ export default function Page() {
     '제주',
   ];
 
-  // // 이사 유형 버튼 선택/해제
-  // const toggleMoveType = (value: string) => {
-  //   setFormData((prev) =>
-  //     prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
-  //   );
-  // };
+  // 리액트 훅 폼 지켜보기이..
+  const experience = watch('experience');
+  const shortIntro = watch('shortIntro');
+  const description = watch('description');
+  const selectedMoveTypes = watch('selectedMoveTypes', []);
+  const selectedRegions = watch('selectedRegions', []);
+  const profileImage = watch('profileImage');
+
+  const isValid =
+    experience !== undefined &&
+    shortIntro.trim().length >= 8 &&
+    description.trim().length >= 10 &&
+    selectedMoveTypes.length > 0 &&
+    selectedRegions.length > 0 &&
+    profileImage !== null;
+
+  // 이사 유형 바뀌나아
   const toggleMoveType = (value: string) => {
-    updateFormData(
+    setValue(
       'selectedMoveTypes',
-      formData.selectedMoveTypes.includes(value)
-        ? formData.selectedMoveTypes.filter((v) => v !== value)
-        : [...formData.selectedMoveTypes, value],
+      selectedMoveTypes.includes(value)
+        ? selectedMoveTypes.filter((v) => v !== value)
+        : [...selectedMoveTypes, value],
+      { shouldValidate: true },
     );
   };
 
+  // 지역 바뀌나아
   const toggleRegion = (value: string) => {
-    updateFormData(
+    setValue(
       'selectedRegions',
       userType === 'mover'
-        ? formData.selectedRegions.includes(value)
-          ? formData.selectedRegions.filter((v) => v !== value)
-          : [...formData.selectedRegions, value]
+        ? selectedRegions.includes(value)
+          ? selectedRegions.filter((v) => v !== value)
+          : [...selectedRegions, value]
         : [value], // 단일 선택
+      { shouldValidate: true },
     );
   };
-  // 프로필 등록
-  const handleSubmit = () => {
-    console.log('수정된 정보:', formData);
+
+  // 프로필 수정
+  const onSubmit = async (data: FormData) => {
+    try {
+      console.log('Submitted data:', data);
+      const response = await updateMoverProfile(data);
+      console.log('프로필 수정 성공', response);
+    } catch (error) {
+      console.error('프로필 수정 실패:', error);
+    }
+  };
+
+  // 취소 버튼
+  const cancel = () => {
+    router.back(); // 이전 페이지로 이동
   };
 
   return (
@@ -109,166 +127,159 @@ export default function Page() {
                 프로필 수정
               </div>
             </div>
-            <div className='border-b border-solid border-gray-200 sm:w-[327px] xl:w-[1352px]'></div>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className='flex flex-col gap-[48px]'
+            >
+              <div className='border-b border-solid border-gray-200 sm:w-[327px] xl:w-[1352px]'></div>
 
-            <div className='flex sm:gap-4 sm:flex-col xl:items-start xl:flex-row xl:justify-between sm:items-center md:items-center xl:w-[1352px]'>
-              {/* 왼쪽 */}
-              <div className='flex flex-col sm:gap-5 xl:gap-8 sm:w-[327px] xl:w-[640px]'>
-                {/* 이미지 업로더 */}
-                <div className='flex flex-col gap-6 '>
-                  <div className='w-auto text-xl font-semibold'>
-                    프로필 이미지
+              <div className='flex sm:gap-4 sm:flex-col xl:items-start xl:flex-row xl:justify-between sm:items-center md:items-center xl:w-[1352px]'>
+                {/* 왼쪽 */}
+                <div className='flex flex-col sm:gap-5 xl:gap-8 sm:w-[327px] xl:w-[640px]'>
+                  {/* 이미지 업로더 */}
+                  <div className='flex flex-col gap-6 '>
+                    <div className='w-auto text-xl font-semibold'>
+                      프로필 이미지
+                    </div>
+                    <ImageUpload
+                      imageUrl={profileImage}
+                      onChange={(url) =>
+                        setValue('profileImage', url, { shouldValidate: true })
+                      }
+                    />
                   </div>
-                  <ImageUpload
-                    image={formData.image}
-                    onChange={(image) => updateFormData('image', image)}
-                  />
+                  <div className='border-b border-solid border-gray-200'></div>
+
+                  {/* 경력 */}
+                  <div className='flex flex-col gap-4 text-xl'>
+                    <div className='flex gap-1'>
+                      <span className='sm:text-lg xl:text-xl font-semibold'>
+                        경력
+                      </span>
+                      <span className='text-blue-500'>*</span>
+                    </div>
+                    <FormInput
+                      register={register}
+                      errors={errors}
+                      placeholder='기사님의 경력을 입력해 주세요'
+                      name='experience'
+                      type='number'
+                      validation={{ required: '숫자만 입력해주세요.' }}
+                      inputType='input'
+                      styleVariant='primary'
+                      inputVariant='form'
+                    />
+                  </div>
+                  <div className='border-b border-solid border-gray-200'></div>
+                  {/* 한 줄 소개 */}
+                  <div className='flex flex-col gap-4 text-xl'>
+                    <div className='flex gap-1'>
+                      <span className='sm:text-lg xl:text-xl font-semibold'>
+                        한 줄 소개
+                      </span>
+                      <span className='text-blue-500'>*</span>
+                    </div>
+                    <FormInput
+                      register={register}
+                      errors={errors}
+                      placeholder='한 줄 소개를 입력해 주세요'
+                      name='shortIntro'
+                      type='text'
+                      validation={{ required: '8자 이상 입력해주세요.' }}
+                      inputType='input'
+                      styleVariant='primary'
+                      inputVariant='form'
+                    />
+                  </div>
+                  <div className='border-b border-solid border-gray-200'></div>
+                  {/* 상세 설명 */}
+                  <div className='flex flex-col gap-4 text-xl'>
+                    <div className='flex gap-1'>
+                      <span className='sm:text-lg xl:text-xl font-semibold'>
+                        상세설명
+                      </span>
+                      <span className='text-blue-500'>*</span>
+                    </div>
+                    <FormInput
+                      register={register}
+                      errors={errors}
+                      placeholder='상세 내용을 입력해 주세요'
+                      name='description'
+                      type='text'
+                      rows={5}
+                      validation={{ required: '10자 이상 입력해주세요.' }}
+                      inputType='textarea'
+                      styleVariant='primary'
+                      inputVariant='form'
+                    />
+                  </div>
                 </div>
-                <div className='border-b border-solid border-gray-200'></div>
-                {/* 별명 */}
-                <div className='flex flex-col gap-4 text-xl'>
+                {/* 오른쪽 */}
+                <div className='flex flex-col sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
+                  {/* 제공 서비스 선택 */}
+
                   <div className='flex gap-1'>
                     <span className='sm:text-lg xl:text-xl font-semibold'>
-                      별명
+                      제공 서비스
                     </span>
                     <span className='text-blue-500'>*</span>
                   </div>
-                  <FormInput
-                    register={register}
-                    errors={errors}
-                    placeholder='사이트에 노출될 별명을 입력해 주세요'
-                    name='nickname'
-                    type='text'
-                    validation={{ required: '별명을 입력해 주세요.' }}
-                    inputType='input'
-                    styleVariant='primary'
-                    inputVariant='form'
+                  <input
+                    type='hidden'
+                    {...register('selectedMoveTypes')}
                   />
-                </div>
-                <div className='border-b border-solid border-gray-200'></div>
-                {/* 경력 */}
-                <div className='flex flex-col gap-4 text-xl'>
+                  <BtGrid
+                    options={moveType}
+                    selectedOptions={selectedMoveTypes}
+                    onSelect={toggleMoveType}
+                    columns={3}
+                  />
+                  <div className='border-b border-solid border-gray-200'></div>
+
+                  {/* 지역 선택 */}
                   <div className='flex gap-1'>
                     <span className='sm:text-lg xl:text-xl font-semibold'>
-                      경력
+                      서비스 가능 지역
                     </span>
                     <span className='text-blue-500'>*</span>
                   </div>
-                  <FormInput
-                    register={register}
-                    errors={errors}
-                    placeholder='기사님의 경력을 입력해 주세요'
-                    name='experience'
-                    type='number'
-                    validation={{ required: '숫자만 입력해주세요.' }}
-                    inputType='input'
-                    styleVariant='primary'
-                    inputVariant='form'
-                  />
-                </div>
-                <div className='border-b border-solid border-gray-200'></div>
-                {/* 한 줄 소개 */}
-                <div className='flex flex-col gap-4 text-xl'>
-                  <div className='flex gap-1'>
-                    <span className='sm:text-lg xl:text-xl font-semibold'>
-                      한 줄 소개
-                    </span>
-                    <span className='text-blue-500'>*</span>
-                  </div>
-                  <FormInput
-                    register={register}
-                    errors={errors}
-                    placeholder='한 줄 소개를 입력해 주세요'
-                    name='shortIntro'
-                    type='text'
-                    validation={{ required: '8자 이상 입력해주세요.' }}
-                    inputType='input'
-                    styleVariant='primary'
-                    inputVariant='form'
-                  />
-                </div>
-                <div className='border-b border-solid border-gray-200'></div>
-                {/* 상세 설명 */}
-                <div className='flex flex-col gap-4 text-xl'>
-                  <div className='flex gap-1'>
-                    <span className='sm:text-lg xl:text-xl font-semibold'>
-                      상세설명
-                    </span>
-                    <span className='text-blue-500'>*</span>
-                  </div>
-                  <FormInput
-                    register={register}
-                    errors={errors}
-                    placeholder='상세 내용을 입력해 주세요'
-                    name='description'
-                    type='textarea'
-                    rows={5}
-                    validation={{ required: '10자 이상 입력해주세요.' }}
-                    inputType='input'
-                    styleVariant='primary'
-                    inputVariant='form'
+                  <BtGrid
+                    options={regions}
+                    selectedOptions={selectedRegions}
+                    onSelect={toggleRegion}
+                    columns={5}
                   />
                 </div>
               </div>
-              {/* 오른쪽 */}
-              <div className='flex flex-col sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
-                {/* 제공 서비스 선택 */}
-
-                <div className='flex gap-1'>
-                  <span className='sm:text-lg xl:text-xl font-semibold'>
-                    제공 서비스
-                  </span>
-                  <span className='text-blue-500'>*</span>
-                </div>
-
-                <BtGrid
-                  options={moveType}
-                  selectedOptions={formData.selectedMoveTypes}
-                  onSelect={toggleMoveType}
-                  columns={3}
-                />
-                <div className='border-b border-solid border-gray-200'></div>
-
-                {/* 지역 선택 */}
-                <div className='flex gap-1'>
-                  <span className='sm:text-lg xl:text-xl font-semibold'>
-                    서비스 가능 지역
-                  </span>
-                  <span className='text-blue-500'>*</span>
-                </div>
-                <BtGrid
-                  options={regions}
-                  selectedOptions={formData.selectedRegions}
-                  onSelect={toggleRegion}
-                  columns={5}
-                />
+              <div className='flex xl:flex-row-reverse sm:flex-col sm:gap-2 xl:gap-8 a w-full'>
+                <CommonButton
+                  widthType='half'
+                  heightType='primary'
+                  backgroundColorType='gray'
+                  borderColorsType='none'
+                  type='submit'
+                  disabled={!isValid}
+                  className={`sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px] ${
+                    isValid
+                      ? 'bg-blue-500 cursor-pointer'
+                      : 'bg-gray-300 cursor-not-allowed'
+                  } `}
+                >
+                  수정하기
+                </CommonButton>
+                <CommonButton
+                  widthType='half'
+                  heightType='primary'
+                  backgroundColorType='gray'
+                  borderColorsType='gray'
+                  type='button'
+                  className='text-gray-400 sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px]'
+                  onClick={cancel}
+                >
+                  취소
+                </CommonButton>
               </div>
-            </div>
-            <div className='flex xl:flex-row-reverse sm:flex-col sm:gap-2 xl:gap-8 a w-full'>
-              <CommonButton
-                widthType='half'
-                heightType='primary'
-                backgroundColorType='gray'
-                borderColorsType='none'
-                type='button'
-                className={`sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px] ${
-                  isFormValid ? 'bg-blue-500 cursor-pointer' : ''
-                } `}
-                onClick={handleSubmit}
-              >
-                수정하기
-              </CommonButton>
-              <CommonButton
-                widthType='half'
-                heightType='primary'
-                backgroundColorType='gray'
-                borderColorsType='none'
-                type='button'
-                className='text-gray-400 sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px]'
-              >
-                취소
-              </CommonButton>
-            </div>
+            </form>
           </div>
         </div>
       </div>

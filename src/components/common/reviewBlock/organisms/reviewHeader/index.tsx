@@ -1,7 +1,7 @@
 import cn from '@/utils/cn';
 import NameDateDisplay from '../../molecules/nameDateDisplay';
-import StarRating from '../../molecules/starRating';
 import { ReviewHeaderProp } from './reviewHeader.type';
+import RatingStars from '@/components/common/shared/molecules/ratingStars';
 
 export default function ReviewHeader({
   name,
@@ -15,7 +15,7 @@ export default function ReviewHeader({
         name={name}
         writtenAt={writtenAt}
       />
-      <StarRating rating={rating} />
+      <RatingStars rating={rating} />
     </div>
   );
 }

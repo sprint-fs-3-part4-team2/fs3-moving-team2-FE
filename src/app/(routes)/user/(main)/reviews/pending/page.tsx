@@ -1,12 +1,27 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { getPendingReviews } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
+import ReviewModal from '@/components/modal/children/ReviewModal';
 
 export default function Page() {
+  // 예: n개의 목데이터 생성
+  // const createMockData = (count: number) => {
+  //   return Array.from({ length: count }, (_, index) => ({
+  //     id: `cm8drulsx00g5wam0xj25y9${index.toString().padStart(2, '0')}`, // 고유 ID 생성
+  //     driverName: "흑",
+  //     driverProfileImage: "/img/sample-profile/sample-1.svg",
+  //     serviceDate: "2025-03-24",
+  //     estimatePrice: 170000,
+  //     moveType: "HOME_MOVE",
+  //     isTargeted: true,
+  //   }));
+  // };
+
+  // const mockData = createMockData(100);
+
   const moveTypeLabels = {
     SMALL_MOVE: 'small',
     HOME_MOVE: 'home',
@@ -29,6 +44,9 @@ export default function Page() {
   const [estimates, setEstimates] = useState<ReviewableEstimate[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEstimate, setSelectedEstimate] =
+    useState<ReviewableEstimate | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -39,19 +57,23 @@ export default function Page() {
       })
       .catch((error) => {
         console.error('Error fetching estimates:', error);
-        setError('에러가 발생했어요.\n리뷰 데이터를 불러오지 못했습니다.');
+        const errorMessage = error.response?.data?.message || '알 수 없는 에러';
+        setError(`에러가 발생했어요.\n${errorMessage}`);
         setLoading(false);
       });
   }, []);
 
-  const handleReviewButtonClick = () => {
-    alert('리뷰 작성하기 모달 구현중!');
+  const handleReviewButtonClick = (estimate: ReviewableEstimate) => {
+    setSelectedEstimate(estimate);
+    setIsModalOpen(true);
   };
 
-  // 기존 페이지네이션 관련 상태 및 계산
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // const itemsPerPage: number = 6;
-  // const totalPages: number = Math.ceil((estimates?.length || 0) / itemsPerPage);
+  // 리뷰 제출 후 estimates에서 해당 리뷰 제거
+  const handleReviewSubmit = (estimateId: string) => {
+    setEstimates((prev) =>
+      prev.filter((estimate) => estimate.id !== estimateId),
+    );
+  };
 
   // 반응형 페이지네이션 관련 상태 및 계산
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -87,13 +109,43 @@ export default function Page() {
 
   // 버튼 스타일 정의 (중복 제거)
   const getButtonStyle = (isActive: boolean) => ({
-    fontWeight: isActive ? 'bold' : 'normal',
-    color: isActive ? '#000' : '#ccc',
-    padding: '5px 10px',
-    background: 'none',
-    border: 'none',
+    fontWeight: isActive ? '600' : '400',
+    color: isActive ? '#1F1F1F' : '#C4C4C4',
+    fontSize: '18px',
+    width: '48px',
+    height: '48px',
     cursor: 'pointer',
   });
+
+  /**
+   * 생략 기호 정의 및 key값
+   * @param {keyName} - React의 key 속성 (고유식별자)
+   * <ThreeDots keyName="ellipsis-start" />
+   * <ThreeDots keyName="ellipsis-end" />
+   * <ThreeDots keyName="left-ellipsis" />
+   * <ThreeDots keyName="right-ellipsis" />
+   */
+  const ThreeDots = ({
+    keyName,
+  }: {
+    keyName:
+      | 'ellipsis-start'
+      | 'ellipsis-end'
+      | 'left-ellipsis'
+      | 'right-ellipsis';
+  }) => (
+    <span
+      key={keyName}
+      className='py-[22.5px] px-[17.5px]'
+    >
+      <Image
+        src='/icons/pagination/three-dots.svg'
+        width={13}
+        height={3}
+        alt='생략기호'
+      />
+    </span>
+  );
 
   // 페이지가 5개 이하일 때 로직
   const renderShortPages = (): JSX.Element[] => {
@@ -161,14 +213,7 @@ export default function Page() {
           </button>,
         );
       }
-      pageNumbers.push(
-        <span
-          key='ellipsis-end'
-          style={{ margin: '0 5px', color: '#ccc' }}
-        >
-          ...
-        </span>,
-      );
+      pageNumbers.push(<ThreeDots keyName='ellipsis-end' />);
       pageNumbers.push(
         <button
           key={totalPages}
@@ -179,7 +224,7 @@ export default function Page() {
         </button>,
       );
     } else if (currentPage >= totalPages - 3) {
-      // 현재 페이지가 N-4~N일 때: "1 ... N-4 N-3 N-2 N-1 N"
+      // 현재 페이지가 (N-4)~N일 때: "1 ... N-4 N-3 N-2 N-1 N"
       pageNumbers.push(
         <button
           key={1}
@@ -189,14 +234,7 @@ export default function Page() {
           1
         </button>,
       );
-      pageNumbers.push(
-        <span
-          key='ellipsis-start'
-          style={{ margin: '0 5px', color: '#ccc' }}
-        >
-          ...
-        </span>,
-      );
+      pageNumbers.push(<ThreeDots keyName='ellipsis-start' />);
       for (let i = totalPages - 4; i <= totalPages; i++) {
         pageNumbers.push(
           <button
@@ -220,14 +258,7 @@ export default function Page() {
         </button>,
       );
       if (currentPage - 1 > 2) {
-        pageNumbers.push(
-          <span
-            key='left-ellipsis'
-            style={{ margin: '0 5px', color: '#ccc' }}
-          >
-            ...
-          </span>,
-        );
+        pageNumbers.push(<ThreeDots keyName='left-ellipsis' />);
       }
       for (let i = currentPage - 1; i <= currentPage + 1; i++) {
         pageNumbers.push(
@@ -241,14 +272,7 @@ export default function Page() {
         );
       }
       if (totalPages - currentPage > 2) {
-        pageNumbers.push(
-          <span
-            key='right-ellipsis'
-            style={{ margin: '0 5px', color: '#ccc' }}
-          >
-            ...
-          </span>,
-        );
+        pageNumbers.push(<ThreeDots keyName='right-ellipsis' />);
       }
       pageNumbers.push(
         <button
@@ -263,10 +287,11 @@ export default function Page() {
     return pageNumbers;
   };
 
-  // 페이지 번호 렌더링 함수
-  // renderShortPages: 총 페이지 갯수가 5개 이하 (페이지 모두 표시)
-  // renderSixPages: 총 페이지 갯수가 6개일 때 (한번에 5페이지 까지만 표시)
-  // renderLongPages: 총 페이지 갯수가 7개 이상 (... 생략 기능)
+  /** 페이지 번호 렌더링 함수
+   * renderShortPages: 총 페이지 갯수가 5개 이하 (페이지 모두 표시)
+   * renderSixPages: 총 페이지 갯수가 6개일 때 (한번에 5페이지 까지만 표시)
+   * renderLongPages: 총 페이지 갯수가 7개 이상 (... 생략 기능)
+   */
   const renderPageNumbers = (): JSX.Element[] => {
     if (totalPages <= 5) return renderShortPages();
     if (totalPages === 6) return renderSixPages();
@@ -277,17 +302,7 @@ export default function Page() {
   if (loading) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
-          <Link href='/user/reviews/pending'>
-            <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
-              작성 가능한 리뷰
-            </div>
-          </Link>
-          <Link href=''>
-            <div className='text-gray-400'>내가 작성한 리뷰</div>
-          </Link>
-        </div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/logo/logo-with-icon.svg'
@@ -308,23 +323,13 @@ export default function Page() {
   if (error) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
-          <Link href='/user/reviews/pending'>
-            <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
-              작성 가능한 리뷰
-            </div>
-          </Link>
-          <Link href=''>
-            <div className='text-gray-400'>내가 작성한 리뷰</div>
-          </Link>
-        </div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
-              src='/img/logo/logo-with-icon.svg'
-              alt='logo'
+              src='/img/no-review.svg'
+              alt='no-review'
               fill
-              // style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'cover' }}
             />
           </div>
           <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px] whitespace-pre-line text-center'>
@@ -337,21 +342,14 @@ export default function Page() {
 
   return (
     <div>
-      <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto h-[54px] xl:h-[96px] flex gap-[24px] xl:gap-[40px] font-[700] text-[14px]/[54px] xl:text-[24px]/[96px]'>
-        <Link href='/user/reviews/pending'>
-          <div className='h-[100%] text-black-400 box-border border-b-[2px] md:border-b-[4px] border-primary-blue-400'>
-            작성 가능한 리뷰
-          </div>
-        </Link>
-        <Link href=''>
-          <div className='text-gray-400'>내가 작성한 리뷰</div>
-        </Link>
-      </div>
       {estimates && estimates.length > 0 ? (
-        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1200px] xl:mx-auto'>
+        <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1400px] xl:mx-auto'>
           <div className='grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
             {currentEstimates.map((data) => (
-              <div key={data.id}>
+              <div
+                key={data.id}
+                className='bg-white'
+              >
                 <MoverInfo
                   variant='review'
                   subVariant='pending'
@@ -360,57 +358,44 @@ export default function Page() {
                   isCustomQuote={data.isTargeted}
                   movingDate={new Date(data.serviceDate)}
                   price={data.estimatePrice}
-                  onClickReviewButton={() => {
-                    handleReviewButtonClick();
-                  }}
+                  onClickReviewButton={() => handleReviewButtonClick(data)}
                   imageUrl={data.driverProfileImage}
                 />
               </div>
             ))}
           </div>
           {totalPages >= 1 && (
-            <div
-              style={{
-                margin: '20px 0',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '10px',
-              }}
-            >
+            <div className='my-[30px] flex justify-center items-center gap-[4px]'>
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                style={{
-                  padding: '5px 10px',
-                  background: 'none',
-                  border: 'none',
-                  cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-                  opacity: currentPage === 1 ? 0.5 : 1,
-                }}
+                className='p-[12px] rounded-[8px] text-center border-none mr-[6px]'
               >
-                {'<'}
+                <Image
+                  src={`/icons/pagination/chevron-left-${currentPage === 1 ? 'gray' : 'black'}.svg`}
+                  width={24}
+                  height={24}
+                  alt='왼쪽 화살표'
+                />
               </button>
               {renderPageNumbers()}
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                style={{
-                  padding: '5px 10px',
-                  background: 'none',
-                  border: 'none',
-                  cursor:
-                    currentPage === totalPages ? 'not-allowed' : 'pointer',
-                  opacity: currentPage === totalPages ? 0.5 : 1,
-                }}
+                className='p-[12px] rounded-[8px] text-center border-none ml-[6px]'
               >
-                {'>'}
+                <Image
+                  src={`/icons/pagination/chevron-right-${currentPage === totalPages ? 'gray' : 'black'}.svg`}
+                  width={24}
+                  height={24}
+                  alt='오른쪽 화살표'
+                />
               </button>
             </div>
           )}
         </div>
       ) : (
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] bg-gray-100 flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/no-review.svg'
@@ -423,6 +408,14 @@ export default function Page() {
             작성 가능한 리뷰가 없어요
           </div>
         </div>
+      )}
+      {/* 모달 렌더링 */}
+      {isModalOpen && selectedEstimate && (
+        <ReviewModal
+          estimate={selectedEstimate}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleReviewSubmit} // 제출 후 콜백 전달
+        />
       )}
     </div>
   );
