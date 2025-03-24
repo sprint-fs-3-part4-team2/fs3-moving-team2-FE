@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import dynamic from 'next/dynamic';
-import Provider from '../providers/@provider';
+import Provider from '../providers/_provider';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
   ssr: false,
