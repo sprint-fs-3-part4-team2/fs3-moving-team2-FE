@@ -37,6 +37,9 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
             quoteState={props.quoteState}
             movingType={props.movingType}
             isCustomQuote={props.isCustomQuote}
+            isFavoriteMoverInfo={
+              props.subVariant === 'completed' && props.isFavoriteMoverList
+            }
           />
         </div>
         {props.variant === 'review' && props.subVariant === 'written' && (
