@@ -1,5 +1,4 @@
 import { MOVING_TYPES } from '@/constants/movingTypes';
-import { QuoteRequestRegisterData } from '@/store/quoteRequestStore';
 
 export interface Address {
   sido: string;

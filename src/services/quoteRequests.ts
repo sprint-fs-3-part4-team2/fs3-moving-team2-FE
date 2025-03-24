@@ -1,6 +1,7 @@
 import axiosInstance from '@/lib/axiosInstance';
 import { QuoteRequest } from './types/quotesDetail/common.types';
 
+// 견적 요청 생성
 export const createQuoteRequest = async ({
   moveType,
   moveDate,
