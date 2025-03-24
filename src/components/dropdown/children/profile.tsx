@@ -75,7 +75,7 @@ function Profile({
           <ProfileList href={'/user/reviews/completed'}>이사 리뷰</ProfileList>
           <li
             className={cn(
-              'h-[38px] flex items-center justify-center border-t border-grayscale-50 mt-2 cursor-pointer',
+              'h-[38px] flex items-center justify-center border-t border-line-200 mt-2 cursor-pointer',
               'xl:h-[46px] xl:mt-3',
               'group hover:bg-grayscale-50',
             )}

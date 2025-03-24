@@ -5,10 +5,24 @@ import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
 import moverEditApi from './api/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useToaster } from '@/hooks/useToaster';
+import {
+  type ButtonHTMLAttributes,
+  type LiHTMLAttributes,
+  type OlHTMLAttributes,
+} from 'react';
 
-const ul = cn('w-full', 'lg:flex lg:flex-wrap lg:w-[47%]');
-const li = cn('pt-5 pb-8 border-t border-line-100 w-full');
-const button = cn('w-full even:mb-3 odd:order-2', 'lg:even:mb-0 lg:w-[49%]');
+const ul: OlHTMLAttributes<HTMLUListElement>['className'] = cn(
+  'w-full',
+  'lg:flex lg:flex-wrap lg:w-[47%]',
+);
+const li: LiHTMLAttributes<HTMLLIElement>['className'] = cn(
+  'pt-5 pb-8 border-t border-line-100 w-full',
+);
+const button: ButtonHTMLAttributes<HTMLButtonElement>['className'] = cn(
+  'w-full even:mb-3 odd:order-2',
+  'lg:even:mb-0 lg:w-[49%]',
+);
+const minPassword = 7;
 
 export default function MoverBasicInfoEdit() {
   const {
@@ -124,6 +138,7 @@ export default function MoverBasicInfoEdit() {
               placeholder='현재 비밀번호를 입력해주세요'
               validation={{
                 required: '비밀 번호를 입력해주세요',
+                minLength: minPassword,
               }}
               name='current_password'
               register={register}
@@ -143,6 +158,7 @@ export default function MoverBasicInfoEdit() {
                     return '이전 비밀번호와 다르게 설정하세요';
                   }
                 },
+                minLength: minPassword,
               }}
               name='new_password'
               register={register}
@@ -159,6 +175,7 @@ export default function MoverBasicInfoEdit() {
                 required: '새 비밀번호 확인을 입력해주세요',
                 validate: (v) =>
                   v === newPassword || '새 비밀번호가 일치 하지 않습니다.',
+                minLength: minPassword,
               }}
               name='new_confirm_password'
               register={register}
@@ -196,104 +213,3 @@ export default function MoverBasicInfoEdit() {
     </form>
   );
 }
-
-/* <ServiceBadgeForm
-            data={service}
-            title={'제공 서비스'}
-            value={sValue}
-            setValue={setValue}
-            dispatch={setService}
-            inputProps={{
-              ...register('service', {
-                required: '서비스를 체크해주세요',
-              }),
-            }}
-            error={errors}
-          />
-          <ServiceBadgeForm
-            data={area}
-            title={'서비스 가능 지역'}
-            value={aValue}
-            setValue={setValue}
-            dispatch={setService}
-            inputProps={{
-              ...register('service', {
-                required: '서비스 가능 지역을 체크해주세요',
-              }),
-            }}
-            className={['', cn('mb-3')]}
-            error={errors}
-          /> */
-// interface ServiceBadgeFormProps {
-//   data: { name: string; en: string }[];
-//   title: string;
-//   inputProps: InputHTMLAttributes<HTMLInputElement>;
-//   value: InputHTMLAttributes<HTMLInputElement>['value'][];
-//   error: FieldErrors<FieldValues>;
-//   setValue: UseFormSetValue<FieldValues>;
-//   dispatch: React.Dispatch<React.SetStateAction<string[]>>;
-//   className?: string[];
-// }
-// function ServiceBadgeForm({
-//   data,
-//   title,
-//   value,
-//   inputProps,
-//   error,
-//   setValue,
-//   dispatch,
-//   className = [],
-// }: ServiceBadgeFormProps) {
-//   const handleClick = (
-//     value: string,
-//     dispatch: React.Dispatch<React.SetStateAction<string[]>>,
-//   ) => {
-//     dispatch((prev) => {
-//       const newValue = prev.includes(value)
-//         ? prev.filter((s) => s !== value)
-//         : [...prev, value];
-
-//       setValue('service', newValue); // react-hook-form 값 업데이트
-//       return newValue;
-//     });
-//   };
-
-//   return (
-//     <li className={cn(li, className[0] && className[0])}>
-//       <h2 className={innreH2}>{title}</h2>
-//       <ul className={cn(innerUl)}>
-//         <li className='hidden'>
-//           <input
-//             type='hidden'
-//             // value={JSON.stringify(value)}
-//             {...inputProps}
-//           />
-//         </li>
-//         <li>
-//           <span>
-//             {inputProps['name'] && error[inputProps['name']]
-//               ? String(error[inputProps['name']]?.message)
-//               : ''}
-//           </span>
-//         </li>
-//         {data.map((v) => {
-//           return (
-//             <li
-//               key={v.en}
-//               className={cn('mr-3', className[1] && className[1])}
-//             >
-//               <ServiceBadge
-//                 selected={value?.includes(v.name)}
-//                 onSelect={() => {
-//                   handleClick(v.name, dispatch);
-//                 }}
-//               >
-//                 {v.name}
-//               </ServiceBadge>
-//             </li>
-//           );
-//         })}
-//       </ul>
-//     </li>
-//   );
-// }
