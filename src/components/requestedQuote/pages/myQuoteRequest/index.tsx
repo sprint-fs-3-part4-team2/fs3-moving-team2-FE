@@ -11,17 +11,6 @@ export default function MyQuoteRequest() {
     queryFn: getQuoteRequest,
   });
 
-  //   return (
-  //     <QuoteRequestExist
-  //       id={'abc'}
-  //       movingDate={new Date()}
-  //       requestedDate={new Date()}
-  //       movingType={'소형이사'}
-  //       departure={'경기도 김포'}
-  //       arrival={'서울 중구'}
-  //     />
-  //   );
-
   if (data && data?.isRequested && data?.quote)
     return (
       <QuoteRequestExist
@@ -29,8 +18,8 @@ export default function MyQuoteRequest() {
         movingDate={new Date(data.quote.moveDate)}
         requestedDate={new Date(data.quote.moveDate)}
         movingType={data.quote.moveType}
-        departure={data.quote.departure}
-        arrival={data.quote.arrival}
+        departure={data.quote.departure.fullAddress}
+        arrival={data.quote.arrival.fullAddress}
       />
     );
   return <NoQuoteRequest />;
