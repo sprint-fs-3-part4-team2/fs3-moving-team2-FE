@@ -1,34 +1,57 @@
 'use client';
 import { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import Image from 'next/image';
+import { getUploadUrl, uploadImageOnS3 } from '@/services/s3Upload';
+import { useForm } from 'react-hook-form';
 
 interface ImageUploaderProps {
-  image: string | null;
-  onChange: (image: string | null) => void;
+  imageUrl: string | null;
+  onChange: (url: string | null) => void;
 }
 
-export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
+export default function ImageUpload({
+  imageUrl,
+  onChange,
+}: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // 파일을 읽고 미리보기 설정
-  const handleFile = (file: File) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => onChange(reader.result as string);
+  const [previewImage, setPreviewImage] = useState<string | null>(imageUrl);
+
+  // 파일 업로드 핸들러
+  const handleFileUpload = async (file: File) => {
+    try {
+      // 미리보기 설정
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewImage(previewUrl);
+
+      // S3 업로드 URL 가져오기
+      const { uploadUrl, imageUrl } = await getUploadUrl(file.name);
+
+      // S3에 업로드
+      await uploadImageOnS3({ file, url: uploadUrl });
+
+      // 업로드 완료 후 최종 URL 설정
+      onChange(imageUrl);
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+    }
   };
-  // 드래그 앤 드롭
+
+  // 파일 선택 핸들러
+  const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFileUpload(e.target.files[0]);
+    }
+  };
+
+  // 드래그 앤 드롭 핸들러
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (e.dataTransfer.files.length > 0) {
-      handleFile(e.dataTransfer.files[0]);
+      handleFileUpload(e.dataTransfer.files[0]);
     }
   };
-  // 파일 선택 버튼
-  const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      handleFile(e.target.files[0]);
-    }
-  };
-  // 미리보기 이미지 클릭 시 파일 선택 창 열기
+
+  // 이미지 클릭 시 파일 선택
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
@@ -40,9 +63,9 @@ export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
         className='sm:w-[100px] h-[100px] xl:w-[160px] xl:h-[160px] border-1 rounded-md border-gray-400 cursor-pointer relative'
         onClick={handleImageClick}
       >
-        {image ? (
+        {previewImage ? (
           <img
-            src={image}
+            src={previewImage}
             alt='Uploaded'
             className='w-full h-full object-cover'
           />
@@ -58,7 +81,7 @@ export default function ImageUploader({ image, onChange }: ImageUploaderProps) {
 
       {/* 드래그 앤 드롭 */}
       <div
-        className='sm:w-[200] sm:h-[100px] xl:w-[300px] xl:h-[160px] border-2 border-dashed border-gray-400 flex cursor-pointer items-center justify-center'
+        className='sm:w-[200px] sm:h-[100px] xl:w-[300px] xl:h-[160px] border-2 border-dashed border-gray-400 flex cursor-pointer items-center justify-center'
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       >

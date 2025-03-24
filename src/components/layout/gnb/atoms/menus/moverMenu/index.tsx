@@ -8,7 +8,9 @@ export default function MoverMenu(): JSX.Element {
         <Text linkHref='/mover/quotes/request'>받은 요청</Text>
       </CustomLink>
       <CustomLink href='/mover/quotes/submitted'>
-        <Text linkHref='/mover/quotes/submitted'>내 견적 관리</Text>
+        <Text linkHref={['/mover/quotes/submitted', '/mover/quotes/declined']}>
+          내 견적 관리
+        </Text>
       </CustomLink>
     </>
   );

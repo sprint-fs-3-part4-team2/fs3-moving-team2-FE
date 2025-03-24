@@ -6,7 +6,6 @@ import { MovingDate } from './MovingDate';
 import { MovingTime } from './MovingTime';
 import { MovingRegion } from './MovingRegion';
 import { QuoteConfirmationModal } from './QuoteConfirmationModal';
-import PageHeader from '../common/shared/atoms/pageHeader';
 
 const steps = ['이사종류', '이사예정일', '이사예정시간', '이사지역'] as const;
 type stepType = (typeof steps)[number];
