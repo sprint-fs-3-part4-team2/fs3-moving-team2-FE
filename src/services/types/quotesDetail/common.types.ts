@@ -1,4 +1,5 @@
 import { MOVING_TYPES } from '@/constants/movingTypes';
+import { QuoteRequestRegisterData } from '@/store/quoteRequestStore';
 
 export interface Address {
   sido: string;
@@ -26,8 +27,8 @@ export interface QuoteBase {
 }
 
 export interface QuoteRequest {
-  moveType: string;
-  moveDate: string;
-  arrival: string;
-  departure: string;
+  moveType: (typeof MOVING_TYPES)[keyof typeof MOVING_TYPES]['value'];
+  moveDate: Date;
+  arrival: Address;
+  departure: Address;
 }
