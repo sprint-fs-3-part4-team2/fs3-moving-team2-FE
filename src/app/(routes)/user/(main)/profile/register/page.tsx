@@ -29,7 +29,7 @@ export default function Page() {
       selectedRegions: [],
     },
   });
-  // user 타입
+  // user 타입 나중에 함수로 묶어서 사용할 예정
   const userType: string = 'customer';
 
   const moveType = ['소형이사', '가정이사', '사무실이사'];
@@ -63,7 +63,7 @@ export default function Page() {
     selectedRegions.length > 0 &&
     profileImage !== null;
 
-  // 이사 유형 바뀌나아
+  // 이사 유형 바뀌나
   const toggleMoveType = (value: string) => {
     setValue(
       'selectedMoveTypes',
@@ -74,7 +74,7 @@ export default function Page() {
     );
   };
 
-  // 지역 바뀌나아
+  // 지역 바뀌나
   const toggleRegion = (value: string) => {
     setValue(
       'selectedRegions',
