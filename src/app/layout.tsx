@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import QueryProvider from './queryProvider';
 import dynamic from 'next/dynamic';
-import ToasterProvider from '@/hooks/toaster/useToaster';
+import Provider from '../providers/@provider';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
   ssr: false,
@@ -26,23 +25,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <html lang='Ko'>
-        <body
-          className={`${pretendard.variable} antialiased h-screen flex flex-col`}
-        >
-          <ToasterProvider>
-            <GNB
-              isUserAuthorized={true}
-              userType='user'
-              userName={'안성재'}
-              imageUrl={'/img/sample-profile/sample-2.svg'}
-              hasNotification={true}
-            />
-            {children}
-          </ToasterProvider>
-        </body>
-      </html>
-    </QueryProvider>
+    <html lang='Ko'>
+      <body
+        className={`${pretendard.variable} antialiased h-screen flex flex-col`}
+      >
+        <Provider>
+          <GNB
+            isUserAuthorized={true}
+            userType='user'
+            userName={'안성재'}
+            imageUrl={'/img/sample-profile/sample-2.svg'}
+            hasNotification={true}
+          />
+          {children}
+        </Provider>
+      </body>
+    </html>
   );
 }
