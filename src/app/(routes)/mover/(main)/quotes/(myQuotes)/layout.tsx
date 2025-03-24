@@ -7,7 +7,7 @@ export default function Layout({
 }>) {
   const tabs = {
     '/mover/quotes/submitted': '보낸 견적 조회',
-    '/mover/quotes/declined': '반려 요청',
+    '/mover/quotes/declined': '반려한 견적 조회',
   };
 
   return (
