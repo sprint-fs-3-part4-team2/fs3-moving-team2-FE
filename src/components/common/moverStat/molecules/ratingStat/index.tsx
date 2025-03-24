@@ -3,12 +3,16 @@ import StatText from '../../atoms/statText';
 import { RatingProps } from './rating.types';
 import StatContainer from '../../atoms/statContainer';
 
-export default function RatingStat({ rating, ratingCount }: RatingProps) {
+export default function RatingStat({
+  rating,
+  ratingCount,
+  isFavoriteMoverInfo,
+}: RatingProps) {
   const formattedRating = rating.toFixed(1);
   const formattedRatingCount = ratingCount >= 1000 ? '+999' : ratingCount;
 
   return (
-    <StatContainer>
+    <StatContainer isFavoriteMoverList={isFavoriteMoverInfo}>
       <StarIcon
         filled={true}
         className='w-[14px] md:w-[14px] xl:w-[20px]'

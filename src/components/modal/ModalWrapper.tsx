@@ -75,7 +75,7 @@ export default function ModalWrapper({
       // onClick={handleBackdropClick}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      className='fixed inset-0 flex sm:items-end md:items-center md:justify-center bg-[#141414] bg-opacity-60 z-50 w-full h-full'
+      className='fixed inset-0 flex sm:items-end md:items-center md:justify-center bg-[#141414] bg-opacity-60 z-[200] w-full h-full'
       open
     >
       <div

@@ -4,8 +4,6 @@ import combineDateTime from '@/utils/combineDateTime';
 import formatKoreanDate from '@/utils/formatKoreanDate';
 import { maxStep } from './QuoteRequestPage';
 import formatKoreanTime from '@/utils/formatKoreanTime';
-import service from '@/constants/dropdown/service';
-import axiosInstance from '@/lib/axiosInstance';
 import { createQuoteRequest } from '@/services/moverQuotes';
 
 interface QuoteConfirmationModalProps {
@@ -19,29 +17,23 @@ export function QuoteConfirmationModal({
 }: QuoteConfirmationModalProps) {
   const { registerData } = useQuoteRequestStore();
 
-  // moveType의 첫 단어와 매칭되는 항목 찾기 (예: '소형이사' -> 'HOME_MOVE')
-  const koreanMoveType = registerData.moveType.split(' ')[0];
-  const matchedService = service.find((s) => s.name === koreanMoveType);
-  const englishMoveType = matchedService ? matchedService.en : '';
+  // 소형이사 (원룸, 투룸, 20평대 미만) -> 소형이사
+  const koreanMoveType = registerData.moveType.split('(')[0].trim() as
+    | '소형이사'
+    | '사무실이사'
+    | '가정이사';
 
   const handleFinalConfirm = async () => {
     setMaxCompletedStep(maxStep);
     // 최종 견적 제출을 위한 처리 (예: 백엔드 API 호출)
     const payload = {
-      moveType: englishMoveType,
+      moveType: koreanMoveType,
       moveDate: combineDateTime(registerData.moveDate!, registerData.moveTime),
       departure: registerData.moveFrom,
       arrival: registerData.moveTo,
     };
 
     console.log('최종 견적 요청 제출:', payload);
-
-    axiosInstance.post('/quotes/request', {
-      moveType: englishMoveType,
-      moveDate: combineDateTime(registerData.moveDate!, registerData.moveTime),
-      moveFrom: registerData.moveFrom,
-      moveTo: registerData.moveTo,
-    });
 
     await createQuoteRequest(payload);
     setShowModal(false);
