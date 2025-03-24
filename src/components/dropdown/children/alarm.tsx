@@ -2,15 +2,14 @@
 import Link from 'next/link';
 import Dropdown, { DropdownProps } from '../dropdown';
 import cn from '@/utils/cn';
-import { useEffect, useRef, useState } from 'react';
-import { CloseBtn } from '@/app/(routes)/select-role/components/tooltip';
+import { useEffect, useState } from 'react';
+import { CloseBtn } from '@/components/select-role/tooltip';
 import { formatDistanceToNow } from 'date-fns';
 import {
   ko,
   FormatDistanceToken,
   FormatDistanceFnOptions,
 } from 'date-fns/locale';
-import { usePathname } from 'next/navigation';
 
 type AlarmData = {
   id: string;
@@ -42,26 +41,8 @@ interface AlarmProps extends Omit<DropdownProps, 'dispatch'> {
 function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
   const [open, setOpen] = useState<boolean>(isOpen);
   const [alarms, setAlarms] = useState(data || dummy);
-  const divRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (divRef.current && !divRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
-  function closeAlarm(e: React.MouseEvent<HTMLDivElement>) {
+  function closeAlarm(e: React.MouseEvent<any>) {
     e.preventDefault();
     setOpen(false);
   }
@@ -80,10 +61,7 @@ function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
     setOpen((prev) => !prev);
   }
   return (
-    <div
-      className={cn('relative', className && className)}
-      ref={divRef}
-    >
+    <div className={cn('relative', className && className)}>
       <div
         className='w-full h-full cursor-pointer'
         onClick={openHandle}
@@ -93,14 +71,12 @@ function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
       <Dropdown
         isOpen={open}
         className={cn(
-          'absolute block right-0 px-4 top-[140%] w-[312px] h-auto max-h-[314px] py-[6px] z-[99]',
-          'xl:max-h-[352px] xl:w-[360px]',
-          'overflow-hidden pr-0',
+          'absolute block px-4 h-auto max-h-[314px] lg:max-h-[352px] max-w-[312px] lg:max-w-[360px] py-[6px] z-5',
         )}
       >
         <div className='py-[14px] pl-4 lg:pl-6 h-[54px] relative'>
           <h2 className='text-lg lg:text-[18px] font-bold text-black-400'>
-            알림
+            알람
           </h2>
           <CloseBtn
             className={cn(
@@ -111,11 +87,7 @@ function Alarm({ isOpen = false, className, children, data }: AlarmProps) {
             onClick={closeAlarm}
           />
         </div>
-        <ul
-          className={cn(
-            'w-full overflow-y-scroll h-[250px] pr-4 custom-scroll',
-          )}
-        >
+        <ul className='w-full'>
           {alarms.length > 0 ? (
             alarms.map((v, i) => {
               return (

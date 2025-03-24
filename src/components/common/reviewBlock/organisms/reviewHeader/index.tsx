@@ -9,16 +9,13 @@ export default function ReviewHeader({
   rating,
   className,
 }: ReviewHeaderProp): JSX.Element {
-  
   return (
     <div className={cn('flex flex-col space-y-2', className)}>
       <NameDateDisplay
         name={name}
         writtenAt={writtenAt}
       />
-      <RatingStars
-        rating={rating}
-      />
+      <RatingStars rating={rating} />
     </div>
   );
 }

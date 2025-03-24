@@ -1,5 +1,5 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler } from 'react';
 
 export interface MenuIconProp {
-  menuOnClick?: MouseEventHandler<HTMLDivElement>; 
+  menuOnClick?: MouseEventHandler<HTMLDivElement>;
 }

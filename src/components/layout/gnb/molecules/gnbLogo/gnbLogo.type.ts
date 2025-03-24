@@ -1,3 +1,3 @@
 export interface GNBLogoProps {
-  isUserAuthorized : boolean;
+  isUserAuthorized: boolean;
 }

@@ -1,12 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import QueryProvider from './queryProvider';
-import dynamic from 'next/dynamic';
-
-const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
-  ssr: false,
-});
+import ToasterProvider from '@/hooks/useToaster/useToster';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -25,21 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <html lang='Ko'>
-        <body
-          className={`${pretendard.variable} antialiased h-screen flex flex-col`}
-        >
-          <GNB
-            isUserAuthorized={true}
-            userType='user'
-            userName={'안성재'}
-            imageUrl={'/img/sample-profile/sample-2.svg'}
-            hasNotification={true}
-          />
-          {children}
-        </body>
-      </html>
-    </QueryProvider>
+    <html lang='Ko'>
+      <body className={`${pretendard.variable} antialiased`}>
+        <ToasterProvider>{children}</ToasterProvider>
+      </body>
+    </html>
   );
 }

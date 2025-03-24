@@ -3,7 +3,7 @@ import { ProfileIconProp } from './ProfileIxon.type';
 
 export default function ProfileIcon({
   onClick,
-  profilImageUrl
+  profilImageUrl,
 }: ProfileIconProp): JSX.Element {
   return (
     <div

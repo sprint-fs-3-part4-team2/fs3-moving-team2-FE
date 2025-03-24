@@ -1,5 +1,5 @@
 import { C2 } from '@/lib/types/type';
-import animate from '../components/style/animate.module.css';
+import animate from './style/animate.module.css';
 import { CSSProperties } from 'react';
 
 interface AnimateProps extends C2 {

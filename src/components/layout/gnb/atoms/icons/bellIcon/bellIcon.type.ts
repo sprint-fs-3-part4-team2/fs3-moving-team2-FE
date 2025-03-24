@@ -1,5 +1,5 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler } from 'react';
 
 export interface BellIconProp {
-  onClick?: MouseEventHandler<HTMLDivElement>; 
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }

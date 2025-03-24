@@ -10,7 +10,7 @@ const config: Config = {
 
   theme: {
     extend: {
-      spacing: {
+      spacing:{
         260: '260px',
         24: '24px',
       },
@@ -19,7 +19,7 @@ const config: Config = {
         foreground: 'var(--foreground)',
 
         black: {
-          'opacity-64': 'var(--background-opacity-64)',
+          'opacity-64' : 'var(--background-opacity-64)',
           500: 'var(--black-500)',
           400: 'var(--black-400)',
           300: 'var(--black-300)',
@@ -92,7 +92,6 @@ const config: Config = {
         md: '744px',
         xl: '1200px',
         xxl: '1440px',
-        '3xl': '1900px',
       },
 
       keyframes: {
@@ -103,25 +102,15 @@ const config: Config = {
         slideUp: {
           '0%': { transform: 'translateY(10%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        slideDown: {
-          '0%': { transform: 'translateY(-10%)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        slideToRight: {
-          '0%': { transform: 'translateX(10%)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' },
-        },
+        }
       },
       animation: {
         fadeIn: 'fadeIn 2.5s ease-in-out forwards',
         slideUp: 'slideUp 0.5s ease-out forwards',
-        slideDown: 'slideDown 0.8s ease-out forwards',
-        slideToRight: 'slideToRight 0.5s ease-out forwards',
+        wran:'wran 1s ease-in-out forwards'
       },
-      boxShadow: {
-        primary:
-          '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',
+      boxShadow:{
+        'primary' : '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',
       },
     },
   },
