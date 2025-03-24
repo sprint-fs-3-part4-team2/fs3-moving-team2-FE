@@ -29,7 +29,8 @@ export default function Home(): JSX.Element {
 
         <div
           className={cn(
-            `${LANDING_CARDS_COMMON_STYLES} w-[327px] h-[240px] xxl:w-[432px] xxl:h-[589px] xxl:col-span-1 xxl:row-span-2 bg-[var(--primary-blue-100)]`,
+            LANDING_CARDS_COMMON_STYLES,
+            'w-[327px] h-[240px] xxl:w-[432px] xxl:h-[589px] xxl:col-span-1 xxl:row-span-2 bg-primary-blue-100)',
           )}
         >
           {/* Text Box */}
@@ -53,7 +54,8 @@ export default function Home(): JSX.Element {
         {/* 가로 박스1 */}
         <div
           className={cn(
-            `${LANDING_CARDS_COMMON_STYLES} xxl:col-span-2 rounded-[32px]  bg-[var(--background)]`,
+            LANDING_CARDS_COMMON_STYLES,
+            'xxl:col-span-2 rounded-[32px] bg-background',
           )}
         >
           {/* Text Box */}
@@ -77,7 +79,8 @@ export default function Home(): JSX.Element {
         {/* 가로 박스2 */}
         <div
           className={cn(
-            `${LANDING_CARDS_COMMON_STYLES} xxl:col-span-2 rounded-[32px]  bg-[var(--background)]`,
+            LANDING_CARDS_COMMON_STYLES,
+            'xxl:col-span-2 rounded-[32px] bg-background',
           )}
         >
           {/* Text Box */}
