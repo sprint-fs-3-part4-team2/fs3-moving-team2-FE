@@ -9,6 +9,7 @@ import {
   BUTTON_BASIC_STYLES,
   BUTTON_DESCTOP_STYLES,
   BUTTON_DISABLED_STYLES,
+  PHONE_NUMBER_INPUT_CLASS_NAME,
   VALIDATION_MESSAGES,
   VALIDATION_PATTERN,
 } from '../constants';
@@ -93,6 +94,10 @@ export default function SignUpFormGroup() {
         errors={errors}
         validation={{
           required: VALIDATION_MESSAGES.REQUIRED_PHONE_NUMBER,
+          minLength: {
+            value: 10,
+            message: VALIDATION_MESSAGES.MIN_LENGTH_PHONE_NUMBER,
+          },
           pattern: {
             value: VALIDATION_PATTERN.PHONE_NUMBER,
             message: VALIDATION_MESSAGES.INVALID_PHONE_NUMBER,
@@ -100,7 +105,7 @@ export default function SignUpFormGroup() {
         }}
         inputVariant='form'
         styleVariant='primary'
-        // className='appearance-none'
+        inputClassName={PHONE_NUMBER_INPUT_CLASS_NAME}
       />
 
       {/* 비밀번호 */}

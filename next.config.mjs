@@ -8,6 +8,16 @@ const nextConfig = {
       },
     ];
   },
+  images : {
+    remotePatterns : [
+        {
+            protocol : 'https',
+            hostname : 'd3h2ixicz4w2p.cloudfront.net',
+            port : '',
+            pathname : '/**',
+        }
+    ]
+  }
 };
 
 export default nextConfig;
