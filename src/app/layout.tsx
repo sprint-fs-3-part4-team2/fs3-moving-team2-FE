@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import QueryProvider from './queryProvider';
 import dynamic from 'next/dynamic';
+import ToasterProvider from '@/hooks/toaster/useToaster';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
   ssr: false,
@@ -30,14 +31,16 @@ export default function RootLayout({
         <body
           className={`${pretendard.variable} antialiased h-screen flex flex-col`}
         >
-          <GNB
-            isUserAuthorized={true}
-            userType='user'
-            userName={'안성재'}
-            imageUrl={'/img/sample-profile/sample-2.svg'}
-            hasNotification={true}
-          />
-          {children}
+          <ToasterProvider>
+            <GNB
+              isUserAuthorized={true}
+              userType='user'
+              userName={'안성재'}
+              imageUrl={'/img/sample-profile/sample-2.svg'}
+              hasNotification={true}
+            />
+            {children}
+          </ToasterProvider>
         </body>
       </html>
     </QueryProvider>

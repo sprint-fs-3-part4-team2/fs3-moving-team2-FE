@@ -31,13 +31,10 @@ const snsProviders = [
 
 const SnsLogin = () => {
   const handleLogin = (provider: string) => {
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/${provider.toLowerCase()}`,
-      {
-        method: 'GET',
-        credentials: 'include', // 로그인 유지 (세션 필요 시)
-      },
-    ).then((res) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/${provider.toLowerCase()}`, {
+      method: 'GET',
+      credentials: 'include', // 로그인 유지 (세션 필요 시)
+    }).then((res) => {
       if (res.redirected) {
         window.location.href = res.url;
       }

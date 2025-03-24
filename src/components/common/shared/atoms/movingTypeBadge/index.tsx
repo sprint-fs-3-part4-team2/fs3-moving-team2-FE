@@ -13,7 +13,7 @@ export default function MovingTypeBadge({
       className={cn(
         'inline-flex pr-[6px] pl-[3px] py-[4px] font-semibold text-[13px] md:text-[13px] xl:text-base rounded-[4px]',
         options[type].style,
-        className ?? '',
+        className,
       )}
     >
       <div className='flex justify-between items-center gap-1'>

@@ -94,6 +94,7 @@ export default function Page() {
     setCurrentPage(page);
   };
 
+  console.log(currentData[0].imageUrl);
   return (
     <div className=' flex flex-col items-center mx-auto '>
       <div className='max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
