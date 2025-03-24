@@ -4,6 +4,7 @@ import cn from '@/utils/cn';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
 import moverEditApi from './api/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
+import { useToaster } from '@/hooks/toaster/useToaster';
 
 const ul = cn('w-full', 'lg:flex lg:flex-wrap lg:w-[47%]');
 const li = cn('pt-5 pb-8 border-t border-line-100 w-full');
@@ -19,6 +20,7 @@ export default function MoverBasicInfoEdit() {
   } = useForm();
   const currentPassowrd = watch('current_password');
   const newPassword = watch('new_password');
+  const toaster = useToaster();
 
   const onSubmit = async (data: FieldValues) => {
     const { new_confirm_password, ...rest } = data;
@@ -26,10 +28,13 @@ export default function MoverBasicInfoEdit() {
       user_type: 'MOVER', // 나중 유저의 값에서 타입 가져오기
       ...rest,
     };
-    const res = await moverEditApi(body);
-    console.log(res);
+    // const res = await moverEditApi(body);
+    // console.log(res);
+    toaster('info', '성공');
   };
   const onError = (errors: FieldErrors) => {
+    toaster('warn', '실패');
+
     Object.keys(errors).forEach((v) => {
       if (errors[String(v)]) {
         setFocus(String(v));
