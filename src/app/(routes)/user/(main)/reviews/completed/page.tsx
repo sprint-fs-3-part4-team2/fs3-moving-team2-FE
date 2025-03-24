@@ -1,15 +1,15 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
-import { MOVING_TYPES } from '@/constants/movingTypes';
 import Image from 'next/image';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
-import { id } from 'date-fns/locale';
-interface Mover {
+import { getCompletedReviews } from '@/services/reviewsService';
+import { MOVING_TYPES } from '@/constants/movingTypes';
+
+export interface Mover {
   id: string;
   driverName: string;
   movingType: (keyof typeof MOVING_TYPES)[];
@@ -19,33 +19,36 @@ interface Mover {
   reviewContent: string;
   rating: number;
   writtenAt: Date;
-  imageUrl: any;
+  imageUrl: string;
 }
-
-const fetchMovers = async (): Promise<Mover[]> => {
-  const response = await fetch(
-    `http://localhost:3000/user/reviews/completed/${id}`,
-  );
-  if (!response.ok) throw new Error('데이터를 불러오는 데 실패했습니다.');
-  return response.json();
-};
 
 export default function Page() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const id = 'cm8h32o8a000ua7ax89gla4ja';
+  const [emptyData, setEmptyData] = useState(false);
 
   const {
     data: movers,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['movers'],
-    queryFn: fetchMovers,
+    queryKey: ['completedReviews', id],
+    queryFn: async () => await getCompletedReviews(id),
+    enabled: !!id,
   });
 
+  console.log(movers);
+  useEffect(() => {
+    if (!isLoading && (!movers || movers.length === 0 || error)) {
+      setEmptyData(true);
+    }
+  }, [isLoading, movers, error]);
+
   if (isLoading) return <p className='text-center'> 데이터 불러오는 중...</p>;
-  if (error)
+
+  if (emptyData)
     return (
       <div className='flex flex-col items-center justify-center w-full h-[656px]'>
         <div>
@@ -59,7 +62,6 @@ export default function Page() {
         <div className='text-gray-400 my-[32px]'>
           여기 등록된 리뷰가 없어요!
         </div>
-
         <div>
           <CommonButton
             widthType='dynamic'
@@ -76,11 +78,9 @@ export default function Page() {
       </div>
     );
 
-  // 페이지네이션
-  const totalPages = Math.ceil((movers?.length || 0) / itemsPerPage);
+  const totalPages = Math.ceil(movers?.length ?? 0 / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = movers?.slice(startIndex, endIndex) || [];
+  const currentData = movers?.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -89,7 +89,7 @@ export default function Page() {
   return (
     <div className='flex flex-col items-center mx-auto'>
       <div className='max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
-        {currentData.map((data) => (
+        {currentData?.map((data: Mover) => (
           <div
             key={data.id}
             className='bg-white'
@@ -97,15 +97,15 @@ export default function Page() {
             <MoverInfo
               variant='review'
               subVariant='written'
-              moverName={data.driverName} // 기사이름 //
-              movingType={data.movingType} // 이사종류 //
-              isCustomQuote={data.isCustomQuote} // 지정견적요청
-              movingDate={data.movingDate} //이사날짜 //
-              price={data.price} //가격 //
-              reviewContent={data.reviewContent} //리뷰내용 //
-              rating={data.rating} // 별점 //
-              writtenAt={data.writtenAt} //작성일 //
-              imageUrl={data.imageUrl} //이미지 //
+              moverName={data.driverName}
+              movingType={data.movingType}
+              isCustomQuote={data.isCustomQuote}
+              movingDate={data.movingDate}
+              price={data.price}
+              reviewContent={data.reviewContent}
+              rating={data.rating}
+              writtenAt={data.writtenAt}
+              imageUrl={data.imageUrl}
             />
           </div>
         ))}

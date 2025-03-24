@@ -16,3 +16,14 @@ export const submitReview = (reviewData: {
     .post('/reviews', reviewData)
     .then((response) => response.data);
 };
+
+export const getCompletedReviews = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`/reviews/completed/${id}`);
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};
