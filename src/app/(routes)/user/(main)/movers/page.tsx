@@ -88,7 +88,7 @@ export default function Page() {
               isFavorite={true} // 찜 여부 optional 찜 여부를 입력하지 않으면 검은색 하트로 표시됨
               favoriteCount={78} // 찜 개수
               ratingCount={177} // 리뷰 개수
-              isFavoriteMoverList={false} // 기사님 찾기 페이지에서 찜한 기사님 목록에 사용할 경우 true
+              isFavoriteMoverList={true} // 기사님 찾기 페이지에서 찜한 기사님 목록에 사용할 경우 true
               description='최선을 다해 모시겠습니다.' // 기사님 설명 option
             />
 
@@ -106,7 +106,7 @@ export default function Page() {
               isFavorite={true} // 찜 여부 optional 찜 여부를 입력하지 않으면 검은색 하트로 표시됨
               favoriteCount={78} // 찜 개수
               ratingCount={177} // 리뷰 개수
-              isFavoriteMoverList={false} // 기사님 찾기 페이지에서 찜한 기사님 목록에 사용할 경우 true
+              isFavoriteMoverList={true} // 기사님 찾기 페이지에서 찜한 기사님 목록에 사용할 경우 true
               description='최선을 다해 모시겠습니다.' // 기사님 설명 option
             />
           </div>
