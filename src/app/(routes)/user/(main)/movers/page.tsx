@@ -130,25 +130,6 @@ export default function Page() {
                 className={cn('w-[95px]')}
                 dispatch={(value) => setSelectedService(value as string)}
               />
-              {/* <DropdownCta
-                name='area'
-                className='w-[75px] h-9'
-                isOpen={isOpen}
-                data={area}
-                dispatch={(value) => setSelectedArea(value as string)}
-                dropClassName={cn(
-                  'flex overflow-y-auto max-w-[150px] max-h-[180px]',
-                )}
-                listClassName={cn('w-full')}
-              />
-              <DropdownCta
-                name='service'
-                className='w-[87px] h-9'
-                isOpen={isOpen}
-                data={service}
-                dispatch={(value) => setSelectedService(value as string)}
-                dropClassName={cn('max-h-[142px]')}
-              /> */}
             </div>
             <div className='flex items-center'>
               <DropdownCta
@@ -168,7 +149,7 @@ export default function Page() {
           </div>
 
           <div className='relative flex flex-col flex-1 w-full mt-6 gap-6'>
-            <div className='flex flex-row justify-end xl:flex md:hidden hidden'>
+            <div className='flex-row justify-end xl:flex md:hidden hidden'>
               <DropdownCta
                 name='review-sort'
                 border={false}

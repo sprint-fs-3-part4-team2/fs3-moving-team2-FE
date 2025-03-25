@@ -23,7 +23,7 @@ export default function CtaBtn({
         'relative w-full rounded-md xl:rounded-2xl border xl:border-2 border-grayscale-100 overflow-hidden bg-white',
         className && className,
         height && height,
-        !border && 'border-0 w-[113px] xl:w-[130px] ',
+        !border && 'border-0 xl:border-0 xl:rounded-xs w-[113px] xl:w-[130px]',
         type === 'outline' && 'border-primary-blue-300 bg-primary-blue-50',
         type === 'default' && 'border-grayscale-100',
       )}
@@ -53,7 +53,6 @@ export default function CtaBtn({
           !border
             ? ' w-2 h-2 right-[7px]'
             : 'top-1/2 w-2 h-2 xl:w-[10px] xl:h-[10px]',
-          // (!border && type === 'outline') ?? 'top-[75%]',
         )}
       ></div>
     </div>
