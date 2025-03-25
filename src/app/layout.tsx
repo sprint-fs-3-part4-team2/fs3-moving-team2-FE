@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import dynamic from 'next/dynamic';
 import Provider from '../providers/_provider';
-import Analytics from '@/components/analytics/page';
+// import Analytics from '@/components/analytics/page';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
   ssr: false,
@@ -30,7 +30,8 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} antialiased h-screen flex flex-col`}
       >
-        <Analytics />
+        {/* 개발이 끝나고 활성화 */}
+        {/* <Analytics /> */}
         <Provider>
           <GNB
             isUserAuthorized={true}
