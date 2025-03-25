@@ -118,6 +118,7 @@ const config: Config = {
         slideUp: 'slideUp 0.5s ease-out forwards',
         slideDown: 'slideDown 0.8s ease-out forwards',
         slideToRight: 'slideToRight 0.5s ease-out forwards',
+        warn:'warn 0.5s'
       },
       boxShadow: {
         primary:
