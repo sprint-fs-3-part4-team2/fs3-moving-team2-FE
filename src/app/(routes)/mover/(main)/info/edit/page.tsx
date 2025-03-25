@@ -4,27 +4,15 @@ import cn from '@/utils/cn';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
 import moverEditApi from './api/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
+import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
-import {
-  type ButtonHTMLAttributes,
-  type LiHTMLAttributes,
-  type OlHTMLAttributes,
-} from 'react';
 
-const ul: OlHTMLAttributes<HTMLUListElement>['className'] = cn(
-  'w-full',
-  'lg:flex lg:flex-wrap lg:w-[47%]',
-);
-const li: LiHTMLAttributes<HTMLLIElement>['className'] = cn(
-  'pt-5 pb-8 border-t border-line-100 w-full',
-);
-const button: ButtonHTMLAttributes<HTMLButtonElement>['className'] = cn(
-  'w-full even:mb-3 odd:order-2',
-  'lg:even:mb-0 lg:w-[49%]',
-);
-const minPassword = 7;
+const ul = cn('w-full', 'lg:flex lg:flex-wrap lg:w-[47%]');
+const li = cn('pt-5 pb-8 border-t border-line-100 w-full');
+const button = cn('w-full even:mb-3 odd:order-2', 'lg:even:mb-0 lg:w-[49%]');
 
 export default function MoverBasicInfoEdit() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,16 +20,19 @@ export default function MoverBasicInfoEdit() {
     watch,
     formState: { errors },
   } = useForm();
-  const currentPassowrd = watch('current_password');
-  const newPassword = watch('new_password');
+  const currentPassowrd = watch('currentPassword');
+  const newPassword = watch('newPassword');
   const toaster = useToaster();
 
   const onSubmit = async (data: FieldValues) => {
-    const { new_confirm_password, ...rest } = data;
+    const { newConfirmPassword, ...rest } = data;
     const body = {
-      user_type: 'MOVER', // 나중 유저의 값에서 타입 가져오기
+      userType: 'mover', // 나중 유저의 값에서 타입 가져오기
       ...rest,
     };
+    // const res = await moverEditApi(body);
+    // console.log(res);
+    // if (res.success) router.replace('/mover/profile');
     // const res = await moverEditApi(body);
     // console.log(res);
     toaster('info', '성공');
@@ -82,6 +73,7 @@ export default function MoverBasicInfoEdit() {
               placeholder='이름'
               name='name'
               validation={{
+                value: '김철수',
                 required: '이름은 필수 입니다.',
                 minLength: {
                   value: 2,
@@ -101,10 +93,12 @@ export default function MoverBasicInfoEdit() {
               name='email'
               validation={{
                 required: '이메일은 필수 입니다.',
+                value: 'user1@example.com',
                 pattern: {
                   value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   message: '올바른 이메일 형식을 입력해주세요.',
                 },
+                disabled: true,
               }}
               register={register}
               errors={errors}
@@ -118,12 +112,13 @@ export default function MoverBasicInfoEdit() {
               placeholder='전화번호를 입력해주세요'
               validation={{
                 required: '전화번호를 입력해주세요',
+                value: '010-1234-5678',
                 pattern: {
                   value: /^(01[016789])[-]?[0-9]{3,4}[-]?[0-9]{4}$/,
                   message: '올바른 핸드폰 번호를 입력해주세요.',
                 },
               }}
-              name='phone_number'
+              name='phoneNumber'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -138,9 +133,8 @@ export default function MoverBasicInfoEdit() {
               placeholder='현재 비밀번호를 입력해주세요'
               validation={{
                 required: '비밀 번호를 입력해주세요',
-                minLength: minPassword,
               }}
-              name='current_password'
+              name='currentPassword'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -158,9 +152,8 @@ export default function MoverBasicInfoEdit() {
                     return '이전 비밀번호와 다르게 설정하세요';
                   }
                 },
-                minLength: minPassword,
               }}
-              name='new_password'
+              name='newPassword'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -175,9 +168,8 @@ export default function MoverBasicInfoEdit() {
                 required: '새 비밀번호 확인을 입력해주세요',
                 validate: (v) =>
                   v === newPassword || '새 비밀번호가 일치 하지 않습니다.',
-                minLength: minPassword,
               }}
-              name='new_confirm_password'
+              name='newConfirmPassword'
               register={register}
               errors={errors}
               inputVariant='form'
