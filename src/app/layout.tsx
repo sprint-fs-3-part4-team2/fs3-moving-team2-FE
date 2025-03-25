@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import dynamic from 'next/dynamic';
 import Provider from '../providers/_provider';
+import { Suspense } from 'react';
+import Analytics from '@/components/analytics/page';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
   ssr: false,
@@ -29,6 +31,9 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} antialiased h-screen flex flex-col`}
       >
+        <Suspense>
+          <Analytics />
+        </Suspense>
         <Provider>
           <GNB
             isUserAuthorized={true}
