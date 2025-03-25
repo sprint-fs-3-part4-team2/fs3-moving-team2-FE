@@ -3,6 +3,8 @@
 import SearchInput from '@/components/common/inputSection/atoms/customInput/inputs/searchInput';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
+import Area from '@/components/dropdown/cta/area';
+import Service from '@/components/dropdown/cta/service';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 import area from '@/constants/dropdown/area';
 import service from '@/constants/dropdown/service';
@@ -45,7 +47,8 @@ export default function Page() {
 
             <div className='flex flex-col w-full gap-4'>
               <p className='text-2lg font-semibold'>지역을 선택해주세요</p>
-              <DropdownCta
+              <Area dispatch={(value) => setSelectedArea(value as string)} />
+              {/* <DropdownCta
                 name='area'
                 isOpen={isOpen}
                 data={area}
@@ -54,20 +57,22 @@ export default function Page() {
                   'flex overflow-auto max-h-[180px] lg:max-h-[320px]',
                 )}
                 listClassName={cn('w-1/2')}
-              />
+              /> */}
             </div>
 
             <div className='flex flex-col w-full gap-4'>
               <p className='text-2lg font-semibold'>
                 어떤 서비스가 필요하세요?
               </p>
-              <DropdownCta
+              <Service
+                dispatch={(value) => setSelectedService(value as string)}
+              />
+              {/* <DropdownCta
                 name='service'
                 isOpen={isOpen}
                 data={service}
-                dispatch={(value) => setSelectedService(value as string)}
-                dropClassName={cn('max-h-[142px] lg:max-h-[256px]')}
-              />
+                // dropClassName={cn('max-h-[142px] lg:max-h-[256px]')}
+              /> */}
             </div>
           </div>
 
@@ -116,24 +121,14 @@ export default function Page() {
         <div className='flex flex-col w-full mx-auto'>
           <div className='flex flex-row justify-between w-full my-4 xl:hidden'>
             <div className='flex items-center gap-2'>
-              <DropdownCta
-                name='area'
-                className='w-[75px] h-9'
-                isOpen={isOpen}
-                data={area}
+              <Area
+                className={cn('w-[75px]')}
                 dispatch={(value) => setSelectedArea(value as string)}
-                dropClassName={cn(
-                  'flex overflow-y-auto max-w-[150px] max-h-[180px]',
-                )}
-                listClassName={cn('w-full')}
               />
-              <DropdownCta
-                name='service'
-                className='w-[87px] h-9'
-                isOpen={isOpen}
-                data={service}
+
+              <Service
+                className={cn('w-[95px]')}
                 dispatch={(value) => setSelectedService(value as string)}
-                dropClassName={cn('max-h-[142px]')}
               />
             </div>
             <div className='flex items-center'>
@@ -154,7 +149,7 @@ export default function Page() {
           </div>
 
           <div className='relative flex flex-col flex-1 w-full mt-6 gap-6'>
-            <div className='flex flex-row justify-end xl:flex md:hidden hidden'>
+            <div className='flex-row justify-end xl:flex md:hidden hidden'>
               <DropdownCta
                 name='review-sort'
                 border={false}
