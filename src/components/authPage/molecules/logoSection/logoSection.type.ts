@@ -1,6 +1,6 @@
 import { PagePath } from '../../common.types';
 
-type UserType = 'user' | 'mover';
+type UserType = 'customer' | 'mover';
 
 export interface LogoSectionProps {
   userType: UserType;

@@ -31,8 +31,8 @@ export default function RootLayout({
       >
         <QueryProvider>
           <GNB
-            isUserAuthorized={true}
-            userType='user'
+            isAuthorized={true}
+            userType='customer'
             userName={'안성재'}
             imageUrl={'/img/sample-profile/sample-2.svg'}
             hasNotification={true}
