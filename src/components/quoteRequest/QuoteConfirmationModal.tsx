@@ -4,6 +4,7 @@ import combineDateTime from '@/utils/combineDateTime';
 import formatKoreanDate from '@/utils/formatKoreanDate';
 import { maxStep } from './QuoteRequestPage';
 import formatKoreanTime from '@/utils/formatKoreanTime';
+import { createQuoteRequest } from '@/services/moverQuotes';
 
 interface QuoteConfirmationModalProps {
   setShowModal: (value: boolean) => void;
@@ -16,15 +17,25 @@ export function QuoteConfirmationModal({
 }: QuoteConfirmationModalProps) {
   const { registerData } = useQuoteRequestStore();
 
-  const handleFinalConfirm = () => {
+  // 소형이사 (원룸, 투룸, 20평대 미만) -> 소형이사
+  const koreanMoveType = registerData.moveType.split('(')[0].trim() as
+    | '소형이사'
+    | '사무실이사'
+    | '가정이사';
+
+  const handleFinalConfirm = async () => {
     setMaxCompletedStep(maxStep);
     // 최종 견적 제출을 위한 처리 (예: 백엔드 API 호출)
-    console.log('최종 견적 요청 제출:', {
-      move_type: registerData.moveType,
-      move_date: combineDateTime(registerData.moveDate!, registerData.moveTime),
-      move_from: registerData.moveFrom,
-      move_to: registerData.moveTo,
-    });
+    const payload = {
+      moveType: koreanMoveType,
+      moveDate: combineDateTime(registerData.moveDate!, registerData.moveTime),
+      departure: registerData.moveFrom,
+      arrival: registerData.moveTo,
+    };
+
+    console.log('최종 견적 요청 제출:', payload);
+
+    await createQuoteRequest(payload);
     setShowModal(false);
   };
 

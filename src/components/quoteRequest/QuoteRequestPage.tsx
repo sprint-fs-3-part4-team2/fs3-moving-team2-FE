@@ -48,9 +48,9 @@ export default function QuoteRequestPage({
 
   return (
     // 질문이 적을 경우 화면 전체를 채우기 위해 min-h-screen 추가
-    <div className='min-h-screen flex flex-col pt-24 xl:pt-32'>
+    <div className='min-h-screen flex flex-col'>
       {/* 견적요청 container */}
-      <div className='bg-white border px-6 flex items-center h-24 xl:h-32 fixed top-0 left-0 right-0 z-10'>
+      <div className='sticky bg-white px-6 flex items-center h-[96px] xl:h-32 top-[54px] xl:top-[89px] left-0 right-0 z-10'>
         {/* 견적 요청 div */}
         <div className='flex flex-col justify-between flex-1 max-w-[327px] xl:max-w-[1400px] mx-auto h-12 xl:h-16 bg-grayscale-50'>
           <h1 className='font-semibold text-2lg xl:text-2xl'>견적 요청</h1>

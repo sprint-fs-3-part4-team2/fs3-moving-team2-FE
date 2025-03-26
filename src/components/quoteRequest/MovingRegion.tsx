@@ -43,10 +43,30 @@ export function MovingRegion({
         console.log(data);
         if (type === 'from') {
           setFrom(data.address);
-          setRegisterData({ moveFrom: data.address });
+          setRegisterData({
+            moveFrom: {
+              sido: data.sido,
+              sigungu: data.sigungu,
+              street: data.address // data.address에서 시도, 시군구를 제외한 나머지 주소를 가져옴
+                .replace(data.sido, '')
+                .replace(data.sigungu, '')
+                .trim(),
+              fullAddress: data.address,
+            },
+          });
         } else {
           setTo(data.address);
-          setRegisterData({ moveTo: data.address });
+          setRegisterData({
+            moveTo: {
+              sido: data.sido,
+              sigungu: data.sigungu,
+              street: data.address // data.address에서 시도, 시군구를 제외한 나머지 주소를 가져옴
+                .replace(data.sido, '')
+                .replace(data.sigungu, '')
+                .trim(),
+              fullAddress: data.address,
+            },
+          });
         }
         setAddressModalOpen(false);
       },
@@ -104,13 +124,7 @@ export function MovingRegion({
               from && to ? 'cursor-pointer' : 'cursor-not-allowed',
             )}
             disabled={from && to ? false : true}
-            onClick={() => {
-              setRegisterData({
-                moveFrom: from || '',
-                moveTo: to || '',
-              });
-              setShowModal(true);
-            }}
+            onClick={() => setShowModal(true)}
           >
             견적 확정하기
           </CommonButton>

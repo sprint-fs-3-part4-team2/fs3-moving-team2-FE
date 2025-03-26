@@ -12,7 +12,6 @@ export default function QuoteRequestInProgressPage() {
     return <div>견적 요청 데이터가 없습니다.</div>;
   }
 
-  console.log(registerData);
   return (
     <main className='min-h-screen flex flex-col'>
       <nav className='px-6 md:px-[72px] '>
@@ -29,8 +28,8 @@ export default function QuoteRequestInProgressPage() {
               combineDateTime(registerData.moveDate!, registerData.moveTime),
             )
           }
-          departure={registerData.moveFrom}
-          arrival={registerData.moveTo}
+          departure={registerData.moveFrom.fullAddress}
+          arrival={registerData.moveTo.fullAddress}
         />
         <div className='w-[271px] xl:w-[402px] mt-8'>
           <div className='text-center mb-8 text-grayscale-400 text-sm xl:text-xl'>

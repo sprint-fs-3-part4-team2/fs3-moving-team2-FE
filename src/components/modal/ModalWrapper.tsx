@@ -21,7 +21,7 @@ export default function ModalWrapper({
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isBackdropPressed, setIsBackdropPressed] = useState(false);
 
-  // 모달 열릴 때 스크롤 비활성화, 닫힐 때 복원
+  // 모달 열릴 때 스크롤 비활성화, 닫힐 때 복원 및 패딩을 줘서 스크롤바가 사라지는 것 방지(좌우 흔들림 방지)
   useEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow;
     const scrollbarWidth =
@@ -75,7 +75,7 @@ export default function ModalWrapper({
       // onClick={handleBackdropClick}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      className='fixed inset-0 flex sm:items-end md:items-center md:justify-center bg-[#141414] bg-opacity-60 z-50 w-full h-full'
+      className='fixed inset-0 flex sm:items-end md:items-center md:justify-center bg-[#141414] bg-opacity-60 z-[200] w-full h-full'
       open
     >
       <div

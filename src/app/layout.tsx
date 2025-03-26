@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import QueryProvider from './queryProvider';
 import dynamic from 'next/dynamic';
+import Provider from '../providers/_provider';
+// import Analytics from '@/components/analytics/page';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
   ssr: false,
@@ -25,9 +26,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryProvider>
-      <html lang='Ko'>
-        <body className={`${pretendard.variable} antialiased`}>
+    <html lang='Ko'>
+      <body
+        className={`${pretendard.variable} antialiased h-screen flex flex-col`}
+      >
+        {/* 개발이 끝나고 활성화 */}
+        {/* <Analytics /> */}
+        <Provider>
           <GNB
             isUserAuthorized={true}
             userType='user'
@@ -36,8 +41,8 @@ export default function RootLayout({
             hasNotification={true}
           />
           {children}
-        </body>
-      </html>
-    </QueryProvider>
+        </Provider>
+      </body>
+    </html>
   );
 }

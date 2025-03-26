@@ -11,11 +11,14 @@ export default function Area({
   return (
     <DropdownCta
       name='area'
-      className={cn(className && className)}
+      className={cn('h-auto', className && className)}
       isOpen={isOpen}
       data={area}
       dispatch={dispatch}
-      dropClassName={cn('flex overflow-auto max-h-[180px] lg:max-h-[320px]')}
+      dropClassName={cn(
+        'flex overflow-auto max-h-[180px]',
+        'w-[150px] xl:w-full xl:max-h-[320px]',
+      )}
       listClassName={cn('w-1/2')}
     />
   );

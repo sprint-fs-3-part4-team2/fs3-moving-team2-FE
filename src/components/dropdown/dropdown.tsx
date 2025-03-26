@@ -1,12 +1,8 @@
 'use client';
 import cn from '@/utils/cn';
-import Service from './cta/service';
-import Area from './cta/area';
 import { C2 } from '@/lib/types/type';
-import Alarm from './children/alarm';
-import Profile from './children/profile';
 import CtaBtn from './ctaBtn';
-import { InputHTMLAttributes, useState } from 'react';
+import { InputHTMLAttributes, useState, useEffect, useRef } from 'react';
 import { d2Class, ulClass } from './styles/drop.tailwind';
 
 type D2dispatch = React.Dispatch<React.SetStateAction<string | object>>;
@@ -35,6 +31,7 @@ export interface DropdownCtaProps
   dropClassName?: string;
   listClassName?: string;
   dispatch: D2dispatch;
+  border?: boolean;
 }
 
 export function DropdownCta({
@@ -44,10 +41,12 @@ export function DropdownCta({
   dispatch,
   dropClassName,
   listClassName,
+  border = true,
   name,
 }: DropdownCtaProps) {
   const [open, setOpen] = useState<boolean>(isOpen || false);
   const [value, setValue] = useState<string>('전체');
+  const targetRef = useRef<HTMLDivElement>(null);
   function clickHandle() {
     setOpen((prev) => !prev);
   }
@@ -59,20 +58,41 @@ export function DropdownCta({
       dispatch(currentTarget.value);
     }
   }
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (targetRef.current && !targetRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
   return (
-    <div className={cn('relative max-w-[328px]', className && className)}>
+    <div
+      className={cn(
+        'relative max-w-[328px] cursor-pointer',
+        className && className,
+      )}
+      ref={targetRef}
+    >
       <CtaBtn
+        className={cn('')}
+        border={border}
         type={open ? 'outline' : 'default'}
-        height='h-16'
+        height={border ? 'h-9 xl:h-16' : 'h-8 xl:h-10'}
         value={value}
         onClick={clickHandle}
       />
       {open && (
-        <ul className={cn(ulClass, dropClassName && dropClassName)}>
+        <ul className={cn(ulClass, dropClassName, 'bg-white')}>
           <List
             value='전체'
             name={name}
             className={cn(listClassName && listClassName)}
+            font={cn(!border && 'text-xs xl:text-md')}
             onClick={ListHandle}
           />
           {data.map((v) => {
@@ -81,6 +101,7 @@ export function DropdownCta({
                 key={v.name}
                 name={name}
                 className={cn(listClassName && listClassName)}
+                font={cn(!border && 'text-xs xl:text-md')}
                 value={v.name}
                 onClick={ListHandle}
               />
@@ -97,20 +118,21 @@ interface ListPorps extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
   className?: string;
   onClick?: React.MouseEventHandler<HTMLInputElement>;
+  font?: string;
 }
-export function List({ value, className, onClick, ...rest }: ListPorps) {
-  const font = 'text-black-400 text-lg';
-  const padding = 'py-[6px] pl-[14px] lg:pl-[24px] lg:py-[19px]';
+export function List({ value, className, onClick, font, ...rest }: ListPorps) {
+  const defaultFont = 'text-black-400 text-sm xl:text-lg';
+  const padding = 'py-[6px] pl-[14px] xl:pl-[24px] xl:py-[19px]';
 
   return (
     <li
       className={cn(
-        `hover:bg-grayscale-100 h-[36px] lg:h-[64px] relative`,
-        font,
+        `hover:bg-grayscale-100 h-[36px] xl:h-[64px] relative`,
+        font ? font : defaultFont,
         className && className,
       )}
     >
-      <p className={cn('', font, padding)}>{value}</p>
+      <p className={cn('', font ? font : defaultFont, padding)}>{value}</p>
       <input
         className={cn(
           'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer',
@@ -128,8 +150,3 @@ export function List({ value, className, onClick, ...rest }: ListPorps) {
     </li>
   );
 }
-
-Dropdown.Service = Service;
-Dropdown.Area = Area;
-Dropdown.Alram = Alarm;
-Dropdown.Profile = Profile;

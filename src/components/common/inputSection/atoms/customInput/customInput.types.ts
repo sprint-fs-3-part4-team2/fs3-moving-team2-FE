@@ -8,8 +8,8 @@ import {
 
 interface InputBaseProps {
   placeholder: string;
-  rows?: number;
   styleVariant: 'primary' | 'secondary';
+  inputClassName?: string;
 }
 
 export interface SearchTypeProps extends InputBaseProps {

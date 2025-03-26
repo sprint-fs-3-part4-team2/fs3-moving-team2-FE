@@ -6,12 +6,14 @@ export default function RatingStars({
   onClick,
   iconClassName,
 }: RatingStarsProps) {
+  const integerRating = rating < 1 ? Math.ceil(rating) : Math.floor(rating);
+
   const filledStarArray = Array.from(
-    { length: Math.min(rating, 5) },
+    { length: Math.min(integerRating, 5) },
     (_, index) => index + 1,
   );
   const emptyStarArray = Array.from(
-    { length: Math.max(5 - rating, 0) },
+    { length: Math.max(5 - integerRating, 0) },
     (_, index) => filledStarArray.length + index + 1,
   );
 

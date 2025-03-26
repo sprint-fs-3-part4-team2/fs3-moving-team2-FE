@@ -8,30 +8,37 @@ const snsProviders = [
     bgColor: 'bg-[var(--line-100)]',
     imgSrc: '/icons/social/google.svg',
     alt: 'Google Login',
-    width: 'w-[20px] md:w-[27px]',
-    height: 'h-[20px] md:h-[27px]',
+    width: 'w-[20px] xl:w-[27px]',
+    height: 'h-[20px] xl:h-[27px]',
   },
   {
     name: 'Kakao',
     bgColor: 'bg-[#FAE300]',
     imgSrc: '/icons/social/kakao.svg',
     alt: 'Kakao Login',
-    width: 'w-[22px] md:w-[30px]',
-    height: 'h-[20px] md:h-[27px]',
+    width: 'w-[22px] xl:w-[30px]',
+    height: 'h-[20px] xl:h-[27px]',
   },
   {
     name: 'Naver',
     bgColor: 'bg-[#03C75A]',
     imgSrc: '/icons/social/naver.svg',
     alt: 'Naver Login',
-    width: 'w-[22px] md:w-[24px]',
-    height: 'h-[22px] md:h-[24px]',
+    width: 'w-[22px] xl:w-[24px]',
+    height: 'h-[22px] xl:h-[24px]',
   },
 ];
 
 const SnsLogin = () => {
   const handleLogin = (provider: string) => {
-    window.location.href = `/api/auth/${provider.toLowerCase()}`;
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/${provider.toLowerCase()}`, {
+      method: 'GET',
+      credentials: 'include', // 로그인 유지 (세션 필요 시)
+    }).then((res) => {
+      if (res.redirected) {
+        window.location.href = res.url;
+      }
+    });
   };
 
   return (
@@ -44,7 +51,7 @@ const SnsLogin = () => {
           <button
             key={name}
             onClick={() => handleLogin(name)}
-            className={`w-[54px] h-[54px] md:w-[72px] md:h-[72px] rounded-full flex items-center justify-center ${bgColor}`}
+            className={`w-[54px] h-[54px] xl:w-[72px] xl:h-[72px] rounded-full flex items-center justify-center ${bgColor}`}
           >
             <img
               src={imgSrc}

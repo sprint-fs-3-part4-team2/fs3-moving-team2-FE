@@ -1,4 +1,4 @@
 export interface GNBTextProps {
-  linkHref: string;
+  linkHref: string | string[];
   children: React.ReactNode;
 }
