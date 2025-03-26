@@ -8,13 +8,13 @@ import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
 import ShareButtons from '@/components/common/ShareButtons';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import ServiceBadge from '@/components/common/shared/atoms/serviceBadge';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import Pagination from '@/components/pagination/molecule/pagination';
 
 import { useEffect, useState } from 'react';
 import filledHeart from '@/public/icons/favorite/filled.svg';
 import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
 import Image from 'next/image';
-import ModalWrapper from '@/components/modal/ModalWrapper';
-import Pagination from '@/components/pagination/molecule/pagination';
 
 type Review = {
   id: number;

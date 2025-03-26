@@ -39,6 +39,7 @@ export const Default: Story = {
   render: (args) => <AreaWrapper />,
   args: {
     dispatch: () => {},
+    name: '',
   },
   parameters: {
     doc: {
