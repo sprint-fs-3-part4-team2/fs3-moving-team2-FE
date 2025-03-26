@@ -47,11 +47,6 @@ export default function MyPage() {
     writtenAt: string;
     rating: number;
     content: string;
-    // key={data.id}
-    // name={data.name}
-    // writtenAt={data.writtenAt}
-    // rating={data.rating}
-    // content={data.content}
   }
   const totalPages = Math.ceil(reviewsData.reviews.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
