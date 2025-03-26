@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import QueryProvider from './queryProvider';
 import dynamic from 'next/dynamic';
+import Provider from '../providers/_provider';
+// import Analytics from '@/components/analytics/page';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
   ssr: false,
@@ -29,17 +30,17 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} antialiased h-screen flex flex-col`}
       >
-        <QueryProvider>
+        {/* 개발이 끝나고 활성화 */}
+        {/* <Analytics /> */}
+        <Provider>
           <GNB
-            isAuthorized={true}
-            userType='customer'
+            isUserAuthorized={true}
+            userType='user'
             userName={'안성재'}
             imageUrl={'/img/sample-profile/sample-2.svg'}
             hasNotification={true}
           />
           {children}
-        </QueryProvider>
+        </Provider>
       </body>
     </html>
-  );
-}

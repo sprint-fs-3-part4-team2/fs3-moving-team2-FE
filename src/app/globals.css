@@ -203,4 +203,41 @@ body {
   .custom-scroll::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+
+  /* toaster animation */
+  @keyframes warn {
+    0% {
+      transform: translateX(-1.5%);
+    }
+    10% {
+      transform: translateX(1.5%);
+    }
+    20% {
+      transform: translateX(-1.5%);
+    }
+    30% {
+      transform: translateX(1.5%);
+    }
+    40% {
+      transform: translateX(-1.5%);
+    }
+    50% {
+      transform: translateX(1.5%);
+    }
+    60% {
+      transform: translateX(-1.5%);
+    }
+    70% {
+      transform: translateX(1.5%);
+    }
+    80% {
+      transform: translateX(-1.5%);
+    }
+    90% {
+      transform: translateX(1.5%);
+    }
+    100% {
+      transform: translateX(-1.5%);
+    }
+  }
 }

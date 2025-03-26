@@ -1,25 +1,12 @@
 'use client';
 
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
-import { getSubmittedQuotesList } from '@/services/moverQuotes';
-import { useQuery } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
 import Pagination from '../pagination/molecule/pagination';
+import { UseSubmittedQuotes } from '@/hooks/useSubmittedQuotes';
 
 export default function SubmittedQuotesByMover() {
-  const searchParams = useSearchParams();
-  const page = Number(searchParams.get('page') || 1);
-  const pageSize = 6;
-  const router = useRouter();
-
-  const { data } = useQuery({
-    queryKey: ['quotes', page, pageSize],
-    queryFn: async () => getSubmittedQuotesList({ page, pageSize }),
-  });
-
-  const onPageChange = (page: number) => {
-    router.push(`?page=${page}`);
-  };
+  const { submittedQuotes, onPageChange, page } = UseSubmittedQuotes();
+  const { data } = submittedQuotes;
 
   return (
     data && (
@@ -36,8 +23,8 @@ export default function SubmittedQuotesByMover() {
                 isCustomQuote={quote.isCustomRequest}
                 customerName={quote.customerName}
                 movingDate={quote.request.moveDate}
-                arrival={quote.request.arrival.sido}
-                departure={quote.request.departure.sido}
+                arrival={quote.request.arrival?.sido || ''}
+                departure={quote.request.departure?.sido || ''}
                 completed={quote.completed}
                 declined={false}
                 quotePrice={quote.price}
