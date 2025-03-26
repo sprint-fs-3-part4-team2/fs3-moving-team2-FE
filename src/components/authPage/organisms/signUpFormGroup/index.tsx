@@ -13,8 +13,17 @@ import {
   VALIDATION_MESSAGES,
   VALIDATION_PATTERN,
 } from '../constants';
+import { UserType } from '../../common.types';
+import { useMoverSignUp, useUserSignUp } from '@/hooks/auth/useAuth';
+import { SignUpData } from '@/services/auth/types';
 
-export default function SignUpFormGroup() {
+export default function SignUpFormGroup({
+  userType = 'customer',
+}: {
+  userType: UserType;
+}) {
+  const userSignUp = useUserSignUp();
+  const moverSignUp = useMoverSignUp();
   const {
     register,
     handleSubmit,
@@ -27,9 +36,11 @@ export default function SignUpFormGroup() {
 
   const passowrd = watch('password');
 
+  const { mutate, isPending } = userType === 'customer' ? userSignUp : moverSignUp;
+
   const onSubmit = async (data: FieldValues) => {
-    // 서버에 전송할 데이터
     console.log('data: ', data);
+    mutate(data as SignUpData);
   };
 
   const onError = (errors: FieldErrors) => {
@@ -160,6 +171,7 @@ export default function SignUpFormGroup() {
           BUTTON_DESCTOP_STYLES,
           isValid ? '' : BUTTON_DISABLED_STYLES,
         )}
+        disabled={isPending}
       >
         시작하기
       </CommonButton>
