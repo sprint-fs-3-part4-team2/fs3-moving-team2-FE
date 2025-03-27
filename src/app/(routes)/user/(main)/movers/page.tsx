@@ -6,12 +6,13 @@ import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import Area from '@/components/dropdown/cta/area';
 import Service from '@/components/dropdown/cta/service';
-import { MOVING_TYPES, MOVING_STATE } from '@/constants/movingTypes';
+import { MOVING_TYPES } from '@/constants/movingTypes';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 import axiosInstance from '@/lib/axiosInstance';
 import cn from '@/utils/cn';
 
-type MovingType = keyof typeof MOVING_TYPES;
+export type MovingTypeKey = keyof typeof MOVING_TYPES;
+export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 
 interface Mover {
   id: number;
@@ -19,14 +20,15 @@ interface Mover {
   subVariant: string;
   moverName: string;
   imageUrl: string;
-  movingType: MovingType[];
+  movingType: MovingTypeKey[];
   isCustomQuote: boolean;
+  quoteState?: string;
   rating?: number;
+  ratingCount: number;
   experienceYears: number;
   quoteCount: number;
   isFavorite?: boolean;
-  favoriteCount: number;
-  ratingCount: number;
+  favoriteCount?: number;
   isFavoriteMoverList?: boolean;
   description?: string;
 }
@@ -37,45 +39,54 @@ export default function Page() {
   const [selectedService, setSelectedService] = useState<string>('서비스');
   const [selectedSort, setSelectedSort] = useState<string>('리뷰 많은순');
   const [articles, setArticles] = useState([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = () => {
-    console.log('검색 버튼 클릭됨');
+  const handleSearch = (searchTerm: string) => {
+    if (!searchTerm.trim()) return;
+
+    axiosInstance
+      .get('/movers/search', { params: { keyword: searchTerm.trim() } })
+      .then((response) => {
+        setMovers(response.data.data);
+      })
+      .catch((err) => {
+        setError('검색 중 오류가 발생했습니다.');
+        console.error('검색 오류:', err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   // 기사님 목록 조회
+  const fetchMovers = async () => {
+    try {
+      const { data } = await axiosInstance.get('/movers', {
+        params: { sortBy: 'reviews' },
+      });
+
+      console.log('응답 데이터:', data);
+
+      setMovers(data.data || data);
+    } catch (err) {
+      console.error('API 호출 오류:', err);
+      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+    }
+  };
+
   useEffect(() => {
-    const fetchMovers = async () => {
-      try {
-        const response = await axiosInstance.get('/movers', {
-          params: { sortBy: 'reviews' },
-        });
-
-        console.log('응답 데이터:', response.data);
-
-        // API 응답 데이터를 변환하여 `movingType` 필드 매칭
-        const formattedMovers = response.data.map((mover: any) => ({
-          ...mover,
-          movingType: [convertServiceType(mover.serviceType)], // 변환된 movingType 적용
-        }));
-
-        setMovers(formattedMovers);
-      } catch (err) {
-        console.error('API 호출 오류:', err);
-      }
-    };
-
     fetchMovers();
   }, []);
 
-  // 변환 함수 추가
-  const convertServiceType = (serviceType: string): MovingType => {
-    const mapping: Record<string, MovingType> = {
-      SMALL_MOVE: 'small',
-      OFFICE_MOVE: 'office',
-      HOME_MOVE: 'home',
-    };
-    return mapping[serviceType] || 'small'; // 매칭되지 않으면 기본값 'small'
-  };
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>오류 발생: {error}</p>;
+
+  // const MoverComponent = ({ mover }: { mover: Mover }) => {
+  //   const movingTypes: MovingTypeValue[] = mover.movingType.map(
+  //     (type: MovingTypeKey) => MOVING_TYPES[type]
+  //   );
+  // }
 
   return (
     <div className='flex flex-col w-full mx-auto gap-6'>
@@ -217,16 +228,19 @@ export default function Page() {
                 variant='quote'
                 subVariant='completed'
                 moverName={mover.moverName}
-                imageUrl={mover.imageUrl}
-                movingType={mover.movingType}
+                imageUrl={mover.imageUrl || '/profile-placeholder.png'}
+                movingType={movingTypes.map(
+                  (type: MovingTypeValue) => type.key,
+                )}
                 isCustomQuote={mover.isCustomQuote}
+                quoteState='confirmedQuote'
                 rating={mover.rating ?? 0}
+                ratingCount={mover.ratingCount}
                 experienceYears={mover.experienceYears}
                 quoteCount={mover.quoteCount}
                 isFavorite={mover.isFavorite}
-                favoriteCount={mover.favoriteCount}
-                ratingCount={mover.ratingCount}
-                isFavoriteMoverList={true}
+                favoriteCount={mover.favoriteCount ?? 0}
+                isFavoriteMoverList={false}
                 description={mover.description}
               />
             ))}
