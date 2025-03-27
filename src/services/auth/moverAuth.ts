@@ -3,17 +3,17 @@ import { handleApiError } from './apiHelpers';
 import { SignInData, SignUpData, AuthResponse } from './types';
 
 const MOVER_AUTH_ENDPOINTS = {
-  SIGNUP: '/mover/auth/signUp',
-  SIGNIN: '/mover/auth/signIn',
+  SIGNUP: 'auth/sign-up/mover',
+  SIGNIN: 'auth/sign-in/mover',
 };
 
-export const moverAuthService = {
+const moverAuthService = {
   signUp: async (data: SignUpData): Promise<AuthResponse> => {
     try {
       const response = await axiosInstance.post<AuthResponse>(
         MOVER_AUTH_ENDPOINTS.SIGNUP,
         data,
-      );  
+      );
       return response.data;
     } catch (error) {
       return handleApiError(error, 'mover signup');
@@ -22,6 +22,7 @@ export const moverAuthService = {
 
   signIn: async (data: SignInData): Promise<AuthResponse> => {
     try {
+      console.log('data: ', data);
       const response = await axiosInstance.post<AuthResponse>(
         MOVER_AUTH_ENDPOINTS.SIGNIN,
         data,
@@ -32,3 +33,5 @@ export const moverAuthService = {
     }
   },
 };
+
+export default moverAuthService;

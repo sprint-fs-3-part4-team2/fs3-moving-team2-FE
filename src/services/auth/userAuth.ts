@@ -3,8 +3,8 @@ import { handleApiError } from './apiHelpers';
 import { SignInData, SignUpData, AuthResponse } from './types';
 
 const USER_AUTH_ENDPOINTS = {
-  SIGNUP: '/user/auth/signUp',
-  SIGNIN: '/user/auth/signIn',
+  SIGNUP: 'auth/sign-up/customer',
+  SIGNIN: 'auth/sign-in/customer',
 };
 
 const userAuthService = {
