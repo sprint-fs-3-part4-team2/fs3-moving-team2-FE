@@ -4,11 +4,11 @@ export interface SignInData {
 }
 
 export interface SignUpData {
-  name: string;
   email: string;
-  phoneNumber: string;
   password: string;
   passwordConfirmation: string;
+  name: string;
+  phoneNumber: string;
 }
 
 export interface AuthResponse {
