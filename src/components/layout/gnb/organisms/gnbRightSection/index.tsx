@@ -11,7 +11,7 @@ import { useState } from 'react';
 import SideNavigationBar from '@/components/sideMenuBar/organisms';
 
 export default function GNBRightSection({
-  isUserAuthorized,
+  isAuthorized,
   hasNotification,
   userName,
   imageUrl,
@@ -26,7 +26,7 @@ export default function GNBRightSection({
 
   return (
     <div>
-      {isUserAuthorized ? (
+      {isAuthorized ? (
         <div className={GNB_RIGHT_SECTION_BOX_STYLES}>
           <Notification hasNotification={hasNotification} />
           <Profile
