@@ -20,4 +20,6 @@ export interface MoverProfileProps extends OrganismBaseProps {
   introduction: string;
   movingType: string;
   regions: string;
+  onEditClick?: () => void;
+  onInfoEdit?: () => void;
 }

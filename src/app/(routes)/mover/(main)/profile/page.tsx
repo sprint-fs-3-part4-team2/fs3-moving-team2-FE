@@ -2,19 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import ReviewStar from './reviewRating';
 import MoverStatInfo from '@/components/moverMypage/component';
 import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
 import Pagination from '@/components/pagination/molecule/pagination';
 import { getMoverReviews } from '@/services/reviewsService';
 import { getMoverProfile } from '@/services/profileService';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { MOVING_TYPES } from '@/constants/movingTypes';
+import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
+
+export type MovingTypeKey = keyof typeof MOVING_TYPES;
+export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 
 export default function MyPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  // const { id } = useParams() as { id: string };
-  const id = 'cm8pgoxk80008a7dhu6kf25ft';
+  const { id } = useParams() as { id: string };
+  const router = useRouter();
 
   const {
     data: reviewsData,
@@ -46,14 +50,19 @@ export default function MyPage() {
     name: string;
     writtenAt: string;
     rating: number;
+    ratingCount: number;
     content: string;
     introduction: string;
-    regions: string;
+    regions: string[];
   }
+
   const totalPages = Math.ceil(reviewsData.reviews.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentReviews = reviewsData.reviews.slice(startIndex, endIndex);
+  const movingTypes: MovingTypeValue[] = profileData.movingType.map(
+    (type: MovingTypeKey) => MOVING_TYPES[type],
+  );
 
   return (
     <div>
@@ -62,19 +71,28 @@ export default function MyPage() {
         <MoverStatInfo
           imageUrl={profileData.profileImage || '/profile-placeholder.png'}
           rating={reviewsData.averageRating}
-          ratingCount={reviewsData.totalReviews}
+          ratingCount={reviewsData.ratingCount}
           experienceYears={profileData.experienceYears}
           favoriteCount={profileData.favoriteCount ?? 0}
           quoteCount={profileData.quoteCount}
           isFavoriteMoverList={false}
           introduction={profileData.introduction}
-          movingType={profileData.movingDate}
-          regions={profileData.regions}
+          movingType={movingTypes
+            .map((type: MovingTypeValue) => type.value)
+            .join(', ')}
+          regions={profileData.regions.join(', ')}
           moverName={profileData.moverName}
+          onEditClick={() => router.push('/mover/profile/edit')}
+          onInfoEdit={() => router.push('/mover/info/edit')}
         />
 
         <div className='border-t border-gray-300 my-10 '></div>
-        <ReviewStar />
+
+        <RatingStat
+          averageRating={reviewsData.averageRating}
+          totalCount={reviewsData.ratingCount ?? 0}
+          ratingCounts={reviewsData.ratingCounts ?? {}}
+        />
 
         <div className='max-w-[955px]'>
           {currentReviews.map((data: reviewsType) => (

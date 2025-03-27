@@ -1,5 +1,5 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import MoverStat from '@/components/common/moverStat/organisms/moverStat';
 import ProfileImage from '@/components/common/shared/atoms/profileImage';
@@ -24,7 +24,10 @@ export default function MoverStatInfo({
   introduction, //기사소개
   movingType, // 이사종류
   regions, //지역
+  onEditClick,
+  onInfoEdit,
 }: MoverProfileProps) {
+  const router = useRouter();
   return (
     <div className=''>
       <PageHeader>마이페이지</PageHeader>
@@ -48,7 +51,10 @@ export default function MoverStatInfo({
               textColorType='gray'
               className='bg-bg-[var(--background-200)]'
             >
-              <div className='flex items-center justify-center gap-2'>
+              <div
+                className='flex items-center justify-center gap-2'
+                onClick={onInfoEdit}
+              >
                 기본 정보 수정
                 <Image
                   src='/icons/edit.svg'
@@ -66,7 +72,10 @@ export default function MoverStatInfo({
               borderColorsType='none'
               textColorType='white'
             >
-              <div className='flex items-center justify-center gap-2'>
+              <div
+                className='flex items-center justify-center gap-2'
+                onClick={onEditClick}
+              >
                 내 프로필 수정
                 <Image
                   src='/icons/edit.svg'
@@ -119,7 +128,7 @@ export default function MoverStatInfo({
             <div className='flex flex-row items-center gap-4'>
               <div className='flex items-center space-x-2'>
                 <ListInfoTitle>제공 서비스</ListInfoTitle>
-                <span className='font-medium'>{[movingType]} </span>
+                <span className='font-medium'>{movingType} </span>
               </div>
               <span className='text-gray-300'>|</span>
               <div className='flex items-center space-x-2'>
