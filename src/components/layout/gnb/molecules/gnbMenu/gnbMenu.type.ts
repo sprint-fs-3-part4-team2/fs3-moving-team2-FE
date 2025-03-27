@@ -1,4 +1,4 @@
-type UserType = 'guest' | 'user' | 'mover';
+type UserType = 'guest' | 'customer' | 'mover';
 
 export interface GnbMenuProps {
   userType: UserType;

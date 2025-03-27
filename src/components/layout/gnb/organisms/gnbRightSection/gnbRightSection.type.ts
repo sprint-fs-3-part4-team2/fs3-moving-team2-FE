@@ -8,5 +8,5 @@ export interface GNBRightSectionProps
     ProfileSecrionProps,
   MenuIconProp,
   GnbMenuProps{
-  isUserAuthorized: boolean;
+    isAuthorized: boolean;
 }
