@@ -31,6 +31,7 @@ export interface DropdownCtaProps
   dropClassName?: string;
   listClassName?: string;
   dispatch: D2dispatch;
+  noAllbtn?: boolean;
   border?: boolean;
 }
 
@@ -42,6 +43,7 @@ export function DropdownCta({
   dropClassName,
   listClassName,
   border = true,
+  noAllbtn,
   name,
 }: DropdownCtaProps) {
   const [open, setOpen] = useState<boolean>(isOpen || false);
@@ -88,13 +90,15 @@ export function DropdownCta({
       />
       {open && (
         <ul className={cn(ulClass, dropClassName, 'bg-white')}>
-          <List
-            value='전체'
-            name={name}
-            className={cn(listClassName && listClassName)}
-            font={cn(!border && 'text-xs xl:text-md')}
-            onClick={ListHandle}
-          />
+          {!noAllbtn && (
+            <List
+              value='전체'
+              name={name}
+              className={cn(listClassName && listClassName)}
+              font={cn(!border && 'text-xs xl:text-md')}
+              onClick={ListHandle}
+            />
+          )}
           {data.map((v) => {
             return (
               <List

@@ -12,6 +12,31 @@ import {
 } from 'date-fns/locale';
 import { usePathname } from 'next/navigation';
 
+const HighlightText = ({ text, words }: { text: string; words: string[] }) => {
+  // 정규식을 만들어 단어를 찾음 (g 플래그 추가)
+  const regex = new RegExp(`(${words.join('|')})`, 'g');
+
+  // 일치하는 부분을 <span> 태그로 감싸기
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, index) =>
+        words.includes(part) ? (
+          <span
+            className={cn('text-primary-blue-200 font-bold')}
+            key={index}
+          >
+            {part}
+          </span>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+};
+
 export type AlarmData = {
   createdAt: Date;
   highlight: string[];
@@ -98,7 +123,7 @@ function Alarm({
         className={cn(
           'absolute block right-0 top-[140%] w-[312px] h-auto max-h-[314px] z-[99]',
           'xl:max-h-[352px] xl:w-[360px]',
-          'overflow-hidden px-0 pl-0',
+          'overflow-hidden px-0 pl-0 shadow-2xl',
         )}
       >
         <div className='py-[14px] h-[54px] relative'>
@@ -117,7 +142,7 @@ function Alarm({
         <ul className={cn('w-full overflow-y-scroll h-[250px] custom-scroll')}>
           {data.length > 0 ? (
             data.map((v, i) => {
-              const { id, isRead } = v;
+              const { id, isRead, highlight, message } = v;
 
               return (
                 <li
@@ -125,18 +150,24 @@ function Alarm({
                   className={cn(
                     'min-h-[72px] lg:min-h-[84px] px-4 py-3 lg:px-6 lg:py-4',
                     i !== data.length - 1 && 'border-b border-line-200',
-                    isRead ? 'bg-grayscale-100' : '',
+                    isRead ? 'bg-line-100' : 'bg-white',
                   )}
                 >
                   <Link
-                    className='block text-black-400 text-md lg:text-lg font-medium w-full truncate'
+                    className={cn(
+                      'block text-md lg:text-lg font-medium w-full truncate',
+                      isRead ? 'text-grayscale-400' : 'text-black-400',
+                    )}
                     href={v.url || '#'}
                     onClick={(e) => {
                       e.preventDefault();
                       readFn(id);
                     }}
                   >
-                    {v.message}
+                    <HighlightText
+                      text={message}
+                      words={highlight}
+                    />
                     <p className='text-grayscale-300 text-[13px] lg:text-md font-medium'>
                       {isTime(v.createdAt)}
                     </p>

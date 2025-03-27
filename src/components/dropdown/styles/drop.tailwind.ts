@@ -1,6 +1,7 @@
 import cn from '@/utils/cn';
 export const d2Class = cn(
-  `flex flex-wrap bg-white rounded-md w-full lg:rounded-2xl overflow-auto shadow-primary custom-scroll rounded-br-0 xl:rounded-br-0`,
+  `flex flex-wrap bg-white  w-full  overflow-auto shadow-primary custom-scroll`,
+  'rounded-md xl:rounded-2xl rounded-br-none xl:rounded-br-none',
 );
 export const ulClass = cn(
   d2Class,
