@@ -17,4 +17,9 @@ export interface MoverProfileProps extends OrganismBaseProps {
   favoriteCount: number;
   quoteCount: number;
   isFavoriteMoverList: boolean;
+  introduction: string;
+  movingType: string;
+  regions: string;
+  onEditClick?: () => void;
+  onInfoEdit?: () => void;
 }
