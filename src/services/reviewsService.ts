@@ -21,7 +21,7 @@ export const submitReview = (reviewData: {
 //내가 작성한 리뷰 (리뷰 목록 조회API)
 export const getCompletedReviews = async (id: string) => {
   try {
-    const response = await axiosInstance.get(`/reviews/completed/${id}`);
+    const response = await axiosInstance.get(`/reviews/completed`);
 
     return response.data;
   } catch (error) {
@@ -33,7 +33,9 @@ export const getCompletedReviews = async (id: string) => {
 //기사님 리뷰 목록 조회API
 export const getMoverReviews = async (id: string) => {
   try {
-    const response = await axiosInstance.get(`/reviews/mover/review/${id}`);
+    console.log('getMoverReviews');
+    const response = await axiosInstance.get(`/reviews/mover/review`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);

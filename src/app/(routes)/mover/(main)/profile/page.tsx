@@ -22,7 +22,7 @@ export default function MyPage() {
     error: reviewsError,
   } = useQuery({
     queryKey: ['moverReviews', id],
-    queryFn: async () => await getMoverReviews(id), // ID 동적으로 변경 필요
+    queryFn: async () => await getMoverReviews(id),
   });
 
   const {
@@ -31,7 +31,7 @@ export default function MyPage() {
     error: profileError,
   } = useQuery({
     queryKey: ['moverProfile', id],
-    queryFn: async () => await getMoverProfile(id), // ID 동적으로 변경 필요
+    queryFn: async () => await getMoverProfile(id),
   });
 
   if (isLoadingReviews || isLoadingProfile)
@@ -70,6 +70,7 @@ export default function MyPage() {
           introduction={profileData.introduction}
           movingType={profileData.movingDate}
           regions={profileData.regions}
+          moverName={profileData.moverName}
         />
 
         <div className='border-t border-gray-300 my-10 '></div>
