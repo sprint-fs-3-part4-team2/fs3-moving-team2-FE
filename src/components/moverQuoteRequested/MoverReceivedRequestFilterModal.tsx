@@ -71,7 +71,8 @@ export default function MoverReceivedRequestFilterModal({
       >
         <div className='sm:w-full md:w-[327px] flex justify-between items-center mt-5 border-b pb-4 px-4'>
           <h2 className='text-lg font-medium text-grayscale-300'>
-            전체 선택 ( 20 )
+            전체 선택
+            {/* ( 20 ) */}
           </h2>
           <input
             type='checkbox'
@@ -95,7 +96,8 @@ export default function MoverReceivedRequestFilterModal({
               <li key={option.id}>
                 <div className='flex justify-between items-center py-5 px-4 border-t'>
                   <span className='text-base'>
-                    {option.label} ({option.count})
+                    {option.label}
+                    {/* ({option.count}) */}
                   </span>
                   <input
                     type='checkbox'
@@ -113,7 +115,8 @@ export default function MoverReceivedRequestFilterModal({
               <li key={option.id}>
                 <div className='flex justify-between items-center py-5 px-4 border-t'>
                   <span className='text-base'>
-                    {option.label} ({option.count})
+                    {option.label}
+                    {/* ({option.count}) */}
                   </span>
                   <input
                     type='checkbox'
