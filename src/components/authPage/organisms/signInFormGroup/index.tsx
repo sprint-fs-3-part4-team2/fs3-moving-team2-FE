@@ -1,6 +1,9 @@
 'use client';
 
 import InputSection from '@/components/common/inputSection/molecules';
+import { UserType } from '../../common.types';
+import { useMoverSignIn, useUserSignIn } from '@/hooks/auth/useAuth';
+import { SignInData } from '@/services/auth/types';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
 import cn from '@/utils/cn';
 import { FORM_LAYOUT_STYLES } from '../formGroupSection/constant';
@@ -13,7 +16,13 @@ import {
   VALIDATION_PATTERN,
 } from '../constants';
 
-export default function SignInFormGroup() {
+export default function SignInFormGroup({
+  userType = 'customer',
+}: {
+  userType: UserType;
+}) {
+  const userSignIn = useUserSignIn();
+  const moverSignIn = useMoverSignIn();
   const {
     register,
     handleSubmit,
@@ -23,9 +32,11 @@ export default function SignInFormGroup() {
     mode: 'onChange',
   });
 
+  const { mutate, isPending } = userType === 'customer' ? userSignIn : moverSignIn;
+
   const onSubmit = async (data: FieldValues) => {
-    // 서버에 전송할 데이터
     console.log('data: ', data);
+    mutate(data as SignInData);
   };
 
   const onError = (errors: FieldErrors) => {
@@ -93,6 +104,7 @@ export default function SignInFormGroup() {
           BUTTON_DESCTOP_STYLES,
           isValid ? '' : BUTTON_DISABLED_STYLES,
         )}
+        disabled={isPending}
       >
         로그인
       </CommonButton>
