@@ -65,7 +65,7 @@ export default function MyPage() {
           ratingCount={reviewsData.totalReviews}
           experienceYears={profileData.experienceYears}
           favoriteCount={profileData.favoriteCount ?? 0}
-          quoteCount={profileData.totalConfirmedCount}
+          quoteCount={profileData.quoteCount}
           isFavoriteMoverList={false}
           introduction={profileData.introduction}
           movingType={profileData.movingDate}
