@@ -31,9 +31,14 @@ export default function MoverBasicInfoEdit() {
       ...rest,
     };
     const res = await moverEditApi(body);
-    console.log(res);
-    // if (res.success) router.replace('/mover/profile');
-    toaster('info', '성공');
+    if (res.ok) {
+      // router.replace('/mover/profile');
+      toaster('info', '성공');
+      return;
+    } else {
+      toaster('warn', '실패');
+      return;
+    }
   };
   const onError = (errors: FieldErrors) => {
     toaster('warn', '실패');
