@@ -12,15 +12,18 @@ import Image from 'next/image';
 import PageHeader from '../common/shared/atoms/pageHeader';
 
 export default function MoverStatInfo({
-  imageUrl,
-  rating,
-  ratingCount,
-  experienceYears,
-  isFavorite,
-  moverName = '김코드',
-  favoriteCount,
-  quoteCount,
+  imageUrl, //프로필사진
+  rating, // 평점
+  ratingCount, //평점 수
+  experienceYears, //경력
+  isFavorite, //
+  moverName = '김코드', //기사이름
+  favoriteCount, //찜 개수
+  quoteCount, //견적확정 수
   isFavoriteMoverList,
+  introduction, //기사소개
+  movingType, // 이사종류
+  regions, //지역
 }: MoverProfileProps) {
   return (
     <div className=''>
@@ -33,7 +36,7 @@ export default function MoverStatInfo({
               sizeVariant='primary'
             />
             <div className='text-gray-400'>
-              고객님의 물품을 소중하고 안전하게 운송하여 드립니다.
+              <span>{introduction}</span>
             </div>
           </div>
           <div className='flex gap-[16px] w-[576px] '>
@@ -116,12 +119,12 @@ export default function MoverStatInfo({
             <div className='flex flex-row items-center gap-4'>
               <div className='flex items-center space-x-2'>
                 <ListInfoTitle>제공 서비스</ListInfoTitle>
-                <span className='font-medium'>소형이사, 가정이사 </span>
+                <span className='font-medium'>{[movingType]} </span>
               </div>
               <span className='text-gray-300'>|</span>
               <div className='flex items-center space-x-2'>
                 <ListInfoTitle>지역</ListInfoTitle>
-                <span className='font-medium'>서울, 경기</span>
+                <span className='font-medium'>{[regions]}</span>
               </div>
             </div>
           </div>

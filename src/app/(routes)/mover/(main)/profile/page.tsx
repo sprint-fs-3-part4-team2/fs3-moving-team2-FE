@@ -47,6 +47,8 @@ export default function MyPage() {
     writtenAt: string;
     rating: number;
     content: string;
+    introduction: string;
+    regions: string;
   }
   const totalPages = Math.ceil(reviewsData.reviews.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -62,10 +64,12 @@ export default function MyPage() {
           rating={reviewsData.averageRating}
           ratingCount={reviewsData.totalReviews}
           experienceYears={profileData.experienceYears}
-          isFavorite={profileData.isFavorite ?? false}
           favoriteCount={profileData.favoriteCount ?? 0}
           quoteCount={profileData.totalConfirmedCount}
           isFavoriteMoverList={false}
+          introduction={profileData.introduction}
+          movingType={profileData.movingDate}
+          regions={profileData.regions}
         />
 
         <div className='border-t border-gray-300 my-10 '></div>
