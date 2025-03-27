@@ -5,16 +5,18 @@ import CustomerInfo from '../common/customerInfo/templates/customerInfo';
 import FormInput from '../common/inputSection/atoms/customInput/inputs/formInput';
 import CommonButton from '../common/commonBtn/commonBtn';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
+import { rejectQuoteByMover } from '@/services/\btargetedQuotes';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface MoverQuoteDeclineModalProps {
   selectedCustomer: CustomerRequest | null;
   setShowDeclineModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function MoverQuoteDeclineModal(
-  { selectedCustomer, setShowDeclineModal }: MoverQuoteDeclineModalProps,
-  onSubmit: (data: FieldValues) => void,
-) {
+export default function MoverQuoteDeclineModal({
+  selectedCustomer,
+  setShowDeclineModal,
+}: MoverQuoteDeclineModalProps) {
   const {
     register,
     handleSubmit,
@@ -23,6 +25,24 @@ export default function MoverQuoteDeclineModal(
   } = useForm<FieldValues>({ mode: 'onChange' });
 
   const quoteCommentValue = watch('quoteComment') || '';
+  const queryClient = useQueryClient();
+
+  const onSubmit = async (data: FieldValues) => {
+    if (selectedCustomer?.quoteId) {
+      await rejectQuoteByMover(
+        selectedCustomer.quoteId,
+        data.quoteComment, // 반려 사유 전달
+      );
+      queryClient.invalidateQueries({
+        queryKey: ['customerRequests'],
+        exact: false,
+      });
+
+      setShowDeclineModal(false);
+    } else {
+      console.error('선택된 고객 정보가 없습니다.');
+    }
+  };
 
   return (
     <ModalWrapper

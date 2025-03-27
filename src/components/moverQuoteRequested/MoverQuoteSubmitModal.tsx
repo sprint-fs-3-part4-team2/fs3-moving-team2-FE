@@ -6,6 +6,7 @@ import CustomerInfo from '../common/customerInfo/templates/customerInfo';
 import FormInput from '../common/inputSection/atoms/customInput/inputs/formInput';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
 import { submitQuoteByMover } from '@/services/moverQuotes';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface MoverQuoteSubmitModalProps {
   selectedCustomer: CustomerRequest | null;
@@ -25,6 +26,8 @@ export default function MoverQuoteSubmitModal({
 
   const quoteCommentValue = watch('quoteComment') || '';
 
+  const queryClient = useQueryClient();
+
   const onSubmit = async (data: FieldValues) => {
     if (selectedCustomer?.quoteId) {
       await submitQuoteByMover(
@@ -32,6 +35,12 @@ export default function MoverQuoteSubmitModal({
         Number(data.quotePrice),
         data.quoteComment,
       );
+
+      queryClient.invalidateQueries({
+        queryKey: ['customerRequests'],
+        exact: false,
+      });
+
       setShowSubmitModal(false);
     } else {
       console.error('선택된 고객 정보가 없습니다.');
