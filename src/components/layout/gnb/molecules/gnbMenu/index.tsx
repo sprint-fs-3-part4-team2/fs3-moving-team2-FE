@@ -6,7 +6,7 @@ import MoverMenu from '../../atoms/menus/moverMenu';
 export default function GNBMenu({ userType }: GnbMenuProps): JSX.Element {
   const menuMap = {
     guest: <GuestMenu />,
-    user: <UserMenu />,
+    customer: <UserMenu />,
     mover: <MoverMenu />,
   };
 

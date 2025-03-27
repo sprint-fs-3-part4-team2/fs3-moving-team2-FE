@@ -13,7 +13,10 @@ export default function Page() {
         moveToPage='user/sign-up'
       />
 
-      <FormGroupSection formType='signUp' />
+      <FormGroupSection
+        userType='mover'
+        formType='signUp'
+      />
       <TextUnderButton
         pageType='signUp'
         moveToPage='mover/sign-in'
