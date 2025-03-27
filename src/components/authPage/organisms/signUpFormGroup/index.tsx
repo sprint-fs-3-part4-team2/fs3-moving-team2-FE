@@ -36,7 +36,8 @@ export default function SignUpFormGroup({
 
   const passowrd = watch('password');
 
-  const { mutate, isPending } = userType === 'customer' ? userSignUp : moverSignUp;
+  const { mutate, isPending } =
+    userType === 'customer' ? userSignUp : moverSignUp;
 
   const onSubmit = async (data: FieldValues) => {
     console.log('data: ', data);
@@ -100,7 +101,7 @@ export default function SignUpFormGroup({
         content='전화번호'
         placeholder='숫자만 입력해주세요'
         type='number'
-        name='phone_number'
+        name='phoneNumber'
         register={register}
         errors={errors}
         validation={{
@@ -147,7 +148,7 @@ export default function SignUpFormGroup({
         content='비밀번호 확인'
         placeholder='비밀번호 다시 한번 입력해주세요'
         type='password'
-        name='check_password'
+        name='passwordConfirmation'
         register={register}
         errors={errors}
         validation={{
