@@ -1,10 +1,10 @@
-import { CustomerRequest } from '@/app/(routes)/mover/(main)/quotes/requested/page';
 import React, { Dispatch, SetStateAction } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import CommonButton from '../common/commonBtn/commonBtn';
 import ModalWrapper from '../modal/ModalWrapper';
 import CustomerInfo from '../common/customerInfo/templates/customerInfo';
 import FormInput from '../common/inputSection/atoms/customInput/inputs/formInput';
+import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
 
 interface MoverQuoteSubmitModalProps {
   selectedCustomer: CustomerRequest | null;
