@@ -18,6 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
 import { getAllQuoteRequests } from '@/services/quoteRequests';
 import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
+import Pagination from '@/components/pagination/molecule/pagination';
 
 export default function Page() {
   const [selected, setSelected] = useState<any | null>(null); // Dropdown 선택된 값
@@ -41,6 +42,8 @@ export default function Page() {
   const [query, setQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('이사 빠른순');
 
+  const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
+
   // 선택된 이사 유형을 쉼표로 구분된 문자열로 변환
   const selectedMoveTypes = moveTypes
     .filter((option) => selectedFilters[option.id])
@@ -62,6 +65,7 @@ export default function Page() {
   } = useQuery({
     queryKey: [
       'customerRequests',
+      currentPage,
       query,
       selectedMoveTypes,
       sortBy,
@@ -70,7 +74,7 @@ export default function Page() {
     ],
     queryFn: () =>
       getAllQuoteRequests(
-        1, // page
+        currentPage, // page
         10, // pageSize
         query, // search
         selectedMoveTypes, // moveType
@@ -175,6 +179,13 @@ export default function Page() {
               ))}
             </ul>
           )}
+          <div className='flex justify-center items-center mt-6 mb-8'>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={customerRequests?.totalPages ?? 1}
+              onPageChange={(currentPage) => setCurrentPage(currentPage)}
+            />
+          </div>
         </section>
       </div>
       {showSubmitModal && (
