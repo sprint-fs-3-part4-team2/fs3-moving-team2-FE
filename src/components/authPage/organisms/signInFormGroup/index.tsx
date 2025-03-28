@@ -32,7 +32,8 @@ export default function SignInFormGroup({
     mode: 'onChange',
   });
 
-  const { mutate, isPending } = userType === 'customer' ? userSignIn : moverSignIn;
+  const { mutate, isPending } =
+    userType === 'customer' ? userSignIn : moverSignIn;
 
   const onSubmit = async (data: FieldValues) => {
     console.log('data: ', data);

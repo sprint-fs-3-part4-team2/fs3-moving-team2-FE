@@ -7,51 +7,18 @@ import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 import Image from 'next/image';
 import { useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues } from 'react-hook-form';
 import noReviewImage from '@/public/img/no-review.svg';
 import filterIcon from '@/public/icons/filter-blue.svg';
 import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/MoverQuoteDeclineModal';
 import MoverQuoteSubmitModal from '@/components/moverQuoteRequested/MoverQuoteSubmitModal';
 import MoverReceivedRequestFilter from '@/components/moverQuoteRequested/MoverReceivedRequestFilter';
 import MoverReceivedRequestFilterModal from '@/components/moverQuoteRequested/MoverReceivedRequestFilterModal';
-
-export interface CustomerRequest {
-  quoteId: string;
-  movingType: MovingTypes[];
-  isCustomQuote: boolean;
-  customerName: string;
-  movingDate: Date;
-  departure: string;
-  arrival: string;
-  variant: 'requested' | 'submitted';
-  requestedAt: Date;
-}
-
-// 페이지 상단에 고객 요청 데이터를 배열로 정의
-const customerRequests: CustomerRequest[] = [
-  {
-    quoteId: 'quoteId1',
-    movingType: ['small', 'office'],
-    isCustomQuote: false,
-    customerName: '김코드',
-    movingDate: new Date(),
-    departure: '서울 중구',
-    arrival: '경기 김포',
-    variant: 'requested' as const,
-    requestedAt: new Date(Date.now() - 3600000),
-  },
-  {
-    quoteId: 'quoteId2',
-    movingType: ['small'],
-    isCustomQuote: true,
-    customerName: '김코드',
-    movingDate: new Date(),
-    departure: '서울 중구',
-    arrival: '경기 김포',
-    variant: 'requested' as const,
-    requestedAt: new Date(Date.now() - 3600000),
-  },
-];
+import { useQuery } from '@tanstack/react-query';
+import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
+import { getAllQuoteRequests } from '@/services/quoteRequests';
+import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
+import Pagination from '@/components/pagination/molecule/pagination';
 
 export default function Page() {
   const [selected, setSelected] = useState<any | null>(null); // Dropdown 선택된 값
@@ -62,26 +29,62 @@ export default function Page() {
   const [selectedCustomer, setSelectedCustomer] =
     useState<CustomerRequest | null>(null); // 선택된 고객 요청
 
-  // const [customerRequests, setCustomerRequests] = useState<CustomerRequest[]>(
-  //   [],
-  // );
-  const totalCustomerRequests = customerRequests.length;
-
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, boolean>
   >({
-    small: true,
-    furniture: true,
-    office: true,
-    service: true,
-    targeted: true,
+    small: false,
+    home: false,
+    office: false,
+    service: false,
+    targeted: false,
   });
+
+  const [query, setQuery] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('이사 빠른순');
+
+  const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
+
+  // 선택된 이사 유형을 쉼표로 구분된 문자열로 변환
+  const selectedMoveTypes = moveTypes
+    .filter((option) => selectedFilters[option.id])
+    .map((option) => option.label)
+    .join(',');
+
+  // 필터 값 추출
+  const isServiceRegionMatch = selectedFilters.service;
+  const isTargetedQuote = selectedFilters.targeted;
 
   const onSubmit = (data: FieldValues) => {
     console.log('Form data:', data);
   };
 
-  console.log('selectedCustomer:', selectedCustomer);
+  const {
+    data: customerRequests,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: [
+      'customerRequests',
+      currentPage,
+      query,
+      selectedMoveTypes,
+      sortBy,
+      isServiceRegionMatch,
+      isTargetedQuote,
+    ],
+    queryFn: () =>
+      getAllQuoteRequests(
+        currentPage, // page
+        10, // pageSize
+        query, // search
+        selectedMoveTypes, // moveType
+        sortBy, // sortBy (필요 시 추가)
+        isServiceRegionMatch,
+        isTargetedQuote,
+      ),
+  });
+
+  const totalCustomerRequests = customerRequests?.totalCount ?? 0;
 
   return (
     <main className='w-full xl:max-w-[1400px] mx-auto px-6 md:px-[72px]'>
@@ -100,12 +103,12 @@ export default function Page() {
             onSearch={() => {}}
             styleVariant='secondary'
             inputVariant={'search'}
+            onChange={(e) => setQuery(e.target.value)}
           />
           <div className='flex justify-between items-center mt-6 mb-8'>
             <h3 className='font-semibold'>전체 {totalCustomerRequests}건</h3>
             <div className='flex'>
               <DropdownCta
-                // border={false}
                 className={'mr-4 '}
                 isOpen={isOpen}
                 data={[
@@ -116,8 +119,13 @@ export default function Page() {
                     name: '요청일 빠른순',
                   },
                 ]}
-                name='area'
-                dispatch={setSelected}
+                dispatch={(value: string | object) => {
+                  if (typeof value === 'string') {
+                    setSortBy(value.replace(/\s+/g, ''));
+                  }
+                }}
+                border={false}
+                allbtn={false}
               />
               <button
                 className='xl:hidden'
@@ -130,7 +138,17 @@ export default function Page() {
               </button>
             </div>
           </div>
-          {totalCustomerRequests === 0 ? (
+          {isLoading && (
+            <div className='flex justify-center items-center h-[400px]'>
+              <p>로딩 중...</p>
+            </div>
+          )}
+          {isError && (
+            <div className='flex justify-center items-center h-[400px]'>
+              <p>에러가 발생했습니다.</p>
+            </div>
+          )}
+          {totalCustomerRequests === 0 && !isLoading && !isError ? (
             <div className='flex justify-center items-center h-[400px] flex-col gap-6 xl:gap-8'>
               <Image
                 src={noReviewImage}
@@ -141,7 +159,7 @@ export default function Page() {
           ) : (
             <ul>
               {/* 고객 요청 리스트 */}
-              {customerRequests.map((customer) => (
+              {customerRequests?.list?.map((customer) => (
                 <li
                   key={customer.quoteId}
                   className='mb-12'
@@ -162,6 +180,13 @@ export default function Page() {
               ))}
             </ul>
           )}
+          <div className='flex justify-center items-center mt-6 mb-8'>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={customerRequests?.totalPages ?? 1}
+              onPageChange={(currentPage) => setCurrentPage(currentPage)}
+            />
+          </div>
         </section>
       </div>
       {showSubmitModal && (

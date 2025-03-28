@@ -8,7 +8,6 @@ export default function CustomLinkText({
   endpoint,
   children,
 }: CustomLinkTextProps) {
-
   return (
     <Link
       href={`/${endpoint.startsWith('/') ? endpoint.slice(1) : endpoint}`}

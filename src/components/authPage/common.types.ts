@@ -8,4 +8,4 @@ export type PagePath =
   | 'user/sign-in'
   | 'user/sign-up';
 
-  export type UserType = 'customer' | 'mover';
+export type UserType = 'customer' | 'mover';
