@@ -7,7 +7,6 @@ export default function MovingTypeBadge({
   type,
   className,
 }: MovingTypeBadgeProps) {
-  console.log(type);
   return (
     <div
       className={cn(

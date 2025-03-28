@@ -46,94 +46,99 @@ export default function MoverReceivedRequestFilterModal({
   };
 
   return (
-    <ModalWrapper
-      headerButtons={
-        <>
-          <button
-            className={cn(
-              'mr-6',
-              selectedCategory !== '이사유형' && 'text-line-200',
-            )}
-            onClick={() => setSelectedCategory('이사유형')}
-          >
-            이사 유형
-          </button>
-          <button
-            className={cn(selectedCategory !== '필터' && 'text-line-200')}
-            onClick={() => setSelectedCategory('필터')}
-          >
-            필터
-          </button>
-        </>
-      }
-      onClose={onClose}
-    >
-      <div className='sm:w-full md:w-[327px] flex justify-between items-center mt-5 border-b pb-4 px-4'>
-        <h2 className='text-lg font-medium text-grayscale-300'>
-          전체 선택 ( 20 )
-        </h2>
-        <input
-          type='checkbox'
-          className='w-5 h-5 rounded border-line-200'
-          checked={
-            selectedCategory === '이사유형'
-              ? moveTypes.every((option) => tempFilters[option.id])
-              : filterTypes.every((option) => tempFilters[option.id])
-          }
-          onChange={(e) =>
-            selectAllTemp(
-              selectedCategory === '이사유형' ? moveTypes : filterTypes,
-              e.target.checked,
-            )
-          }
-        />
-      </div>
-      {selectedCategory === '이사유형' ? (
-        <ul>
-          {moveTypes.map((option) => (
-            <li key={option.id}>
-              <div className='flex justify-between items-center py-5 px-4 border-t'>
-                <span className='text-base'>
-                  {option.label} ({option.count})
-                </span>
-                <input
-                  type='checkbox'
-                  className='w-5 h-5 rounded border-line-200 text-blue-500'
-                  checked={tempFilters[option.id]}
-                  onChange={() => toggleTempFilter(option.id)}
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <ul>
-          {filterTypes.map((option) => (
-            <li key={option.id}>
-              <div className='flex justify-between items-center py-5 px-4 border-t'>
-                <span className='text-base'>
-                  {option.label} ({option.count})
-                </span>
-                <input
-                  type='checkbox'
-                  className='w-5 h-5 rounded border-line-200 text-blue-500'
-                  checked={tempFilters[option.id]}
-                  onChange={() => toggleTempFilter(option.id)}
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-      <CommonButton
-        className='mt-8'
-        widthType='full'
-        heightType='primary'
-        backgroundColorType='blue'
-        onClick={applyFilters}
+    <div className='block xl:hidden'>
+      <ModalWrapper
+        headerButtons={
+          <>
+            <button
+              className={cn(
+                'mr-6',
+                selectedCategory !== '이사유형' && 'text-line-200',
+              )}
+              onClick={() => setSelectedCategory('이사유형')}
+            >
+              이사 유형
+            </button>
+            <button
+              className={cn(selectedCategory !== '필터' && 'text-line-200')}
+              onClick={() => setSelectedCategory('필터')}
+            >
+              필터
+            </button>
+          </>
+        }
+        onClose={onClose}
       >
-        조회하기
-      </CommonButton>
-    </ModalWrapper>
+        <div className='sm:w-full md:w-[327px] flex justify-between items-center mt-5 border-b pb-4 px-4'>
+          <h2 className='text-lg font-medium text-grayscale-300'>
+            전체 선택
+            {/* ( 20 ) */}
+          </h2>
+          <input
+            type='checkbox'
+            className='w-5 h-5 rounded border-line-200'
+            checked={
+              selectedCategory === '이사유형'
+                ? moveTypes.every((option) => tempFilters[option.id])
+                : filterTypes.every((option) => tempFilters[option.id])
+            }
+            onChange={(e) =>
+              selectAllTemp(
+                selectedCategory === '이사유형' ? moveTypes : filterTypes,
+                e.target.checked,
+              )
+            }
+          />
+        </div>
+        {selectedCategory === '이사유형' ? (
+          <ul>
+            {moveTypes.map((option) => (
+              <li key={option.id}>
+                <div className='flex justify-between items-center py-5 px-4 border-t'>
+                  <span className='text-base'>
+                    {option.label}
+                    {/* ({option.count}) */}
+                  </span>
+                  <input
+                    type='checkbox'
+                    className='w-5 h-5 rounded border-line-200 text-blue-500'
+                    checked={tempFilters[option.id]}
+                    onChange={() => toggleTempFilter(option.id)}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul>
+            {filterTypes.map((option) => (
+              <li key={option.id}>
+                <div className='flex justify-between items-center py-5 px-4 border-t'>
+                  <span className='text-base'>
+                    {option.label}
+                    {/* ({option.count}) */}
+                  </span>
+                  <input
+                    type='checkbox'
+                    className='w-5 h-5 rounded border-line-200 text-blue-500'
+                    checked={tempFilters[option.id]}
+                    onChange={() => toggleTempFilter(option.id)}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        <CommonButton
+          className='mt-8'
+          widthType='full'
+          heightType='primary'
+          backgroundColorType='blue'
+          onClick={applyFilters}
+        >
+          조회하기
+        </CommonButton>
+      </ModalWrapper>
+    </div>
   );
 }

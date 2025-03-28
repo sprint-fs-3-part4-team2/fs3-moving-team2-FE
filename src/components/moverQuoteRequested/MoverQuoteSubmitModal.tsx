@@ -1,20 +1,22 @@
-import { CustomerRequest } from '@/app/(routes)/mover/(main)/quotes/requested/page';
 import React, { Dispatch, SetStateAction } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import CommonButton from '../common/commonBtn/commonBtn';
 import ModalWrapper from '../modal/ModalWrapper';
 import CustomerInfo from '../common/customerInfo/templates/customerInfo';
 import FormInput from '../common/inputSection/atoms/customInput/inputs/formInput';
+import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
+import { submitQuoteByMover } from '@/services/moverQuotes';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface MoverQuoteSubmitModalProps {
   selectedCustomer: CustomerRequest | null;
   setShowSubmitModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function MoverQuoteSubmitModal(
-  { selectedCustomer, setShowSubmitModal }: MoverQuoteSubmitModalProps,
-  onSubmit: (data: FieldValues) => void,
-) {
+export default function MoverQuoteSubmitModal({
+  selectedCustomer,
+  setShowSubmitModal,
+}: MoverQuoteSubmitModalProps) {
   const {
     register,
     handleSubmit,
@@ -23,6 +25,27 @@ export default function MoverQuoteSubmitModal(
   } = useForm<FieldValues>({ mode: 'onChange' });
 
   const quoteCommentValue = watch('quoteComment') || '';
+
+  const queryClient = useQueryClient();
+
+  const onSubmit = async (data: FieldValues) => {
+    if (selectedCustomer?.quoteId) {
+      await submitQuoteByMover(
+        selectedCustomer.quoteId,
+        Number(data.quotePrice),
+        data.quoteComment,
+      );
+
+      queryClient.invalidateQueries({
+        queryKey: ['customerRequests'],
+        exact: false,
+      });
+
+      setShowSubmitModal(false);
+    } else {
+      console.error('선택된 고객 정보가 없습니다.');
+    }
+  };
 
   return (
     <ModalWrapper
