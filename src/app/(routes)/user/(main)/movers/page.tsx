@@ -42,11 +42,15 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = (searchTerm: string) => {
-    if (!searchTerm.trim()) return;
+  const handleSearch = () => {
+    const searchInput = document.querySelector(
+      'input[type="text"]',
+    ) as HTMLInputElement;
+    const searchTerm = searchInput?.value.trim();
+    if (!searchTerm) return;
 
     axiosInstance
-      .get('/movers/search', { params: { keyword: searchTerm.trim() } })
+      .get('/movers/search', { params: { keyword: searchTerm } })
       .then((response) => {
         setMovers(response.data.data);
       })
