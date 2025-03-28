@@ -15,7 +15,7 @@ export default function Notification(): JSX.Element {
 
   useEffect(() => {
     getNotificationApi().then((res) => {
-      setData(res.data);
+      setData(res.data ?? []);
     });
   }, []);
 
@@ -59,7 +59,7 @@ export default function Notification(): JSX.Element {
     >
       <div className={NOTIFICATION_STYLES}>
         <BellIcon />
-        {data.filter((x) => !x.isRead).length > 0 && <NotificationDot />}
+        {data?.filter((x) => !x.isRead).length > 0 && <NotificationDot />}
       </div>
     </Alarm>
   );
