@@ -48,16 +48,17 @@ export default function Page() {
             <div className='flex flex-col w-full gap-4'>
               <p className='text-2lg font-semibold'>지역을 선택해주세요</p>
               <Area dispatch={(value) => setSelectedArea(value as string)} />
-              {/* <DropdownCta
+              <DropdownCta
                 name='area'
                 isOpen={isOpen}
+                allbtn={false}
                 data={area}
                 dispatch={(value) => setSelectedArea(value as string)}
                 dropClassName={cn(
                   'flex overflow-auto max-h-[180px] lg:max-h-[320px]',
                 )}
                 listClassName={cn('w-1/2')}
-              /> */}
+              />
             </div>
 
             <div className='flex flex-col w-full gap-4'>

@@ -13,6 +13,7 @@ export default function Service({
       name='service'
       className={cn(className && className)}
       isOpen={isOpen}
+      labelName='서비스'
       data={service}
       dispatch={dispatch}
       dropClassName={cn('max-h-[142px] lg:max-h-[256px]')}

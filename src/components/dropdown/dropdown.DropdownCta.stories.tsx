@@ -117,7 +117,7 @@ export const noAllbtn: Story = {
   render: (args) => <DropdownWrapper {...args} />,
   args: {
     border: false,
-    noAllbtn: true,
+    allbtn: false,
     className: '',
     isOpen: true,
     data: [{ name: 'Option 1' }, { name: 'Option 2' }, { name: 'Option 3' }],
