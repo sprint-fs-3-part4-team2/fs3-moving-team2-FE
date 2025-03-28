@@ -5,7 +5,7 @@ export const handleApiError = (error: unknown, context: string) => {
   const axiosError = error as AxiosError;
   console.error(
     `[API Error] ${context}:`,
-    axiosError.response?.data || axiosError.message
+    axiosError.response?.data || axiosError.message,
   );
   throw error;
 };
