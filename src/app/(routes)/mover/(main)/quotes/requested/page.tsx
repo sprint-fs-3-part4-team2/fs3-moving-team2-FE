@@ -119,12 +119,13 @@ export default function Page() {
                     name: '요청일 빠른순',
                   },
                 ]}
-                name='area'
                 dispatch={(value: string | object) => {
                   if (typeof value === 'string') {
                     setSortBy(value.replace(/\s+/g, ''));
                   }
                 }}
+                border={false}
+                allbtn={false}
               />
               <button
                 className='xl:hidden'
