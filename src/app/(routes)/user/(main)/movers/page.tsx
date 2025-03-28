@@ -6,8 +6,6 @@ import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import Area from '@/components/dropdown/cta/area';
 import Service from '@/components/dropdown/cta/service';
 import { DropdownCta } from '@/components/dropdown/dropdown';
-import area from '@/constants/dropdown/area';
-import service from '@/constants/dropdown/service';
 import cn from '@/utils/cn';
 
 import { useState } from 'react';
@@ -48,17 +46,6 @@ export default function Page() {
             <div className='flex flex-col w-full gap-4'>
               <p className='text-2lg font-semibold'>지역을 선택해주세요</p>
               <Area dispatch={(value) => setSelectedArea(value as string)} />
-              <DropdownCta
-                name='area'
-                isOpen={isOpen}
-                allbtn={false}
-                data={area}
-                dispatch={(value) => setSelectedArea(value as string)}
-                dropClassName={cn(
-                  'flex overflow-auto max-h-[180px] lg:max-h-[320px]',
-                )}
-                listClassName={cn('w-1/2')}
-              />
             </div>
 
             <div className='flex flex-col w-full gap-4'>
@@ -68,12 +55,6 @@ export default function Page() {
               <Service
                 dispatch={(value) => setSelectedService(value as string)}
               />
-              {/* <DropdownCta
-                name='service'
-                isOpen={isOpen}
-                data={service}
-                // dropClassName={cn('max-h-[142px] lg:max-h-[256px]')}
-              /> */}
             </div>
           </div>
 
@@ -137,6 +118,7 @@ export default function Page() {
                 name='review-sort'
                 border={false}
                 isOpen={false}
+                allbtn={false}
                 className='w-auto'
                 data={[
                   { name: '리뷰 많은순' },
@@ -155,6 +137,7 @@ export default function Page() {
                 name='review-sort'
                 border={false}
                 isOpen={false}
+                allbtn={false}
                 className='w-auto'
                 data={[
                   { name: '리뷰 많은순' },
