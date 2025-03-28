@@ -18,15 +18,24 @@ export const submitReview = (reviewData: {
     .then((response) => response.data);
 };
 
+//내가 작성한 리뷰 (리뷰 목록 조회API)
 export const getCompletedReviews = async (id: string) => {
-  console.log('getCompletedReviews');
   try {
-    const response = await axiosInstance.get(`/reviews/completed/${id}`);
-    console.log('데이터잘오나?', response.data);
-
+    const response = await axiosInstance.get(`/reviews/completed`);
     return response.data;
   } catch (error) {
     console.log(error);
+    return;
+  }
+};
+
+//기사님 리뷰 목록 조회API
+export const getMoverReviews = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`/reviews/mover/review`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
     return;
   }
 };

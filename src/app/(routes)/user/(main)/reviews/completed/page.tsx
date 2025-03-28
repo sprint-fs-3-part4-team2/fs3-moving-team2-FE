@@ -11,16 +11,7 @@ import { MOVING_TYPES } from '@/constants/movingTypes';
 
 export default function Page() {
   const router = useRouter();
-  // const { id } = useParams() as { id: string };
-  const id = 'cm8mvrwbd0032a7afaywgnjq7';
-
-  const moveTypeLabels = {
-    SMALL_MOVE: 'small',
-    HOME_MOVE: 'home',
-    OFFICE_MOVE: 'office',
-  } as const;
-  type MoveType = keyof typeof moveTypeLabels;
-
+  const { id } = useParams() as { id: string };
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [emptyData, setEmptyData] = useState(false);
@@ -89,12 +80,10 @@ export default function Page() {
   const totalPages = Math.ceil((movers?.length ?? 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = movers?.slice(startIndex, startIndex + itemsPerPage);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  console.log(currentData[0].imageUrl);
   return (
     <div className=' flex flex-col items-center mx-auto '>
       <div className='max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>

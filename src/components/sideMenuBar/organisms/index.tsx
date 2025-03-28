@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Backdrop from '../atoms/backdrop';
 import SideMenuLayout from '../atoms/layout';
 import CloseIcon from '../atoms/closeIcon';
@@ -12,9 +14,21 @@ export default function SideNavigationBar({
   setIsOpen,
   isOpen,
 }: SideNavigationBarProps) {
+  const pathname = usePathname();
+  const prevPathRef = useRef(pathname);
+
+  // esc로 컴포넌트 닫기
   useEscapeKey(() => {
     setIsOpen(false);
   });
+
+  // 다른 페이지 이동 시 닫기
+  useEffect(() => {
+    if (pathname !== prevPathRef.current) {
+      setIsOpen(false);
+      prevPathRef.current = pathname;
+    }
+  }, [pathname, setIsOpen]);
 
   return (
     <div>

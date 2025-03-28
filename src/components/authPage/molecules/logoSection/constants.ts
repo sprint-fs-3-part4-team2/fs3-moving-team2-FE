@@ -1,5 +1,5 @@
 export const userTypeContent = {
-  user: {
+  customer: {
     text: '기사님이시라면?',
     linkText: '기사님 전용 페이지',
   },
