@@ -5,7 +5,7 @@ import CustomerInfo from '../common/customerInfo/templates/customerInfo';
 import FormInput from '../common/inputSection/atoms/customInput/inputs/formInput';
 import CommonButton from '../common/commonBtn/commonBtn';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
-import { rejectQuoteByMover } from '@/services/\btargetedQuotes';
+import { rejectQuoteByMover } from '@/services/targetedQuotes';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface MoverQuoteDeclineModalProps {
