@@ -9,7 +9,7 @@ export default function SideBarMenu({
 }: SideBarMenuProps): JSX.Element {
   const menuMap = {
     guest: <GuestMenu />,
-    user: <UserMenu />,
+    customer: <UserMenu />,
     mover: <MoverMenu />,
   };
 

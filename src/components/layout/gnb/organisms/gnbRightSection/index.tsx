@@ -2,7 +2,7 @@
 
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import MenuIcon from '../../atoms/icons/menuIcon';
-import Notification from '../../molecules/notification/imdex';
+import Notification from '../../molecules/notification';
 import Profile from '../../molecules/profileSecrion';
 import { GNB_RIGHT_SECTION_BOX_STYLES } from './constant';
 import { GNBRightSectionProps } from './gnbRightSection.type';
@@ -11,8 +11,7 @@ import { useState } from 'react';
 import SideNavigationBar from '@/components/sideMenuBar/organisms';
 
 export default function GNBRightSection({
-  isUserAuthorized,
-  hasNotification,
+  isAuthorized,
   userName,
   imageUrl,
   userType,
@@ -26,9 +25,9 @@ export default function GNBRightSection({
 
   return (
     <div>
-      {isUserAuthorized ? (
+      {isAuthorized ? (
         <div className={GNB_RIGHT_SECTION_BOX_STYLES}>
-          <Notification hasNotification={hasNotification} />
+          <Notification />
           <Profile
             userName={userName}
             imageUrl={imageUrl ? imageUrl : '/icons/gnb/default-profile.svg'}

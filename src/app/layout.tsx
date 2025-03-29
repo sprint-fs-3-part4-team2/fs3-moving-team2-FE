@@ -34,8 +34,8 @@ export default function RootLayout({
         {/* <Analytics /> */}
         <Provider>
           <GNB
-            isUserAuthorized={true}
-            userType='user'
+            isAuthorized={true}
+            userType='customer'
             userName={'안성재'}
             imageUrl={'/img/sample-profile/sample-2.svg'}
             hasNotification={true}

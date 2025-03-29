@@ -6,7 +6,7 @@ import { userTypeContent } from './constants';
 import { LogoSectionProps } from './logoSection.type';
 
 export default function LogoSection({
-  userType = 'user',
+  userType = 'customer',
   moveToPage = 'mover/sign-in',
 }: LogoSectionProps) {
   const { text, linkText } = userTypeContent[userType];

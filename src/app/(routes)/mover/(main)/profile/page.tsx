@@ -1,49 +1,107 @@
 'use client';
+
 import { useState } from 'react';
-import ReviewStar from './reviewRating';
-import { MockData } from '@/components/moverMypage/reviewMockdata';
+import { useQuery } from '@tanstack/react-query';
 import MoverStatInfo from '@/components/moverMypage/component';
 import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
 import Pagination from '@/components/pagination/molecule/pagination';
+import { getMoverReviews } from '@/services/reviewsService';
+import { getMoverProfile } from '@/services/profileService';
+import { useParams, useRouter } from 'next/navigation';
+import { MOVING_TYPES } from '@/constants/movingTypes';
+import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
+
+export type MovingTypeKey = keyof typeof MOVING_TYPES;
+export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 
 export default function MyPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const totalPages = Math.ceil(MockData.length / itemsPerPage);
+  const { id } = useParams() as { id: string };
+  const router = useRouter();
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  const {
+    data: reviewsData,
+    isLoading: isLoadingReviews,
+    error: reviewsError,
+  } = useQuery({
+    queryKey: ['moverReviews', id],
+    queryFn: async () => await getMoverReviews(id),
+  });
 
+  const {
+    data: profileData,
+    isLoading: isLoadingProfile,
+    error: profileError,
+  } = useQuery({
+    queryKey: ['moverProfile', id],
+    queryFn: async () => await getMoverProfile(id),
+  });
+
+  if (isLoadingReviews || isLoadingProfile)
+    return <p className='text-center'>로딩 중...</p>;
+  if (reviewsError || profileError || !reviewsData || !profileData)
+    return (
+      <p className='text-center'>데이터를 불러오는 중 오류가 발생했습니다.</p>
+    );
+
+  interface reviewsType {
+    id: string;
+    name: string;
+    writtenAt: string;
+    rating: number;
+    ratingCount: number;
+    content: string;
+    introduction: string;
+    regions: string[];
+  }
+
+  const totalPages = Math.ceil(reviewsData.reviews.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = MockData.slice(startIndex, endIndex);
+  const currentReviews = reviewsData.reviews.slice(startIndex, endIndex);
+  const movingTypes: MovingTypeValue[] = profileData.movingType.map(
+    (type: MovingTypeKey) => MOVING_TYPES[type],
+  );
+
   return (
     <div>
       <div className='max-w-[1920px]'></div>
       <div className='max-w-[1400px] mx-auto w-full'>
         <MoverStatInfo
-          imageUrl='/profile-placeholder.png' // 실제 프로필 이미지 경로
-          rating={4.8} // 평점
-          ratingCount={120} // 평점 개수
-          experienceYears={10} // 경력 (년)
-          isFavorite={true} // 즐겨찾기 여부
-          favoriteCount={230} // 즐겨찾기 개수
-          quoteCount={320} // 견적 요청 수
-          isFavoriteMoverList={false} // 즐겨찾기 리스트 여부
+          imageUrl={profileData.profileImage || '/profile-placeholder.png'}
+          rating={reviewsData.averageRating}
+          ratingCount={reviewsData.ratingCount}
+          experienceYears={profileData.experienceYears}
+          favoriteCount={profileData.favoriteCount ?? 0}
+          quoteCount={profileData.quoteCount}
+          isFavoriteMoverList={false}
+          introduction={profileData.introduction}
+          movingType={movingTypes
+            .map((type: MovingTypeValue) => type.value)
+            .join(', ')}
+          regions={profileData.regions.join(', ')}
+          moverName={profileData.moverName}
+          onEditClick={() => router.push('/mover/profile/edit')}
+          onInfoEdit={() => router.push('/mover/info/edit')}
         />
 
         <div className='border-t border-gray-300 my-10 '></div>
-        <ReviewStar />
+
+        <RatingStat
+          averageRating={reviewsData.averageRating}
+          totalCount={reviewsData.ratingCount ?? 0}
+          ratingCounts={reviewsData.ratingCounts ?? {}}
+        />
 
         <div className='max-w-[955px]'>
-          {currentData.map((review) => (
+          {currentReviews.map((data: reviewsType) => (
             <ReviewBlock
-              key={review.id}
-              name={review.name}
-              writtenAt={review.writtenAt}
-              rating={review.rating}
-              content={review.content}
+              key={data.id}
+              name={data.name}
+              writtenAt={data.writtenAt}
+              rating={data.rating}
+              content={data.content}
             />
           ))}
         </div>
@@ -52,7 +110,7 @@ export default function MyPage() {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={handlePageChange}
+              onPageChange={setCurrentPage}
               className='mx-auto'
             />
           )}

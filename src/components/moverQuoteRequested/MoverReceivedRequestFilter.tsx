@@ -55,7 +55,8 @@ export default function MoverReceivedRequestFilter({
               className='flex justify-between items-center py-5 px-4 border-t'
             >
               <span className='text-2lg font-medium'>
-                {option.label} ({option.count})
+                {option.label}
+                {/* ({option.count}) */}
               </span>
               <input
                 type='checkbox'
@@ -92,7 +93,8 @@ export default function MoverReceivedRequestFilter({
               className='flex justify-between items-center py-5 px-4 border-t'
             >
               <span className='text-2lg font-medium'>
-                {option.label} ({option.count})
+                {option.label}
+                {/* ({option.count}) */}
               </span>
               <input
                 type='checkbox'
@@ -104,7 +106,6 @@ export default function MoverReceivedRequestFilter({
           ))}
         </div>
       </div>
-      {}
     </div>
   );
 }

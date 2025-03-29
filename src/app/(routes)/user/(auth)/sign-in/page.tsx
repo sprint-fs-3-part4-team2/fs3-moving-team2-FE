@@ -9,11 +9,14 @@ export default function Page() {
   return (
     <AuthPageLayout>
       <LogoSection
-        userType='user'
+        userType='customer'
         moveToPage='mover/sign-in'
       />
 
-      <FormGroupSection formType='signIn' />
+      <FormGroupSection
+        userType='customer'
+        formType='signIn'
+      />
       <TextUnderButton
         pageType='signIn'
         moveToPage='user/sign-up'

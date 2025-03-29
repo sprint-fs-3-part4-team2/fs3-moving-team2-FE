@@ -7,3 +7,5 @@ export type PagePath =
   | 'mover/sign-up'
   | 'user/sign-in'
   | 'user/sign-up';
+
+export type UserType = 'customer' | 'mover';

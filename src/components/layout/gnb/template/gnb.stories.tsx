@@ -11,7 +11,7 @@ const meta = {
     codeExample: GNBCodeSnippet,
   },
   argTypes: {
-    isUserAuthorized: {
+    isAuthorized: {
       control: 'boolean',
       description: '인가 여부',
     },
@@ -44,8 +44,8 @@ type Story = StoryObj<typeof meta>;
 export const gnb: Story = {
   render: (args) => <GNB {...args} />,
   args: {
-    isUserAuthorized: true,
-    userType: 'user',
+    isAuthorized: true,
+    userType: 'customer',
     userName: '안성재',
     imageUrl: '/img/sample-profile/sample-2.svg',
     hasNotification: true,

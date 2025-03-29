@@ -10,6 +10,7 @@ interface InputBaseProps {
   placeholder: string;
   styleVariant: 'primary' | 'secondary';
   inputClassName?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface SearchTypeProps extends InputBaseProps {

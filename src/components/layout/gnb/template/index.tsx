@@ -9,7 +9,7 @@ import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
 import { GNBProps } from './gnb.type';
 
 export default function GNB({
-  isUserAuthorized,
+  isAuthorized,
   userType,
   userName,
   imageUrl,
@@ -25,11 +25,11 @@ export default function GNB({
     <div className={GNB_STYLES}>
       <GNBLayout>
         <div className={GNB_LOGO_MENU_STYLES}>
-          <GNBLogo isUserAuthorized={isUserAuthorized} />
+          <GNBLogo isAuthorized={isAuthorized} />
           <GNBMenu userType={userType} />
         </div>
         <GNBRightSection
-          isUserAuthorized={isUserAuthorized}
+          isAuthorized={isAuthorized}
           hasNotification={hasNotification}
           userName={userName}
           imageUrl={imageUrl}
