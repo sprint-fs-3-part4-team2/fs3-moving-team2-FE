@@ -7,12 +7,12 @@ import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import Area from '@/components/dropdown/cta/area';
 import Service from '@/components/dropdown/cta/service';
 import { MOVING_TYPES } from '@/constants/movingTypes';
+import service from '@/constants/dropdown/service';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 import axiosInstance from '@/lib/axiosInstance';
 import cn from '@/utils/cn';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
-export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 
 interface Mover {
   id: number;
@@ -38,7 +38,6 @@ export default function Page() {
   const [selectedArea, setSelectedArea] = useState<string>('지역');
   const [selectedService, setSelectedService] = useState<string>('서비스');
   const [selectedSort, setSelectedSort] = useState<string>('리뷰 많은순');
-  const [articles, setArticles] = useState([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -85,12 +84,6 @@ export default function Page() {
 
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류 발생: {error}</p>;
-
-  // const MoverComponent = ({ mover }: { mover: Mover }) => {
-  //   const movingTypes: MovingTypeValue[] = mover.movingType.map(
-  //     (type: MovingTypeKey) => MOVING_TYPES[type]
-  //   );
-  // }
 
   return (
     <div className='flex flex-col w-full mx-auto gap-6'>
@@ -226,28 +219,28 @@ export default function Page() {
               inputVariant='search'
             />
 
-            {movers.map((mover) => (
-              <MoverInfo
-                key={mover.id}
-                variant='quote'
-                subVariant='completed'
-                moverName={mover.moverName}
-                imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-                movingType={movingTypes.map(
-                  (type: MovingTypeValue) => type.key,
-                )}
-                isCustomQuote={mover.isCustomQuote}
-                quoteState='confirmedQuote'
-                rating={mover.rating ?? 0}
-                ratingCount={mover.ratingCount}
-                experienceYears={mover.experienceYears}
-                quoteCount={mover.quoteCount}
-                isFavorite={mover.isFavorite}
-                favoriteCount={mover.favoriteCount ?? 0}
-                isFavoriteMoverList={false}
-                description={mover.description}
-              />
-            ))}
+            {movers.map((mover) => {
+              return (
+                <MoverInfo
+                  key={mover.id}
+                  variant='quote'
+                  subVariant='completed'
+                  moverName={mover.moverName}
+                  imageUrl={mover.imageUrl || '/profile-placeholder.png'}
+                  movingType={mover.movingType}
+                  isCustomQuote={mover.isCustomQuote}
+                  quoteState='confirmedQuote'
+                  rating={mover.rating ?? 0}
+                  ratingCount={mover.ratingCount}
+                  experienceYears={mover.experienceYears}
+                  quoteCount={mover.quoteCount}
+                  isFavorite={mover.isFavorite}
+                  favoriteCount={mover.favoriteCount ?? 0}
+                  isFavoriteMoverList={false}
+                  description={mover.description}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
