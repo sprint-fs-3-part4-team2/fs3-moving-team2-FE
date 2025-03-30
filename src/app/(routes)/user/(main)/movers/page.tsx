@@ -14,6 +14,12 @@ import cn from '@/utils/cn';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 
+interface LoginResponse {
+  data: {
+    accessToken: string;
+  };
+}
+
 interface Mover {
   id: number;
   variant: string;
@@ -41,6 +47,29 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const login = async () => {
+    try {
+      const response = await axiosInstance.post<LoginResponse>(
+        '/auth/sign-in/customer',
+        {
+          email: 'test9912@gmail.com',
+          password: 'rfradassd15',
+        },
+      );
+
+      console.log('전체 응답:', response);
+      console.log('응답 데이터:', response.data);
+      console.log('응답 데이터 구조:', JSON.stringify(response.data, null, 2));
+
+      localStorage.setItem('accessToken', response.data.data.accessToken);
+      return true;
+    } catch (error) {
+      console.error('로그인 실패:', error);
+      setError('로그인에 실패했습니다.');
+      return false;
+    }
+  };
+
   const handleSearch = () => {
     const searchInput = document.querySelector(
       'input[type="text"]',
@@ -65,12 +94,20 @@ export default function Page() {
   // 기사님 목록 조회
   const fetchMovers = async () => {
     try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        const loginSuccess = await login();
+        if (!loginSuccess) return;
+      }
+
       const { data } = await axiosInstance.get('/movers', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
         params: { sortBy: 'reviews' },
       });
 
       console.log('응답 데이터:', data);
-
       setMovers(data.data || data);
     } catch (err) {
       console.error('API 호출 오류:', err);
@@ -219,28 +256,26 @@ export default function Page() {
               inputVariant='search'
             />
 
-            {movers.map((mover) => {
-              return (
-                <MoverInfo
-                  key={mover.id}
-                  variant='quote'
-                  subVariant='completed'
-                  moverName={mover.moverName}
-                  imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-                  movingType={mover.movingType}
-                  isCustomQuote={mover.isCustomQuote}
-                  quoteState='confirmedQuote'
-                  rating={mover.rating ?? 0}
-                  ratingCount={mover.ratingCount}
-                  experienceYears={mover.experienceYears}
-                  quoteCount={mover.quoteCount}
-                  isFavorite={mover.isFavorite}
-                  favoriteCount={mover.favoriteCount ?? 0}
-                  isFavoriteMoverList={false}
-                  description={mover.description}
-                />
-              );
-            })}
+            {movers.map((mover) => (
+              <MoverInfo
+                key={mover.id}
+                variant='quote'
+                subVariant='completed'
+                moverName={mover.moverName}
+                imageUrl={mover.imageUrl || '/profile-placeholder.png'}
+                movingType={mover.movingType}
+                isCustomQuote={mover.isCustomQuote}
+                quoteState='confirmedQuote'
+                rating={mover.rating ?? 0}
+                ratingCount={mover.ratingCount}
+                experienceYears={mover.experienceYears}
+                quoteCount={mover.quoteCount}
+                isFavorite={mover.isFavorite}
+                favoriteCount={mover.favoriteCount ?? 0}
+                isFavoriteMoverList={false}
+                description={mover.description}
+              />
+            ))}
           </div>
         </div>
       </div>
