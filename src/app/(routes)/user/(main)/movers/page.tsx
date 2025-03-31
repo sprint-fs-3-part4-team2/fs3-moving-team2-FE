@@ -47,6 +47,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async () => {
     try {
@@ -66,15 +67,22 @@ export default function Page() {
       }
 
       localStorage.setItem('accessToken', accessToken);
+      setIsAuthenticated(true);
       return true;
     } catch (error: any) {
       console.error('로그인 실패:', error);
-      console.error('에러 응답:', error.response?.data);
-      console.error('에러 상태:', error.response?.status);
-      console.error('에러 메시지:', error.message);
       setError('로그인에 실패했습니다.');
+      setIsAuthenticated(false);
       return false;
     }
+  };
+
+  const checkAuth = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      return await login();
+    }
+    return true;
   };
 
   const handleSearch = async () => {
@@ -94,6 +102,9 @@ export default function Page() {
     }
 
     try {
+      const isAuth = await checkAuth();
+      if (!isAuth) return;
+
       const { data } = await axiosInstance.get('/movers/search', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -105,7 +116,6 @@ export default function Page() {
       setMovers(moversData);
       setAllMovers(moversData);
 
-      // 찜한 기사님 목록 처리
       const favoriteMoversData = moversData
         .filter((mover: Mover) => mover.isFavorite)
         .slice(0, 2);
@@ -113,25 +123,9 @@ export default function Page() {
       setFavoriteMovers(favoriteMoversData);
     } catch (err: any) {
       if (err.response?.status === 401) {
-        const loginSuccess = await login();
-        if (loginSuccess) {
-          // 로그인 성공 후 다시 검색 요청
-          const { data } = await axiosInstance.get('/movers/search', {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-            params: { keyword: searchTerm },
-          });
-          const moversData = data.data || data;
-          setMovers(moversData);
-          setAllMovers(moversData);
-          const favoriteMoversData = moversData
-            .filter((mover: Mover) => mover.isFavorite)
-            .slice(0, 2);
-          setFavoriteMovers(favoriteMoversData);
-        } else {
-          setError('로그인에 실패했습니다.');
-        }
+        localStorage.removeItem('accessToken');
+        setIsAuthenticated(false);
+        setError('인증이 만료되었습니다. 다시 로그인해주세요.');
       } else {
         console.error('검색 중 오류 발생:', err);
         setError('기사님 검색 중 오류가 발생했습니다.');
@@ -143,6 +137,9 @@ export default function Page() {
     const sortValue = typeof value === 'string' ? value : 'reviews';
     setSelectedSort(sortValue);
     try {
+      const isAuth = await checkAuth();
+      if (!isAuth) return;
+
       const { data } = await axiosInstance.get('/movers', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -154,34 +151,28 @@ export default function Page() {
       setAllMovers(moversData);
       setMovers(moversData);
 
-      // 찜한 기사님 목록 처리
       const favoriteMoversData = moversData
         .filter((mover: Mover) => mover.isFavorite)
         .slice(0, 2);
 
       setFavoriteMovers(favoriteMoversData);
-    } catch (err) {
-      console.error('정렬 중 오류 발생:', err);
-      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        localStorage.removeItem('accessToken');
+        setIsAuthenticated(false);
+        setError('인증이 만료되었습니다. 다시 로그인해주세요.');
+      } else {
+        console.error('정렬 중 오류 발생:', err);
+        setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+      }
     }
   };
 
-  // 기사님 목록 조회
   const fetchMovers = async () => {
     try {
-      // 먼저 토큰이 있는지 확인
-      const token = localStorage.getItem('accessToken');
+      const isAuth = await checkAuth();
+      if (!isAuth) return;
 
-      // 토큰이 없으면 로그인 시도
-      if (!token) {
-        const loginSuccess = await login();
-        if (!loginSuccess) {
-          setError('로그인에 실패했습니다.');
-          return;
-        }
-      }
-
-      // 데이터 요청
       const { data } = await axiosInstance.get('/movers', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -197,34 +188,16 @@ export default function Page() {
       setAllMovers(moversData);
       setMovers(moversData);
 
-      // 찜한 기사님 목록 처리
       const favoriteMoversData = moversData
         .filter((mover: Mover) => mover.isFavorite)
         .slice(0, 2);
 
       setFavoriteMovers(favoriteMoversData);
     } catch (err: any) {
-      // 401 에러인 경우에만 로그인 시도
       if (err.response?.status === 401) {
-        const loginSuccess = await login();
-        if (loginSuccess) {
-          // 로그인 성공 후 다시 데이터 요청
-          const { data } = await axiosInstance.get('/movers', {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-            params: { sortBy: 'reviews' },
-          });
-          const moversData = data.data || data;
-          setAllMovers(moversData);
-          setMovers(moversData);
-          const favoriteMoversData = moversData
-            .filter((mover: Mover) => mover.isFavorite)
-            .slice(0, 2);
-          setFavoriteMovers(favoriteMoversData);
-        } else {
-          setError('로그인에 실패했습니다.');
-        }
+        localStorage.removeItem('accessToken');
+        setIsAuthenticated(false);
+        setError('인증이 만료되었습니다. 다시 로그인해주세요.');
       } else {
         console.error('API 호출 오류:', err);
         setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
