@@ -1,80 +1,56 @@
 'use client';
+import Dropdown from '../dropdown/dropdown';
 import cn from '@/utils/cn';
-import socket from '@/utils/socket';
+import { useEffect, useRef, useState } from 'react';
+import { CloseBtn } from '@/app/(routes)/select-role/components/tooltip';
+import { formatDistanceToNow } from 'date-fns';
 import {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  type PropsWithChildren,
-} from 'react';
-import CommonButton from '../common/commonBtn/commonBtn';
-import MessageItem from './message';
-import { MessageResponse } from './types/chat.type';
-import { VariableSizeList as List } from 'react-window';
+  ko,
+  FormatDistanceToken,
+  FormatDistanceFnOptions,
+} from 'date-fns/locale';
+import { FixedSizeList as List } from 'react-window';
+import { getChatRoomAPi } from './api/api';
+import ChatBox from './chatbox';
+import {
+  LastMessageType,
+  type ChatList,
+  type ChatRoomType,
+} from './types/chat.type';
+import Image from 'next/image';
+import { useQuery } from '@tanstack/react-query';
 
-const userId = 'cm8sek5v90000iu2xvmmm1j35';
+function ChatRoomList({ isOpen = false }: ChatList) {
+  const [open, setOpen] = useState<boolean>(isOpen);
+  const [chatOpen, setChatOpen] = useState<boolean>(false);
+  const [chatInfo, setChatInfo] = useState({ targetId: '', targetName: '' });
+  const [lastMessage, setLastMessage] = useState<LastMessageType[]>([]);
+  const [data, setData] = useState<ChatRoomType[]>([]);
+  const divRef = useRef<HTMLDivElement>(null);
+  const { data: chatData, isFetched } = useQuery({
+    queryKey: ['chat'],
+    queryFn: getChatRoomAPi,
+  });
 
-export default function ChatBox({
-  children,
-  targetId,
-}: PropsWithChildren & { targetId?: string }) {
-  const containerRef = useRef<any>(null);
-  const targetRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState<MessageResponse[]>([]);
-  const [input, setInput] = useState<string>('');
+  function close(e: React.MouseEvent<HTMLDivElement>) {
+    e.preventDefault();
+    setOpen(false);
+  }
 
-  const chatEnter = () => {
-    if (!isOpen) {
-      socket.emit(
-        'chatRoom',
-        {
-          targetId: targetId || 'cm8sdyggr0001iucfgpbj3p08',
-        },
-        (res: any) => {
-          if (res.ok) {
-            setMessage([...res.chatRoom.ChatMessage]);
-            setIsOpen((prev) => !prev);
-          }
-        },
+  function openHandle(e: React.MouseEvent<HTMLDivElement>) {
+    e.preventDefault();
+    setOpen((prev) => !prev);
+  }
+
+  useEffect(() => {
+    if (chatData && isFetched) {
+      console.log('fetched', chatData);
+      setData(chatData.rooms ?? []);
+      setLastMessage(
+        chatData.rooms ?? [].map((room: ChatRoomType) => room.lastMessage),
       );
     }
-  };
-
-  const chatMsg = () => {
-    if (!!input)
-      socket.emit('chatMsg', { message: input }, (res: any) => {
-        if (res.ok) {
-          const newMsg = {
-            content: input,
-            userId,
-            createdAt: new Date(),
-          };
-          setMessage((prev) => [...prev, newMsg]);
-          setInput('');
-        }
-      });
-  };
-
-  // 메시지 높이를 계산하는 함수
-  const getItemSize = useCallback(
-    (index: number) => {
-      const msg = message[index];
-      // 기본 값: 한 줄에 들어갈 문자 수, 한 줄의 높이, 그리고 패딩
-      const maxCharsPerLine = 20;
-      const lineHeight = 30; // 한 줄 높이 (px)
-      const verticalPadding = 25; // 위아래 패딩 합 (px)
-
-      // 메시지 내용 길이에 따라 필요한 줄 수 계산
-      const lines = Math.ceil(msg.content.length / maxCharsPerLine);
-      // 최소 높이를 지정 (한 줄 높이 + 패딩)
-      const minHeight = lineHeight + verticalPadding;
-      const calculatedHeight = lines * lineHeight + verticalPadding;
-      return Math.max(minHeight, calculatedHeight);
-    },
-    [message],
-  );
+  }, [chatData, isFetched]);
 
   const Row = ({
     index,
@@ -83,61 +59,134 @@ export default function ChatBox({
     index: number;
     style: React.CSSProperties;
   }) => {
-    const msg = message[index];
+    const chat = data[index];
+    const target = chat.conversationPartner[0];
+    const userType =
+      target.user.userType.toLocaleLowerCase() === 'mover'
+        ? '기사님'
+        : '고객님';
     return (
       <div
         style={style}
         className={cn(
-          'flex items-center',
-          userId === msg.userId ? 'pr-2' : 'pl-2',
+          'chatRoomItem',
+          'flex flex-wrap border-b relative overflow-hidden py-2 cursor-pointer',
         )}
+        onClick={(e) => {
+          e.preventDefault();
+          setChatOpen((prev) => !prev);
+          setChatInfo({
+            targetId: target.userId,
+            targetName: `${target.user.name} ${userType}`,
+          });
+        }}
       >
-        <MessageItem
-          key={`${msg.content}-${index}`}
-          msg={msg}
-          userId={userId}
-        />
+        <p className={cn('w-full font-bold text-lg px-2 mb-1')}>
+          {target.user.name}
+          <span className={cn('ml-1 text-sm text-primary-blue-200')}>
+            {userType}
+          </span>
+        </p>
+        <div className={cn('w-full h-3/5 flex justify-between pl-3 pr-2')}>
+          <p
+            className={cn(
+              'content',
+              ' relative w-full text-md font-semibold text-black-100 truncate',
+            )}
+          >
+            {lastMessage[index].content}
+          </p>
+          <p className={cn('time', 'w-[10ch] text-grayscale-300 text-xs')}>
+            {isTime(lastMessage[index].updatedAt)}
+          </p>
+        </div>
       </div>
     );
   };
 
-  useEffect(() => {
-    if (containerRef.current && message.length) {
-      containerRef.current.scrollToItem(message.length - 1, 'end');
-    }
-  }, [message]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (targetRef.current && !targetRef.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div className={cn('chat-box w-full')}>
-      <div onClick={chatEnter}>{children ? children : '클릭'}</div>
-      {isOpen && (
-        <div
-          ref={targetRef}
-          className={cn(
-            'chat',
-            'fixed bottom-3 right-4 w-[325px] bg-line-100 overflow-hidden rounded-xl border z-[100] shadow-lg',
-          )}
-        >
+    <div
+      className={cn('chatRoom', '')}
+      ref={divRef}
+    >
+      <div
+        className={cn(
+          'chatRoomBtn',
+          'fixed bottom-4 right-[60px] z-[100] rounded-full w-12 h-12',
+        )}
+        onClick={openHandle}
+      >
+        <Image
+          className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+          src='/icons/chat-icon.svg'
+          alt='chat'
+          width={30}
+          height={30}
+        />
+      </div>
+      <Dropdown
+        isOpen={open}
+        className={cn(
+          'fixed block bottom-4 right-4 w-[332px] h-[450px] z-[110]',
+          // 'xl:max-h-[450px] xl:w-[360px]',
+          'overflow-hidden px-0 pl-0 shadow-2xl',
+        )}
+      >
+        <div className='py-[14px] h-[54px] relative border-b'>
+          <h2 className='text-lg lg:text-[18px] px-4 font-bold text-black-400'>
+            {chatOpen && chatInfo.targetName} 채팅
+          </h2>
+          <div
+            className={cn(
+              'right-btn',
+              'absolute top-1/2 right-5 transform -translate-y-1/2 flex justify-around',
+            )}
+          >
+            {chatOpen ? (
+              <div
+                className={cn(
+                  'back-btn',
+                  'cursor-pointer group',
+                  'w-[18px] h-[18px]',
+                )}
+                onClick={() => {
+                  setChatOpen(false);
+                }}
+              >
+                <div
+                  className={cn(
+                    'w-1/2 h-1/2 border-t-2 border-r-2 rotate-45 border-black-100 mt-1',
+                    'group-hover:border-primary-blue-200 transition-all duration-100',
+                  )}
+                ></div>
+              </div>
+            ) : (
+              <CloseBtn
+                className={cn(
+                  'w-4 h-4',
+                  'relative cursor-pointer -translate-y-0 top-0',
+                )}
+                onClick={close}
+              />
+            )}
+          </div>
+        </div>
+        {data.length === 0 ? (
+          <div
+            className={cn(
+              'absolute top-1/2 left-1/2 -translate-x-1/2 -trnaslate-y-1/2 text-md',
+            )}
+          >
+            채팅방이 없습니다.
+          </div>
+        ) : (
           <List
             className={cn('chat-msg', 'custom-scroll')}
-            height={300}
-            itemCount={message.length}
-            itemSize={getItemSize}
+            height={400}
+            itemCount={data.length}
+            itemSize={80}
             width={'100%'}
-            ref={containerRef}
+            // ref={containerRef}
           >
             {({ index, style }) => {
               return (
@@ -148,37 +197,29 @@ export default function ChatBox({
               );
             }}
           </List>
-          <div
-            className={cn(
-              'chat-msg-input-area',
-              'flex flex-wrap bg-white px-2 py-3',
-            )}
-          >
-            <textarea
-              className={cn(
-                'chat-msg-input',
-                'w-full border-0 outline-none ring-0 resize-none h-16 mb-2 custom-scroll',
-                'focuse:outline-none focus:ring-0',
-              )}
-              value={input}
-              onChange={(e) => {
-                const { currentTarget } = e;
-                setInput(currentTarget.value);
-              }}
-              placeholder='메세지 입력'
-            />
-            <CommonButton
-              className={cn('block h-10')}
-              widthType={'full'}
-              heightType={'dynamic'}
-              onClick={chatMsg}
-              onKeyDown={(e) => {}}
-            >
-              전송
-            </CommonButton>
-          </div>
-        </div>
-      )}
+        )}
+        <ChatBox isOpen={chatOpen}></ChatBox>
+      </Dropdown>
     </div>
   );
 }
+
+const customKo = {
+  ...ko,
+  formatDistance: (
+    token: FormatDistanceToken,
+    count: number,
+    options?: FormatDistanceFnOptions,
+  ) => {
+    const result = ko.formatDistance(token, count, options);
+    return result.replace(/^약\s/, '');
+  },
+};
+function isTime(date: Date) {
+  return formatDistanceToNow(new Date(date), {
+    addSuffix: true,
+    locale: customKo,
+  });
+}
+
+export default ChatRoomList;

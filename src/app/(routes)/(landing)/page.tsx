@@ -1,5 +1,6 @@
+'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import cn from '@/utils/cn';
 import {
   LANDING_PAGE_STYLES,
