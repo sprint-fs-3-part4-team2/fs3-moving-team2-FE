@@ -11,7 +11,6 @@ import { MOVING_TYPES } from '@/constants/movingTypes';
 
 export default function Page() {
   const router = useRouter();
-  const { id } = useParams() as { id: string };
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [emptyData, setEmptyData] = useState(false);
@@ -21,9 +20,8 @@ export default function Page() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['completedReviews', id],
-    queryFn: async () => await getCompletedReviews(id),
-    enabled: !!id,
+    queryKey: ['completedReviews'],
+    queryFn: getCompletedReviews,
   });
 
   interface Mover {
