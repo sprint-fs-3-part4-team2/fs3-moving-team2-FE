@@ -36,11 +36,11 @@ export default function QuoteRequestPage() {
   };
 
   // 스텝이 변경, 수정 취소될 때마다 하단으로 스크롤
-  useLayoutEffect(() => {
-    if (shouldScrollToBottom) {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-  }, [step, maxCompletedStep, shouldScrollToBottom]);
+  // useLayoutEffect(() => {
+  //   if (shouldScrollToBottom) {
+  //     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  //   }
+  // }, [step, maxCompletedStep, shouldScrollToBottom]);
 
   return (
     // 질문이 적을 경우 화면 전체를 채우기 위해 min-h-screen 추가

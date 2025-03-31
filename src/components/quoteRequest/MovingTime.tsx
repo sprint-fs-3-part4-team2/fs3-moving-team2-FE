@@ -16,6 +16,7 @@ export function MovingTime({
 }: MovingStepProps) {
   const [date, setDate] = useState<string | null>(null);
   const { registerData, setRegisterData } = useQuoteRequestStore();
+  const [isSubmitted, setIsSubmitted] = useState(false); // 수정 완료 시, 애니메이션 효과를 위해
 
   if (maxCompletedStep === undefined || maxCompletedStep === null) {
     console.error('maxCompletedStep props is required');
@@ -28,62 +29,82 @@ export function MovingTime({
       console.log('Updating moveType to:', date);
       setRegisterData({ moveTime: date });
     }
+    setIsSubmitted(true);
     // 수정 모드라면 작성한 단계로 이동
     if (getStepIndex('이사예정시간') < maxCompletedStep) {
       // 수정 완료 시, 작성한 단계로 이동
       onExitEdit();
     } else {
       // 일반 next 동작
-      onNext();
+      // 0.4초 후에 onNext 실행(애니메이션 효과를 위해)
+      setTimeout(() => {
+        onNext();
+      }, 400);
     }
   };
 
   const handleEdit = () => {
     window.scrollTo({ top: 470, behavior: 'smooth' });
+    setIsSubmitted(false);
     onEdit();
   };
 
   return (
     <>
-      <RequestMessage align='left'>
-        이사 예정시간을 선택해 주세요.
-      </RequestMessage>
+      <div
+        className='animate-slideUp'
+        style={{ animationDelay: '1s', animationFillMode: 'backwards' }}
+      >
+        <RequestMessage align='left'>
+          이사 예정시간을 선택해 주세요.
+        </RequestMessage>
+      </div>
       {step === '이사예정시간' ? (
-        <RequestMessage
-          align='right'
-          {...(getStepIndex('이사예정시간') < maxCompletedStep
-            ? { onExitEdit }
-            : {})}
+        <div
+          className={`${isSubmitted ? 'animate-slideDownFade' : 'animate-slideUp'}`}
+          style={{
+            animationDelay: isSubmitted ? '0s' : '1.8s',
+            animationFillMode: isSubmitted ? 'none' : 'backwards',
+          }}
         >
-          <TimePicker
-            value={date || ''}
-            onChange={(e) => setDate(e.target.value)}
-          />
-          <CommonButton
-            widthType={'full'}
-            heightType={'primary'}
-            onClick={handleCompleteEdit}
-            disabled={date ? false : true}
-            backgroundColorType={date ? 'blue' : 'gray'}
-            className='mt-6'
+          <RequestMessage
+            align='right'
+            {...(getStepIndex('이사예정시간') < maxCompletedStep
+              ? { onExitEdit }
+              : {})}
           >
-            선택완료
-          </CommonButton>
-        </RequestMessage>
+            <TimePicker
+              value={date || ''}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <CommonButton
+              widthType={'full'}
+              heightType={'primary'}
+              onClick={handleCompleteEdit}
+              disabled={date ? false : true}
+              backgroundColorType={date ? 'blue' : 'gray'}
+              className='mt-6'
+            >
+              선택완료
+            </CommonButton>
+          </RequestMessage>
+        </div>
       ) : (
-        <RequestMessage
-          align='right'
-          {...(getStepIndex('이사예정시간') !== maxCompletedStep
-            ? { onEdit: handleEdit }
-            : {})}
-          color='blue'
-        >
-          <p>
-            {registerData.moveTime
-              ? formatKoreanTime(registerData.moveTime)
-              : date}
-          </p>
-        </RequestMessage>
+        <div className='animate-slideUp'>
+          <RequestMessage
+            align='right'
+            {...(getStepIndex('이사예정시간') !== maxCompletedStep
+              ? { onEdit: handleEdit }
+              : {})}
+            color='blue'
+          >
+            <p>
+              {registerData.moveTime
+                ? formatKoreanTime(registerData.moveTime)
+                : date}
+            </p>
+          </RequestMessage>
+        </div>
       )}
     </>
   );

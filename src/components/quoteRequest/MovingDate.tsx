@@ -18,6 +18,7 @@ export function MovingDate({
   const [date, setDate] = useState<Date | undefined>(undefined);
   const { registerData, setRegisterData } = useQuoteRequestStore();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false); // 수정 완료 시, 애니메이션 효과를 위해
 
   if (step === undefined) {
     console.error('step props is required');
@@ -37,13 +38,17 @@ export function MovingDate({
         moveDate: date ? new Date(date) : null,
       });
     }
+    setIsSubmitted(true);
     // 수정 모드라면 작성한 단계로 이동
     if (getStepIndex('이사예정일') < maxCompletedStep) {
       // 수정 완료 시, 작성한 단계로 이동
       onExitEdit();
     } else {
       // 일반 next 동작
-      onNext();
+      // 0.4초 후에 onNext 실행(애니메이션 효과를 위해)
+      setTimeout(() => {
+        onNext();
+      }, 400);
     }
   };
 
@@ -52,6 +57,7 @@ export function MovingDate({
     if (containerRef.current) {
       window.scrollTo({ top: 290, behavior: 'smooth' });
     }
+    setIsSubmitted(false);
     onEdit();
   };
 
@@ -63,11 +69,27 @@ export function MovingDate({
 
   return (
     <div ref={containerRef}>
-      <RequestMessage align='left'>이사 예정일을 선택해 주세요.</RequestMessage>
+      <div
+        className='animate-slideUp'
+        style={{ animationDelay: '1s', animationFillMode: 'backwards' }}
+      >
+        <RequestMessage
+          align='left'
+          className='animate-slideUp'
+        >
+          이사 예정일을 선택해 주세요.
+        </RequestMessage>
+      </div>
       {
         // 이사예정일입력
         step === '이사예정일' ? (
-          <div>
+          <div
+            className={`${isSubmitted ? 'animate-slideDownFade' : 'animate-slideUp'}`}
+            style={{
+              animationDelay: isSubmitted ? '0s' : '1.8s',
+              animationFillMode: isSubmitted ? 'none' : 'backwards',
+            }}
+          >
             <RequestMessage
               align='right'
               {...(getStepIndex('이사예정일') < maxCompletedStep
@@ -101,21 +123,23 @@ export function MovingDate({
             </RequestMessage>
           </div>
         ) : (
-          // 이사예정일요약
-          <RequestMessage
-            align='right'
-            color='blue'
-            // 작성단계에서 다른
-            // 수정하기 버튼이 나타나는 조건(작성한 단계 안보여줌)
-            {...messageProps}
-          >
-            {/* 수정하고 수정 취소해도 선택된게 아닌, 기존 정보를 보여주도록함 */}
-            <p>
-              {registerData.moveDate
-                ? formatKoreanDate(registerData.moveDate)
-                : null}
-            </p>
-          </RequestMessage>
+          <div className='animate-slideUp'>
+            {/* // 이사예정일요약 */}
+            <RequestMessage
+              align='right'
+              color='blue'
+              // 작성단계에서 다른
+              // 수정하기 버튼이 나타나는 조건(작성한 단계 안보여줌)
+              {...messageProps}
+            >
+              {/* 수정하고 수정 취소해도 선택된게 아닌, 기존 정보를 보여주도록함 */}
+              <p>
+                {registerData.moveDate
+                  ? formatKoreanDate(registerData.moveDate)
+                  : null}
+              </p>
+            </RequestMessage>
+          </div>
         )
       }
     </div>

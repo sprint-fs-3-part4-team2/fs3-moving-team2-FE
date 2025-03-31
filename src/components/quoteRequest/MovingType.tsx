@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useQuoteRequestStore from '@/store/quoteRequestStore';
 import RequestMessage from './RequestMessage';
 import Image from 'next/image';
@@ -21,11 +21,13 @@ export function MovingType({
   maxCompletedStep,
 }: MovingStepProps) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { registerData, setRegisterData } = useQuoteRequestStore();
 
   // 수정하기 버튼 클릭 시, 해당 컨테이너로 스크롤 후 onEdit 실행
   const handleEdit = () => {
     window.scrollTo({ top: 100, behavior: 'smooth' });
+    setIsSubmitted(false);
     onEdit();
   };
   // 마지막 단계가 아니면 전부 maxCompletedStep props가 필요합니다.
@@ -40,22 +42,37 @@ export function MovingType({
       console.log('Updating moveType to:', selected);
       setRegisterData({ moveType: selected });
     }
+    setIsSubmitted(true);
     // 수정 모드라면 작성한 단계로 이동
     if (getStepIndex('이사종류') < maxCompletedStep) {
       // 수정 완료 시, 작성한 단계로 이동
       onExitEdit();
     } else {
       // 일반 next 동작
-      onNext();
+      // 0.4초 후에 onNext 실행(애니메이션 효과를 위해)
+      setTimeout(() => {
+        onNext();
+      }, 400);
     }
   };
 
   return (
     <>
-      <RequestMessage align='left'>이사 종류를 선택해 주세요.</RequestMessage>
+      <div
+        className='animate-slideUp'
+        style={{ animationDelay: '0.1s', animationFillMode: 'backwards' }}
+      >
+        <RequestMessage align='left'>이사 종류를 선택해 주세요.</RequestMessage>
+      </div>
       {step === '이사종류' ? (
         // 이사종류입력
-        <div>
+        <div
+          className={`${isSubmitted ? 'animate-slideDownFade' : 'animate-slideUp'}`}
+          style={{
+            animationDelay: isSubmitted ? '0s' : '1s',
+            animationFillMode: isSubmitted ? 'none' : 'backwards',
+          }}
+        >
           <RequestMessage
             align='right'
             // 수정 취소하기 버튼이 나타나는 조건
@@ -113,13 +130,15 @@ export function MovingType({
         </div>
       ) : (
         // 이사종류요약
-        <RequestMessage
-          align='right'
-          onEdit={handleEdit}
-          color='blue'
-        >
-          <p>{registerData.moveType}</p>
-        </RequestMessage>
+        <div className='animate-slideUp'>
+          <RequestMessage
+            align='right'
+            onEdit={handleEdit}
+            color='blue'
+          >
+            <p>{registerData.moveType}</p>
+          </RequestMessage>
+        </div>
       )}
     </>
   );
