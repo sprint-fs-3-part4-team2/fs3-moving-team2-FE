@@ -22,7 +22,7 @@ export default function QuoteRequestExist(
         >
           <CancelRequestModalContent
             onClose={closeModal}
-            requestId='abc'
+            requestId={props.id}
           />
         </ModalWrapper>
       )}

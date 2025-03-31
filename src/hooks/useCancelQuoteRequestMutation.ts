@@ -1,17 +1,24 @@
 import { cancelQuoteRequest } from '@/services/quoteRequests';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToaster } from './useToaster';
 
 export const useCancelQuoteRequestMutation = (onClose: () => void) => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
+  const toast = useToaster();
+
   const cancelQuoteRequestMutation = useMutation({
-    mutationFn: async (requestId: string) => cancelQuoteRequest(requestId),
+    mutationFn: (requestId: string) => cancelQuoteRequest(requestId),
     onSuccess: () => {
-      queryClient.setQueryData(['quoteRequest'], () => ({
+      queryClient.setQueryData(['myQuoteRequest'], () => ({
         requested: false,
       }));
+      toast('info', '견적 요청 취소 성공');
       onClose();
     },
-    onError: () => {},
+    onError: () => {
+      toast('warn', '견적 요청 취소 실패');
+      onClose();
+    },
   });
 
   return cancelQuoteRequestMutation;
