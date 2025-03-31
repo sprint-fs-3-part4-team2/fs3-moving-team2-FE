@@ -19,9 +19,6 @@ export default function GNB() {
   const imageUrl = user?.imageUrl || '/icons/gnb/default-profile.svg';
   const userType = user?.role || 'guest';
 
-  console.log('user333: ', isAuthorized);
-  console.log('username333: ', user, user?.name);
-
   if (pathname === '/select-role') {
     return null;
   }
