@@ -49,39 +49,13 @@ export default function Page() {
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const login = async () => {
-    try {
-      const response = await axiosInstance.post<LoginResponse>(
-        '/auth/sign-in/customer',
-        {
-          email: 'test9912@gmail.com',
-          password: 'rfradassd15',
-        },
-      );
-
-      const accessToken = response.data.data.accessToken;
-
-      if (!accessToken) {
-        console.error('액세스 토큰을 찾을 수 없습니다:', response.data);
-        return false;
-      }
-
-      localStorage.setItem('accessToken', accessToken);
-      setIsAuthenticated(true);
-      return true;
-    } catch (error: any) {
-      console.error('로그인 실패:', error);
-      setError('로그인에 실패했습니다.');
-      setIsAuthenticated(false);
-      return false;
-    }
-  };
-
   const checkAuth = async () => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      return await login();
+      setIsAuthenticated(false);
+      return false;
     }
+    setIsAuthenticated(true);
     return true;
   };
 
@@ -103,12 +77,14 @@ export default function Page() {
 
     try {
       const isAuth = await checkAuth();
-      if (!isAuth) return;
+      const headers = isAuth
+        ? {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          }
+        : {};
 
       const { data } = await axiosInstance.get('/movers/search', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+        headers,
         params: { keyword: searchTerm },
       });
 
@@ -116,16 +92,16 @@ export default function Page() {
       setMovers(moversData);
       setAllMovers(moversData);
 
-      const favoriteMoversData = moversData
-        .filter((mover: Mover) => mover.isFavorite)
-        .slice(0, 2);
-
-      setFavoriteMovers(favoriteMoversData);
+      if (isAuth) {
+        const favoriteMoversData = moversData
+          .filter((mover: Mover) => mover.isFavorite)
+          .slice(0, 2);
+        setFavoriteMovers(favoriteMoversData);
+      }
     } catch (err: any) {
       if (err.response?.status === 401) {
         localStorage.removeItem('accessToken');
         setIsAuthenticated(false);
-        setError('인증이 만료되었습니다. 다시 로그인해주세요.');
       } else {
         console.error('검색 중 오류 발생:', err);
         setError('기사님 검색 중 오류가 발생했습니다.');
@@ -138,12 +114,14 @@ export default function Page() {
     setSelectedSort(sortValue);
     try {
       const isAuth = await checkAuth();
-      if (!isAuth) return;
+      const headers = isAuth
+        ? {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          }
+        : {};
 
       const { data } = await axiosInstance.get('/movers', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+        headers,
         params: { sortBy: sortValue },
       });
 
@@ -151,16 +129,16 @@ export default function Page() {
       setAllMovers(moversData);
       setMovers(moversData);
 
-      const favoriteMoversData = moversData
-        .filter((mover: Mover) => mover.isFavorite)
-        .slice(0, 2);
-
-      setFavoriteMovers(favoriteMoversData);
+      if (isAuth) {
+        const favoriteMoversData = moversData
+          .filter((mover: Mover) => mover.isFavorite)
+          .slice(0, 2);
+        setFavoriteMovers(favoriteMoversData);
+      }
     } catch (err: any) {
       if (err.response?.status === 401) {
         localStorage.removeItem('accessToken');
         setIsAuthenticated(false);
-        setError('인증이 만료되었습니다. 다시 로그인해주세요.');
       } else {
         console.error('정렬 중 오류 발생:', err);
         setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
@@ -171,12 +149,14 @@ export default function Page() {
   const fetchMovers = async () => {
     try {
       const isAuth = await checkAuth();
-      if (!isAuth) return;
+      const headers = isAuth
+        ? {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          }
+        : {};
 
       const { data } = await axiosInstance.get('/movers', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
+        headers,
         params: {
           sortBy: selectedSort,
           area: selectedArea !== '지역' ? selectedArea : undefined,
@@ -188,16 +168,16 @@ export default function Page() {
       setAllMovers(moversData);
       setMovers(moversData);
 
-      const favoriteMoversData = moversData
-        .filter((mover: Mover) => mover.isFavorite)
-        .slice(0, 2);
-
-      setFavoriteMovers(favoriteMoversData);
+      if (isAuth) {
+        const favoriteMoversData = moversData
+          .filter((mover: Mover) => mover.isFavorite)
+          .slice(0, 2);
+        setFavoriteMovers(favoriteMoversData);
+      }
     } catch (err: any) {
       if (err.response?.status === 401) {
         localStorage.removeItem('accessToken');
         setIsAuthenticated(false);
-        setError('인증이 만료되었습니다. 다시 로그인해주세요.');
       } else {
         console.error('API 호출 오류:', err);
         setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
