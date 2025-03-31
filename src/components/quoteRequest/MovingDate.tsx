@@ -48,8 +48,6 @@ export const MovingDate = forwardRef<HTMLDivElement, MovingStepProps>(
       }
     };
 
-    console.log('containerRef222222', containerRef?.current);
-
     // 수정하기 버튼 클릭 시, 해당 컨테이너로 스크롤 후 onEdit 실행
     const handleEdit = () => {
       containerRef?.current?.scrollTo({ top: 330, behavior: 'smooth' });

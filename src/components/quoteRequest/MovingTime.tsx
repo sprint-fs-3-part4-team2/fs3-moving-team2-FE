@@ -20,8 +20,6 @@ export const MovingTime = forwardRef<HTMLDivElement, MovingStepProps>(
       return null;
     }
 
-    console.log('containerRef33333', containerRef?.current);
-
     // 수정 완료 시, 작성한 단계로 이동하는 함수
     const handleCompleteEdit = () => {
       if (date) {

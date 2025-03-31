@@ -21,8 +21,6 @@ export const MovingType = forwardRef<HTMLDivElement, MovingStepProps>(
 
     const containerRef = ref as React.MutableRefObject<HTMLDivElement | null>;
 
-    console.log('containerRef1111', ref);
-
     // 수정하기 버튼 클릭 시, 해당 컨테이너로 스크롤 후 onEdit 실행
     const handleEdit = () => {
       containerRef?.current?.scrollTo({ top: 100, behavior: 'smooth' });
