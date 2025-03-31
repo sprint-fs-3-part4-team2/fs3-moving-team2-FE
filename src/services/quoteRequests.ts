@@ -46,9 +46,9 @@ export const getlatestQuoteRequest = async () => {
   return response.json();
 };
 
-export const cancelQuoteRequest = async (requestId: string) => {
+export const cancelQuoteRequest = async (quoteRequestId: string) => {
   try {
-    await axiosInstance.delete('/quote-request');
+    await axiosInstance.delete(`/quote-requests/${quoteRequestId}`);
   } catch (error: any) {
     console.error('견적 요청 취소 실패', error);
     throw error;
