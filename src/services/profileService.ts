@@ -51,3 +51,14 @@ export const updateMoverProfile = async (data: any) => {
     throw err;
   }
 };
+
+//기사 프로필 조회
+export const getMoverProfile = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`users/mover/profile`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+};

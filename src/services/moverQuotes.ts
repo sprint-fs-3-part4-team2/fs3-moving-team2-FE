@@ -4,7 +4,10 @@ import {
   QuoteForMover,
 } from './types/quotesDetail/quotesDetail.types';
 import { QuoteRequest } from './types/quotesDetail/common.types';
-import { SubmittedQuotes } from './types/submittedQuotes/submittedQuotes.types';
+import {
+  SubmitQuoteRequest,
+  SubmittedQuotes,
+} from './types/submittedQuotes/submittedQuotes.types';
 
 const MOVER_QUOTE_URL = '/mover-quotes';
 
@@ -68,5 +71,23 @@ export const createQuoteRequest = async ({
     });
   } catch (error: any) {
     console.error('견적 요청 실패', error);
+  }
+};
+
+export const submitQuoteByMover = async (
+  quoteId: string,
+  price: number,
+  comment: string,
+) => {
+  try {
+    await axiosInstance.post<SubmitQuoteRequest>(
+      `${MOVER_QUOTE_URL}/submit/${quoteId}`,
+      {
+        price,
+        comment,
+      },
+    );
+  } catch {
+    console.error('견적 제출 실패');
   }
 };

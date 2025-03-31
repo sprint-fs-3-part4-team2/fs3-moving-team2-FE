@@ -3,11 +3,11 @@ import React, { PropsWithChildren, useState } from 'react';
 import s from './styles/select-role.module.css';
 import Link from 'next/link';
 import Links from './components/links';
-import RoleImg from './components/roleimg';
 import Image from 'next/image';
 import Content from './components/content';
 import MobileLink from './components/mobile-link';
 import Tooltip from './components/tooltip';
+import ChatComponent from '@/components/chat/chat';
 
 const commonText = '일반유저';
 const partnerText = '파트너';

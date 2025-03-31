@@ -57,7 +57,8 @@ export default function Page() {
       })
       .catch((error) => {
         console.error('Error fetching estimates:', error);
-        setError('에러가 발생했어요.\n리뷰 데이터를 불러오지 못했습니다.');
+        const errorMessage = error.response?.data?.message || '알 수 없는 에러';
+        setError(`에러가 발생했어요.\n${errorMessage}`);
         setLoading(false);
       });
   }, []);
@@ -301,7 +302,7 @@ export default function Page() {
   if (loading) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] flex flex-col justify-center items-center bg-backgroundVariants-50'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/logo/logo-with-icon.svg'
@@ -322,7 +323,7 @@ export default function Page() {
   if (error) {
     return (
       <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] flex flex-col justify-center items-center bg-backgroundVariants-50'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/no-review.svg'
@@ -394,7 +395,7 @@ export default function Page() {
           )}
         </div>
       ) : (
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-54px)] xl:h-[calc(100vh-96px)] flex flex-col justify-center items-center'>
+        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
           <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
             <Image
               src='/img/no-review.svg'
