@@ -6,4 +6,5 @@ export interface MovingStepProps {
   onExitEdit: () => void;
   step: StepType;
   maxCompletedStep: number;
+  containerRef?: React.RefObject<HTMLDivElement>;
 }
