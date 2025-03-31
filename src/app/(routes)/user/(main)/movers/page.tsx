@@ -130,10 +130,6 @@ export default function Page() {
     fetchMovers();
   }, []);
 
-  useEffect(() => {
-    handleSearch();
-  }, []);
-
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류 발생: {error}</p>;
 
@@ -255,25 +251,43 @@ export default function Page() {
               inputVariant='search'
             />
 
-            {movers.map((mover) => (
-              <MoverInfo
-                key={mover.id}
-                variant='quote'
-                subVariant='completed'
-                moverName={mover.moverName}
-                imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-                movingType={mover.movingType}
-                isCustomQuote={mover.isCustomQuote}
-                rating={mover.rating ?? 0}
-                ratingCount={mover.ratingCount}
-                experienceYears={mover.experienceYears}
-                quoteCount={mover.quoteCount}
-                isFavorite={mover.isFavorite}
-                favoriteCount={mover.favoriteCount ?? 0}
-                isFavoriteMoverList={false}
-                description={mover.description}
-              />
-            ))}
+            {movers.length === 0 ? (
+              <div className='flex flex-col items-center justify-center py-10'>
+                <p className='text-gray-500'>검색 결과가 없습니다.</p>
+                <button
+                  onClick={() => {
+                    const searchInput = document.querySelector(
+                      'input[type="text"]',
+                    ) as HTMLInputElement;
+                    if (searchInput) searchInput.value = '';
+                    setMovers(allMovers);
+                  }}
+                  className='mt-4 px-4 py-2 text-sm text-blue-600 hover:text-blue-800'
+                >
+                  전체 목록 보기
+                </button>
+              </div>
+            ) : (
+              movers.map((mover) => (
+                <MoverInfo
+                  key={mover.id}
+                  variant='quote'
+                  subVariant='completed'
+                  moverName={mover.moverName}
+                  imageUrl={mover.imageUrl || '/profile-placeholder.png'}
+                  movingType={mover.movingType}
+                  isCustomQuote={mover.isCustomQuote}
+                  rating={mover.rating ?? 0}
+                  ratingCount={mover.ratingCount}
+                  experienceYears={mover.experienceYears}
+                  quoteCount={mover.quoteCount}
+                  isFavorite={mover.isFavorite}
+                  favoriteCount={mover.favoriteCount ?? 0}
+                  isFavoriteMoverList={false}
+                  description={mover.description}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>
