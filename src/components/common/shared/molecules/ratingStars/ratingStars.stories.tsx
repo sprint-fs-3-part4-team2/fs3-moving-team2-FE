@@ -9,7 +9,7 @@ export default {
   tags: ['autodocs'],
 } satisfies Meta<typeof RatingStars>;
 
-export const RatingExample: StoryObj<typeof RatingStars> = {
+export const RatingWithClick: StoryObj<typeof RatingStars> = {
   render: () => {
     const [rating, setRating] = useState(0);
     return (
@@ -21,5 +21,11 @@ export const RatingExample: StoryObj<typeof RatingStars> = {
   },
   parameters: {
     codeExample: RatingStarsCodeSnippet(),
+  },
+};
+
+export const DecimalRatingExample: StoryObj<typeof RatingStars> = {
+  args: {
+    rating: 4.5,
   },
 };
