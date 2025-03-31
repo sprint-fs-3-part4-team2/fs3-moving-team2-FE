@@ -62,7 +62,7 @@ export const MovingDate = forwardRef<HTMLDivElement, MovingStepProps>(
         : {};
 
     return (
-      <>
+      <div ref={ref}>
         <div
           className='animate-slideUp'
           style={{ animationDelay: '1s', animationFillMode: 'backwards' }}
@@ -136,7 +136,9 @@ export const MovingDate = forwardRef<HTMLDivElement, MovingStepProps>(
             </div>
           )
         }
-      </>
+      </div>
     );
   },
 );
+
+MovingDate.displayName = 'MovingDate';

@@ -54,7 +54,7 @@ export const MovingType = forwardRef<HTMLDivElement, MovingStepProps>(
     };
 
     return (
-      <>
+      <div ref={ref}>
         <div
           className='animate-slideUp'
           style={{ animationDelay: '0.1s', animationFillMode: 'backwards' }}
@@ -139,7 +139,9 @@ export const MovingType = forwardRef<HTMLDivElement, MovingStepProps>(
             </RequestMessage>
           </div>
         )}
-      </>
+      </div>
     );
   },
 );
+
+MovingType.displayName = 'MovingType';
