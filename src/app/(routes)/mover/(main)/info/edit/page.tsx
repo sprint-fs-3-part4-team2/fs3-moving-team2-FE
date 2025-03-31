@@ -6,13 +6,24 @@ import moverEditApi from './api/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
+import { useUserStore } from '@/store/userStore';
+import { useEffect } from 'react';
 
-const ul = cn('w-full', 'lg:flex lg:flex-wrap lg:w-[47%]');
-const li = cn('pt-5 pb-8 border-t border-line-100 w-full');
-const button = cn('w-full even:mb-3 odd:order-2', 'lg:even:mb-0 lg:w-[49%]');
+const ul: HTMLUListElement['className'] = cn(
+  'w-full',
+  'lg:flex lg:flex-wrap lg:w-[47%]',
+);
+const li: HTMLLIElement['className'] = cn(
+  'pt-5 pb-8 border-t border-line-100 w-full',
+);
+const button: HTMLButtonElement['className'] = cn(
+  'w-full even:mb-3 odd:order-2',
+  'lg:even:mb-0 lg:w-[49%]',
+);
 
 export default function MoverBasicInfoEdit() {
   const router = useRouter();
+  const { user } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -27,16 +38,15 @@ export default function MoverBasicInfoEdit() {
   const onSubmit = async (data: FieldValues) => {
     const { newConfirmPassword, ...rest } = data;
     const body = {
-      userType: 'mover', // 나중 유저의 값에서 타입 가져오기
       ...rest,
     };
     const res = await moverEditApi(body);
     if (res.ok) {
       // router.replace('/mover/profile');
-      toaster('info', '성공');
+      toaster('info', '프로필 수정이 완료됐습니다.');
       return;
     } else {
-      toaster('warn', '실패');
+      toaster('warn', '프로필 수정에 실패했습니다.');
       return;
     }
   };
@@ -49,6 +59,10 @@ export default function MoverBasicInfoEdit() {
       }
     });
   };
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   return (
     <form
@@ -120,6 +134,7 @@ export default function MoverBasicInfoEdit() {
                   value: /^(01[016789])[-]?[0-9]{3,4}[-]?[0-9]{4}$/,
                   message: '올바른 핸드폰 번호를 입력해주세요.',
                 },
+                max: 11,
               }}
               name='phoneNumber'
               register={register}

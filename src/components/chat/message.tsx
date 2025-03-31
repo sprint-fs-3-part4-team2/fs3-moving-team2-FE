@@ -12,7 +12,7 @@ interface MessageItemProps {
 const MessageItem = React.memo(({ msg, userId }: MessageItemProps) => (
   <p
     className={cn(
-      'p-2 my-3 rounded-xl max-w-[60%] text-md shadow-md',
+      'px-3 py-2 rounded-xl max-w-[60%] text-md shadow-md',
       msg.userId === userId
         ? 'ml-auto bg-primary-blue-50'
         : 'bg-primary-blue-50',

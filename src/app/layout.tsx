@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import dynamic from 'next/dynamic';
 import Provider from '../providers/_provider';
+import ChatRoomList from '@/components/chat/chatRoomList';
 // import Analytics from '@/components/analytics/page';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
@@ -41,6 +42,7 @@ export default function RootLayout({
             hasNotification={true}
           />
           {children}
+          <ChatRoomList />
         </Provider>
       </body>
     </html>
