@@ -17,16 +17,14 @@ export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 export default function MyPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const { id } = useParams() as { id: string };
   const router = useRouter();
-
   const {
     data: reviewsData,
     isLoading: isLoadingReviews,
     error: reviewsError,
   } = useQuery({
-    queryKey: ['moverReviews', id],
-    queryFn: async () => await getMoverReviews(id),
+    queryKey: ['moverReviews'],
+    queryFn: async () => await getMoverReviews(),
   });
 
   const {
@@ -34,8 +32,8 @@ export default function MyPage() {
     isLoading: isLoadingProfile,
     error: profileError,
   } = useQuery({
-    queryKey: ['moverProfile', id],
-    queryFn: async () => await getMoverProfile(id),
+    queryKey: ['moverProfile'],
+    queryFn: async () => await getMoverProfile(),
   });
 
   if (isLoadingReviews || isLoadingProfile)

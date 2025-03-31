@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useLayoutEffect, useState } from 'react';
 import { StepType } from './quoteStep.types';
 import RequestMessage from './RequestMessage';
@@ -13,13 +15,7 @@ type stepType = (typeof steps)[number];
 export const getStepIndex = (step: stepType) => steps.indexOf(step); // 스텝의 인덱스를 반환하는 함수
 export const maxStep = steps.length;
 
-interface QuoteRequestPageProps {
-  setIsRequest: (isRequest: boolean) => void;
-}
-
-export default function QuoteRequestPage({
-  setIsRequest,
-}: QuoteRequestPageProps) {
+export default function QuoteRequestPage() {
   const [step, setStep] = useState<StepType>('이사종류');
   const [maxCompletedStep, setMaxCompletedStep] = useState<number>(0); // 완료된 단계 중 가장 높은 인덱스
 
@@ -123,7 +119,6 @@ export default function QuoteRequestPage({
               setShowModal={setShowModal}
               setMaxCompletedStep={() => {
                 setMaxCompletedStep(maxStep);
-                setIsRequest(true);
               }}
             />
           )}

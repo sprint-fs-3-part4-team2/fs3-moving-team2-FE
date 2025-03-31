@@ -1,3 +1,5 @@
+'use client';
+
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import MovingInfo from '@/components/common/movingInfo/organisms/movingInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
