@@ -1,16 +1,6 @@
 import QuoteRequestPage from '@/components/quoteRequest/QuoteRequestPage';
 import QuoteRequestInProgressPage from '@/components/quoteRequest/QuoteRequestInProgressPage';
-
-async function getlatestQuoteRequest() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/quote-requests/latest`,
-    { cache: 'no-store' },
-  );
-  if (!response.ok) {
-    throw new Error('Failed to fetch getlatestQuoteRequest');
-  }
-  return response.json();
-}
+import { getlatestQuoteRequest } from '@/services/quoteRequests';
 
 export default async function Page() {
   let data = null;
