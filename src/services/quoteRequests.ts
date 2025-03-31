@@ -35,6 +35,17 @@ export const getQuoteRequest = async () => {
   }
 };
 
+export const getlatestQuoteRequest = async () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+  const response = await fetch(`${baseUrl}/quote-requests/latest`, {
+    cache: 'no-store',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch getlatestQuoteRequest');
+  }
+  return response.json();
+};
+
 export const cancelQuoteRequest = async (requestId: string) => {
   try {
     await axiosInstance.delete('/quote-request');
