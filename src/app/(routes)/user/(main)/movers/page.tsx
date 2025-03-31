@@ -186,7 +186,11 @@ export default function Page() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
-        params: { sortBy: 'reviews' },
+        params: {
+          sortBy: selectedSort,
+          area: selectedArea !== '지역' ? selectedArea : undefined,
+          service: selectedService !== '서비스' ? selectedService : undefined,
+        },
       });
 
       const moversData = data.data || data;
@@ -230,7 +234,7 @@ export default function Page() {
 
   useEffect(() => {
     fetchMovers();
-  }, []);
+  }, [selectedArea, selectedService, selectedSort]);
 
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류 발생: {error}</p>;
@@ -344,7 +348,6 @@ export default function Page() {
                 name='review-sort'
                 border={false}
                 isOpen={false}
-                allbtn={false}
                 className='w-auto'
                 data={[
                   { name: '리뷰 많은순' },
