@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import QuoteRequestPage from '@/components/quoteRequest/QuoteRequestPage';
 import QuoteRequestInProgressPage from '@/components/quoteRequest/QuoteRequestInProgressPage';
 import { getlatestQuoteRequest } from '@/services/quoteRequests';
