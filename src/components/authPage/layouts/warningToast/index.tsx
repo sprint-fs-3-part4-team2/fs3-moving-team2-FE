@@ -1,3 +1,5 @@
+'use client';
+
 import { useSearchParams } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
 import { useEffect } from 'react';
