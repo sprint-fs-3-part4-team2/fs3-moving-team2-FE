@@ -28,7 +28,6 @@ interface Mover {
   imageUrl: string;
   movingType: MovingTypeKey[];
   isCustomQuote: boolean;
-  quoteState?: string;
   rating?: number;
   ratingCount: number;
   experienceYears: number;
@@ -46,6 +45,8 @@ export default function Page() {
   const [selectedSort, setSelectedSort] = useState<string>('리뷰 많은순');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [allMovers, setAllMovers] = useState<Mover[]>([]);
+  const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
 
   const login = async () => {
     try {
@@ -75,20 +76,16 @@ export default function Page() {
       'input[type="text"]',
     ) as HTMLInputElement;
     const searchTerm = searchInput?.value.trim();
-    if (!searchTerm) return;
 
-    axiosInstance
-      .get('/movers/search', { params: { keyword: searchTerm } })
-      .then((response) => {
-        setMovers(response.data.data);
-      })
-      .catch((err) => {
-        setError('검색 중 오류가 발생했습니다.');
-        console.error('검색 오류:', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (!searchTerm) {
+      setMovers(allMovers);
+      return;
+    }
+
+    const filteredMovers = allMovers.filter((mover) =>
+      mover.moverName.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+    setMovers(filteredMovers);
   };
 
   // 기사님 목록 조회
@@ -108,15 +105,48 @@ export default function Page() {
       });
 
       console.log('응답 데이터:', data);
-      setMovers(data.data || data);
+      const moversData = data.data || data;
+      setAllMovers(moversData);
+      setMovers(moversData);
     } catch (err) {
       console.error('API 호출 오류:', err);
       setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
     }
   };
 
+  // 찜한 기사님 목록 조회
+  const fetchFavoriteMovers = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        const loginSuccess = await login();
+        if (!loginSuccess) return;
+      }
+
+      const { data } = await axiosInstance.get('/movers/favorites', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        params: {
+          limit: 2, // 찜한 기사님 목록 조회시 2개만 조회
+          sortBy: 'favoriteDate',
+          sortOrder: 'desc',
+        },
+      });
+
+      setFavoriteMovers(data.data || []);
+    } catch (err) {
+      console.error('찜한 기사님 목록 조회 실패:', err);
+    }
+  };
+
   useEffect(() => {
     fetchMovers();
+    fetchFavoriteMovers();
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
   }, []);
 
   if (loading) return <p>로딩 중...</p>;
@@ -163,41 +193,25 @@ export default function Page() {
           <div className='flex flex-col w-full gap-4'>
             <p className='text-xl font-semibold'>찜한 기사님</p>
 
-            <MoverInfo
-              variant='quote'
-              subVariant='completed'
-              moverName='김코드'
-              imageUrl={null}
-              movingType={['small', 'office']}
-              isCustomQuote={false}
-              quoteState='confirmedQuote'
-              rating={4} // 별점
-              experienceYears={7} // 경력
-              quoteCount={777} // 견적수
-              isFavorite={true} // 찜 여부 optional 찜 여부를 입력하지 않으면 검은색 하트로 표시됨
-              favoriteCount={78} // 찜 개수
-              ratingCount={177} // 리뷰 개수
-              isFavoriteMoverList={true} // 기사님 찾기 페이지에서 찜한 기사님 목록에 사용할 경우 true
-              description='최선을 다해 모시겠습니다.' // 기사님 설명 option
-            />
-
-            <MoverInfo
-              variant='quote'
-              subVariant='completed'
-              moverName='김코드'
-              imageUrl={null}
-              movingType={['small', 'office']}
-              isCustomQuote={false}
-              quoteState='confirmedQuote'
-              rating={4} // 별점
-              experienceYears={7} // 경력
-              quoteCount={777} // 견적수
-              isFavorite={true} // 찜 여부 optional 찜 여부를 입력하지 않으면 검은색 하트로 표시됨
-              favoriteCount={78} // 찜 개수
-              ratingCount={177} // 리뷰 개수
-              isFavoriteMoverList={true} // 기사님 찾기 페이지에서 찜한 기사님 목록에 사용할 경우 true
-              description='최선을 다해 모시겠습니다.' // 기사님 설명 option
-            />
+            {favoriteMovers.map((mover) => (
+              <MoverInfo
+                key={mover.id}
+                variant='quote'
+                subVariant='completed'
+                moverName={mover.moverName}
+                imageUrl={mover.imageUrl || '/profile-placeholder.png'}
+                movingType={mover.movingType}
+                isCustomQuote={mover.isCustomQuote}
+                rating={mover.rating ?? 0}
+                ratingCount={mover.ratingCount}
+                experienceYears={mover.experienceYears}
+                quoteCount={mover.quoteCount}
+                isFavorite={true}
+                favoriteCount={mover.favoriteCount ?? 0}
+                isFavoriteMoverList={true}
+                description={mover.description}
+              />
+            ))}
           </div>
         </div>
 
@@ -265,7 +279,6 @@ export default function Page() {
                 imageUrl={mover.imageUrl || '/profile-placeholder.png'}
                 movingType={mover.movingType}
                 isCustomQuote={mover.isCustomQuote}
-                quoteState='confirmedQuote'
                 rating={mover.rating ?? 0}
                 ratingCount={mover.ratingCount}
                 experienceYears={mover.experienceYears}
