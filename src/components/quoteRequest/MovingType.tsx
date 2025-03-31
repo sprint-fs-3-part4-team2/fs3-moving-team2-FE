@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import useQuoteRequestStore from '@/store/quoteRequestStore';
 import RequestMessage from './RequestMessage';
 import Image from 'next/image';
