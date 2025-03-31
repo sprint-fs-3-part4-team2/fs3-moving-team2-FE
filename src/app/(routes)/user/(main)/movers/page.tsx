@@ -58,12 +58,20 @@ export default function Page() {
         },
       );
 
-      console.log('응답 데이터:', response.data);
+      const accessToken = response.data.data?.accessToken;
 
-      localStorage.setItem('accessToken', response.data.data.accessToken);
+      if (!accessToken) {
+        console.error('액세스 토큰을 찾을 수 없습니다:', response.data);
+        return false;
+      }
+
+      localStorage.setItem('accessToken', accessToken);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('로그인 실패:', error);
+      console.error('에러 응답:', error.response?.data);
+      console.error('에러 상태:', error.response?.status);
+      console.error('에러 메시지:', error.message);
       setError('로그인에 실패했습니다.');
       return false;
     }
@@ -102,7 +110,6 @@ export default function Page() {
         params: { sortBy: 'reviews' },
       });
 
-      console.log('응답 데이터:', data);
       const moversData = data.data || data;
       setAllMovers(moversData);
       setMovers(moversData);
