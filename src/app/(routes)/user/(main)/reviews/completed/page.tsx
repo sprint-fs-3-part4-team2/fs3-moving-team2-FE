@@ -26,7 +26,7 @@ export default function Page() {
 
   interface Mover {
     id: string;
-    driverName: string;
+    moverName: string;
     movingType: (keyof typeof MOVING_TYPES)[];
     isCustomQuote: boolean;
     movingDate: Date;
@@ -90,7 +90,7 @@ export default function Page() {
             <MoverInfo
               variant='review'
               subVariant='written'
-              moverName={data.driverName}
+              moverName={data.moverName}
               movingType={data.movingType}
               isCustomQuote={data.isCustomQuote}
               movingDate={data.movingDate}
