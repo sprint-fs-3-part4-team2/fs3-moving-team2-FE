@@ -42,7 +42,7 @@ export default function Page() {
   const [movers, setMovers] = useState<Mover[]>([]);
   const [selectedArea, setSelectedArea] = useState<string>('지역');
   const [selectedService, setSelectedService] = useState<string>('서비스');
-  const [selectedSort, setSelectedSort] = useState<string>('리뷰 많은순');
+  const [selectedSort, setSelectedSort] = useState<string>('reviews');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
@@ -92,6 +92,33 @@ export default function Page() {
       mover.moverName.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setMovers(filteredMovers);
+  };
+
+  const handleSort = async (value: string | object) => {
+    const sortValue = typeof value === 'string' ? value : 'reviews';
+    setSelectedSort(sortValue);
+    try {
+      const { data } = await axiosInstance.get('/movers', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        params: { sortBy: sortValue },
+      });
+
+      const moversData = data.data || data;
+      setAllMovers(moversData);
+      setMovers(moversData);
+
+      // 찜한 기사님 목록 처리
+      const favoriteMoversData = moversData
+        .filter((mover: Mover) => mover.isFavorite)
+        .slice(0, 2);
+
+      setFavoriteMovers(favoriteMoversData);
+    } catch (err) {
+      console.error('정렬 중 오류 발생:', err);
+      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+    }
   };
 
   // 기사님 목록 조회
@@ -219,10 +246,18 @@ export default function Page() {
                 data={[
                   { name: '리뷰 많은순' },
                   { name: '평점 높은순' },
-                  { name: '경력 높은순' },
                   { name: '확정 많은순' },
+                  { name: '경력 높은순' },
                 ]}
-                dispatch={(value) => setSelectedSort(value as string)}
+                dispatch={(value) => {
+                  const sortMap: { [key: string]: string } = {
+                    '리뷰 많은순': 'reviews',
+                    '평점 높은순': 'rating',
+                    '확정 많은순': 'confirmed',
+                    '경력 높은순': 'experience',
+                  };
+                  handleSort(sortMap[value as string] || 'reviews');
+                }}
               />
             </div>
           </div>
@@ -237,10 +272,18 @@ export default function Page() {
                 data={[
                   { name: '리뷰 많은순' },
                   { name: '평점 높은순' },
-                  { name: '경력 높은순' },
                   { name: '확정 많은순' },
+                  { name: '경력 높은순' },
                 ]}
-                dispatch={(value) => setSelectedSort(value as string)}
+                dispatch={(value) => {
+                  const sortMap: { [key: string]: string } = {
+                    '리뷰 많은순': 'reviews',
+                    '평점 높은순': 'rating',
+                    '확정 많은순': 'confirmed',
+                    '경력 높은순': 'experience',
+                  };
+                  handleSort(sortMap[value as string] || 'reviews');
+                }}
               />
             </div>
 
