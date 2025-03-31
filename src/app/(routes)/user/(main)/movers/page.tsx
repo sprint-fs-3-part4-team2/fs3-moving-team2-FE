@@ -58,9 +58,7 @@ export default function Page() {
         },
       );
 
-      console.log('전체 응답:', response);
       console.log('응답 데이터:', response.data);
-      console.log('응답 데이터 구조:', JSON.stringify(response.data, null, 2));
 
       localStorage.setItem('accessToken', response.data.data.accessToken);
       return true;
@@ -108,41 +106,21 @@ export default function Page() {
       const moversData = data.data || data;
       setAllMovers(moversData);
       setMovers(moversData);
+
+      // 찜한 기사님 목록 처리
+      const favoriteMoversData = moversData
+        .filter((mover: Mover) => mover.isFavorite)
+        .slice(0, 2);
+
+      setFavoriteMovers(favoriteMoversData);
     } catch (err) {
       console.error('API 호출 오류:', err);
       setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
     }
   };
 
-  // 찜한 기사님 목록 조회
-  const fetchFavoriteMovers = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        const loginSuccess = await login();
-        if (!loginSuccess) return;
-      }
-
-      const { data } = await axiosInstance.get('/movers/favorites', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        params: {
-          limit: 2, // 찜한 기사님 목록 조회시 2개만 조회
-          sortBy: 'favoriteDate',
-          sortOrder: 'desc',
-        },
-      });
-
-      setFavoriteMovers(data.data || []);
-    } catch (err) {
-      console.error('찜한 기사님 목록 조회 실패:', err);
-    }
-  };
-
   useEffect(() => {
     fetchMovers();
-    fetchFavoriteMovers();
   }, []);
 
   useEffect(() => {
