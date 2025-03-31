@@ -16,12 +16,15 @@ import {
 import { UserType } from '../../common.types';
 import { useMoverSignUp, useUserSignUp } from '@/hooks/auth/useAuth';
 import { SignUpData } from '@/services/auth/types';
+import { useToaster } from '@/hooks/useToaster';
+import axios from 'axios';
 
 export default function SignUpFormGroup({
   userType = 'customer',
 }: {
   userType: UserType;
 }) {
+  const toaster = useToaster();
   const userSignUp = useUserSignUp();
   const moverSignUp = useMoverSignUp();
   const {
@@ -40,8 +43,20 @@ export default function SignUpFormGroup({
     userType === 'customer' ? userSignUp : moverSignUp;
 
   const onSubmit = async (data: FieldValues) => {
-    console.log('data: ', data);
-    mutate(data as SignUpData);
+    mutate(data as SignUpData, {
+      onSuccess: (data) => {
+        console.log('data: ', data);
+        toaster('info', '회원가입 성공!');
+      },
+      onError: (error) => {
+        console.log('error: ', error);
+        if (axios.isAxiosError(error)) {
+          const errorMessage =
+            error.response?.data.message || '알 수 없는 오류가 발생했습니다.';
+          toaster('warn', errorMessage);
+        }
+      },
+    });
   };
 
   const onError = (errors: FieldErrors) => {

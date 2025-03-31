@@ -15,12 +15,15 @@ import {
   VALIDATION_MESSAGES,
   VALIDATION_PATTERN,
 } from '../constants';
+import { useToaster } from '@/hooks/useToaster';
+import axios, { AxiosError } from 'axios';
 
 export default function SignInFormGroup({
   userType = 'customer',
 }: {
   userType: UserType;
 }) {
+  const toaster = useToaster();
   const userSignIn = useUserSignIn();
   const moverSignIn = useMoverSignIn();
   const {
@@ -36,8 +39,20 @@ export default function SignInFormGroup({
     userType === 'customer' ? userSignIn : moverSignIn;
 
   const onSubmit = async (data: FieldValues) => {
-    console.log('data: ', data);
-    mutate(data as SignInData);
+    mutate(data as SignInData, {
+      onSuccess: (data) => {
+        console.log('data: ', data);
+        toaster('info', '로그인 성공!');
+      },
+      onError: (error) => {
+        console.log('error: ', error);
+        if (axios.isAxiosError(error)) {
+          const errorMessage =
+            error.response?.data.message || '알 수 없는 오류가 발생했습니다.';
+          toaster('warn', errorMessage);
+        }
+      },
+    });
   };
 
   const onError = (errors: FieldErrors) => {
