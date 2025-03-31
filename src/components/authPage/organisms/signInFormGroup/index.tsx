@@ -16,7 +16,7 @@ import {
   VALIDATION_PATTERN,
 } from '../constants';
 import { useToaster } from '@/hooks/useToaster';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export default function SignInFormGroup({
   userType = 'customer',
@@ -48,7 +48,7 @@ export default function SignInFormGroup({
         console.log('error: ', error);
         if (axios.isAxiosError(error)) {
           const errorMessage =
-            error.response?.data.message || '알 수 없는 오류가 발생했습니다.';
+            error.response?.data.message || '로그인 실패!';
           toaster('warn', errorMessage);
         }
       },

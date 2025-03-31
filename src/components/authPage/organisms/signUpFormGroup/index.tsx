@@ -52,7 +52,7 @@ export default function SignUpFormGroup({
         console.log('error: ', error);
         if (axios.isAxiosError(error)) {
           const errorMessage =
-            error.response?.data.message || '알 수 없는 오류가 발생했습니다.';
+            error.response?.data.message || '회원가입 실패!';
           toaster('warn', errorMessage);
         }
       },
