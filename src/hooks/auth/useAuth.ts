@@ -3,9 +3,11 @@ import { useUserStore } from '@/store/userStore';
 import userAuthService from '@/services/auth/userAuth';
 import moverAuthService from '@/services/auth/moverAuth';
 import { useRouter } from 'next/navigation';
+import { useToaster } from '../useToaster';
 
 // User
 export const useUserSignUp = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -14,15 +16,16 @@ export const useUserSignUp = () => {
     mutationFn: userAuthService.signUp,
     onSuccess: (data) => {
       login(data.user);
-      router.push('/');
     },
     onError: (error) => {
+      toast('warn', `회원가입에 실패했습니다. ${error.message}`);
       console.error('회원가입 실패:', error);
     },
   });
 };
 
 export const useUserSignIn = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -31,9 +34,9 @@ export const useUserSignIn = () => {
     mutationFn: userAuthService.signIn,
     onSuccess: (data) => {
       login(data.user);
-      router.push('/');
     },
     onError: (error) => {
+      toast('warn', `로그인에 실패했습니다. ${error.message}`);
       console.error('로그인 실패:', error);
     },
   });
@@ -41,6 +44,7 @@ export const useUserSignIn = () => {
 
 // Mover
 export const useMoverSignUp = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -49,15 +53,16 @@ export const useMoverSignUp = () => {
     mutationFn: moverAuthService.signUp,
     onSuccess: (data) => {
       login(data.user);
-      router.push('/');
     },
     onError: (error) => {
+      toast('warn', `회원가입에 실패했습니다. ${error.message}`);
       console.error('회원가입 실패:', error);
     },
   });
 };
 
 export const useMoverSignIn = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -66,9 +71,9 @@ export const useMoverSignIn = () => {
     mutationFn: moverAuthService.signIn,
     onSuccess: (data) => {
       login(data.user);
-      router.push('/');
     },
     onError: (error) => {
+      toast('warn', `로그인에 실패했습니다. ${error.message}`);
       console.error('로그인 실패:', error);
     },
   });
