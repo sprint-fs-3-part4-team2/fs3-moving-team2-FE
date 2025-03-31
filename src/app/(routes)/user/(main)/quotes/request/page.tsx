@@ -1,15 +1,22 @@
-'use client';
+export const dynamic = 'force-dynamic';
 
-import { useState } from 'react';
 import QuoteRequestPage from '@/components/quoteRequest/QuoteRequestPage';
 import QuoteRequestInProgressPage from '@/components/quoteRequest/QuoteRequestInProgressPage';
+import { getlatestQuoteRequest } from '@/services/quoteRequests';
 
-export default function Page() {
-  const [isRequest, setIsRequest] = useState(false); // 견적 요청을 보낸 것이 있는지 없는지 판단
+export default async function Page() {
+  let data = null;
+  try {
+    data = await getlatestQuoteRequest();
+  } catch (error) {
+    console.error('Error fetching : getlatestQuoteRequest', error);
+  }
 
-  return isRequest ? (
+  console.log('data : ', data);
+
+  return data.isRequested ? (
     <QuoteRequestInProgressPage />
   ) : (
-    <QuoteRequestPage setIsRequest={setIsRequest} />
+    <QuoteRequestPage />
   );
 }
