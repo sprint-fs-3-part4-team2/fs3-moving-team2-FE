@@ -9,10 +9,10 @@ import { GNBRightSectionProps } from './gnbRightSection.type';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SideNavigationBar from '@/components/sideMenuBar/organisms';
+import cn from '@/utils/cn';
 
 export default function GNBRightSection({
   isAuthorized,
-  hasNotification,
   userName,
   imageUrl,
   userType,
@@ -28,7 +28,7 @@ export default function GNBRightSection({
     <div>
       {isAuthorized ? (
         <div className={GNB_RIGHT_SECTION_BOX_STYLES}>
-          <Notification hasNotification={hasNotification} />
+          <Notification />
           <Profile
             userName={userName}
             imageUrl={imageUrl ? imageUrl : '/icons/gnb/default-profile.svg'}
@@ -36,17 +36,20 @@ export default function GNBRightSection({
           <MenuIcon menuOnClick={() => setIsOpenSideNavBar(true)} />
         </div>
       ) : (
-        <div className='w-[116px]'>
+        <div className='w-[116px] flex justify-end'>
           <CommonButton
             onClick={handleOnClick}
             widthType='full'
             heightType='tertiary'
             backgroundColorType='blue'
             borderColorsType='blue'
-            className='text-2lg font-semibold'
+            className={cn('text-2lg font-semibold', 'hidden', 'xl:block')}
           >
             로그인
           </CommonButton>
+          <MenuIcon
+            menuOnClick={() => setIsOpenSideNavBar(true)}
+          />
         </div>
       )}
       {isOpenSideNavBar && (
