@@ -4,9 +4,12 @@ import { usePathname } from 'next/navigation';
 import GNBLayout from '../atoms/layout/gnbLayout';
 import GNBLogo from '../molecules/gnbLogo';
 import GNBMenu from '../molecules/gnbMenu';
-import GNBRightSection from '../organisms/gnbRightSection';
 import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
 import { GNBProps } from './gnb.type';
+import dynamic from 'next/dynamic';
+const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
+  ssr: false,
+});
 
 export default function GNB({
   isAuthorized,
