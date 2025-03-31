@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import BellIcon from '../../atoms/icons/bellIcon';
 import NotificationDot from '../../atoms/icons/notificationDot';
-import { NotificationProps } from './notification.type';
 import Alarm from '@/components/dropdown/children/alarm';
 import { NOTIFICATION_STYLES } from './constant';
 
-export default function Notification({
-  hasNotification,
-}: NotificationProps): JSX.Element {
+export default function Notification(): JSX.Element {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const hasNotification = true;
+  // 알림 목록 조회
 
   return (
     <Alarm
