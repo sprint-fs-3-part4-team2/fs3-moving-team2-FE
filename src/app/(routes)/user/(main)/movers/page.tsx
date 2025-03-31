@@ -10,6 +10,7 @@ import { MOVING_TYPES } from '@/constants/movingTypes';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 
 import cn from '@/utils/cn';
+import axiosInstance from '@/lib/axiosInstance';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 
@@ -57,7 +58,7 @@ export default function Page() {
         },
       );
 
-      const accessToken = response.data.data?.accessToken;
+      const accessToken = response.data.data.accessToken;
 
       if (!accessToken) {
         console.error('액세스 토큰을 찾을 수 없습니다:', response.data);
@@ -76,7 +77,7 @@ export default function Page() {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const searchInput = document.querySelector(
       'input[type="text"]',
     ) as HTMLInputElement;
@@ -87,10 +88,55 @@ export default function Page() {
       return;
     }
 
-    const filteredMovers = allMovers.filter((mover) =>
-      mover.moverName.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-    setMovers(filteredMovers);
+    if (searchTerm.length < 2) {
+      setError('검색어는 2자 이상이어야 합니다.');
+      return;
+    }
+
+    try {
+      const { data } = await axiosInstance.get('/movers/search', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        params: { keyword: searchTerm },
+      });
+
+      const moversData = data.data || data;
+      setMovers(moversData);
+      setAllMovers(moversData);
+
+      // 찜한 기사님 목록 처리
+      const favoriteMoversData = moversData
+        .filter((mover: Mover) => mover.isFavorite)
+        .slice(0, 2);
+
+      setFavoriteMovers(favoriteMoversData);
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        const loginSuccess = await login();
+        if (loginSuccess) {
+          // 로그인 성공 후 다시 검색 요청
+          const { data } = await axiosInstance.get('/movers/search', {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+            params: { keyword: searchTerm },
+          });
+          const moversData = data.data || data;
+          setMovers(moversData);
+          setAllMovers(moversData);
+          const favoriteMoversData = moversData
+            .filter((mover: Mover) => mover.isFavorite)
+            .slice(0, 2);
+          setFavoriteMovers(favoriteMoversData);
+        } else {
+          setError('로그인에 실패했습니다.');
+        }
+      } else {
+        console.error('검색 중 오류 발생:', err);
+        setError('기사님 검색 중 오류가 발생했습니다.');
+      }
+    }
   };
 
   const handleSort = async (value: string | object) => {
@@ -123,12 +169,19 @@ export default function Page() {
   // 기사님 목록 조회
   const fetchMovers = async () => {
     try {
+      // 먼저 토큰이 있는지 확인
       const token = localStorage.getItem('accessToken');
+
+      // 토큰이 없으면 로그인 시도
       if (!token) {
         const loginSuccess = await login();
-        if (!loginSuccess) return;
+        if (!loginSuccess) {
+          setError('로그인에 실패했습니다.');
+          return;
+        }
       }
 
+      // 데이터 요청
       const { data } = await axiosInstance.get('/movers', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -146,9 +199,32 @@ export default function Page() {
         .slice(0, 2);
 
       setFavoriteMovers(favoriteMoversData);
-    } catch (err) {
-      console.error('API 호출 오류:', err);
-      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+    } catch (err: any) {
+      // 401 에러인 경우에만 로그인 시도
+      if (err.response?.status === 401) {
+        const loginSuccess = await login();
+        if (loginSuccess) {
+          // 로그인 성공 후 다시 데이터 요청
+          const { data } = await axiosInstance.get('/movers', {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+            params: { sortBy: 'reviews' },
+          });
+          const moversData = data.data || data;
+          setAllMovers(moversData);
+          setMovers(moversData);
+          const favoriteMoversData = moversData
+            .filter((mover: Mover) => mover.isFavorite)
+            .slice(0, 2);
+          setFavoriteMovers(favoriteMoversData);
+        } else {
+          setError('로그인에 실패했습니다.');
+        }
+      } else {
+        console.error('API 호출 오류:', err);
+        setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+      }
     }
   };
 
