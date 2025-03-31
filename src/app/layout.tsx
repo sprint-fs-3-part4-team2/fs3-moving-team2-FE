@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import dynamic from 'next/dynamic';
 import Provider from '../providers/_provider';
+import dynamic from 'next/dynamic';
 // import Analytics from '@/components/analytics/page';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
@@ -30,18 +30,10 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} antialiased h-screen flex flex-col`}
       >
+        <GNB />
         {/* 개발이 끝나고 활성화 */}
         {/* <Analytics /> */}
-        <Provider>
-          <GNB
-            isAuthorized={true}
-            userType='customer'
-            userName={'안성재'}
-            imageUrl={'/img/sample-profile/sample-2.svg'}
-            hasNotification={true}
-          />
-          {children}
-        </Provider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
