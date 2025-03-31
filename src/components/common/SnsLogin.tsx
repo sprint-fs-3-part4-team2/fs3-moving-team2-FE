@@ -1,10 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const snsProviders = [
   {
-    name: 'Google',
+    name: 'google',
     bgColor: 'bg-[var(--line-100)]',
     imgSrc: '/icons/social/google.svg',
     alt: 'Google Login',
@@ -12,7 +13,7 @@ const snsProviders = [
     height: 'h-[20px] xl:h-[27px]',
   },
   {
-    name: 'Kakao',
+    name: 'kakao',
     bgColor: 'bg-[#FAE300]',
     imgSrc: '/icons/social/kakao.svg',
     alt: 'Kakao Login',
@@ -20,7 +21,7 @@ const snsProviders = [
     height: 'h-[20px] xl:h-[27px]',
   },
   {
-    name: 'Naver',
+    name: 'naver',
     bgColor: 'bg-[#03C75A]',
     imgSrc: '/icons/social/naver.svg',
     alt: 'Naver Login',
@@ -29,16 +30,12 @@ const snsProviders = [
   },
 ];
 
-const SnsLogin = () => {
-  const handleLogin = (provider: string) => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/${provider.toLowerCase()}`, {
-      method: 'GET',
-      credentials: 'include', // 로그인 유지 (세션 필요 시)
-    }).then((res) => {
-      if (res.redirected) {
-        window.location.href = res.url;
-      }
-    });
+const SnsLogin = ({ type }: { type: 'customer' | 'mover' }) => {
+  const router = useRouter();
+  const getOauthUrl = async (provider: string) => {
+    router.push(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/${provider}?userType=${type}`,
+    );
   };
 
   return (
@@ -50,7 +47,7 @@ const SnsLogin = () => {
         {snsProviders.map(({ name, bgColor, imgSrc, alt, width, height }) => (
           <button
             key={name}
-            onClick={() => handleLogin(name)}
+            onClick={() => getOauthUrl(name)}
             className={`w-[54px] h-[54px] xl:w-[72px] xl:h-[72px] rounded-full flex items-center justify-center ${bgColor}`}
           >
             <img
