@@ -7,9 +7,8 @@ import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import Area from '@/components/dropdown/cta/area';
 import Service from '@/components/dropdown/cta/service';
 import { MOVING_TYPES } from '@/constants/movingTypes';
-import service from '@/constants/dropdown/service';
 import { DropdownCta } from '@/components/dropdown/dropdown';
-import axiosInstance from '@/lib/axiosInstance';
+
 import cn from '@/utils/cn';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
@@ -242,6 +241,7 @@ export default function Page() {
                 name='review-sort'
                 border={false}
                 isOpen={false}
+                allbtn={false}
                 className='w-auto'
                 data={[
                   { name: '리뷰 많은순' },
@@ -268,6 +268,7 @@ export default function Page() {
                 name='review-sort'
                 border={false}
                 isOpen={false}
+                allbtn={false}
                 className='w-auto'
                 data={[
                   { name: '리뷰 많은순' },

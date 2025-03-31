@@ -30,12 +30,15 @@ export default function MoverBasicInfoEdit() {
       userType: 'mover', // 나중 유저의 값에서 타입 가져오기
       ...rest,
     };
-    // const res = await moverEditApi(body);
-    // console.log(res);
-    // if (res.success) router.replace('/mover/profile');
-    // const res = await moverEditApi(body);
-    // console.log(res);
-    toaster('info', '성공');
+    const res = await moverEditApi(body);
+    if (res.ok) {
+      // router.replace('/mover/profile');
+      toaster('info', '성공');
+      return;
+    } else {
+      toaster('warn', '실패');
+      return;
+    }
   };
   const onError = (errors: FieldErrors) => {
     toaster('warn', '실패');

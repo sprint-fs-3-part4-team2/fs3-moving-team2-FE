@@ -7,3 +7,8 @@ export interface SubmittedQuotes {
   pageSize: number;
   totalPages: number;
 }
+
+export interface SubmitQuoteRequest {
+  price: number;
+  comment: string;
+}

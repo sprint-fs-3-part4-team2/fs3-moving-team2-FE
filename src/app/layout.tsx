@@ -1,13 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import dynamic from 'next/dynamic';
 import Provider from '../providers/_provider';
 // import Analytics from '@/components/analytics/page';
-
-const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
-  ssr: false,
-});
+import GNB from '@/components/layout/gnb/template';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',

@@ -11,7 +11,6 @@ import { MOVING_TYPES } from '@/constants/movingTypes';
 
 export default function Page() {
   const router = useRouter();
-  const { id } = useParams() as { id: string };
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [emptyData, setEmptyData] = useState(false);
@@ -21,14 +20,13 @@ export default function Page() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['completedReviews', id],
-    queryFn: async () => await getCompletedReviews(id),
-    enabled: !!id,
+    queryKey: ['completedReviews'],
+    queryFn: getCompletedReviews,
   });
 
   interface Mover {
     id: string;
-    driverName: string;
+    moverName: string;
     movingType: (keyof typeof MOVING_TYPES)[];
     isCustomQuote: boolean;
     movingDate: Date;
@@ -85,14 +83,14 @@ export default function Page() {
   };
 
   return (
-    <div className=' flex flex-col items-center mx-auto '>
-      <div className='max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
+    <div className=' flex flex-col max-w-[1400px] mx-auto items-center mx-auto '>
+      <div className=' w-full grid grid-cols-1 xl:grid-cols-2  xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
         {currentData?.map((data: Mover) => (
           <div key={data.id}>
             <MoverInfo
               variant='review'
               subVariant='written'
-              moverName={data.driverName}
+              moverName={data.moverName}
               movingType={data.movingType}
               isCustomQuote={data.isCustomQuote}
               movingDate={data.movingDate}

@@ -15,6 +15,7 @@ export default function Area({
       isOpen={isOpen}
       data={area}
       dispatch={dispatch}
+      labelName='지역'
       dropClassName={cn(
         'flex overflow-auto max-h-[180px]',
         'w-[150px] xl:w-full xl:max-h-[320px]',

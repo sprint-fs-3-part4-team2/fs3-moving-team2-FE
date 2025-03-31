@@ -53,7 +53,7 @@ export const updateMoverProfile = async (data: any) => {
 };
 
 //기사 프로필 조회
-export const getMoverProfile = async (id: string) => {
+export const getMoverProfile = async () => {
   try {
     const response = await axiosInstance.get(`users/mover/profile`);
     return response.data;

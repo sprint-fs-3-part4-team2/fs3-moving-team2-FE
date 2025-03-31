@@ -19,7 +19,7 @@ export const submitReview = (reviewData: {
 };
 
 //내가 작성한 리뷰 (리뷰 목록 조회API)
-export const getCompletedReviews = async (id: string) => {
+export const getCompletedReviews = async () => {
   try {
     const response = await axiosInstance.get(`/reviews/completed`);
     return response.data;
@@ -30,7 +30,7 @@ export const getCompletedReviews = async (id: string) => {
 };
 
 //기사님 리뷰 목록 조회API
-export const getMoverReviews = async (id: string) => {
+export const getMoverReviews = async () => {
   try {
     const response = await axiosInstance.get(`/reviews/mover/review`);
     return response.data;
