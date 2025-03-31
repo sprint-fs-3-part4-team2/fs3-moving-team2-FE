@@ -22,7 +22,7 @@ export default function Page() {
         moveToPage='mover/sign-up'
       />
 
-      <SnsLogin />
+      <SnsLogin type='mover' />
     </AuthPageLayout>
   );
 }
