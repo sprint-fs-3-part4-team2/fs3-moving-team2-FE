@@ -1,9 +1,9 @@
 import cn from '@/utils/cn';
 import Image from 'next/image';
-import { type C1 } from '@/lib/types/type';
 
-interface RoleImgProps extends C1 {
+interface RoleImgProps {
   src: string;
+  className?: string;
 }
 export default function RoleImg({ src, className = '' }: RoleImgProps) {
   return (

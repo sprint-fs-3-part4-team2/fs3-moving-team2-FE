@@ -1,48 +1,53 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+// import { PROTECT } from './middleware/constants';
 import { jwtDecode } from 'jwt-decode';
-import { UserType } from './components/authPage/common.types';
+import { CustomJWT } from './middleware/constants';
 
-const PASSPORT = 'passPortToken';
-const protectedPathsMover = ['/mover/info/edit'];
+const PROTECT = {
+  NO_USER: ['/mover', '/user'], // 로그인 안했을 때
+  CUSTOMER: ['/mover'], // 고객이 권한 없는 페이지
+  MOVER: ['/user'], // 기사가 권한 없는 페이지
+};
 
-interface CustomJWT {
-  userId: string;
-  type: UserType;
-  roleId: string;
-  iat: number;
-  exp: number;
-}
-
-// 미들웨어 함수 정의
 export function middleware(request: NextRequest) {
   const res = NextResponse.next();
   const { pathname } = request.nextUrl;
   const { cookies, url } = request;
   const token = cookies.get('accessToken')?.value;
 
-  // if (token) {
-  //   const decoded = jwtDecode(token) as CustomJWT;
-  //   const p2 = cookies.get(PASSPORT);
+  if (!token) {
+    const nouserProtected =
+      PROTECT.NO_USER.some((path) => pathname.startsWith(path)) &&
+      !pathname.includes('sign-in');
 
-  //   if (decoded)
-  //     res.cookies.set({
-  //       name: PASSPORT,
-  //       value: JSON.stringify({ type: decoded.type }),
-  //       httpOnly: true,
-  //       secure: process.env.NODE_ENV === 'production',
-  //       path: '/',
-  //       sameSite: 'none',
-  //     });
-  // } else res.cookies.delete(PASSPORT);
-
-  if (protectedPathsMover.some((path) => pathname.startsWith(path))) {
-    if (!token) {
+    if (nouserProtected) {
       const loginUrl = new URL('/mover/sign-in', url);
       return NextResponse.redirect(loginUrl);
     }
+    return res;
   }
 
+  if (token) {
+    const decode = jwtDecode(token) as CustomJWT;
+    if (!decode) return res;
+
+    const protectType =
+      decode.type === 'customer' ? PROTECT.CUSTOMER : PROTECT.MOVER;
+    const authUserProtected =
+      protectType.some((path) => pathname.includes(path)) ||
+      pathname.includes('sign-in') ||
+      pathname.includes('sign-up');
+
+    if (authUserProtected) {
+      const referer = request.headers.get('referer');
+      if (referer) {
+        return NextResponse.redirect(referer);
+      } else {
+        return NextResponse.redirect(new URL('/', url));
+      }
+    }
+  }
   return res;
 }
 
