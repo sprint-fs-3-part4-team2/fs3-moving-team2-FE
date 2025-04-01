@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import React from 'react';
 import cn from '@/utils/cn';
 
@@ -21,5 +21,6 @@ const MessageItem = React.memo(({ msg, userId }: MessageItemProps) => (
     {msg.content}
   </p>
 ));
+MessageItem.displayName = 'MessageItem';
 
 export default MessageItem;
