@@ -81,13 +81,13 @@ export function MovingRegion({
     <div>
       <div
         className='animate-slideUp'
-        style={{ animationDelay: '1s', animationFillMode: 'backwards' }}
+        style={{ animationDelay: '0.3s', animationFillMode: 'backwards' }}
       >
         <RequestMessage align='left'>이사 지역을 선택해주세요.</RequestMessage>
       </div>
       <div
         className='animate-slideUp'
-        style={{ animationDelay: '1.8s', animationFillMode: 'backwards' }}
+        style={{ animationDelay: '0.5s', animationFillMode: 'backwards' }}
       >
         <RequestMessage
           align='right'

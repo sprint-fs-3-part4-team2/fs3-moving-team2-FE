@@ -65,7 +65,7 @@ export const MovingDate = forwardRef<HTMLDivElement, MovingStepProps>(
       <div ref={ref}>
         <div
           className='animate-slideUp'
-          style={{ animationDelay: '1s', animationFillMode: 'backwards' }}
+          style={{ animationDelay: '0.3s', animationFillMode: 'backwards' }}
         >
           <RequestMessage
             align='left'
@@ -80,7 +80,7 @@ export const MovingDate = forwardRef<HTMLDivElement, MovingStepProps>(
             <div
               className={`${isSubmitted ? 'animate-slideDownFade' : 'animate-slideUp'}`}
               style={{
-                animationDelay: isSubmitted ? '0s' : '1.8s',
+                animationDelay: isSubmitted ? '0s' : '0.5s',
                 animationFillMode: isSubmitted ? 'none' : 'backwards',
               }}
             >

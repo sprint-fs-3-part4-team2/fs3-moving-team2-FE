@@ -46,7 +46,7 @@ export function QuoteConfirmationModal({
 
     setTimeout(() => {
       router.push('/user/quotes/requested');
-    }, 500);
+    }, 300);
   };
 
   return (
