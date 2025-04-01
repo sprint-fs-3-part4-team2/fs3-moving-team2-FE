@@ -12,6 +12,7 @@ import ModalWrapper from '@/components/modal/ModalWrapper';
 import Pagination from '@/components/pagination/molecule/pagination';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import filledHeart from '@/public/icons/favorite/filled.svg';
 import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
 import Image from 'next/image';
@@ -73,6 +74,7 @@ const reviews = [
 const ITEMS_PER_PAGE = 3;
 
 export default function Page() {
+  const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
   const [isQuoteRequested, setIsQuoteRequested] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -132,7 +134,7 @@ export default function Page() {
 
   // 로그인 페이지로 이동
   const goToLogin = (): void => {
-    // router.push('/user/sign');
+    router.push('/user/sign-in');
     setShowLoginModal(false);
   };
 
