@@ -19,7 +19,6 @@ export const createQuoteRequest = async ({
     });
   } catch (error: any) {
     console.error('견적 요청 실패', error);
-    throw error;
   }
 };
 
@@ -35,9 +34,20 @@ export const getQuoteRequest = async () => {
   }
 };
 
-export const cancelQuoteRequest = async (requestId: string) => {
+export const getlatestQuoteRequest = async () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+  const response = await fetch(`${baseUrl}/quote-requests/latest`, {
+    cache: 'no-store',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch getlatestQuoteRequest');
+  }
+  return response.json();
+};
+
+export const cancelQuoteRequest = async (quoteRequestId: string) => {
   try {
-    await axiosInstance.delete('/quote-request');
+    await axiosInstance.delete(`/quote-requests/${quoteRequestId}`);
   } catch (error: any) {
     console.error('견적 요청 취소 실패', error);
     throw error;

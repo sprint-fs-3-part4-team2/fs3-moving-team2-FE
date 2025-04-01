@@ -3,9 +3,11 @@ import { useUserStore } from '@/store/userStore';
 import userAuthService from '@/services/auth/userAuth';
 import moverAuthService from '@/services/auth/moverAuth';
 import { useRouter } from 'next/navigation';
+import { useToaster } from '../useToaster';
 
 // User
 export const useUserSignUp = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -14,14 +16,17 @@ export const useUserSignUp = () => {
     mutationFn: userAuthService.signUp,
     onSuccess: (data) => {
       login(data.user);
+      router.push('/user/movers');
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      toast('warn', `회원가입 실패: ${error.Response.data.message}`);
       console.error('회원가입 실패:', error);
     },
   });
 };
 
 export const useUserSignIn = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -30,8 +35,10 @@ export const useUserSignIn = () => {
     mutationFn: userAuthService.signIn,
     onSuccess: (data) => {
       login(data.user);
+      router.push('/user/movers');
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      toast('warn', `로그인 실패: ${error.response.data.message}`);
       console.error('로그인 실패:', error);
     },
   });
@@ -39,6 +46,7 @@ export const useUserSignIn = () => {
 
 // Mover
 export const useMoverSignUp = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -47,14 +55,17 @@ export const useMoverSignUp = () => {
     mutationFn: moverAuthService.signUp,
     onSuccess: (data) => {
       login(data.user);
+      router.push('/mover/quote/requested');
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      toast('warn', `회원가입 실패: ${error.Response.data.message}`);
       console.error('회원가입 실패:', error);
     },
   });
 };
 
 export const useMoverSignIn = () => {
+  const toast = useToaster();
   const router = useRouter();
   const { login } = useUserStore();
 
@@ -63,8 +74,10 @@ export const useMoverSignIn = () => {
     mutationFn: moverAuthService.signIn,
     onSuccess: (data) => {
       login(data.user);
+      router.push('/mover/quote/requested');
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      toast('warn', `로그인 실패: ${error.response.data.message}`);
       console.error('로그인 실패:', error);
     },
   });

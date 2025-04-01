@@ -1,36 +1,43 @@
+'use client';
+
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import MovingInfo from '@/components/common/movingInfo/organisms/movingInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
-import useQuoteRequestStore from '@/store/quoteRequestStore';
-import combineDateTime from '@/utils/combineDateTime';
+import { getQuoteRequest } from '@/services/quoteRequests';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import noQuoteImage from '@/public/img/car.svg';
+import Image from 'next/image';
 
 export default function QuoteRequestInProgressPage() {
-  const { registerData } = useQuoteRequestStore();
-
-  if (!registerData) {
-    return <div>견적 요청 데이터가 없습니다.</div>;
-  }
+  const { data } = useQuery({
+    queryKey: ['myQuoteRequest'],
+    queryFn: getQuoteRequest,
+  });
 
   return (
-    <main className='min-h-screen flex flex-col'>
+    <main className='min-h-[calc(100vh-55px)] xl:min-h-[calc(100vh-89px)] flex flex-col'>
       <nav className='px-6 md:px-[72px] '>
         <div className='w-full md:w-[600px] xl:w-[1400px] mx-auto'>
           <PageHeader>견적요청</PageHeader>
         </div>
       </nav>
       <section className='flex-1 bg-backgroundVariants-200 flex flex-col items-center justify-center'>
-        <MovingInfo
-          requestedDate={registerData.moveDate!} // 이사요청일 = 생성일 (임시)
-          movingType={registerData.moveType}
-          movingDate={
-            new Date(
-              combineDateTime(registerData.moveDate!, registerData.moveTime),
-            )
-          }
-          departure={registerData.moveFrom.fullAddress}
-          arrival={registerData.moveTo.fullAddress}
-        />
+        {data?.quote ? (
+          <MovingInfo
+            requestedDate={data.quote.moveDate}
+            movingType={data.quote.moveType}
+            movingDate={data.quote.moveDate}
+            departure={data.quote.departure.fullAddress}
+            arrival={data.quote.arrival.fullAddress}
+          />
+        ) : (
+          <Image
+            src={noQuoteImage}
+            alt='견적요청 없음'
+          />
+        )}
+
         <div className='w-[271px] xl:w-[402px] mt-8'>
           <div className='text-center mb-8 text-grayscale-400 text-sm xl:text-xl'>
             <p>현재 진행 중인 이사 견적이 있어요!</p>

@@ -1,4 +1,6 @@
-import React, { useLayoutEffect, useState } from 'react';
+'use client';
+
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { StepType } from './quoteStep.types';
 import RequestMessage from './RequestMessage';
 import { MovingType } from './MovingType';
@@ -13,20 +15,16 @@ type stepType = (typeof steps)[number];
 export const getStepIndex = (step: stepType) => steps.indexOf(step); // 스텝의 인덱스를 반환하는 함수
 export const maxStep = steps.length;
 
-interface QuoteRequestPageProps {
-  setIsRequest: (isRequest: boolean) => void;
-}
-
-export default function QuoteRequestPage({
-  setIsRequest,
-}: QuoteRequestPageProps) {
+export default function QuoteRequestPage() {
   const [step, setStep] = useState<StepType>('이사종류');
   const [maxCompletedStep, setMaxCompletedStep] = useState<number>(0); // 완료된 단계 중 가장 높은 인덱스
 
   const [showModal, setShowModal] = useState(false); // 견적 확정 모달
 
+  const innerScrollRef = useRef<HTMLDivElement>(null); // 내부 스크롤을 위한 ref
+
   // "다음" 동작 시 전체 하단 스크롤을 할지 결정하는 플래그
-  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
 
   // 다음 단계로 이동하는 함수
   const handleNextStep = (nextStep: StepType) => {
@@ -42,13 +40,19 @@ export default function QuoteRequestPage({
   // 스텝이 변경, 수정 취소될 때마다 하단으로 스크롤
   useLayoutEffect(() => {
     if (shouldScrollToBottom) {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      const element = innerScrollRef.current;
+      if (element) {
+        element.scrollTo({
+          top: element.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
     }
   }, [step, maxCompletedStep, shouldScrollToBottom]);
 
   return (
     // 질문이 적을 경우 화면 전체를 채우기 위해 min-h-screen 추가
-    <div className='min-h-screen flex flex-col'>
+    <div className='min-h-[calc(100vh-55px)]  xl:min-h-[calc(100vh-89px)] flex flex-col'>
       {/* 견적요청 container */}
       <div className='sticky bg-white px-6 flex items-center h-[96px] xl:h-32 top-[54px] xl:top-[89px] left-0 right-0 z-10'>
         {/* 견적 요청 div */}
@@ -73,7 +77,10 @@ export default function QuoteRequestPage({
       </div>
 
       {/* 견적 질문 내용 */}
-      <section className='flex-1 overflow-auto bg-backgroundVariants-200 px-6 py-5'>
+      <section
+        ref={innerScrollRef}
+        className='flex-1 overflow-auto bg-backgroundVariants-200 px-6 py-5'
+      >
         <div className='max-w-[327px] xl:max-w-[1400px] mx-auto'>
           <RequestMessage align='left'>
             몇 가지 정보만 알려주시면 최대 5개의 견적을 받을 수 있어요 :)
@@ -89,6 +96,7 @@ export default function QuoteRequestPage({
               onExitEdit={() => handleNextStep(steps[maxCompletedStep])} // 수정 종료 =수정 취소시, 혹은 수정 완료시, 작성된 단계로 이동
               step={step}
               maxCompletedStep={maxCompletedStep}
+              ref={innerScrollRef} // 스크롤을 위한 ref
             />
           )}
           {getStepIndex('이사예정일') <= maxCompletedStep && (
@@ -101,6 +109,7 @@ export default function QuoteRequestPage({
               onExitEdit={() => handleNextStep(steps[maxCompletedStep])}
               step={step}
               maxCompletedStep={maxCompletedStep}
+              ref={innerScrollRef} // 스크롤을 위한 ref
             />
           )}
           {getStepIndex('이사예정시간') <= maxCompletedStep && (
@@ -113,6 +122,7 @@ export default function QuoteRequestPage({
               onExitEdit={() => handleNextStep(steps[maxCompletedStep])}
               step={step}
               maxCompletedStep={maxCompletedStep}
+              ref={innerScrollRef} // 스크롤을 위한 ref
             />
           )}
           {getStepIndex('이사지역') <= maxCompletedStep && (
@@ -123,7 +133,6 @@ export default function QuoteRequestPage({
               setShowModal={setShowModal}
               setMaxCompletedStep={() => {
                 setMaxCompletedStep(maxStep);
-                setIsRequest(true);
               }}
             />
           )}

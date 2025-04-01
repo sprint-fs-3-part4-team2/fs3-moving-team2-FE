@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import Provider from '../providers/_provider';
 import dynamic from 'next/dynamic';
+import ChatRoomList from '@/components/chat/chat';
 // import Analytics from '@/components/analytics/page';
 
 const GNB = dynamic(() => import('@/components/layout/gnb/template'), {

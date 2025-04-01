@@ -56,24 +56,6 @@ export const getSubmittedQuotesList = async ({
   }
 };
 
-export const createQuoteRequest = async ({
-  moveType,
-  moveDate,
-  departure,
-  arrival,
-}: QuoteRequest) => {
-  try {
-    await axiosInstance.post<QuoteRequest>(`/quote-requests`, {
-      moveType,
-      moveDate,
-      departure,
-      arrival,
-    });
-  } catch (error: any) {
-    console.error('견적 요청 실패', error);
-  }
-};
-
 export const submitQuoteByMover = async (
   quoteId: string,
   price: number,

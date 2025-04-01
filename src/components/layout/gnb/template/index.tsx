@@ -19,7 +19,14 @@ export default function GNB() {
   const imageUrl = user?.imageUrl || '/icons/gnb/default-profile.svg';
   const userType = user?.role || 'guest';
 
-  if (pathname === '/select-role') {
+  const hidePathnames = [
+    '/select-role',
+    '/mover/sign-in',
+    '/mover/sign-up',
+    '/user/sign-in',
+    '/user/sign-up',
+  ];
+  if (hidePathnames.includes(pathname)) {
     return null;
   }
 
