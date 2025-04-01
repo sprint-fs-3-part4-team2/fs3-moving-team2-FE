@@ -44,15 +44,13 @@ export default function SignUpFormGroup({
 
   const onSubmit = async (data: FieldValues) => {
     mutate(data as SignUpData, {
-      onSuccess: (data) => {
-        console.log('data: ', data);
+      onSuccess: () => {
         toaster('info', '회원가입 성공!');
       },
       onError: (error) => {
         console.log('error: ', error);
         if (axios.isAxiosError(error)) {
-          const errorMessage =
-            error.response?.data.message || '회원가입 실패!';
+          const errorMessage = error.response?.data.message || '회원가입 실패!';
           toaster('warn', errorMessage);
         }
       },
