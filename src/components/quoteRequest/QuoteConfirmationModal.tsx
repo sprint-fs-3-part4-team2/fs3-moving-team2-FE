@@ -1,10 +1,9 @@
 import ModalWrapper from '@/components/modal/ModalWrapper';
 import useQuoteRequestStore from '@/store/quoteRequestStore';
 import combineDateTime from '@/utils/combineDateTime';
-import formatKoreanDate from '@/utils/formatKoreanDate';
 import { maxStep } from './QuoteRequestPage';
-import formatKoreanTime from '@/utils/formatKoreanTime';
-import { createQuoteRequest } from '@/services/moverQuotes';
+import { useCreateQuoteRequestMutation } from '@/hooks/useCreateQuoteRequestMutation';
+import { useRouter } from 'next/navigation';
 
 interface QuoteConfirmationModalProps {
   setShowModal: (value: boolean) => void;
@@ -16,6 +15,11 @@ export function QuoteConfirmationModal({
   setMaxCompletedStep,
 }: QuoteConfirmationModalProps) {
   const { registerData } = useQuoteRequestStore();
+  const createMutation = useCreateQuoteRequestMutation(() =>
+    setShowModal(false),
+  );
+
+  const router = useRouter();
 
   // 소형이사 (원룸, 투룸, 20평대 미만) -> 소형이사
   const koreanMoveType = registerData.moveType.split('(')[0].trim() as
@@ -23,7 +27,7 @@ export function QuoteConfirmationModal({
     | '사무실이사'
     | '가정이사';
 
-  const handleFinalConfirm = async () => {
+  const handleFinalConfirm = () => {
     setMaxCompletedStep(maxStep);
     // 최종 견적 제출을 위한 처리 (예: 백엔드 API 호출)
     const payload = {
@@ -35,8 +39,11 @@ export function QuoteConfirmationModal({
 
     console.log('최종 견적 요청 제출:', payload);
 
-    await createQuoteRequest(payload);
-    setShowModal(false);
+    createMutation.mutate(payload);
+
+    setTimeout(() => {
+      router.push('/user/quotes/requested');
+    }, 1000);
   };
 
   return (
@@ -46,7 +53,8 @@ export function QuoteConfirmationModal({
     >
       <div className='mt-4'>
         <p className='mb-2'>견적에 대한 정보:</p>
-        <pre className='bg-gray-100 p-2 text-sm'>
+
+        {/* <pre className='bg-gray-100 p-2 text-sm'>
           {JSON.stringify(
             {
               이사종류: registerData.moveType,
@@ -58,16 +66,16 @@ export function QuoteConfirmationModal({
             null,
             2,
           )}
-        </pre>
+        </pre> */}
 
-        <p className='mt-4 text-sm text-red-500'>
+        <p className='mt-4 text-xl text-red-500'>
           주의: 견적은 수정을 못하니 잘못 적지 않았는지 확인 부탁드립니다!
         </p>
       </div>
       <div className='mt-6'>
         <button
           onClick={handleFinalConfirm}
-          className='w-full py-2 bg-blue-500 text-white rounded-lg'
+          className='w-full py-2 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition duration-200'
         >
           견적 요청하기
         </button>
