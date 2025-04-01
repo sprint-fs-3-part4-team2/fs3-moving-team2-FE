@@ -20,7 +20,14 @@ export default function GNB({
 }: GNBProps) {
   const pathname = usePathname();
 
-  if (pathname === '/select-role') {
+  const hidePathnames = [
+    '/select-role',
+    '/mover/sign-in',
+    '/mover/sign-up',
+    '/user/sign-in',
+    '/user/sign-up',
+  ];
+  if (hidePathnames.includes(pathname)) {
     return null;
   }
 
