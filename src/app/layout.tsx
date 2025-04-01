@@ -38,7 +38,7 @@ export default function RootLayout({
             hasNotification={true}
           />
           {children}
-          <ChatRoomList />
+          {/* <ChatRoomList /> */}
         </Provider>
       </body>
     </html>

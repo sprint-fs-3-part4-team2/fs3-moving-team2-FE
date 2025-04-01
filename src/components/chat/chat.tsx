@@ -43,14 +43,16 @@ function ChatRoomList({ isOpen = false }: ChatList) {
   }
 
   useEffect(() => {
-    if (chatData && isFetched) {
+    if (!chatOpen) return;
+
+    if (chatData && chatData.ok && isFetched) {
       console.log('fetched', chatData);
-      setData(chatData.rooms ?? []);
+      setData(chatData.rooms);
       setLastMessage(
-        chatData.rooms ?? [].map((room: ChatRoomType) => room.lastMessage),
+        chatData.rooms.map((room: ChatRoomType) => room.lastMessage),
       );
     }
-  }, [chatData, isFetched]);
+  }, [chatOpen, chatData, isFetched]);
 
   const Row = ({
     index,
@@ -198,7 +200,7 @@ function ChatRoomList({ isOpen = false }: ChatList) {
             }}
           </List>
         )}
-        <ChatBox isOpen={chatOpen}></ChatBox>
+        {chatOpen && <ChatBox isOpen={chatOpen}></ChatBox>}
       </Dropdown>
     </div>
   );
