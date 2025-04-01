@@ -2,53 +2,77 @@
 import InputSection from '@/components/common/inputSection/molecules';
 import cn from '@/utils/cn';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
-import moverEditApi from './api/moverEdit';
+import { moverEditApi, moverInfoApi } from './api/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
+import { useEffect } from 'react';
 
-const ul = cn('w-full', 'lg:flex lg:flex-wrap lg:w-[47%]');
-const li = cn('pt-5 pb-8 border-t border-line-100 w-full');
-const button = cn('w-full even:mb-3 odd:order-2', 'lg:even:mb-0 lg:w-[49%]');
+const ul: HTMLUListElement['className'] = cn(
+  'w-full',
+  'lg:flex lg:flex-wrap lg:w-[47%]',
+);
+const li: HTMLLIElement['className'] = cn(
+  'pt-5 pb-8 border-t border-line-100 w-full',
+);
+const button: HTMLButtonElement['className'] = cn(
+  'w-full even:mb-3 odd:order-2',
+  'lg:even:mb-0 lg:w-[49%]',
+);
+const input: HTMLInputElement['className'] = cn(
+  'focus:border-primary-blue-200 focus:outline-primary-blue-200',
+);
 
 export default function MoverBasicInfoEdit() {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     setFocus,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
-  const currentPassowrd = watch('currentPassword');
-  const newPassword = watch('newPassword');
+  const currentPassowrd = watch('current_password');
+  const newPassword = watch('new_password');
   const toaster = useToaster();
+  const router = useRouter();
 
   const onSubmit = async (data: FieldValues) => {
-    const { newConfirmPassword, ...rest } = data;
+    const { _newConfirmPassword, ...rest } = data;
     const body = {
-      userType: 'mover', // 나중 유저의 값에서 타입 가져오기
       ...rest,
     };
     const res = await moverEditApi(body);
     if (res.ok) {
-      // router.replace('/mover/profile');
-      toaster('info', '성공');
+      router.replace('/mover/profile');
+      toaster('info', '프로필 수정이 완료됐습니다.');
       return;
     } else {
-      toaster('warn', '실패');
+      toaster('warn', '프로필 수정에 실패했습니다.');
       return;
     }
   };
   const onError = (errors: FieldErrors) => {
-    toaster('warn', '실패');
-
+    toaster('warn', '프로필 수정에 실패했습니다.');
     Object.keys(errors).forEach((v) => {
       if (errors[String(v)]) {
         setFocus(String(v));
       }
     });
   };
+  useEffect(() => {
+    moverInfoApi()
+      .then((res) => {
+        if (res.ok) {
+          setValue('name', res.data.name);
+          setValue('phoneNumber', res.data.phoneNumber);
+          setValue('email', res.data.email);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [setValue]);
 
   return (
     <form
@@ -71,12 +95,12 @@ export default function MoverBasicInfoEdit() {
         <ul className={cn(ul)}>
           <li className={cn(li)}>
             <InputSection
+              inputClassName={cn(input)}
               content='이름'
               styleVariant='secondary'
               placeholder='이름'
               name='name'
               validation={{
-                value: '김철수',
                 required: '이름은 필수 입니다.',
                 minLength: {
                   value: 2,
@@ -90,13 +114,13 @@ export default function MoverBasicInfoEdit() {
           </li>
           <li className={cn(li)}>
             <InputSection
+              inputClassName={cn(input)}
               content='이메일'
               styleVariant='secondary'
               placeholder='이메일을 입력해주세요'
               name='email'
               validation={{
                 required: '이메일은 필수 입니다.',
-                value: 'user1@example.com',
                 pattern: {
                   value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   message: '올바른 이메일 형식을 입력해주세요.',
@@ -110,16 +134,17 @@ export default function MoverBasicInfoEdit() {
           </li>
           <li className={cn(li)}>
             <InputSection
+              inputClassName={cn(input)}
               content='전화번호'
               styleVariant='secondary'
               placeholder='전화번호를 입력해주세요'
               validation={{
                 required: '전화번호를 입력해주세요',
-                value: '010-1234-5678',
                 pattern: {
                   value: /^(01[016789])[-]?[0-9]{3,4}[-]?[0-9]{4}$/,
                   message: '올바른 핸드폰 번호를 입력해주세요.',
                 },
+                max: 11,
               }}
               name='phoneNumber'
               register={register}
@@ -131,13 +156,15 @@ export default function MoverBasicInfoEdit() {
         <ul className={cn(ul)}>
           <li className={cn(li)}>
             <InputSection
+              inputClassName={cn(input)}
               content='현재 비밀번호'
+              type='password'
               styleVariant='secondary'
               placeholder='현재 비밀번호를 입력해주세요'
               validation={{
                 required: '비밀 번호를 입력해주세요',
               }}
-              name='currentPassword'
+              name='current_password'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -145,6 +172,7 @@ export default function MoverBasicInfoEdit() {
           </li>
           <li className={cn(li)}>
             <InputSection
+              inputClassName={cn(input)}
               content='새 비밀번호'
               styleVariant='secondary'
               placeholder='새 비밀번호를 입력해주세요'
@@ -156,7 +184,7 @@ export default function MoverBasicInfoEdit() {
                   }
                 },
               }}
-              name='newPassword'
+              name='new_password'
               register={register}
               errors={errors}
               inputVariant='form'
@@ -164,6 +192,7 @@ export default function MoverBasicInfoEdit() {
           </li>
           <li className={cn(li)}>
             <InputSection
+              inputClassName={cn(input)}
               content='새 비밀번호 확인'
               styleVariant='secondary'
               placeholder='새 비밀번호 확인을 입력해주세요'
@@ -172,7 +201,7 @@ export default function MoverBasicInfoEdit() {
                 validate: (v) =>
                   v === newPassword || '새 비밀번호가 일치 하지 않습니다.',
               }}
-              name='newConfirmPassword'
+              name='new_confirm_password'
               register={register}
               errors={errors}
               inputVariant='form'
