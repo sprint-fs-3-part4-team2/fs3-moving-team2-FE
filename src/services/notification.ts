@@ -1,8 +1,12 @@
 import axiosInstance from '@/lib/axiosInstance';
 
 export async function getNotificationApi() {
-  const res = await axiosInstance.get('/notification');
-  return await res.data;
+  try {
+    const res = await axiosInstance.get('/notification');
+    return await res.data;
+  } catch (err) {
+    return err;
+  }
 }
 
 export async function readNotificationApi(id: string) {

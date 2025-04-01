@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import CommonButton from '../common/commonBtn/commonBtn';
 import MessageItem from './message';
 import { type MessageResponse } from './types/chat.type';
-import { VariableSizeList as List } from 'react-window';
+import { VariableSizeList as List, type VariableSizeList } from 'react-window';
 
 const userId = 'cm8sek5v90000iu2xvmmm1j35';
 
@@ -16,7 +16,7 @@ export default function ChatBox({
   targetId?: string;
   isOpen: boolean;
 }) {
-  const containerRef = useRef<any>(null);
+  const containerRef = useRef<VariableSizeList<any>>(null);
   const targetRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState<MessageResponse[]>([]);
   const [input, setInput] = useState<string>('');
@@ -97,7 +97,7 @@ export default function ChatBox({
 
   useEffect(() => {
     if (containerRef.current && message.length) {
-      containerRef.current.scrollToItem(message.length - 1, 'end');
+      containerRef.current?.scrollToItem(message.length - 1, 'end');
     }
   }, [message]);
 

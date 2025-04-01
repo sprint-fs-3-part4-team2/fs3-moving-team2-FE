@@ -38,7 +38,7 @@ export default function MoverBasicInfoEdit() {
   const router = useRouter();
 
   const onSubmit = async (data: FieldValues) => {
-    const { newConfirmPassword, ...rest } = data;
+    const { _newConfirmPassword, ...rest } = data;
     const body = {
       ...rest,
     };
@@ -72,7 +72,7 @@ export default function MoverBasicInfoEdit() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [setValue]);
 
   return (
     <form
