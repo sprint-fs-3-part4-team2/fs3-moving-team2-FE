@@ -14,9 +14,6 @@ export const useUserSignUp = () => {
     mutationFn: userAuthService.signUp,
     onSuccess: (data) => {
       login(data.user);
-      setTimeout(() => {
-        router.push('/');
-      }, 2000);
     },
     onError: (error) => {
       console.error('회원가입 실패:', error);
@@ -33,9 +30,6 @@ export const useUserSignIn = () => {
     mutationFn: userAuthService.signIn,
     onSuccess: (data) => {
       login(data.user);
-      setTimeout(() => {
-        router.push('/');
-      }, 2000);
     },
     onError: (error) => {
       console.error('로그인 실패:', error);
@@ -53,9 +47,6 @@ export const useMoverSignUp = () => {
     mutationFn: moverAuthService.signUp,
     onSuccess: (data) => {
       login(data.user);
-      setTimeout(() => {
-        router.push('/');
-      }, 2000);
     },
     onError: (error) => {
       console.error('회원가입 실패:', error);
@@ -72,9 +63,6 @@ export const useMoverSignIn = () => {
     mutationFn: moverAuthService.signIn,
     onSuccess: (data) => {
       login(data.user);
-      setTimeout(() => {
-        router.push('/');
-      }, 2000);
     },
     onError: (error) => {
       console.error('로그인 실패:', error);
