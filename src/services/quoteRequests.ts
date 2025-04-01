@@ -19,7 +19,6 @@ export const createQuoteRequest = async ({
     });
   } catch (error: any) {
     console.error('견적 요청 실패', error);
-    throw error;
   }
 };
 
