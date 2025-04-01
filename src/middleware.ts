@@ -1,28 +1,42 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { jwtDecode } from 'jwt-decode';
+import { UserType } from './components/authPage/common.types';
 
+const PASSPORT = 'passPortToken';
 const protectedPathsMover = ['/mover/info/edit'];
+
+interface CustomJWT {
+  userId: string;
+  type: UserType;
+  roleId: string;
+  iat: number;
+  exp: number;
+}
+
 // 미들웨어 함수 정의
 export function middleware(request: NextRequest) {
   const res = NextResponse.next();
   const { pathname } = request.nextUrl;
   const { cookies, url } = request;
   const token = cookies.get('accessToken')?.value;
-  if (token)
-    res.cookies.set({
-      name: 'authToken',
-      value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      sameSite: 'none',
-    });
-  else res.cookies.delete('authToken');
+
+  // if (token) {
+  //   const decoded = jwtDecode(token) as CustomJWT;
+  //   const p2 = cookies.get(PASSPORT);
+
+  //   if (decoded)
+  //     res.cookies.set({
+  //       name: PASSPORT,
+  //       value: JSON.stringify({ type: decoded.type }),
+  //       httpOnly: true,
+  //       secure: process.env.NODE_ENV === 'production',
+  //       path: '/',
+  //       sameSite: 'none',
+  //     });
+  // } else res.cookies.delete(PASSPORT);
 
   if (protectedPathsMover.some((path) => pathname.startsWith(path))) {
-    // const token = cookies.get('authToken')?.value;
-    console.log('token', token);
-    // mover auth
     if (!token) {
       const loginUrl = new URL('/mover/sign-in', url);
       return NextResponse.redirect(loginUrl);
