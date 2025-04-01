@@ -2,7 +2,7 @@
 import InputSection from '@/components/common/inputSection/molecules';
 import cn from '@/utils/cn';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
-import { moverEditApi, moverInfoApi } from './api/moverEdit';
+import { moverEditApi, moverInfoApi } from '@/services/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
