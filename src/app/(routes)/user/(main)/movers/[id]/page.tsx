@@ -13,6 +13,7 @@ import Pagination from '@/components/pagination/molecule/pagination';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axiosInstance from '@/lib/axiosInstance';
 import filledHeart from '@/public/icons/favorite/filled.svg';
 import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
 import Image from 'next/image';
@@ -104,6 +105,14 @@ export default function Page() {
     setCurrentReviews(reviews.slice(startIndex, endIndex));
   }, [currentPage]);
 
+  useEffect(() => {
+    // 로컬 스토리지에서 accessToken 확인
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = (): void => {
     if (!isLoggedIn) {
@@ -133,9 +142,27 @@ export default function Page() {
   };
 
   // 로그인 페이지로 이동
-  const goToLogin = (): void => {
-    router.push('/user/sign-in');
-    setShowLoginModal(false);
+  const goToLogin = async (): Promise<void> => {
+    try {
+      // 테스트용 fakeSignIn
+      const response = await axiosInstance.post('/auth/fakeSignIn', null, {
+        params: {
+          userId: 'cm8xsoa3100006ehggdtxwo98',
+          roleId: 'cm8xsqwd900016eawrtpcn1fv',
+          type: 'customer',
+        },
+      });
+
+      if (response.status === 200) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+        setIsLoggedIn(true);
+        setShowLoginModal(false);
+      } else {
+        console.error('로그인 실패');
+      }
+    } catch (error) {
+      console.error('로그인 에러:', error);
+    }
   };
 
   return (
