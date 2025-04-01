@@ -79,57 +79,69 @@ export function MovingRegion({
 
   return (
     <div>
-      <RequestMessage align='left'>이사 지역을 선택해주세요.</RequestMessage>
-      <RequestMessage
-        align='right'
-        className='p-6 xl:p-8 max-w-[327px] xl:max-w-[624px]'
+      <div
+        className='animate-slideUp'
+        style={{ animationDelay: '0.3s', animationFillMode: 'backwards' }}
       >
-        <div className='w-[279px] xl:w-[560px]'>
-          <h5 className='mb-4'>출발지</h5>
-          <CommonButton
-            widthType='full'
-            heightType='primary'
-            backgroundColorType='dynamic'
-            textColorType='blue'
-            borderColorsType='blue'
-            onClick={() => openAddressModal('from')}
-          >
-            {!from && `출발지 선택하기`}
-            {from && (
-              <span className='underline underline-offset-4'> {from}</span>
-            )}
-          </CommonButton>
+        <RequestMessage align='left'>이사 지역을 선택해주세요.</RequestMessage>
+      </div>
+      <div
+        className='animate-slideUp'
+        style={{ animationDelay: '0.5s', animationFillMode: 'backwards' }}
+      >
+        <RequestMessage
+          align='right'
+          className='p-6 xl:p-8 max-w-[327px] xl:max-w-[624px]'
+        >
+          <div className='w-[279px] xl:w-[560px]'>
+            <h5 className='mb-4'>출발지</h5>
+            <CommonButton
+              widthType='full'
+              heightType='primary'
+              backgroundColorType='dynamic'
+              textColorType='blue'
+              borderColorsType='blue'
+              onClick={() => openAddressModal('from')}
+            >
+              {!from && `출발지 선택하기`}
+              {from && (
+                <span className='underline underline-offset-4'> {from}</span>
+              )}
+            </CommonButton>
 
-          <h5 className='mt-5 mb-4'>도착지</h5>
-          <CommonButton
-            widthType='full'
-            heightType='primary'
-            backgroundColorType='dynamic'
-            textColorType='blue'
-            borderColorsType='blue'
-            onClick={() => openAddressModal('to')}
-          >
-            {!to && `도착지 선택하기`}
-            {to && <span className='underline underline-offset-4'> {to}</span>}
-          </CommonButton>
+            <h5 className='mt-5 mb-4'>도착지</h5>
+            <CommonButton
+              widthType='full'
+              heightType='primary'
+              backgroundColorType='dynamic'
+              textColorType='blue'
+              borderColorsType='blue'
+              onClick={() => openAddressModal('to')}
+            >
+              {!to && `도착지 선택하기`}
+              {to && (
+                <span className='underline underline-offset-4'> {to}</span>
+              )}
+            </CommonButton>
 
-          <br />
-          <CommonButton
-            widthType='full'
-            heightType='primary'
-            backgroundColorType={from && to ? 'blue' : 'gray'}
-            textColorType='white'
-            className={cn(
-              'mt-8',
-              from && to ? 'cursor-pointer' : 'cursor-not-allowed',
-            )}
-            disabled={from && to ? false : true}
-            onClick={() => setShowModal(true)}
-          >
-            견적 확정하기
-          </CommonButton>
-        </div>
-      </RequestMessage>
+            <br />
+            <CommonButton
+              widthType='full'
+              heightType='primary'
+              backgroundColorType={from && to ? 'blue' : 'gray'}
+              textColorType='white'
+              className={cn(
+                'mt-8',
+                from && to ? 'cursor-pointer' : 'cursor-not-allowed',
+              )}
+              disabled={from && to ? false : true}
+              onClick={() => setShowModal(true)}
+            >
+              견적 확정하기
+            </CommonButton>
+          </div>
+        </RequestMessage>
+      </div>
     </div>
   );
 }
