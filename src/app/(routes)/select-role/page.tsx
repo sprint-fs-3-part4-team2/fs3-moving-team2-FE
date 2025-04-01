@@ -1,5 +1,5 @@
 'use client';
-import React, { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import s from './styles/select-role.module.css';
 import Link from 'next/link';
 import Links from './components/links';
@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Content from './components/content';
 import MobileLink from './components/mobile-link';
 import Tooltip from './components/tooltip';
-import ChatComponent from '@/components/chat/chat';
 
 const commonText = '일반유저';
 const partnerText = '파트너';
@@ -36,7 +35,7 @@ export default function SliceBox() {
           title='Customer'
           comment='편리한 이사, 합리적인 이사, 맞춤형 이사'
         >
-          <Links href={{ signin: '#', signup: '#' }} />
+          <Links href={{ signin: '/user/sign-in', signup: '/user/sign-up' }} />
           <MobileLink onClick={changeBg}>{partnerText}</MobileLink>
         </Content>
         <Content
@@ -46,7 +45,9 @@ export default function SliceBox() {
           title='Mover'
           comment='고객들과 더 가깝고 편리하게'
         >
-          <Links href={{ signin: '#', signup: '#' }} />
+          <Links
+            href={{ signin: '/mover/sign-in', signup: '/mover/sign-up' }}
+          />
           <MobileLink onClick={changeBg}>{commonText}</MobileLink>
         </Content>
 
