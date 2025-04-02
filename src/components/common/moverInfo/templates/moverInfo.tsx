@@ -23,15 +23,15 @@ export default function MoverInfo(props: MoverInfoTemplateProps) {
   return (
     <div
       className={cn(
-        'flex flex-col gap-[14px] md:gap-[14px] xl:gap-6 w-full shadow-primary cursor-default',
+        ' flex flex-col gap-[14px] md:gap-[14px] xl:gap-6 w-full shadow-primary cursor-default ',
         props.variant === 'quote' &&
           props.subVariant === 'completed' &&
           props.isFavoriteMoverList
           ? 'px-[14px] py-[16px] xl:gap-[14px]'
-          : 'px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5',
+          : 'px-[14px] md:px-[14px] xl:px-6 py-4 md:py-4 xl:py-5 cursor-pointer',
       )}
     >
-      <div className='flex justify-between'>
+      <div className='flex justify-between '>
         <div className='flex gap-2 md:gap-2 xl:gap-3'>
           <MovingTypeGroup
             quoteState={props.quoteState}
