@@ -51,9 +51,11 @@ export default function FormInput<T extends FieldValues>({
         )}
       </div>
       {errors[name]?.message && (
-        <span className='text-secondary-red-200 font-medium absolute right-[8px] mt-1 md:mt-1 xl:mt-2'>
-          {String(errors[name]?.message)}
-        </span>
+        <div className='flex justify-end w-full'>
+          <span className='text-secondary-red-200 font-medium mr-2 mt-1 md:mt-1 xl:mt-2 text-sm md:text-sm xl:text-base'>
+            {String(errors[name]?.message)}
+          </span>
+        </div>
       )}
     </div>
   );

@@ -6,4 +6,5 @@ export interface MovingStepProps {
   onExitEdit: () => void;
   step: StepType;
   maxCompletedStep: number;
+  scrollToChild?: (childElement: HTMLDivElement) => void;
 }

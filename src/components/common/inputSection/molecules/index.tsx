@@ -7,6 +7,7 @@ export default function InputSection<T extends FieldValues>({
   content,
   inputClassName,
   labelClassName,
+  showAsterisk = false,
   ...props
 }: InputSectionProps<T>) {
   return (
@@ -15,6 +16,7 @@ export default function InputSection<T extends FieldValues>({
         styleVariant={props.styleVariant}
         content={content}
         labelClassName={labelClassName}
+        showAsterisk={showAsterisk}
       />
       <CustomInput
         inputClassName={inputClassName}
