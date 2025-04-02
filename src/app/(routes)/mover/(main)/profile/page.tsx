@@ -7,7 +7,7 @@ import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
 import Pagination from '@/components/pagination/molecule/pagination';
 import { getMoverReviews } from '@/services/reviewsService';
 import { getMoverProfile } from '@/services/profileService';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
 
