@@ -250,7 +250,7 @@ export default function Page() {
           </div>
           <HorizontalDivider />
 
-          <div className='gap-0 pl-6'>
+          <div className='gap-0 px-6'>
             <PageHeader>상세설명</PageHeader>
             <p className='text-2lg text-[18px] font-regular'>
               {moverDetail.introduction}
@@ -258,7 +258,7 @@ export default function Page() {
           </div>
           <HorizontalDivider />
 
-          <div className='gap-0 pl-6'>
+          <div className='gap-0 px-6'>
             <PageHeader>제공 서비스</PageHeader>
             <div className='flex gap-3'>
               {moverDetail.movingType.map((type, index) => (
@@ -273,7 +273,7 @@ export default function Page() {
           </div>
           <HorizontalDivider />
 
-          <div className='gap-0 pl-6'>
+          <div className='gap-0 px-6'>
             <PageHeader>서비스 가능 지역</PageHeader>
             <div className='flex gap-3'>
               {moverDetail.regions.map((region, index) => (
@@ -287,45 +287,50 @@ export default function Page() {
             </div>
           </div>
           <HorizontalDivider />
-          <RatingStat
-            ratingCounts={
-              reviewsData?.ratingCounts ?? {
-                1: 0,
-                2: 0,
-                3: 0,
-                4: 0,
-                5: 0,
+
+          <div className='px-6'>
+            <RatingStat
+              ratingCounts={
+                reviewsData?.ratingCounts ?? {
+                  1: 0,
+                  2: 0,
+                  3: 0,
+                  4: 0,
+                  5: 0,
+                }
               }
-            }
-            averageRating={reviewsData?.averageRating ?? 0}
-            totalCount={reviewsData?.ratingCount ?? 0}
-          />
+              averageRating={reviewsData?.averageRating ?? 0}
+              totalCount={reviewsData?.ratingCount ?? 0}
+            />
 
-          {/* 리뷰 리스트 */}
-          {isLoadingReviews ? (
-            <div>리뷰 로딩 중...</div>
-          ) : (
-            <>
-              {currentReviews.map((review: Review) => (
-                <ReviewBlock
-                  key={review.id}
-                  name={review.name}
-                  writtenAt={review.writtenAt}
-                  rating={review.rating}
-                  content={review.content}
-                />
-              ))}
+            {/* 리뷰 리스트 */}
+            {isLoadingReviews ? (
+              <div>리뷰 로딩 중...</div>
+            ) : (
+              <>
+                {currentReviews.map((review: Review) => (
+                  <ReviewBlock
+                    key={review.id}
+                    name={review.name}
+                    writtenAt={review.writtenAt}
+                    rating={review.rating}
+                    content={review.content}
+                  />
+                ))}
 
-              {/* 페이지네이션 */}
-              {totalPages > 1 && (
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
-              )}
-            </>
-          )}
+                {/* 페이지네이션 */}
+                {totalPages > 1 && (
+                  <div className='flex justify-center mt-[40px] mb-[59px]'>
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={setCurrentPage}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
 
         {/* 데스크탑 */}
