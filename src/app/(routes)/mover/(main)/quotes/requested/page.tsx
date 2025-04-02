@@ -21,7 +21,6 @@ import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOpti
 import Pagination from '@/components/pagination/molecule/pagination';
 
 export default function Page() {
-  const [selected, setSelected] = useState<any | null>(null); // Dropdown 선택된 값
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [showSubmitModal, setShowSubmitModal] = useState<boolean>(false); // 제출 모달
   const [showDeclineModal, setShowDeclineModal] = useState<boolean>(false); // 반려 모달
@@ -40,7 +39,7 @@ export default function Page() {
   });
 
   const [query, setQuery] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('이사 빠른순');
+  const [sortBy, setSortBy] = useState<string>('이사 빠른순'); // Dropdown 선택된 값
 
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
 
@@ -149,6 +148,7 @@ export default function Page() {
             </div>
           )}
           {totalCustomerRequests === 0 && !isLoading && !isError ? (
+            // 고객 요청이 없을 때
             <div className='flex justify-center items-center h-[400px] flex-col gap-6 xl:gap-8'>
               <Image
                 src={noReviewImage}

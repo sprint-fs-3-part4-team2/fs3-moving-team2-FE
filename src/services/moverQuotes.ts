@@ -51,8 +51,9 @@ export const getSubmittedQuotesList = async ({
       },
     );
     return data;
-  } catch {
+  } catch (error) {
     console.error('완료된 견적 목록 불러오기 실패');
+    throw error;
   }
 };
 
@@ -69,7 +70,8 @@ export const submitQuoteByMover = async (
         comment,
       },
     );
-  } catch {
+  } catch (error) {
     console.error('견적 제출 실패');
+    throw error;
   }
 };
