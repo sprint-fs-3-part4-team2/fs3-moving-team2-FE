@@ -4,7 +4,7 @@ import Dropdown, { DropdownProps } from '../dropdown';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useUserStore } from '@/store/userStore';
+import useLogout from '@/hooks/auth/useLogout';
 
 function Profile({
   isOpen,
@@ -15,7 +15,7 @@ function Profile({
   const [name, setName] = useState('테스트');
   const pathname = usePathname();
   const divRef = useRef<HTMLDivElement | null>(null);
-  const { logout } = useUserStore();
+  const logout = useLogout();
   useEffect(() => {
     // 지울 코드
     // 주스탄드로 전역으로 유저정보 처리 할 것
@@ -82,19 +82,19 @@ function Profile({
               'group hover:bg-grayscale-50',
             )}
           >
-            <Link
+            <button
               className={cn(
                 'text-grayscale-500 text-xs font-normal',
                 'xl:text-lg xl:font-medium ',
                 'group-hover:text-primary-blue-200 group-hover:font-bold',
               )}
-              href='#'
-              onClick={() => {
-                logout();
+              onClick={(e) => {
+                e.preventDefault();
+                logout.mutate();
               }}
             >
               로그아웃
-            </Link>
+            </button>
           </li>
         </ul>
       </Dropdown>
