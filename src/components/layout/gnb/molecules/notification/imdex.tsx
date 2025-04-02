@@ -47,7 +47,7 @@ export default function Notification(): JSX.Element {
   return (
     <Alarm
       readFn={(id) => {
-        readAlarm(id);
+        readAlarm(id ?? '');
         setData((prev) => {
           return prev.map((noti) => {
             if (noti.id === id) noti.isRead = true;
