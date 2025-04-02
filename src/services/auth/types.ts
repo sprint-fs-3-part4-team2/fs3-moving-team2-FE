@@ -11,13 +11,18 @@ export interface SignUpData {
   phoneNumber: string;
 }
 
-export interface AuthResponse {
-  token: string;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    phoneNumber: string;
-    role: 'customer' | 'mover';
-  };
+interface profile {
+  name: string;
+  imageUrl: string;
+  role: string;
 }
+
+export interface AuthResponse {
+  email: string;
+  name: string;
+  phoneNumber: string;
+  userType: 'customer' | 'mover';
+  profile: profile | null;
+}
+
+export interface MyProfile extends AuthResponse {}
