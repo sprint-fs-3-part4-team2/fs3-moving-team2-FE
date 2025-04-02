@@ -18,13 +18,9 @@ export const maxStep = steps.length;
 export default function QuoteRequestPage() {
   const [step, setStep] = useState<StepType>('이사종류');
   const [maxCompletedStep, setMaxCompletedStep] = useState<number>(0); // 완료된 단계 중 가장 높은 인덱스
-
   const [showModal, setShowModal] = useState(false); // 견적 확정 모달
-
   const innerScrollRef = useRef<HTMLDivElement>(null); // 내부 스크롤을 위한 ref
-
-  // "다음" 동작 시 전체 하단 스크롤을 할지 결정하는 플래그
-  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false); // "다음" 동작 시 전체 하단 스크롤을 할지 결정하는 플래그
 
   // 다음 단계로 이동하는 함수
   const handleNextStep = (nextStep: StepType) => {
@@ -49,6 +45,18 @@ export default function QuoteRequestPage() {
       }
     }
   }, [step, maxCompletedStep, shouldScrollToBottom]);
+
+  // 자식의 위치를 기준으로 스크롤하는 함수
+  const scrollToChild = (childElement: HTMLDivElement) => {
+    if (innerScrollRef.current) {
+      // 자식 요소의 offsetTop을 가져와서 100px 정도 여유를 둡니다.
+      const offset = childElement.offsetTop;
+      innerScrollRef.current.scrollTo({
+        top: offset - 250,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
     // 질문이 적을 경우 화면 전체를 채우기 위해 min-h-screen 추가
@@ -96,7 +104,7 @@ export default function QuoteRequestPage() {
               onExitEdit={() => handleNextStep(steps[maxCompletedStep])} // 수정 종료 =수정 취소시, 혹은 수정 완료시, 작성된 단계로 이동
               step={step}
               maxCompletedStep={maxCompletedStep}
-              ref={innerScrollRef} // 스크롤을 위한 ref
+              scrollToChild={scrollToChild} // 자식 요소로 스크롤하는 함수 전달
             />
           )}
           {getStepIndex('이사예정일') <= maxCompletedStep && (
@@ -109,7 +117,7 @@ export default function QuoteRequestPage() {
               onExitEdit={() => handleNextStep(steps[maxCompletedStep])}
               step={step}
               maxCompletedStep={maxCompletedStep}
-              ref={innerScrollRef} // 스크롤을 위한 ref
+              scrollToChild={scrollToChild}
             />
           )}
           {getStepIndex('이사예정시간') <= maxCompletedStep && (
@@ -122,7 +130,7 @@ export default function QuoteRequestPage() {
               onExitEdit={() => handleNextStep(steps[maxCompletedStep])}
               step={step}
               maxCompletedStep={maxCompletedStep}
-              ref={innerScrollRef} // 스크롤을 위한 ref
+              scrollToChild={scrollToChild}
             />
           )}
           {getStepIndex('이사지역') <= maxCompletedStep && (
