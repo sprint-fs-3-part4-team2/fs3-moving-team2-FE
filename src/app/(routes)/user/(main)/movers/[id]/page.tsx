@@ -19,6 +19,8 @@ import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
 import Image from 'next/image';
 import { MovingTypeKey } from '../page';
 import { MOVING_TYPES } from '@/constants/movingTypes';
+import { useQuery } from '@tanstack/react-query';
+import { getMoverReviewsById } from '@/services/reviewsService';
 
 type MoverDetail = {
   id: string;
@@ -38,60 +40,35 @@ type MoverDetail = {
 };
 
 type Review = {
-  id: number;
+  id: string;
   name: string;
   writtenAt: string;
   rating: number;
+  ratingCount: number;
   content: string;
+  introduction: string;
+  regions: string[];
 };
 
-// 리뷰 목록 (테스트용)
-const reviews = [
-  {
-    id: 1,
-    name: 'kim**',
-    writtenAt: '2024-07-17',
-    rating: 5.0,
-    content: '기사님 덕분에 안전하고 신속한 이사를 했습니다! 정말 감사합니다~',
-  },
-  {
-    id: 2,
-    name: 'lee**',
-    writtenAt: '2024-07-15',
-    rating: 4.8,
-    content: '서비스가 좋았어요!',
-  },
-  {
-    id: 3,
-    name: 'park**',
-    writtenAt: '2024-07-10',
-    rating: 5.0,
-    content: '완전 만족!',
-  },
-  {
-    id: 4,
-    name: 'choi**',
-    writtenAt: '2024-07-08',
-    rating: 4.5,
-    content: '괜찮았어요!',
-  },
-  {
-    id: 5,
-    name: 'yoon**',
-    writtenAt: '2024-07-05',
-    rating: 5.0,
-    content: '또 이용하고 싶어요.',
-  },
-  {
-    id: 6,
-    name: 'jung**',
-    writtenAt: '2024-07-01',
-    rating: 4.9,
-    content: '친절한 기사님 감사합니다!',
-  },
-];
+type RatingCounts = {
+  5: number;
+  4: number;
+  3: number;
+  2: number;
+  1: number;
+};
 
-const ITEMS_PER_PAGE = 3;
+type ReviewResponse = {
+  reviews: Review[];
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  averageRating: number;
+  ratingCount: number;
+  ratingCounts: RatingCounts;
+};
+
+const ITEMS_PER_PAGE = 5;
 
 export default function Page() {
   const router = useRouter();
@@ -109,7 +86,24 @@ export default function Page() {
 
   // 리뷰
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentReviews, setCurrentReviews] = useState<Review[]>([]);
+  const itemsPerPage = 5;
+
+  // 리뷰 목록 조회
+  const {
+    data: reviewsData,
+    isLoading: isLoadingReviews,
+    error: reviewsError,
+  } = useQuery({
+    queryKey: ['moverReviews', moverId, currentPage],
+    queryFn: async () => {
+      const response = await getMoverReviewsById(
+        moverId,
+        currentPage,
+        itemsPerPage,
+      );
+      return response.data;
+    },
+  });
 
   // 로그인 상태 확인용 (테스트용)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -145,13 +139,6 @@ export default function Page() {
       fetchMoverDetail();
     }
   }, [moverId]);
-
-  useEffect(() => {
-    // 현재 페이지에 맞는 리뷰 리스트 계산
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    setCurrentReviews(reviews.slice(startIndex, endIndex));
-  }, [currentPage]);
 
   useEffect(() => {
     // 로컬 스토리지에서 accessToken 확인
@@ -231,6 +218,13 @@ export default function Page() {
     return <div>기사를 찾을 수 없습니다.</div>;
   }
 
+  if (reviewsError) {
+    return <div>리뷰 목록을 불러오는 중 오류가 발생했습니다.</div>;
+  }
+
+  const totalPages = reviewsData?.totalPages ?? 1;
+  const currentReviews = reviewsData?.reviews ?? [];
+
   return (
     <div className='relative flex flex-col items-center mx-auto w-full overflow-auto xl:mt-[56px] mt-6 pb-24'>
       <div className='flex w-full px-0 md:px-[72px] xl:px-[100px] max-w-[1600px] gap-[117px]'>
@@ -294,31 +288,44 @@ export default function Page() {
           </div>
           <HorizontalDivider />
           <RatingStat
-            ratingCounts={{
-              5: 170,
-              4: 9,
-              3: 0,
-              2: 0,
-              1: 0,
-            }}
-            averageRating={5.0}
-            totalCount={178}
+            ratingCounts={
+              reviewsData?.ratingCounts ?? {
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0,
+                5: 0,
+              }
+            }
+            averageRating={reviewsData?.averageRating ?? 0}
+            totalCount={reviewsData?.ratingCount ?? 0}
           />
 
           {/* 리뷰 리스트 */}
-          {currentReviews.map((review) => (
-            <ReviewBlock
-              key={review.id}
-              {...review}
-            />
-          ))}
+          {isLoadingReviews ? (
+            <div>리뷰 로딩 중...</div>
+          ) : (
+            <>
+              {currentReviews.map((review: Review) => (
+                <ReviewBlock
+                  key={review.id}
+                  name={review.name}
+                  writtenAt={review.writtenAt}
+                  rating={review.rating}
+                  content={review.content}
+                />
+              ))}
 
-          {/* 페이지네이션 */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(reviews.length / ITEMS_PER_PAGE)}
-            onPageChange={setCurrentPage}
-          />
+              {/* 페이지네이션 */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              )}
+            </>
+          )}
         </div>
 
         {/* 데스크탑 */}
