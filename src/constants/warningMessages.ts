@@ -2,4 +2,7 @@
 export const WARNING_MESSAGES = {
   customerAccountExist: '알빈 유저 계정이 이미 존재합니다.',
   moverAccountExist: '기사님 계정이 이미 존재합니다.',
+  noAccess: '접근할 수 없는 페이지 입니다.',
+  profileRegister: '프로필 등록이 필요합니다.',
+  login: '로그인이 필요합니다.',
 } as const;
