@@ -12,11 +12,28 @@ import ModalWrapper from '@/components/modal/ModalWrapper';
 import Pagination from '@/components/pagination/molecule/pagination';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import axiosInstance from '@/lib/axiosInstance';
 import filledHeart from '@/public/icons/favorite/filled.svg';
 import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
 import Image from 'next/image';
+import { MovingTypeKey } from '../page';
+
+type MoverDetail = {
+  id: string;
+  moverName: string;
+  imageUrl: string;
+  movingType: MovingTypeKey[];
+  isCustomQuote: boolean;
+  rating: number;
+  ratingCount: number;
+  experienceYears: number;
+  quoteCount: number;
+  isFavorite: boolean;
+  favoriteCount: number;
+  description: string;
+  regions: string[];
+};
 
 type Review = {
   id: number;
@@ -76,6 +93,9 @@ const ITEMS_PER_PAGE = 3;
 
 export default function Page() {
   const router = useRouter();
+  const params = useParams();
+  const moverId = params.id as string;
+  const [moverDetail, setMoverDetail] = useState<MoverDetail | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isQuoteRequested, setIsQuoteRequested] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -83,6 +103,7 @@ export default function Page() {
     useState<boolean>(false);
   const [showSpecificQuoteModal, setShowSpecificQuoteModal] =
     useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 리뷰
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,9 +115,34 @@ export default function Page() {
   // 일반 견적 요청 상태 (테스트용)
   const [hasGeneralQuote, setHasGeneralQuote] = useState<boolean>(false);
 
-  const toggleFavorite = () => {
+  const toggleFavorite = async () => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
     setIsFavorite((prev) => !prev);
+    // TODO: 찜하기 API 호출
   };
+
+  useEffect(() => {
+    const fetchMoverDetail = async () => {
+      try {
+        const response = await axiosInstance.get(`/movers/${moverId}`);
+        const data = response.data.data;
+        setMoverDetail(data);
+        setIsFavorite(data.isFavorite);
+        setIsQuoteRequested(data.isCustomQuote);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('기사 상세 정보 조회 에러:', error);
+        setIsLoading(false);
+      }
+    };
+
+    if (moverId) {
+      fetchMoverDetail();
+    }
+  }, [moverId]);
 
   useEffect(() => {
     // 현재 페이지에 맞는 리뷰 리스트 계산
@@ -110,8 +156,19 @@ export default function Page() {
     const token = localStorage.getItem('accessToken');
     if (token) {
       setIsLoggedIn(true);
+      checkGeneralQuote(); // 로그인 상태일 때 일반 견적 요청 여부 확인
     }
   }, []);
+
+  // 일반 견적 요청 여부 확인
+  const checkGeneralQuote = async () => {
+    try {
+      const response = await axiosInstance.get('/quote-requests/latest');
+      setHasGeneralQuote(response.data.length > 0);
+    } catch (error) {
+      console.error('일반 견적 요청 조회 에러:', error);
+    }
+  };
 
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = (): void => {
@@ -128,8 +185,7 @@ export default function Page() {
 
   // 일반 견적 요청 페이지로 이동
   const goToGeneralQuote = (): void => {
-    // 페이지 이동 로직
-    // router.push('/user/quotes/request');
+    router.push('/user/quotes/request');
     setShowGeneralQuoteModal(false);
   };
 
@@ -165,6 +221,14 @@ export default function Page() {
     }
   };
 
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (!moverDetail) {
+    return <div>기사를 찾을 수 없습니다.</div>;
+  }
+
   return (
     <div className='relative flex flex-col items-center mx-auto w-full overflow-auto xl:mt-[56px] mt-6 pb-24'>
       <div className='flex w-full px-0 md:px-[72px] xl:px-[100px] max-w-[1600px] gap-[117px]'>
@@ -172,17 +236,17 @@ export default function Page() {
           <MoverInfo
             variant='quote'
             subVariant='completed'
-            moverName='김코드'
-            imageUrl={null}
-            movingType={['small', 'office']}
-            isCustomQuote={false}
-            rating={5}
-            experienceYears={7}
-            quoteCount={334}
-            favoriteCount={136}
-            ratingCount={178}
-            isFavoriteMoverList={false}
-            description='고객님의 물품을 안전하게 운송해 드립니다.'
+            moverName={moverDetail.moverName}
+            imageUrl={moverDetail.imageUrl}
+            movingType={moverDetail.movingType}
+            isCustomQuote={moverDetail.isCustomQuote}
+            rating={moverDetail.rating}
+            experienceYears={moverDetail.experienceYears}
+            quoteCount={moverDetail.quoteCount}
+            favoriteCount={moverDetail.favoriteCount}
+            ratingCount={moverDetail.ratingCount}
+            isFavoriteMoverList={moverDetail.isFavorite}
+            description={moverDetail.description}
           />
           <HorizontalDivider />
           {/* 모바일 */}
@@ -194,10 +258,7 @@ export default function Page() {
           <div className='gap-0 pl-6'>
             <PageHeader>상세설명</PageHeader>
             <p className='text-2lg text-[18px] font-regular'>
-              안녕하세요. 이사업계 경력 7년으로 안전한 이사를 도와드리는
-              김코드입니다. 고객님의 물품을 소중하고 안전하게 운송하여 드립니다.
-              소형이사 및 가정이사 서비스를 제공하며 서비스 가능 지역은 서울과
-              경기권입니다.
+              {moverDetail.description}
             </p>
           </div>
           <HorizontalDivider />
@@ -205,8 +266,14 @@ export default function Page() {
           <div className='gap-0 pl-6'>
             <PageHeader>제공 서비스</PageHeader>
             <div className='flex gap-3'>
-              <ServiceBadge color='blue'>소형이사</ServiceBadge>
-              <ServiceBadge color='blue'>가정이사</ServiceBadge>
+              {moverDetail.movingType.map((type, index) => (
+                <ServiceBadge
+                  key={index}
+                  color='blue'
+                >
+                  {type}
+                </ServiceBadge>
+              ))}
             </div>
           </div>
           <HorizontalDivider />
@@ -214,8 +281,14 @@ export default function Page() {
           <div className='gap-0 pl-6'>
             <PageHeader>서비스 가능 지역</PageHeader>
             <div className='flex gap-3'>
-              <ServiceBadge color='gray'>서울</ServiceBadge>
-              <ServiceBadge color='gray'>대구</ServiceBadge>
+              {moverDetail.regions.map((region, index) => (
+                <ServiceBadge
+                  key={index}
+                  color='gray'
+                >
+                  {region}
+                </ServiceBadge>
+              ))}
             </div>
           </div>
           <HorizontalDivider />
@@ -292,7 +365,7 @@ export default function Page() {
           <ModalWrapper
             title='로그인이 필요합니다'
             onClose={() => setShowLoginModal(false)}
-            className='max-w-md w-full'
+            className='max-w-md xl:max-w-[610px] w-full'
           >
             <div className='mt-4'>
               <p className='mt-10 mb-10'>
@@ -318,7 +391,7 @@ export default function Page() {
           <ModalWrapper
             title='지정 견적 요청하기'
             onClose={() => setShowGeneralQuoteModal(false)}
-            className='max-w-md w-full'
+            className='max-w-md xl:max-w-[610px] w-full'
           >
             <div className='mt-4'>
               <p className='mt-10 mb-10'>
@@ -344,7 +417,7 @@ export default function Page() {
           <ModalWrapper
             title='지정 견적 요청하기'
             onClose={() => setShowSpecificQuoteModal(false)}
-            className='max-w-md w-full'
+            className='max-w-md xl:max-w-[610px] w-full'
           >
             <div className='mt-4'>
               <p className='mb-10'>
