@@ -96,15 +96,3 @@ interface CustomJWTPayload {
   iat: number;
   exp: number;
 }
-
-// const searchParams = useSearchParams();
-// const warn = searchParams.get('warn') as keyof typeof WARNING_MESSAGES;
-// const router = useRouter();
-// const pathname = usePathname();
-
-// const newParams = new URLSearchParams(searchParams.toString());
-// newParams.delete('warn');
-
-// const queryString = newParams.toString();
-// const newPathname = queryString ? `${pathname}?${queryString}` : pathname;
-// router.replace(newPathname);

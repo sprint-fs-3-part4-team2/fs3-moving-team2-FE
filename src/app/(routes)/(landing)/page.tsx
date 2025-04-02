@@ -1,6 +1,5 @@
-'use client';
 import Image from 'next/image';
-import React, { Suspense, useEffect } from 'react';
+import React from 'react';
 import cn from '@/utils/cn';
 import {
   LANDING_PAGE_STYLES,
@@ -16,16 +15,10 @@ import {
   THIRD_IMAGE_BOX_STYLES,
   THIRD_IMAGE_STYLES,
 } from './constant';
-import { useToaster } from '@/hooks/useToaster';
-import { useSearchParams, useParams } from 'next/navigation';
-import { UserType } from '@/components/authPage/common.types';
 
 export default function Home(): JSX.Element {
   return (
     <div className={cn(LANDING_PAGE_STYLES)}>
-      {/* <Suspense>
-        <Sus />
-      </Suspense> */}
       <h1 className={cn(LANDING_DESCRIPTION_STYLES)}>
         원하는 이사 서비스를 요청하고 견적을 받아보세요
       </h1>
@@ -113,15 +106,3 @@ export default function Home(): JSX.Element {
     </div>
   );
 }
-
-// function Sus() {
-//   const searchParams = useSearchParams();
-//   const params = useParams();
-//   const toaster = useToaster();
-//   useEffect(() => {
-//     const noAuth = searchParams.get('auth') === 'no';
-//     const userType = searchParams.get('type') as UserType | 'nouser';
-//     if (noAuth && !!userType) toaster('warn', '권한이 없습니다.');
-//   }, [params]);
-//   return <div className='toaterController'></div>;
-// }
