@@ -18,6 +18,7 @@ import filledHeart from '@/public/icons/favorite/filled.svg';
 import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
 import Image from 'next/image';
 import { MovingTypeKey } from '../page';
+import { MOVING_TYPES } from '@/constants/movingTypes';
 
 type MoverDetail = {
   id: string;
@@ -31,6 +32,7 @@ type MoverDetail = {
   quoteCount: number;
   isFavorite: boolean;
   favoriteCount: number;
+  introduction: string;
   description: string;
   regions: string[];
 };
@@ -248,7 +250,6 @@ export default function Page() {
             isFavoriteMoverList={moverDetail.isFavorite}
             description={moverDetail.description}
           />
-          <HorizontalDivider />
           {/* 모바일 */}
           <div className='flex-col gap-10 pl-6 flex md:flex xl:hidden'>
             <ShareButtons text='나만 알기엔 아쉬운 기사님인가요?' />
@@ -258,7 +259,7 @@ export default function Page() {
           <div className='gap-0 pl-6'>
             <PageHeader>상세설명</PageHeader>
             <p className='text-2lg text-[18px] font-regular'>
-              {moverDetail.description}
+              {moverDetail.introduction}
             </p>
           </div>
           <HorizontalDivider />
@@ -271,7 +272,7 @@ export default function Page() {
                   key={index}
                   color='blue'
                 >
-                  {type}
+                  {MOVING_TYPES[type].value}
                 </ServiceBadge>
               ))}
             </div>
