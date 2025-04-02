@@ -16,7 +16,7 @@ export default function MyQuoteRequest() {
       <QuoteRequestExist
         id={data.quote.id}
         movingDate={new Date(data.quote.moveDate)}
-        requestedDate={new Date(data.quote.moveDate)}
+        requestedDate={new Date(data.quote.requestedAt)}
         movingType={data.quote.moveType}
         departure={data.quote.departure.fullAddress}
         arrival={data.quote.arrival.fullAddress}
