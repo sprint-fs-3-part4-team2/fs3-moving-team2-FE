@@ -24,7 +24,7 @@ export default function SignUpFormGroup({
 }: {
   userType: UserType;
 }) {
-  const toaster = useToaster();
+  const toast = useToaster();
   const userSignUp = useUserSignUp();
   const moverSignUp = useMoverSignUp();
   const {
@@ -45,13 +45,13 @@ export default function SignUpFormGroup({
   const onSubmit = async (data: FieldValues) => {
     mutate(data as SignUpData, {
       onSuccess: () => {
-        toaster('info', '회원가입 성공!');
+        toast('info', '회원가입 성공!');
       },
       onError: (error) => {
         console.log('error: ', error);
         if (axios.isAxiosError(error)) {
           const errorMessage = error.response?.data.message || '회원가입 실패!';
-          toaster('warn', errorMessage);
+          toast('warn', errorMessage);
         }
       },
     });
@@ -113,7 +113,7 @@ export default function SignUpFormGroup({
       <InputSection
         content='전화번호'
         placeholder='숫자만 입력해주세요'
-        type='number'
+        type='tel'
         name='phoneNumber'
         register={register}
         errors={errors}

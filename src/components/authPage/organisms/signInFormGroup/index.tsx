@@ -23,7 +23,7 @@ export default function SignInFormGroup({
 }: {
   userType: UserType;
 }) {
-  const toaster = useToaster();
+  const toast = useToaster();
   const userSignIn = useUserSignIn();
   const moverSignIn = useMoverSignIn();
   const {
@@ -41,13 +41,14 @@ export default function SignInFormGroup({
   const onSubmit = async (data: FieldValues) => {
     mutate(data as SignInData, {
       onSuccess: () => {
-        toaster('info', '로그인 성공!');
+        toast('info', '로그인 성공!');
       },
       onError: (error) => {
         console.log('error: ', error);
         if (axios.isAxiosError(error)) {
-          const errorMessage = error.response?.data.message || '이메일과 비밀번호를 확인해주세요!';
-          toaster('warn', errorMessage);
+          const errorMessage =
+            error.response?.data.message || '이메일과 비밀번호를 확인해주세요!';
+          toast('warn', errorMessage);
         }
       },
     });
