@@ -1,5 +1,5 @@
 'use client';
-import { PropsWithChildren, useState, useEffect } from 'react';
+import { PropsWithChildren, useState, useEffect, Suspense } from 'react';
 import s from './styles/select-role.module.css';
 import Link from 'next/link';
 import Links from './components/links';
@@ -17,15 +17,6 @@ const partnerText = '파트너';
 export default function SliceBox() {
   const [location, setLocation] = useState<string>(s.right);
   const [tt, setTT] = useState(partnerText);
-  const searchParams = useSearchParams();
-  const params = useParams();
-  const toaster = useToaster();
-  useEffect(() => {
-    const noAuth = searchParams.get('auth') === 'no';
-    const userType = searchParams.get('type') as UserType | 'nouser';
-    if (noAuth && userType === 'nouser')
-      toaster('warn', '로그인이 필요합니다.');
-  }, [params]);
 
   function changeBg(e: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) {
     e.preventDefault();
@@ -40,6 +31,9 @@ export default function SliceBox() {
         className={`${s.container} 
    `}
       >
+        {/* <Suspense>
+          <ToastController />
+        </Suspense> */}
         <Content
           className={`${s.content} ${s.left} ${
             location !== s.left && s.active
@@ -116,3 +110,16 @@ function Background({
     </div>
   );
 }
+
+// function ToastController() {
+//   const searchParams = useSearchParams();
+//   const params = useParams();
+//   const toaster = useToaster();
+//   useEffect(() => {
+//     const noAuth = searchParams.get('auth') === 'no';
+//     const userType = searchParams.get('type') as UserType | 'nouser';
+//     if (noAuth && userType === 'nouser')
+//       toaster('warn', '로그인이 필요합니다.');
+//   }, [params]);
+//   return <div className='toaterController'></div>;
+// }

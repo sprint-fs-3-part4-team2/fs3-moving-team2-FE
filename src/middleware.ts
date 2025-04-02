@@ -14,12 +14,11 @@ const PROTECT = {
   NO_USER: [
     '/mover/',
     '/user/quotes/request',
-    '/user/quotes',
+    '/user/quotes/',
     '/user/profile',
-    '/user/movers',
     '/user/reviews',
   ], // 로그인 안 했을 때
-  CUSTOMER: ['/mover'], // 고객이 권한 없는 페이지
+  CUSTOMER: ['/mover/'], // 고객이 권한 없는 페이지
   MOVER: ['/user/'], // 기사가 권한 없는 페이지
 };
 
@@ -28,7 +27,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const { cookies, url } = request;
   const token = cookies.get('accessToken')?.value;
-  const authQuery = '?auth=no';
+  const authQuery = '?warn=login';
+  const noAccess = '?warn=noAccess';
 
   if (!token) {
     const nouserProtected =
@@ -37,10 +37,7 @@ export function middleware(request: NextRequest) {
       !pathname.includes('sign-up');
 
     if (nouserProtected) {
-      const loginUrl = new URL(
-        '/select-role' + authQuery + '&type=nouser',
-        url,
-      );
+      const loginUrl = new URL('/select-role' + authQuery, url);
       return NextResponse.redirect(loginUrl);
     }
     return res;
@@ -50,35 +47,48 @@ export function middleware(request: NextRequest) {
     const decode = jwtDecode(token) as CustomJWTPayload;
 
     if (!decode) return res;
-    const protectType =
-      decode.type === 'customer' ? PROTECT.CUSTOMER : PROTECT.MOVER;
+    const { roleId, type } = decode;
+    console.log(pathname, !roleId && !pathname.includes('/profile/register'));
+    if (!roleId && !pathname.includes('/profile/register')) {
+      const referer = request.headers.get('referer');
+      const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
+
+      if (!referer) return NextResponse.redirect(new URL(urlPath, url));
+
+      if (referer.includes('/profile/register'))
+        return NextResponse.redirect(
+          new URL(urlPath + '?warn=profileRegister', url),
+        );
+
+      return NextResponse.redirect(new URL(urlPath, url));
+    }
+
+    const protectType = type === 'customer' ? PROTECT.CUSTOMER : PROTECT.MOVER;
     const authUserProtected = protectType.some((path) =>
       pathname.includes(path),
     );
-    const userType = `&type=${decode.type}`;
 
     if (
       pathname.includes('sign-in') ||
       pathname.includes('sign-up') ||
       pathname.includes('select-role')
     ) {
-      return NextResponse.redirect(new URL('/' + authQuery + userType, url));
+      return NextResponse.redirect(new URL('/' + noAccess, url));
     }
 
     if (authUserProtected) {
       const referer = request.headers.get('referer');
 
       if (referer) {
-        return NextResponse.redirect(
-          new URL(referer + authQuery + userType, url),
-        );
+        return NextResponse.redirect(new URL(referer + noAccess, url));
       } else {
-        return NextResponse.redirect(new URL('/' + authQuery + userType, url));
+        return NextResponse.redirect(new URL('/' + noAccess, url));
       }
     }
   }
   return res;
 }
+
 interface CustomJWTPayload {
   userId: string;
   type: UserType;
@@ -86,3 +96,15 @@ interface CustomJWTPayload {
   iat: number;
   exp: number;
 }
+
+// const searchParams = useSearchParams();
+// const warn = searchParams.get('warn') as keyof typeof WARNING_MESSAGES;
+// const router = useRouter();
+// const pathname = usePathname();
+
+// const newParams = new URLSearchParams(searchParams.toString());
+// newParams.delete('warn');
+
+// const queryString = newParams.toString();
+// const newPathname = queryString ? `${pathname}?${queryString}` : pathname;
+// router.replace(newPathname);
