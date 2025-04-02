@@ -31,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} antialiased h-screen flex flex-col`}
       >
-        <GNB />
         {/* 개발이 끝나고 활성화 */}
         {/* <Analytics /> */}
-        <Provider>{children}</Provider>
+        <Provider>
+          <GNB />
+          {children}
+        </Provider>
       </body>
     </html>
   );
