@@ -29,19 +29,20 @@ export function middleware(request: NextRequest) {
   const token = cookies.get('accessToken')?.value;
   const authQuery = '?warn=login';
   const noAccess = '?warn=noAccess';
+  if (process.env.NODE_ENV === 'development') return res;
+  if (process.env.NODE_ENV === 'production')
+    if (!token) {
+      const nouserProtected =
+        PROTECT.NO_USER.some((path) => pathname.startsWith(path)) &&
+        !pathname.includes('sign-in') &&
+        !pathname.includes('sign-up');
 
-  if (!token) {
-    const nouserProtected =
-      PROTECT.NO_USER.some((path) => pathname.startsWith(path)) &&
-      !pathname.includes('sign-in') &&
-      !pathname.includes('sign-up');
-
-    if (nouserProtected) {
-      const loginUrl = new URL('/select-role' + authQuery, url);
-      return NextResponse.redirect(loginUrl);
+      if (nouserProtected) {
+        const loginUrl = new URL('/select-role' + authQuery, url);
+        return NextResponse.redirect(loginUrl);
+      }
+      return res;
     }
-    return res;
-  }
 
   if (token) {
     const decode = jwtDecode(token) as CustomJWTPayload;
@@ -86,6 +87,7 @@ export function middleware(request: NextRequest) {
       }
     }
   }
+
   return res;
 }
 
