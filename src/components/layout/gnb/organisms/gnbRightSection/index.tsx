@@ -3,7 +3,7 @@
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import MenuIcon from '../../atoms/icons/menuIcon';
 import Notification from '../../molecules/notification/imdex';
-import Profile from '../../molecules/profileSecrion';
+import Profile from '../../molecules/profileSection';
 import { GNB_RIGHT_SECTION_BOX_STYLES } from './constant';
 import { GNBRightSectionProps } from './gnbRightSection.type';
 import { useRouter } from 'next/navigation';
@@ -47,9 +47,7 @@ export default function GNBRightSection({
           >
             로그인
           </CommonButton>
-          <MenuIcon
-            menuOnClick={() => setIsOpenSideNavBar(true)}
-          />
+          <MenuIcon menuOnClick={() => setIsOpenSideNavBar(true)} />
         </div>
       )}
       {isOpenSideNavBar && (

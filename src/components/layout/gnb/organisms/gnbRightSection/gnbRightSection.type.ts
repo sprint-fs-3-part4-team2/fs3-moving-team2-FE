@@ -1,9 +1,9 @@
 import { MenuIconProp } from '../../atoms/icons/menuIcon/menuIcon.type';
 import { GnbMenuProps } from '../../molecules/gnbMenu/gnbMenu.type';
-import { ProfileSecrionProps } from '../../molecules/profileSecrion/profileSecrion.type';
+import { ProfileSectionProps } from '../../molecules/profileSection/profileSection.type';
 
 export interface GNBRightSectionProps
-  extends ProfileSecrionProps,
+  extends ProfileSectionProps,
     MenuIconProp,
     GnbMenuProps {
   isAuthorized: boolean;
