@@ -1,16 +1,22 @@
 'use client';
 import cn from '@/utils/cn';
-import { C2 } from '@/lib/types/type';
 import CtaBtn from './ctaBtn';
-import { InputHTMLAttributes, useState, useEffect, useRef } from 'react';
+import {
+  InputHTMLAttributes,
+  useState,
+  useEffect,
+  useRef,
+  PropsWithChildren,
+} from 'react';
 import { d2Class, ulClass } from './styles/drop.tailwind';
 
 type D2dispatch = React.Dispatch<React.SetStateAction<string | object>>;
-export interface DropdownProps extends C2 {
+export interface DropdownProps extends PropsWithChildren {
   dispatch?: D2dispatch;
   onClick?: React.MouseEventHandler<HTMLLIElement | HTMLDivElement>;
   isOpen?: boolean;
   name?: string;
+  className?: string;
 }
 export default function Dropdown({
   className,
