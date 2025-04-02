@@ -116,8 +116,46 @@ export default function Page() {
       setShowLoginModal(true);
       return;
     }
-    setIsFavorite((prev) => !prev);
-    // TODO: 찜하기 API 호출
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        setShowLoginModal(true);
+        return;
+      }
+
+      // API 엔드포인트 경로 수정
+      const endpoint = isFavorite
+        ? `/favorites/delete/${moverId}`
+        : `/favorites/create/${moverId}`;
+
+      const response = await axiosInstance[isFavorite ? 'delete' : 'post'](
+        endpoint,
+        undefined,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setIsFavorite((prev) => !prev);
+        // 기사 정보 업데이트
+        setMoverDetail((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            favoriteCount: response.data.totalCustomerFavorite,
+            isFavorite: !isFavorite,
+          };
+        });
+      }
+    } catch (error) {
+      console.error('찜하기 처리 중 오류 발생:', error);
+      // 에러 발생 시 이전 상태로 되돌림
+      setIsFavorite((prev) => prev);
+    }
   };
 
   useEffect(() => {
@@ -202,6 +240,9 @@ export default function Page() {
         localStorage.setItem('accessToken', response.data.accessToken);
         setIsLoggedIn(true);
         setShowLoginModal(false);
+
+        // 로그인 성공 후 찜하기 기능 다시 시도
+        toggleFavorite();
       } else {
         console.error('로그인 실패');
       }
