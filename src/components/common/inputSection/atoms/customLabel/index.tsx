@@ -6,17 +6,14 @@ export default function CustomLabel({
   styleVariant,
   content,
   labelClassName,
+  showAsterisk,
 }: CustomLabelProps) {
   return (
     <label
-      className={cn(
-        'flex mb-4',
-        CUSTOM_LABEL_STYLE[styleVariant],
-        labelClassName,
-      )}
+      className={cn('flex', CUSTOM_LABEL_STYLE[styleVariant], labelClassName)}
     >
       <span>{content}</span>
-      {styleVariant === 'secondary' && (
+      {styleVariant === 'secondary' && showAsterisk && (
         <span className='text-primary-blue-300'>*</span>
       )}
     </label>
