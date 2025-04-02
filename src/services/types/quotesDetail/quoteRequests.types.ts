@@ -4,6 +4,6 @@ export interface QuoteRequestResponse {
   isRequested: boolean;
   quote?: QuoteRequest & {
     id: string;
-    requestedAt: Date;
+    requestedDate: Date;
   };
 }
