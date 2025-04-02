@@ -61,7 +61,7 @@ const customKo = {
 };
 interface AlarmProps extends Omit<DropdownProps, 'dispatch'> {
   data: AlarmData[];
-  readFn: (id: string) => void;
+  readFn: (id?: string) => void;
 }
 
 function Alarm({

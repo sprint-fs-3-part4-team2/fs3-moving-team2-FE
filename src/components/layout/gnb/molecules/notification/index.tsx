@@ -6,7 +6,8 @@ import { NOTIFICATION_STYLES } from './constant';
 import { getNotificationApi } from '@/services/notification';
 import { readNotificationApi } from '@/services/notification';
 
-async function readAlarm(id: string) {
+async function readAlarm(id?: string) {
+  if (!id) return;
   await readNotificationApi(id);
 }
 
@@ -14,9 +15,19 @@ export default function Notification(): JSX.Element {
   const [data, setData] = useState<AlarmData[]>([]);
 
   useEffect(() => {
-    getNotificationApi().then((res) => {
-      setData(res.data ?? []);
-    });
+    getNotificationApi()
+      .then((res) => {
+        setData(res.data ?? []);
+      })
+      .catch((err) => {
+        if (err.message.includes('401')) {
+          console.warn(
+            '🔴 인증되지 않은 요청입니다. 로그인 상태를 확인하세요.',
+          );
+        } else {
+          console.error(err);
+        }
+      });
   }, []);
 
   useEffect(() => {
