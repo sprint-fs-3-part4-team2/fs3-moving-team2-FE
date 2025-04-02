@@ -1,9 +1,9 @@
-import { C2 } from '@/lib/types/type';
 import animate from '../components/style/animate.module.css';
-import { CSSProperties } from 'react';
+import { CSSProperties, PropsWithChildren } from 'react';
 
-interface AnimateProps extends C2 {
+interface AnimateProps extends PropsWithChildren {
   size?: string;
+  className?: string;
   color?: CSSProperties['color'] | string;
 }
 
