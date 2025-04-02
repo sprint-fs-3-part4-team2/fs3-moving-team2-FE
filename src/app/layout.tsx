@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import Provider from '../providers/_provider';
+import ChatRoomList from '@/components/chat/chat';
 // import Analytics from '@/components/analytics/page';
 import GNB from '@/components/layout/gnb/template';
 
@@ -37,6 +38,7 @@ export default function RootLayout({
             hasNotification={true}
           />
           {children}
+          {/* <ChatRoomList /> */}
         </Provider>
       </body>
     </html>

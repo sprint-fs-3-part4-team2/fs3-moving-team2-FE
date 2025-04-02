@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
@@ -86,7 +86,10 @@ export default function Page() {
     <div className=' flex flex-col max-w-[1400px] mx-auto items-center mx-auto '>
       <div className=' w-full grid grid-cols-1 xl:grid-cols-2  xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
         {currentData?.map((data: Mover) => (
-          <div key={data.id}>
+          <div
+            key={data.id}
+            onClick={() => router.push(`/user/movers/${data.id}`)}
+          >
             <MoverInfo
               variant='review'
               subVariant='written'
