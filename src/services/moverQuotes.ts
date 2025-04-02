@@ -17,8 +17,9 @@ export const getQuoteByCustomer = async (quoteId: string) => {
       `${MOVER_QUOTE_URL}/${quoteId}/customer`,
     );
     return data;
-  } catch {
-    console.error('견적 불러오기 실패');
+  } catch (error) {
+    console.error('견적 불러오기 실패', error);
+    throw error;
   }
 };
 
@@ -28,8 +29,9 @@ export const getQuoteByMover = async (quoteId: string) => {
       `${MOVER_QUOTE_URL}${quoteId}/mover`,
     );
     return data;
-  } catch {
-    console.error('견적 불러오기 실패');
+  } catch (error) {
+    console.error('견적 불러오기 실패', error);
+    throw error;
   }
 };
 
@@ -51,8 +53,9 @@ export const getSubmittedQuotesList = async ({
       },
     );
     return data;
-  } catch {
-    console.error('완료된 견적 목록 불러오기 실패');
+  } catch (error) {
+    console.error('완료된 견적 목록 불러오기 실패', error);
+    throw error;
   }
 };
 
