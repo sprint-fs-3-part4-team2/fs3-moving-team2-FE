@@ -1,5 +1,6 @@
+'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import cn from '@/utils/cn';
 import {
   LANDING_PAGE_STYLES,
@@ -15,8 +16,20 @@ import {
   THIRD_IMAGE_BOX_STYLES,
   THIRD_IMAGE_STYLES,
 } from './constant';
+import { useToaster } from '@/hooks/useToaster';
+import { useSearchParams, useParams } from 'next/navigation';
+import { UserType } from '@/components/authPage/common.types';
 
 export default function Home(): JSX.Element {
+  const searchParams = useSearchParams();
+  const params = useParams();
+  const toaster = useToaster();
+  useEffect(() => {
+    const noAuth = searchParams.get('auth') === 'no';
+    const userType = searchParams.get('type') as UserType | 'nouser';
+    if (noAuth && !!userType) toaster('warn', '권한이 없습니다.');
+  }, [params]);
+
   return (
     <div className={cn(LANDING_PAGE_STYLES)}>
       <h1 className={cn(LANDING_DESCRIPTION_STYLES)}>

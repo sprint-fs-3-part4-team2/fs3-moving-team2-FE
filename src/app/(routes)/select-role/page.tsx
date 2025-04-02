@@ -1,5 +1,5 @@
 'use client';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useState, useEffect } from 'react';
 import s from './styles/select-role.module.css';
 import Link from 'next/link';
 import Links from './components/links';
@@ -7,6 +7,9 @@ import Image from 'next/image';
 import Content from './components/content';
 import MobileLink from './components/mobile-link';
 import Tooltip from './components/tooltip';
+import { useToaster } from '@/hooks/useToaster';
+import { useSearchParams, useParams } from 'next/navigation';
+import { UserType } from '@/components/authPage/common.types';
 
 const commonText = '일반유저';
 const partnerText = '파트너';
@@ -14,6 +17,15 @@ const partnerText = '파트너';
 export default function SliceBox() {
   const [location, setLocation] = useState<string>(s.right);
   const [tt, setTT] = useState(partnerText);
+  const searchParams = useSearchParams();
+  const params = useParams();
+  const toaster = useToaster();
+  useEffect(() => {
+    const noAuth = searchParams.get('auth') === 'no';
+    const userType = searchParams.get('type') as UserType | 'nouser';
+    if (noAuth && userType === 'nouser')
+      toaster('warn', '로그인이 필요합니다.');
+  }, [params]);
 
   function changeBg(e: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) {
     e.preventDefault();
