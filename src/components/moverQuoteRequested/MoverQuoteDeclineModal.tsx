@@ -38,11 +38,6 @@ export default function MoverQuoteDeclineModal({
         quoteId: selectedCustomer.quoteId,
         rejectionReason: data.quoteComment,
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['customerRequests'],
-        exact: false,
-      });
     } else {
       console.error('선택된 고객 정보가 없습니다.');
     }

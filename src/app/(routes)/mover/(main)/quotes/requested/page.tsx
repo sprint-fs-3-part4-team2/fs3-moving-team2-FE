@@ -53,10 +53,6 @@ export default function Page() {
   const isServiceRegionMatch = selectedFilters.service;
   const isTargetedQuote = selectedFilters.targeted;
 
-  const onSubmit = (data: FieldValues) => {
-    console.log('Form data:', data);
-  };
-
   const {
     data: customerRequests,
     isLoading,
