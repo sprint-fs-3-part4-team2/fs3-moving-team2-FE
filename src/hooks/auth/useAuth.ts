@@ -1,16 +1,18 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import userAuthService from '@/services/auth/userAuth';
 import moverAuthService from '@/services/auth/moverAuth';
 import { useRouter } from 'next/navigation';
 
 // User
 export const useUserSignUp = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
     mutationKey: ['userSignUp'],
     mutationFn: userAuthService.signUp,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['userProfile'], data);
 
       setTimeout(() => {
         router.push('/user/profile/register');
@@ -23,12 +25,15 @@ export const useUserSignUp = () => {
 };
 
 export const useUserSignIn = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
     mutationKey: ['userSignIn'],
     mutationFn: userAuthService.signIn,
     onSuccess: (data) => {
+      queryClient.setQueryData(['userProfile'], data);
+
       console.log('로그인 성공, user data: ', data);
       setTimeout(() => {
         router.push('/user/profile/register');
@@ -42,12 +47,15 @@ export const useUserSignIn = () => {
 
 // Mover
 export const useMoverSignUp = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
     mutationKey: ['moverSignUp'],
     mutationFn: moverAuthService.signUp,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['userProfile'], data);
+
       setTimeout(() => {
         router.push('/mover/quote/requested');
       }, 2000);
@@ -59,12 +67,15 @@ export const useMoverSignUp = () => {
 };
 
 export const useMoverSignIn = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
     mutationKey: ['moverSignIn'],
     mutationFn: moverAuthService.signIn,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['userProfile'], data);
+
       setTimeout(() => {
         router.push('/mover/quote/requested');
       }, 2000);
