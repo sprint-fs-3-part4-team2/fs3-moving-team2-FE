@@ -4,6 +4,8 @@ import Dropdown, { DropdownProps } from '../dropdown';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSignOut } from '@/hooks/auth/useAuth';
+import { useProfileQuery } from '@/hooks/auth/useProfileQuery';
 
 function Profile({
   isOpen,
@@ -11,14 +13,10 @@ function Profile({
   className,
 }: Omit<DropdownProps, 'dispatch'>) {
   const [open, setOpen] = useState(isOpen || false);
-  const [name, setName] = useState('테스트');
   const pathname = usePathname();
   const divRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    // 지울 코드
-    // 주스탄드로 전역으로 유저정보 처리 할 것
-    setName('테스트');
-  }, []);
+  const { data } = useProfileQuery();
+  const signOut = useSignOut();
 
   useEffect(() => {
     setOpen(false);
@@ -67,7 +65,7 @@ function Profile({
             'xl:py-[14px] xl:pl-6 xl:text-[18px]',
           )}
         >
-          {name} 고객님
+          {data?.name} 고객님
         </h2>
         <ul>
           <ProfileList href={'/user/profile/edit'}>프로필 수정</ProfileList>
@@ -87,9 +85,7 @@ function Profile({
                 'group-hover:text-primary-blue-200 group-hover:font-bold',
               )}
               href='#'
-              onClick={() => {
-                //로그아웃 함수
-              }}
+              onClick={() => signOut.mutate()}
             >
               로그아웃
             </Link>

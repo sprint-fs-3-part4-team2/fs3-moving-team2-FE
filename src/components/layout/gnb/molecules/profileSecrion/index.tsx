@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ProfileIcon from '../../atoms/icons/profileIcon';
 import { PROFILE_NAME_STYLES, PROFILE_STYLES } from './constant';
 import { ProfileSecrionProps } from './profileSecrion.type';

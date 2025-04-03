@@ -5,37 +5,36 @@ import MenuIcon from '../../atoms/icons/menuIcon';
 import Notification from '../../molecules/notification';
 import Profile from '../../molecules/profileSecrion';
 import { GNB_RIGHT_SECTION_BOX_STYLES } from './constant';
-import { GNBRightSectionProps } from './gnbRightSection.type';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SideNavigationBar from '@/components/sideMenuBar/organisms';
+import { useProfileQuery } from '@/hooks/auth/useProfileQuery';
 
-export default function GNBRightSection({
-  isAuthorized,
-  userName,
-  imageUrl,
-  userType,
-}: GNBRightSectionProps) {
+export default function GNBRightSection() {
   const [isOpenSideNavBar, setIsOpenSideNavBar] = useState<boolean>(false);
   const router = useRouter();
+  const { data, isLoading } = useProfileQuery();
 
   const handleOnClick = () => {
     router.push('/select-role');
   };
 
+  if (isLoading) return null;
+
   return (
     <div>
-      {isAuthorized ? (
+      {data ? (
         <div className={GNB_RIGHT_SECTION_BOX_STYLES}>
           <Notification />
           <Profile
-            userName={userName}
-            imageUrl={imageUrl ? imageUrl : '/icons/gnb/default-profile.svg'}
+            userName={data?.name}
+            imageUrl={
+              data.profile?.profileImage ?? '/icons/gnb/default-profile.svg'
+            }
           />
-          <MenuIcon menuOnClick={() => setIsOpenSideNavBar(true)} />
         </div>
       ) : (
-        <div className='w-[116px]'>
+        <div className='w-[116px] hidden md:hidden xl:block'>
           <CommonButton
             onClick={handleOnClick}
             widthType='full'
@@ -48,9 +47,10 @@ export default function GNBRightSection({
           </CommonButton>
         </div>
       )}
+      <MenuIcon menuOnClick={() => setIsOpenSideNavBar(true)} />
       {isOpenSideNavBar && (
         <SideNavigationBar
-          userType={userType}
+          userType={data?.userType ?? 'guest'}
           setIsOpen={setIsOpenSideNavBar}
           isOpen={isOpenSideNavBar}
         />
