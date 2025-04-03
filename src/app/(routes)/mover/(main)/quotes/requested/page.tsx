@@ -82,7 +82,7 @@ export default function Page() {
   const totalCustomerRequests = customerRequests?.totalCount ?? 0;
 
   return (
-    <main className='w-full xl:max-w-[1400px] mx-auto px-6 md:px-[72px]'>
+    <main className='w-full xl:max-w-[1400px] mx-auto sm:px-6 md:px-[72px] xl:px-0'>
       <PageHeader>받은 요청</PageHeader>
       <div className='flex gap-28 mt-6'>
         {/* 필터 */}
@@ -91,7 +91,7 @@ export default function Page() {
           setSelectedFilters={setSelectedFilters}
         />
         {/* 고객 요청 리스트 */}
-        <section className='flex-1 ml-4'>
+        <section className='flex-1'>
           {/* 검색창 */}
           <SearchInput
             placeholder='어떤 고객님을 찾고 계세요?'
