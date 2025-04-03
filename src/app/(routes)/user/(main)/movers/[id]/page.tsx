@@ -243,9 +243,9 @@ export default function Page() {
 
       console.log('일반 견적 요청 응답:', response.data);
 
-      if (response.data && Array.isArray(response.data)) {
-        setHasGeneralQuote(response.data.length > 0);
-        console.log('일반 견적 요청 여부:', response.data.length > 0);
+      if (response.data && response.data.isRequested !== undefined) {
+        setHasGeneralQuote(response.data.isRequested);
+        console.log('일반 견적 요청 여부:', response.data.isRequested);
       } else {
         console.log('응답 데이터 형식이 올바르지 않습니다:', response.data);
         setHasGeneralQuote(false);
