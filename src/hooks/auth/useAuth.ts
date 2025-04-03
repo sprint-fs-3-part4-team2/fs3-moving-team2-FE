@@ -89,8 +89,11 @@ export const useSignOut = () => {
   return useMutation({
     mutationFn: userAuthService.signOut,
     onSuccess: () => {
-      queryClient.clear();
-      router.push('/');
+      setTimeout(() => {
+        queryClient.resetQueries({ queryKey: ['myProfile'] });
+        queryClient.clear();
+        router.push('/');
+      }, 0);
     },
   });
 };
