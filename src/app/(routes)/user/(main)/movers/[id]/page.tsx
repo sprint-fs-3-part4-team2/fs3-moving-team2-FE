@@ -111,20 +111,24 @@ export default function Page() {
   // 일반 견적 요청 상태 (테스트용)
   const [hasGeneralQuote, setHasGeneralQuote] = useState<boolean>(false);
 
-  const toggleFavorite = async () => {
-    if (!isLoggedIn) {
+  // 로그인 상태 체크
+  const checkLoginStatus = () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      setIsLoggedIn(false);
       setShowLoginModal(true);
-      return;
+      return false;
     }
+    setIsLoggedIn(true);
+    return true;
+  };
+
+  // 찜하기 토글
+  const toggleFavorite = async () => {
+    if (!checkLoginStatus()) return;
 
     try {
       const token = localStorage.getItem('accessToken');
-      if (!token) {
-        setShowLoginModal(true);
-        return;
-      }
-
-      // API 엔드포인트 경로 수정
       const endpoint = isFavorite
         ? `/favorites/delete/${moverId}`
         : `/favorites/create/${moverId}`;
@@ -141,7 +145,6 @@ export default function Page() {
 
       if (response.status === 200 || response.status === 201) {
         setIsFavorite((prev) => !prev);
-        // 기사 정보 업데이트
         setMoverDetail((prev) => {
           if (!prev) return null;
           return {
@@ -151,9 +154,13 @@ export default function Page() {
           };
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('찜하기 처리 중 오류 발생:', error);
-      // 에러 발생 시 이전 상태로 되돌림
+      if (error.response?.status === 401) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('accessToken');
+        setShowLoginModal(true);
+      }
       setIsFavorite((prev) => prev);
     }
   };
@@ -232,24 +239,40 @@ export default function Page() {
 
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = async (): Promise<void> => {
-    console.log('지정 견적 요청 시작');
-    console.log('로그인 상태:', isLoggedIn);
-    console.log('일반 견적 요청 여부:', hasGeneralQuote);
+    if (!checkLoginStatus()) return;
 
-    if (!isLoggedIn) {
-      console.log('로그인 필요');
-      setShowLoginModal(true);
-      return;
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axiosInstance.get(
+        `/quote-requests/check/${moverId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      // 이미 지정 견적을 요청한 경우
+      if (response.data.isRequested) {
+        setIsQuoteRequested(true);
+        return;
+      }
+
+      // 일반 견적 요청 여부 확인
+      if (!hasGeneralQuote) {
+        setShowGeneralQuoteModal(true);
+        return;
+      }
+
+      setShowSpecificQuoteModal(true);
+    } catch (error: any) {
+      console.error('지정 견적 요청 확인 중 오류:', error);
+      if (error.response?.status === 401) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('accessToken');
+        setShowLoginModal(true);
+      }
     }
-
-    if (!hasGeneralQuote) {
-      console.log('일반 견적 요청 필요');
-      setShowGeneralQuoteModal(true);
-      return;
-    }
-
-    console.log('지정 견적 요청 가능');
-    setShowSpecificQuoteModal(true);
   };
 
   // 일반 견적 요청 페이지로 이동
@@ -261,48 +284,69 @@ export default function Page() {
   // 지정 견적 요청 확인
   const confirmSpecificQuote = async (): Promise<void> => {
     try {
-      console.log('지정 견적 요청 API 호출 시작');
       const token = localStorage.getItem('accessToken');
-      console.log('API 호출용 토큰:', token);
+      const response = await axiosInstance.post(
+        `/quote-requests/specific/${moverId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // 여기에 지정 견적 요청 API 호출 로직 추가
-      // const response = await axiosInstance.post(`/quote-requests/specific/${moverId}`);
-      // console.log('지정 견적 요청 응답:', response.data);
-
-      setIsQuoteRequested(true);
-      setShowSpecificQuoteModal(false);
-      alert('지정 견적 요청이 완료되었습니다.');
-    } catch (error) {
+      if (response.status === 200) {
+        setIsQuoteRequested(true);
+        setShowSpecificQuoteModal(false);
+        alert('지정 견적 요청이 완료되었습니다.');
+      }
+    } catch (error: any) {
       console.error('지정 견적 요청 에러:', error);
+      if (error.response?.status === 401) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('accessToken');
+        setShowLoginModal(true);
+      }
     }
   };
 
   // 로그인 페이지로 이동
-  const goToLogin = async (): Promise<void> => {
-    try {
-      // 테스트용 fakeSignIn
-      const response = await axiosInstance.post('/auth/fakeSignIn', null, {
-        params: {
-          userId: 'cm8xsoa3100006ehggdtxwo98',
-          roleId: 'cm8xsqwd900016eawrtpcn1fv',
-          type: 'customer',
-        },
-      });
-
-      if (response.status === 200) {
-        localStorage.setItem('accessToken', response.data.accessToken);
-        setIsLoggedIn(true);
-        setShowLoginModal(false);
-
-        // 로그인 성공 후 찜하기 기능 다시 시도
-        toggleFavorite();
-      } else {
-        console.error('로그인 실패');
-      }
-    } catch (error) {
-      console.error('로그인 에러:', error);
-    }
+  const goToLogin = (): void => {
+    router.push('/user/auth/sign-in');
+    setShowLoginModal(false);
   };
+
+  // 페이지 로드 시 초기 상태 체크
+  useEffect(() => {
+    const initializePage = async () => {
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        setIsLoggedIn(true);
+        await checkGeneralQuote();
+
+        // 찜하기 상태와 지정 견적 요청 상태 확인
+        try {
+          const [favoriteResponse, quoteResponse] = await Promise.all([
+            axiosInstance.get(`/favorites/check/${moverId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+            axiosInstance.get(`/quote-requests/check/${moverId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            }),
+          ]);
+
+          setIsFavorite(favoriteResponse.data.isFavorite);
+          setIsQuoteRequested(quoteResponse.data.isRequested);
+        } catch (error) {
+          console.error('상태 확인 중 오류:', error);
+        }
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+
+    initializePage();
+  }, [moverId]);
 
   if (isLoading) {
     return <div>로딩 중...</div>;
