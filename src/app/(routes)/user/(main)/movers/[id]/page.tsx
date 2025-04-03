@@ -33,6 +33,7 @@ type MoverDetail = {
   experienceYears: number;
   quoteCount: number;
   isFavorite: boolean;
+  isFavoriteMoverList: boolean;
   favoriteCount: number;
   introduction: string;
   description: string;
@@ -123,6 +124,33 @@ export default function Page() {
     return true;
   };
 
+  // 찜하기 상태 체크
+  const checkFavoriteStatus = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return;
+
+      const response = await axiosInstance.get(`/favorites/check/${moverId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data && response.data.isFavorite !== undefined) {
+        setIsFavorite(response.data.isFavorite);
+        setMoverDetail((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            isFavorite: response.data.isFavorite,
+          };
+        });
+      }
+    } catch (error) {
+      console.error('찜하기 상태 확인 중 오류:', error);
+    }
+  };
+
   // 찜하기 토글
   const toggleFavorite = async () => {
     if (!checkLoginStatus()) return;
@@ -144,13 +172,17 @@ export default function Page() {
       );
 
       if (response.status === 200 || response.status === 201) {
+        // 찜하기 상태 업데이트
         setIsFavorite((prev) => !prev);
+
+        // 기사 정보 업데이트
         setMoverDetail((prev) => {
           if (!prev) return null;
           return {
             ...prev,
             favoriteCount: response.data.totalCustomerFavorite,
             isFavorite: !isFavorite,
+            isFavoriteMoverList: !isFavorite,
           };
         });
       }
@@ -160,7 +192,12 @@ export default function Page() {
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
         setShowLoginModal(true);
+      } else if (error.response?.status === 400) {
+        console.error(error.response.data.error || '잘못된 요청입니다.');
+      } else {
+        console.error('찜하기 처리 중 오류가 발생했습니다.');
       }
+      // 에러 발생 시 이전 상태로 되돌림
       setIsFavorite((prev) => prev);
     }
   };
@@ -322,24 +359,7 @@ export default function Page() {
       const token = localStorage.getItem('accessToken');
       if (token) {
         setIsLoggedIn(true);
-        await checkGeneralQuote();
-
-        // 찜하기 상태와 지정 견적 요청 상태 확인
-        try {
-          const [favoriteResponse, quoteResponse] = await Promise.all([
-            axiosInstance.get(`/favorites/check/${moverId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-            axiosInstance.get(`/quote-requests/check/${moverId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }),
-          ]);
-
-          setIsFavorite(favoriteResponse.data.isFavorite);
-          setIsQuoteRequested(quoteResponse.data.isRequested);
-        } catch (error) {
-          console.error('상태 확인 중 오류:', error);
-        }
+        await Promise.all([checkGeneralQuote(), checkFavoriteStatus()]);
       } else {
         setIsLoggedIn(false);
       }
@@ -363,6 +383,27 @@ export default function Page() {
   const totalPages = reviewsData?.totalPages ?? 1;
   const currentReviews = reviewsData?.reviews ?? [];
 
+  // 찜하기 버튼 렌더링 부분 수정
+  const renderFavoriteButton = () => (
+    <CommonButton
+      widthType='full'
+      heightType='primary'
+      backgroundColorType='white'
+      textColorType='black'
+      borderColorsType='gray'
+      className='flex items-center justify-center gap-2'
+      onClick={toggleFavorite}
+    >
+      <Image
+        src={isFavorite ? redFilledHeart : filledHeart}
+        alt='찜하기'
+        width={24}
+        height={24}
+      />
+      기사님 찜하기
+    </CommonButton>
+  );
+
   return (
     <div className='relative flex flex-col items-center mx-auto w-full overflow-auto xl:mt-[56px] mt-6 pb-24'>
       <div className='flex w-full px-0 md:px-[72px] xl:px-[100px] max-w-[1600px] gap-[117px]'>
@@ -379,7 +420,8 @@ export default function Page() {
             quoteCount={moverDetail.quoteCount}
             favoriteCount={moverDetail.favoriteCount}
             ratingCount={moverDetail.ratingCount}
-            isFavoriteMoverList={moverDetail.isFavorite}
+            isFavorite={moverDetail.isFavorite}
+            isFavoriteMoverList={false}
             description={moverDetail.description}
           />
           {/* 모바일 */}
@@ -474,26 +516,10 @@ export default function Page() {
         {/* 데스크탑 */}
         <div className='w-[354px] gap-[40px] hidden md:hidden xl:flex flex-col'>
           <p className='text-xl font-semibold'>
-            김코드 기사님에게 지정 견적을 요청해보세요!
+            {moverDetail.moverName} 기사님에게 지정 견적을 요청해보세요!
           </p>
 
-          <CommonButton
-            widthType='full'
-            heightType='primary'
-            backgroundColorType='white'
-            textColorType='black'
-            borderColorsType='gray'
-            className='flex items-center justify-center gap-2'
-            onClick={toggleFavorite}
-          >
-            <Image
-              src={isFavorite ? redFilledHeart : filledHeart}
-              alt='찜하기'
-              width={24}
-              height={24}
-            />
-            기사님 찜하기
-          </CommonButton>
+          {renderFavoriteButton()}
 
           <CommonButton
             widthType='full'
