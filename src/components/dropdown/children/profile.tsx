@@ -4,6 +4,9 @@ import Dropdown, { DropdownProps } from '../dropdown';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
+import useLogout from '@/hooks/auth/useLogout';
+import { useQueryClient } from '@tanstack/react-query';
+import { MyProfile } from '@/services/auth/types';
 
 function Profile({
   isOpen,
@@ -14,10 +17,13 @@ function Profile({
   const [name, setName] = useState('테스트');
   const pathname = usePathname();
   const divRef = useRef<HTMLDivElement | null>(null);
+  const logout = useLogout();
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<MyProfile>(['userProfile']);
   useEffect(() => {
     // 지울 코드
     // 주스탄드로 전역으로 유저정보 처리 할 것
-    setName('테스트');
+    setName(data?.name || '');
   }, []);
 
   useEffect(() => {
@@ -80,19 +86,19 @@ function Profile({
               'group hover:bg-grayscale-50',
             )}
           >
-            <Link
+            <button
               className={cn(
                 'text-grayscale-500 text-xs font-normal',
                 'xl:text-lg xl:font-medium ',
                 'group-hover:text-primary-blue-200 group-hover:font-bold',
               )}
-              href='#'
-              onClick={() => {
-                //로그아웃 함수
+              onClick={(e) => {
+                e.preventDefault();
+                logout.mutate();
               }}
             >
               로그아웃
-            </Link>
+            </button>
           </li>
         </ul>
       </Dropdown>

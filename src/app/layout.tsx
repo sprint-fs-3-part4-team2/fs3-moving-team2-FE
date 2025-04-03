@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import Provider from '../providers/_provider';
+import dynamic from 'next/dynamic';
 import ChatRoomList from '@/components/chat/chat';
-// import Analytics from '@/components/analytics/page';
 import GNB from '@/components/layout/gnb/template';
+// import Analytics from '@/components/analytics/page';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -30,15 +31,8 @@ export default function RootLayout({
         {/* 개발이 끝나고 활성화 */}
         {/* <Analytics /> */}
         <Provider>
-          <GNB
-            isAuthorized={true}
-            userType='customer'
-            userName={'안성재'}
-            imageUrl={'/img/sample-profile/sample-2.svg'}
-            hasNotification={true}
-          />
+          <GNB />
           {children}
-          {/* <ChatRoomList /> */}
         </Provider>
       </body>
     </html>

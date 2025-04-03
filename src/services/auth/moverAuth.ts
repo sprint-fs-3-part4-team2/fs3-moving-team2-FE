@@ -22,7 +22,6 @@ const moverAuthService = {
 
   signIn: async (data: SignInData): Promise<AuthResponse> => {
     try {
-      console.log('data: ', data);
       const response = await axiosInstance.post<AuthResponse>(
         MOVER_AUTH_ENDPOINTS.SIGNIN,
         data,
