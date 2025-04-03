@@ -178,36 +178,78 @@ export default function Page() {
     }
   }, [moverId]);
 
-  useEffect(() => {
-    // 로컬 스토리지에서 accessToken 확인
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setIsLoggedIn(true);
-      checkGeneralQuote(); // 로그인 상태일 때 일반 견적 요청 여부 확인
-    }
-  }, []);
-
   // 일반 견적 요청 여부 확인
   const checkGeneralQuote = async () => {
     try {
-      const response = await axiosInstance.get('/quote-requests/latest');
-      setHasGeneralQuote(response.data.length > 0);
-    } catch (error) {
+      console.log('일반 견적 요청 확인 시작');
+      const token = localStorage.getItem('accessToken');
+      console.log('현재 토큰:', token);
+
+      if (!token) {
+        console.log('토큰이 없습니다.');
+        setIsLoggedIn(false);
+        return;
+      }
+
+      const response = await axiosInstance.get('/quote-requests/latest', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log('일반 견적 요청 응답:', response.data);
+
+      if (response.data && Array.isArray(response.data)) {
+        setHasGeneralQuote(response.data.length > 0);
+        console.log('일반 견적 요청 여부:', response.data.length > 0);
+      } else {
+        console.log('응답 데이터 형식이 올바르지 않습니다:', response.data);
+        setHasGeneralQuote(false);
+      }
+    } catch (error: any) {
       console.error('일반 견적 요청 조회 에러:', error);
+      if (error.response?.status === 401) {
+        console.log('인증 에러 발생, 로그인 상태 초기화');
+        setIsLoggedIn(false);
+        localStorage.removeItem('accessToken');
+      }
+      setHasGeneralQuote(false);
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    console.log('초기 토큰 확인:', token);
+
+    if (token) {
+      setIsLoggedIn(true);
+      checkGeneralQuote();
+    } else {
+      setIsLoggedIn(false);
+      console.log('토큰이 없어 로그인 상태가 아닙니다.');
+    }
+  }, []);
+
   // 지정 견적 요청 핸들러
-  const handleQuoteRequest = (): void => {
+  const handleQuoteRequest = async (): Promise<void> => {
+    console.log('지정 견적 요청 시작');
+    console.log('로그인 상태:', isLoggedIn);
+    console.log('일반 견적 요청 여부:', hasGeneralQuote);
+
     if (!isLoggedIn) {
-      setShowLoginModal(true); // 비회원
+      console.log('로그인 필요');
+      setShowLoginModal(true);
       return;
     }
+
     if (!hasGeneralQuote) {
-      setShowGeneralQuoteModal(true); //회원, 일반 견적 요청 x
+      console.log('일반 견적 요청 필요');
+      setShowGeneralQuoteModal(true);
       return;
     }
-    setShowSpecificQuoteModal(true); // 지정 견적 요청
+
+    console.log('지정 견적 요청 가능');
+    setShowSpecificQuoteModal(true);
   };
 
   // 일반 견적 요청 페이지로 이동
@@ -217,11 +259,22 @@ export default function Page() {
   };
 
   // 지정 견적 요청 확인
-  const confirmSpecificQuote = (): void => {
-    setIsQuoteRequested(true);
-    setShowSpecificQuoteModal(false);
-    // API 호출
-    alert('지정 견적 요청이 완료되었습니다.');
+  const confirmSpecificQuote = async (): Promise<void> => {
+    try {
+      console.log('지정 견적 요청 API 호출 시작');
+      const token = localStorage.getItem('accessToken');
+      console.log('API 호출용 토큰:', token);
+
+      // 여기에 지정 견적 요청 API 호출 로직 추가
+      // const response = await axiosInstance.post(`/quote-requests/specific/${moverId}`);
+      // console.log('지정 견적 요청 응답:', response.data);
+
+      setIsQuoteRequested(true);
+      setShowSpecificQuoteModal(false);
+      alert('지정 견적 요청이 완료되었습니다.');
+    } catch (error) {
+      console.error('지정 견적 요청 에러:', error);
+    }
   };
 
   // 로그인 페이지로 이동
