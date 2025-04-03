@@ -26,7 +26,7 @@ export const getQuoteByCustomer = async (quoteId: string) => {
 export const getQuoteByMover = async (quoteId: string) => {
   try {
     const { data } = await axiosInstance.get<QuoteForMover>(
-      `${MOVER_QUOTE_URL}${quoteId}/mover`,
+      `${MOVER_QUOTE_URL}/${quoteId}/mover`,
     );
     return data;
   } catch (error) {
