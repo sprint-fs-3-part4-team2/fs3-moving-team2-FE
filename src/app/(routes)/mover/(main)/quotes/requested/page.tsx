@@ -153,36 +153,38 @@ export default function Page() {
               <p className='text-grayscale-400'>아직 받은 요청이 없어요!</p>
             </div>
           ) : (
-            <ul>
-              {/* 고객 요청 리스트 */}
-              {customerRequests?.list?.map((customer) => (
-                <li
-                  key={customer.quoteId}
-                  className='mb-12'
-                >
-                  <CustomerInfo
-                    {...customer}
-                    variant='requested'
-                    onSubmit={() => {
-                      setSelectedCustomer(customer);
-                      setShowSubmitModal(true);
-                    }}
-                    onDecline={() => {
-                      setSelectedCustomer(customer);
-                      setShowDeclineModal(true);
-                    }}
-                  />
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul>
+                {/* 고객 요청 리스트 */}
+                {customerRequests?.list?.map((customer) => (
+                  <li
+                    key={customer.quoteId}
+                    className='mb-12'
+                  >
+                    <CustomerInfo
+                      {...customer}
+                      variant='requested'
+                      onSubmit={() => {
+                        setSelectedCustomer(customer);
+                        setShowSubmitModal(true);
+                      }}
+                      onDecline={() => {
+                        setSelectedCustomer(customer);
+                        setShowDeclineModal(true);
+                      }}
+                    />
+                  </li>
+                ))}
+              </ul>
+              <div className='flex justify-center items-center mt-6 mb-8'>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={customerRequests?.totalPages ?? 1}
+                  onPageChange={(currentPage) => setCurrentPage(currentPage)}
+                />
+              </div>
+            </>
           )}
-          <div className='flex justify-center items-center mt-6 mb-8'>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={customerRequests?.totalPages ?? 1}
-              onPageChange={(currentPage) => setCurrentPage(currentPage)}
-            />
-          </div>
         </section>
       </div>
       {showSubmitModal && (
