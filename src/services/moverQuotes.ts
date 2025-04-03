@@ -3,11 +3,11 @@ import {
   QuoteForCustomer,
   QuoteForMover,
 } from './types/quotesDetail/quotesDetail.types';
-import { QuoteRequest } from './types/quotesDetail/common.types';
 import {
   SubmitQuoteRequest,
   SubmittedQuotes,
 } from './types/submittedQuotes/submittedQuotes.types';
+import { AxiosResponse } from 'axios';
 
 const MOVER_QUOTE_URL = '/mover-quotes';
 
@@ -17,8 +17,9 @@ export const getQuoteByCustomer = async (quoteId: string) => {
       `${MOVER_QUOTE_URL}/${quoteId}/customer`,
     );
     return data;
-  } catch {
-    console.error('견적 불러오기 실패');
+  } catch (error) {
+    console.error('견적 불러오기 실패', error);
+    throw error;
   }
 };
 
@@ -28,8 +29,9 @@ export const getQuoteByMover = async (quoteId: string) => {
       `${MOVER_QUOTE_URL}${quoteId}/mover`,
     );
     return data;
-  } catch {
-    console.error('견적 불러오기 실패');
+  } catch (error) {
+    console.error('견적 불러오기 실패', error);
+    throw error;
   }
 };
 
@@ -52,7 +54,7 @@ export const getSubmittedQuotesList = async ({
     );
     return data;
   } catch (error) {
-    console.error('완료된 견적 목록 불러오기 실패');
+    console.error('완료된 견적 목록 불러오기 실패', error);
     throw error;
   }
 };
@@ -72,6 +74,17 @@ export const submitQuoteByMover = async (
     );
   } catch (error) {
     console.error('견적 제출 실패');
+    throw error;
+  }
+};
+
+export const confirmQuoteByCustomer = async (moverQuoteId: string) => {
+  try {
+    await axiosInstance.post<void, AxiosResponse<void>, string>(
+      `/quote/confirm-quote/${moverQuoteId}`,
+    );
+  } catch (error) {
+    console.error('견적 확정 실패', error);
     throw error;
   }
 };

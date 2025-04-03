@@ -1,13 +1,13 @@
-import { C1 } from '@/lib/types/type';
 import cn from '@/utils/cn';
 import { type ClassNameValue } from 'tailwind-merge';
 
-interface CtaBtnProps extends C1 {
+interface CtaBtnProps {
   type: 'outline' | 'default' | 'primary';
   value: string;
   height: ClassNameValue;
   onClick?: React.MouseEventHandler<HTMLInputElement>;
   border?: boolean;
+  className?: string;
 }
 export default function CtaBtn({
   value,

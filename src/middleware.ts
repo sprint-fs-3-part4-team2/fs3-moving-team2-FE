@@ -1,55 +1,100 @@
+export const config = {
+  matcher: [
+    // _next/static, _next/image, favicon.ico 등 정적 파일을 제외
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg)$).*)',
+  ],
+};
+
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtDecode } from 'jwt-decode';
-import { UserType } from './components/authPage/common.types';
+import { UserType } from '@/components/authPage/common.types';
 
-const PASSPORT = 'passPortToken';
-const protectedPathsMover = ['/mover/info/edit'];
+const PROTECT = {
+  NO_USER: [
+    '/mover/',
+    '/user/quotes/request',
+    '/user/quotes/',
+    '/user/profile',
+    '/user/reviews',
+  ], // 로그인 안 했을 때
+  CUSTOMER: ['/mover/'], // 고객이 권한 없는 페이지
+  MOVER: ['/user/'], // 기사가 권한 없는 페이지
+};
 
-interface CustomJWT {
-  userId: string;
-  type: UserType;
-  roleId: string;
-  iat: number;
-  exp: number;
-}
-
-// 미들웨어 함수 정의
 export function middleware(request: NextRequest) {
   const res = NextResponse.next();
   const { pathname } = request.nextUrl;
   const { cookies, url } = request;
   const token = cookies.get('accessToken')?.value;
-
-  // if (token) {
-  //   const decoded = jwtDecode(token) as CustomJWT;
-  //   const p2 = cookies.get(PASSPORT);
-
-  //   if (decoded)
-  //     res.cookies.set({
-  //       name: PASSPORT,
-  //       value: JSON.stringify({ type: decoded.type }),
-  //       httpOnly: true,
-  //       secure: process.env.NODE_ENV === 'production',
-  //       path: '/',
-  //       sameSite: 'none',
-  //     });
-  // } else res.cookies.delete(PASSPORT);
-
-  if (protectedPathsMover.some((path) => pathname.startsWith(path))) {
+  const authQuery = '?warn=login';
+  const noAccess = '?warn=noAccess';
+  if (process.env.NODE_ENV === 'development') return res;
+  if (process.env.NODE_ENV === 'production')
     if (!token) {
-      const loginUrl = new URL('/mover/sign-in', url);
-      return NextResponse.redirect(loginUrl);
+      const nouserProtected =
+        PROTECT.NO_USER.some((path) => pathname.startsWith(path)) &&
+        !pathname.includes('sign-in') &&
+        !pathname.includes('sign-up');
+
+      if (nouserProtected) {
+        const loginUrl = new URL('/select-role' + authQuery, url);
+        return NextResponse.redirect(loginUrl);
+      }
+      return res;
+    }
+
+  if (token) {
+    const decode = jwtDecode(token) as CustomJWTPayload;
+
+    if (!decode) return res;
+    const { roleId, type } = decode;
+    console.log(pathname, !roleId && !pathname.includes('/profile/register'));
+    if (!roleId && !pathname.includes('/profile/register')) {
+      const referer = request.headers.get('referer');
+      const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
+
+      if (!referer) return NextResponse.redirect(new URL(urlPath, url));
+
+      if (referer.includes('/profile/register'))
+        return NextResponse.redirect(
+          new URL(urlPath + '?warn=profileRegister', url),
+        );
+
+      return NextResponse.redirect(new URL(urlPath, url));
+    }
+
+    const protectType = type === 'customer' ? PROTECT.CUSTOMER : PROTECT.MOVER;
+    const authUserProtected = protectType.some((path) =>
+      pathname.includes(path),
+    );
+
+    if (
+      pathname.includes('sign-in') ||
+      pathname.includes('sign-up') ||
+      pathname.includes('select-role')
+    ) {
+      return NextResponse.redirect(new URL('/' + noAccess, url));
+    }
+
+    if (authUserProtected) {
+      const referer = request.headers.get('referer');
+
+      if (referer) {
+        return NextResponse.redirect(new URL(referer + noAccess, url));
+      } else {
+        return NextResponse.redirect(new URL('/' + noAccess, url));
+      }
     }
   }
 
   return res;
 }
 
-// 미들웨어 적용할 경로 설정 (matcher 사용)
-// export const config = {
-//   matcher: [
-//     '/mover/:path*',
-//     '/((?!api|_next/static|_next/image|favicon.ico|images|fonts).*)',
-//   ],
-// };
+interface CustomJWTPayload {
+  userId: string;
+  type: UserType;
+  roleId: string;
+  iat: number;
+  exp: number;
+}
