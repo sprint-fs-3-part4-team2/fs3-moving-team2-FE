@@ -30,6 +30,17 @@ interface Mover {
   createdAt: string;
   updatedAt: string;
   moverServices: MoverService[];
+  user: User;
+}
+
+interface User {
+  id: string;
+  userType: string;
+  email: string;
+  name: string;
+  phoneNumber: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface MoverService {
@@ -48,6 +59,7 @@ interface MoverQuote {
   createdAt: string;
   updatedAt: string;
   mover: Mover;
+  targetedQuoteRequestId: string;
 }
 
 interface Quote {
@@ -89,154 +101,135 @@ export default function Page() {
   const router = useRouter();
   const [movers, setMovers] = useState<MoverInfoTemplateProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const itemsPerPage = 4;
 
+  const fetchFavorites = async (): Promise<string[]> => {
+    const response = await axiosInstance.get('/favorites');
+    if (Array.isArray(response.data.data)) {
+      return response.data.data.map((fav: { moverId: string }) => fav.moverId);
+    }
+    return [];
+  };
+
   useEffect(() => {
-    const checkLogin = async () => {
-      await axiosInstance.get(
-        '/auth/fakeSignIn?userId=cm8sc9j9q0012uzks94fmpzu5&roleId=cm8sc9jeg003wuzksdt8q4ngq&type=customer',
-      );
-      setIsLoggedIn(true);
+    const fetchPendingQuotes = async () => {
+      const [favorites, response] = await Promise.all([
+        fetchFavorites(),
+        axiosInstance.get('/quote/pending-quotes'),
+      ]);
+      const quotes: Quote = response.data.data;
+      console.log('quotes:', quotes);
+      if (quotes && Array.isArray(quotes.moverQuotes)) {
+        const transformedMovers = quotes.moverQuotes.map(
+          (moverQuote: MoverQuote) => {
+            const movingTypes: ('small' | 'office' | 'home')[] =
+              moverQuote.mover.moverServices.map((service) => {
+                switch (service.serviceType) {
+                  case 'SMALL_MOVE':
+                    return 'small';
+                  case 'OFFICE_MOVE':
+                    return 'office';
+                  case 'HOME_MOVE':
+                    return 'home';
+                  default:
+                    return 'small';
+                }
+              });
+            const isCustomQuote = moverQuote.targetedQuoteRequestId
+              ? true
+              : false;
+            return {
+              variant: 'quote' as Variant,
+              subVariant: 'pending' as SubVariant,
+              moverName: moverQuote.mover.user?.name || '알 수 없음',
+              movingType: movingTypes,
+              isCustomQuote: isCustomQuote,
+              quoteState: 'pendingQuote' as QuoteState,
+              rating: moverQuote.mover.averageRating,
+              experienceYears: moverQuote.mover.experienceYears,
+              quoteCount: moverQuote.mover.totalConfirmedCount,
+              isFavorite: favorites.includes(moverQuote.mover.id),
+              totalCustomerFavorite: moverQuote.mover.totalCustomerFavorite,
+              ratingCount: moverQuote.mover.totalReviews,
+              price: moverQuote.price,
+              quoteId: moverQuote.id,
+              movingDate: new Date(quotes.moveDate),
+              departure: `${quotes.quoteRequestAddresses.find((addr) => addr.type === 'DEPARTURE')?.sido} ${
+                quotes.quoteRequestAddresses.find(
+                  (addr) => addr.type === 'DEPARTURE',
+                )?.sigungu
+              }`,
+              arrival: `${quotes.quoteRequestAddresses.find((addr) => addr.type === 'ARRIVAL')?.sido} ${
+                quotes.quoteRequestAddresses.find(
+                  (addr) => addr.type === 'ARRIVAL',
+                )?.sigungu
+              }`,
+              imageUrl: moverQuote.mover.profileImage,
+              moverId: moverQuote.mover.id,
+              onConfirmClick: () => handleConfirmClick(moverQuote.id),
+              onDetailClick: () =>
+                router.push(`/user/quotes/${moverQuote.mover.id}`),
+              onFavoriteClick: (moverId: string) =>
+                handleFavoriteClick(moverId),
+            };
+          },
+        );
+        setMovers(transformedMovers);
+      }
     };
-    checkLogin().catch(() => setIsLoggedIn(false));
+    fetchPendingQuotes();
   }, []);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      const fetchPendingQuotes = async () => {
-        try {
-          const response = await axiosInstance.get('/quote/pending-quotes');
-          const data = response.data;
-          const quotes: Quote = data.data;
-          console.log('quotes:', quotes);
-          if (quotes && Array.isArray(quotes.moverQuotes)) {
-            const transformedMovers = quotes.moverQuotes.map(
-              (moverQuote: MoverQuote) => {
-                const movingTypes: ('small' | 'office' | 'home')[] =
-                  moverQuote.mover.moverServices.map((service) => {
-                    switch (service.serviceType) {
-                      case 'SMALL_MOVE':
-                        return 'small';
-                      case 'OFFICE_MOVE':
-                        return 'office';
-                      case 'HOME_MOVE':
-                        return 'home';
-                      default:
-                        return 'small';
-                    }
-                  });
-                return {
-                  variant: 'quote' as Variant,
-                  subVariant: 'pending' as SubVariant,
-                  moverName: moverQuote.mover.introduction,
-                  movingType: movingTypes,
-                  isCustomQuote: false,
-                  quoteState: 'pendingQuote' as QuoteState,
-                  rating: moverQuote.mover.averageRating,
-                  experienceYears: moverQuote.mover.experienceYears,
-                  quoteCount: moverQuote.mover.totalConfirmedCount,
-                  isFavorite: false,
-                  totalCustomerFavorite: moverQuote.mover.totalCustomerFavorite,
-                  ratingCount: moverQuote.mover.totalReviews,
-                  price: moverQuote.price,
-                  quoteId: moverQuote.id,
-                  movingDate: new Date(quotes.moveDate),
-                  departure: `${
-                    quotes.quoteRequestAddresses.find(
-                      (addr) => addr.type === 'DEPARTURE',
-                    )?.sido
-                  } ${
-                    quotes.quoteRequestAddresses.find(
-                      (addr) => addr.type === 'DEPARTURE',
-                    )?.sigungu
-                  }`,
-                  arrival: `${
-                    quotes.quoteRequestAddresses.find(
-                      (addr) => addr.type === 'ARRIVAL',
-                    )?.sido
-                  } ${
-                    quotes.quoteRequestAddresses.find(
-                      (addr) => addr.type === 'ARRIVAL',
-                    )?.sigungu
-                  }`,
-                  imageUrl: moverQuote.mover.profileImage,
-                  moverId: moverQuote.mover.id,
-                  onConfirmClick: () => handleConfirmClick(moverQuote.id),
-                  onDetailClick: () =>
-                    router.push(`/user/quotes/${moverQuote.id}`),
-                  onFavoriteClick: (moverId: string) =>
-                    handleFavoriteClick(moverId),
-                };
-              },
-            );
-            setMovers(transformedMovers);
-          }
-        } catch (error) {
-          console.error('Error fetching quotes:', error);
-        }
-      };
-      fetchPendingQuotes();
-    }
-  }, [isLoggedIn]);
-
   const handleConfirmClick = async (quoteId: string) => {
-    try {
-      const response = await axiosInstance.post(
-        `/quote/confirm-quote/${quoteId}`,
+    const response = await axiosInstance.post(
+      `/quote/confirm-quote/${quoteId}`,
+    );
+    if (response.status === 200) {
+      alert('견적이 확정되었습니다.');
+      setMovers((prevMovers) =>
+        prevMovers.filter((mover) => mover.quoteId !== quoteId),
       );
-      if (response.status === 200) {
-        alert('견적이 확정되었습니다.');
-        setMovers((prevMovers) =>
-          prevMovers.filter((mover) => mover.quoteId !== quoteId),
-        );
-      }
-    } catch (error) {
-      console.error('Error confirming quote:', error);
+    } else {
       alert('견적 확정에 실패했습니다.');
     }
   };
 
-  // 찜하기 버튼 클릭 시
   const handleFavoriteClick = async (moverId: string) => {
-    console.log('하트 클릭 moverID:', moverId); // 디버깅
-    // 상태 업데이트 전 콘솔
-    console.log('movers1:', movers);
-    const updatedMovers = movers.map((mover) =>
-      mover.moverId === moverId
-        ? {
-            ...mover,
-            isFavorite: !mover.isFavorite,
-            totalCustomerFavorite: mover.isFavorite
-              ? mover.totalCustomerFavorite - 1
-              : mover.totalCustomerFavorite + 1,
-          }
-        : mover,
-    );
-    console.log('Updated movers:', updatedMovers);
-    const selectedMover = updatedMovers.find(
-      (mover) => mover.moverId === moverId,
-    );
-    console.log(updatedMovers);
-    if (!selectedMover) return;
-    console.log('b');
-    const apiEndpoint = selectedMover.isFavorite
-      ? `/favorites/create/${moverId}`
-      : `/favorites/delete/${moverId}`;
-    console.log(`Calling API endpoint: ${apiEndpoint}`); // 디버깅
-    try {
-      const response = await axiosInstance.post(apiEndpoint);
-      console.log('API response:', response); // 디버깅
-      if (response.status === 201 || response.status === 200) {
-        setMovers(updatedMovers);
-        console.log('상태 업데이트 후:', updatedMovers); // 디버깅
-      } else {
-        alert('찜하기 상태 변경에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('Error with favorite API:', error);
-      alert('찜하기 상태 변경에 실패했습니다.');
+    const createFavorite = async (moverId: string) => {
+      const response = await axiosInstance.post(`/favorites/create/${moverId}`);
+      return response.data;
+    };
+
+    const deleteFavorite = async (moverId: string) => {
+      const response = await axiosInstance.delete(
+        `/favorites/delete/${moverId}`,
+      );
+      return response.data;
+    };
+
+    const moverIndex = movers.findIndex((mover) => mover.moverId === moverId);
+    if (moverIndex === -1) return;
+    const selectedMover = movers[moverIndex];
+    const isCurrentlyFavorite = selectedMover.isFavorite;
+    let apiResponse;
+    if (isCurrentlyFavorite) {
+      apiResponse = await deleteFavorite(moverId);
+    } else {
+      apiResponse = await createFavorite(moverId);
     }
+    setMovers((prevMovers) =>
+      prevMovers.map((mover) =>
+        mover.moverId === moverId
+          ? {
+              ...mover,
+              isFavorite: !isCurrentlyFavorite,
+              totalCustomerFavorite:
+                apiResponse?.totalCustomerFavorite ??
+                mover.totalCustomerFavorite,
+            }
+          : mover,
+      ),
+    );
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -253,7 +246,7 @@ export default function Page() {
             imageUrl={mover.imageUrl}
             favoriteCount={mover.totalCustomerFavorite ?? 0}
             ratingCount={mover.ratingCount ?? 0}
-            onFavoriteClick={() => mover.onFavoriteClick(mover.moverId)}
+            onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
           />
         ))}
       </div>
