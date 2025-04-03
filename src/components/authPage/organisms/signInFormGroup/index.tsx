@@ -16,7 +16,6 @@ import {
   VALIDATION_PATTERN,
 } from '../constants';
 import { useToaster } from '@/hooks/useToaster';
-import axios from 'axios';
 
 export default function SignInFormGroup({
   userType = 'customer',
@@ -42,14 +41,6 @@ export default function SignInFormGroup({
     mutate(data as SignInData, {
       onSuccess: () => {
         toast('info', '로그인 성공!');
-      },
-      onError: (error) => {
-        console.log('error: ', error);
-        if (axios.isAxiosError(error)) {
-          const errorMessage =
-            error.response?.data.message || '이메일과 비밀번호를 확인해주세요!';
-          toast('warn', errorMessage);
-        }
       },
     });
   };

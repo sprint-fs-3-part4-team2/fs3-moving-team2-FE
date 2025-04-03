@@ -47,13 +47,6 @@ export default function SignUpFormGroup({
       onSuccess: () => {
         toast('info', '회원가입 성공!');
       },
-      onError: (error) => {
-        console.log('error: ', error);
-        if (axios.isAxiosError(error)) {
-          const errorMessage = error.response?.data.message || '회원가입 실패!';
-          toast('warn', errorMessage);
-        }
-      },
     });
   };
 

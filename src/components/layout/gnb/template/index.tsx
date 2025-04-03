@@ -14,7 +14,6 @@ const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
 export default function GNB() {
   const pathname = usePathname();
   const { data } = useUserProfile();
-  console.log('user profile data: ', data);
 
   const isAuthorized = data ? true : false;
   const userName = data?.name || '';
