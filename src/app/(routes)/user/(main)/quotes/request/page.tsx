@@ -1,20 +1,16 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 import QuoteRequestPage from '@/components/quoteRequest/QuoteRequestPage';
 import QuoteRequestInProgressPage from '@/components/quoteRequest/QuoteRequestInProgressPage';
-import { getlatestQuoteRequest } from '@/services/quoteRequests';
+import { getQuoteRequest } from '@/services/quoteRequests';
+import { useQuery } from '@tanstack/react-query';
 
-export default async function Page() {
-  let data = null;
-  try {
-    data = await getlatestQuoteRequest();
-  } catch (error) {
-    console.error('Error fetching : getlatestQuoteRequest', error);
-  }
+export default function Page() {
+  const { data } = useQuery({
+    queryKey: ['myQuoteRequest'],
+    queryFn: getQuoteRequest,
+  });
 
-  console.log('data : ', data);
-
-  return data.isRequested ? (
+  return data?.isRequested ? (
     <QuoteRequestInProgressPage />
   ) : (
     <QuoteRequestPage />

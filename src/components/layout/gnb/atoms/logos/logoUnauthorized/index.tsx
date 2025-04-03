@@ -9,6 +9,7 @@ export default function LogoUnauthorized(): JSX.Element {
         alt='logo with text icon'
         fill
         className='object-contain'
+        priority
       />
     </div>
   );

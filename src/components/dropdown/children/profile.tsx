@@ -4,8 +4,9 @@ import Dropdown, { DropdownProps } from '../dropdown';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSignOut } from '@/hooks/auth/useAuth';
-import { useProfileQuery } from '@/hooks/auth/useProfileQuery';
+import useLogout from '@/hooks/auth/useLogout';
+import { useQueryClient } from '@tanstack/react-query';
+import { MyProfile } from '@/services/auth/types';
 
 function Profile({
   isOpen,
@@ -15,8 +16,14 @@ function Profile({
   const [open, setOpen] = useState(isOpen || false);
   const pathname = usePathname();
   const divRef = useRef<HTMLDivElement | null>(null);
-  const { data } = useProfileQuery();
-  const signOut = useSignOut();
+  const logout = useLogout();
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<MyProfile>(['userProfile']);
+  useEffect(() => {
+    // 지울 코드
+    // 주스탄드로 전역으로 유저정보 처리 할 것
+    setName(data?.name || '');
+  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -78,17 +85,19 @@ function Profile({
               'group hover:bg-grayscale-50',
             )}
           >
-            <Link
+            <button
               className={cn(
                 'text-grayscale-500 text-xs font-normal',
                 'xl:text-lg xl:font-medium ',
                 'group-hover:text-primary-blue-200 group-hover:font-bold',
               )}
-              href='#'
-              onClick={() => signOut.mutate()}
+              onClick={(e) => {
+                e.preventDefault();
+                logout.mutate();
+              }}
             >
               로그아웃
-            </Link>
+            </button>
           </li>
         </ul>
       </Dropdown>

@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import { MenuIconProp } from './menuIcon.type';
 import { MENU_ICON_STYLES } from './constant';
+import cn from '@/utils/cn';
 
-export default function MenuIcon({ menuOnClick }: MenuIconProp): JSX.Element {
+export default function MenuIcon({ menuOnClick, className }: MenuIconProp) {
   return (
     <div
-      className={MENU_ICON_STYLES}
+      className={cn(MENU_ICON_STYLES, className)}
       onClick={menuOnClick}
     >
       <Image

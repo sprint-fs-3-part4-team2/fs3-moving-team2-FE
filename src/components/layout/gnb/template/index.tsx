@@ -5,6 +5,7 @@ import GNBLayout from '../atoms/layout/gnbLayout';
 import GNBLogo from '../molecules/gnbLogo';
 import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
 import dynamic from 'next/dynamic';
+import useUserProfile from '@/hooks/auth/useUserProfile';
 const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
   ssr: false,
 });
@@ -12,6 +13,13 @@ const GNBMenu = dynamic(() => import('../molecules/gnbMenu'));
 
 export default function GNB() {
   const pathname = usePathname();
+  const { data } = useUserProfile();
+
+  const isAuthorized = data ? true : false;
+  const userName = data?.name || '';
+  const imageUrl =
+    data?.profile?.profileImage || '/icons/gnb/default-profile.svg';
+  const userType = data?.userType || 'guest';
 
   const hidePathnames = [
     '/select-role',
@@ -31,7 +39,12 @@ export default function GNB() {
           <GNBLogo isAuthorized={true} />
           <GNBMenu />
         </div>
-        <GNBRightSection />
+        <GNBRightSection
+          isAuthorized={isAuthorized}
+          userName={userName}
+          imageUrl={imageUrl}
+          userType={userType}
+        />
       </GNBLayout>
     </div>
   );

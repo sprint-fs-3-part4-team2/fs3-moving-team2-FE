@@ -10,6 +10,7 @@ export default function LogoAuthorized(): JSX.Element {
           alt='only logo icon'
           fill
           className='object-contain'
+          priority
         />
       </div>
       <div className={LOGO_ONLY_STYLES}>
@@ -18,6 +19,7 @@ export default function LogoAuthorized(): JSX.Element {
           alt='only logo icon'
           fill
           className='object-contain'
+          priority
         />
       </div>
     </div>

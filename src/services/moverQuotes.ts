@@ -72,8 +72,9 @@ export const submitQuoteByMover = async (
         comment,
       },
     );
-  } catch {
+  } catch (error) {
     console.error('견적 제출 실패');
+    throw error;
   }
 };
 
