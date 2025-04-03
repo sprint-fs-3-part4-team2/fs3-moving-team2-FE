@@ -4,7 +4,7 @@ import QuoteRequestInProgressPage from '@/components/quoteRequest/QuoteRequestIn
 import { getQuoteRequest } from '@/services/quoteRequests';
 import { useQuery } from '@tanstack/react-query';
 
-export default async function Page() {
+export default function Page() {
   const { data } = useQuery({
     queryKey: ['myQuoteRequest'],
     queryFn: getQuoteRequest,
