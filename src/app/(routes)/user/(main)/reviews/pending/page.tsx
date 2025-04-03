@@ -2,11 +2,62 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { getPendingReviews } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import ReviewModal from '@/components/modal/children/ReviewModal';
 
+function ConfirmationModal({
+  message,
+  showCancel,
+  onConfirm,
+  onCancel,
+  onClose,
+}: {
+  message: string;
+  showCancel: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className='fixed top-0 left-0 w-full h-full bg-[#141414] bg-opacity-60 backdrop-blur-[5px] z-10'
+      onClick={onClose}
+    >
+      <dialog
+        className='w-[350px] md:w-[500px] xl:w-[580px] h-[320px] md:h-[300px] px-[24px] pt-[34px] pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-20'
+        open
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className='text-[24px]/[32px] font-[600]'>리뷰 작성 완료</p>
+        <p className='absolute w-full px-[24px] text-center break-keep top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[94px] md:-translate-y-[84px] text-[21px] font-[500] py-[50px]'>
+          {message}
+        </p>
+        <div className='absolute bottom-[28px] w-[calc(350px-48px)] md:w-[calc(500px-48px)] xl:w-[calc(580px-48px)] flex justify-center gap-[16px]'>
+          {showCancel && (
+            <button
+              onClick={onCancel}
+              className='text-[20px] font-[600] bg-gray-300 text-white w-[100%] h-[64px] text-center rounded-[16px] border-[2px] border-black cursor-pointer'
+            >
+              취소
+            </button>
+          )}
+          <button
+            onClick={onConfirm}
+            className='text-[20px] font-[600] bg-primary-blue-300 text-white w-[100%] h-[64px] text-center rounded-[16px] border-[2px] border-black cursor-pointer'
+          >
+            확인
+          </button>
+        </div>
+      </dialog>
+    </div>
+  );
+}
+
 export default function Page() {
+  const router = useRouter();
+
   // 예: n개의 목데이터 생성
   // const createMockData = (count: number) => {
   //   return Array.from({ length: count }, (_, index) => ({
@@ -47,6 +98,11 @@ export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEstimate, setSelectedEstimate] =
     useState<ReviewableEstimate | null>(null);
+  const [postSubmitModal, setPostSubmitModal] = useState({
+    isOpen: false,
+    message: '',
+    showCancel: false,
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -69,10 +125,50 @@ export default function Page() {
   };
 
   // 리뷰 제출 후 estimates에서 해당 리뷰 제거
+  // const handleReviewSubmit = (estimateId: string) => {
+  //   setEstimates((prev) =>
+  //     prev.filter((estimate) => estimate.id !== estimateId),
+  //   );
+  // };
+
   const handleReviewSubmit = (estimateId: string) => {
-    setEstimates((prev) =>
-      prev.filter((estimate) => estimate.id !== estimateId),
+    const remainingEstimates = estimates.filter(
+      (estimate) => estimate.id !== estimateId,
     );
+    setEstimates(remainingEstimates);
+
+    if (remainingEstimates.length > 0) {
+      setPostSubmitModal({
+        isOpen: true,
+        message: '내가 작성한 리뷰 페이지로 이동하시겠습니까?',
+        showCancel: true,
+      });
+    } else {
+      setPostSubmitModal({
+        isOpen: true,
+        message: '내가 작성한 리뷰 페이지로 이동합니다.',
+        showCancel: false,
+      });
+    }
+  };
+
+  const handleConfirm = () => {
+    setPostSubmitModal({ ...postSubmitModal, isOpen: false });
+    router.push('/user/reviews/completed');
+    // router.push('/user/reviews/completed?refresh=true');
+    // window.location.href = '/user/reviews/completed';
+  };
+
+  const handleCancel = () => {
+    setPostSubmitModal({ ...postSubmitModal, isOpen: false });
+  };
+
+  const handleModalClose = () => {
+    if (!postSubmitModal.showCancel) {
+      handleConfirm();
+    } else {
+      handleCancel();
+    }
   };
 
   // 반응형 페이지네이션 관련 상태 및 계산
@@ -415,6 +511,15 @@ export default function Page() {
           estimate={selectedEstimate}
           onClose={() => setIsModalOpen(false)}
           onSubmit={handleReviewSubmit} // 제출 후 콜백 전달
+        />
+      )}
+      {postSubmitModal.isOpen && (
+        <ConfirmationModal
+          message={postSubmitModal.message}
+          showCancel={postSubmitModal.showCancel}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          onClose={handleModalClose}
         />
       )}
     </div>

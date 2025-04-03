@@ -32,7 +32,7 @@ export default function MoverReceivedRequestFilter({
     setSelectedFilters(newFilters);
   };
   return (
-    <div className='hidden xl:block xl:w-80'>
+    <div className='hidden xl:block xl:w-80 sticky top-28 h-fit'>
       {/* 이사 유형 필터 */}
       <div className='border-b pb-1'>
         <div className='flex justify-between items-center py-3 px-4 border-b '>
