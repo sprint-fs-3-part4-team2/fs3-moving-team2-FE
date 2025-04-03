@@ -25,6 +25,7 @@ export default function MyPage() {
   } = useQuery({
     queryKey: ['moverReviews'],
     queryFn: async () => await getMoverReviews(),
+    staleTime: 0,
   });
 
   const {
@@ -34,6 +35,7 @@ export default function MyPage() {
   } = useQuery({
     queryKey: ['moverProfile'],
     queryFn: async () => await getMoverProfile(),
+    staleTime: 0,
   });
 
   if (isLoadingReviews || isLoadingProfile)
