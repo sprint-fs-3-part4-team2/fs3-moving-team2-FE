@@ -13,7 +13,7 @@ const GNBMenu = dynamic(() => import('../molecules/gnbMenu'));
 
 export default function GNB() {
   const pathname = usePathname();
-  const { data } = useUserProfile();
+  const { data, isFetched } = useUserProfile();
 
   const isAuthorized = data ? true : false;
   const userName = data?.name || '';
@@ -37,14 +37,16 @@ export default function GNB() {
       <GNBLayout>
         <div className={GNB_LOGO_MENU_STYLES}>
           <GNBLogo isAuthorized={true} />
-          <GNBMenu />
+          <GNBMenu userType={userType} />
         </div>
-        <GNBRightSection
-          isAuthorized={isAuthorized}
-          userName={userName}
-          imageUrl={imageUrl}
-          userType={userType}
-        />
+        {isFetched && (
+          <GNBRightSection
+            isAuthorized={isAuthorized}
+            userName={userName}
+            imageUrl={imageUrl}
+            userType={userType}
+          />
+        )}
       </GNBLayout>
     </div>
   );
