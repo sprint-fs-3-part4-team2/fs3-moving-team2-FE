@@ -26,4 +26,6 @@ export interface AuthResponse {
   profile: profile | null;
 }
 
-export interface MyProfile extends AuthResponse {}
+export interface MyProfile extends AuthResponse {
+  // This interface is MyProfile Type
+}

@@ -4,11 +4,8 @@ import './globals.css';
 import Provider from '../providers/_provider';
 import dynamic from 'next/dynamic';
 import ChatRoomList from '@/components/chat/chat';
+import GNB from '@/components/layout/gnb/template';
 // import Analytics from '@/components/analytics/page';
-
-const GNB = dynamic(() => import('@/components/layout/gnb/template'), {
-  ssr: false,
-});
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
