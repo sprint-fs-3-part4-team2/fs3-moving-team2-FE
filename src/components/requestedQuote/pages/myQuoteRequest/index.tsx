@@ -11,12 +11,13 @@ export default function MyQuoteRequest() {
     queryFn: getQuoteRequest,
   });
 
+  console.log(data);
   if (data && data?.isRequested && data?.quote)
     return (
       <QuoteRequestExist
         id={data.quote.id}
         movingDate={new Date(data.quote.moveDate)}
-        requestedDate={new Date(data.quote.requestedAt)}
+        requestedDate={new Date(data.quote.requestedDate)}
         movingType={data.quote.moveType}
         departure={data.quote.departure.fullAddress}
         arrival={data.quote.arrival.fullAddress}
