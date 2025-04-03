@@ -52,7 +52,7 @@ export default function MoverStatInfo({
               className='bg-bg-[var(--background-200)]'
             >
               <div
-                className='flex items-center justify-center gap-2'
+                className='flex items-center justify-center gap-2 cursor-pointer'
                 onClick={onInfoEdit}
               >
                 기본 정보 수정
