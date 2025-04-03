@@ -3,6 +3,7 @@ import userAuthService from '@/services/auth/userAuth';
 import moverAuthService from '@/services/auth/moverAuth';
 import { useRouter } from 'next/navigation';
 import { MyProfile } from '@/services/auth/types';
+import handleAuthError from '@/utils/handleAuthError';
 
 // User
 export const useUserSignUp = () => {
@@ -25,6 +26,7 @@ export const useUserSignUp = () => {
     },
     onError: (error: any) => {
       console.error('회원가입 실패:', error);
+      router.push(handleAuthError('user', 'sign-up', error));
     },
   });
 };
@@ -49,6 +51,7 @@ export const useUserSignIn = () => {
     },
     onError: (error: any) => {
       console.error('로그인 실패:', error);
+      router.push(handleAuthError('user', 'sign-in', error));
     },
   });
 };
@@ -74,6 +77,7 @@ export const useMoverSignUp = () => {
     },
     onError: (error: any) => {
       console.error('회원가입 실패:', error);
+      router.push(handleAuthError('mover', 'sign-up', error));
     },
   });
 };
@@ -98,6 +102,7 @@ export const useMoverSignIn = () => {
     },
     onError: (error: any) => {
       console.error('로그인 실패:', error);
+      router.push(handleAuthError('mover', 'sign-in', error));
     },
   });
 };
