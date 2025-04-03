@@ -4,13 +4,12 @@ import { moverInfoApi } from '@/services/moverEdit';
 
 export default async function Page() {
   const headersList = headers();
-  const customHeader = headersList.get('ssr-token');
+  const ssrToken = headersList.get('ssr-token');
   let value = null;
 
   try {
-    if (!customHeader) return;
-    value = await moverInfoApi(customHeader);
-    console.log(value);
+    if (!ssrToken) return;
+    value = await moverInfoApi(ssrToken);
   } catch (err) {
     console.error(err);
   }
