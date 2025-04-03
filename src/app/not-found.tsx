@@ -9,28 +9,33 @@ export default function NotFound() {
   const toaster = useToaster();
   const router = useRouter();
   const [sec, setSec] = useState(6);
-  useEffect(() => {
-    setTimeout(() => {
-      const interval = setInterval(() => {
-        setSec((prev) => {
-          if (prev > 1) {
-            toaster('info', `${prev - 1}초 뒤에 홈으로 이동합니다.`, 1000);
-            return prev - 1;
-          } else {
-            // router.replace('/');
-            clearInterval(interval);
-            return 0;
-          }
-        });
-      }, 1000);
+  const [start, setStart] = useState(false);
 
-      return () => clearInterval(interval);
+  useEffect(() => {
+    const waitTimer = setTimeout(() => {
+      setStart(true);
     }, 3000);
+
+    return () => clearTimeout(waitTimer);
   }, []);
+
+  useEffect(() => {
+    if (!start) return;
+    const timer = setTimeout(() => {
+      if (sec > 1) {
+        toaster('info', `${sec - 1}초 뒤에 홈으로 이동합니다.`, 1000);
+      }
+      setSec((prev) => prev - 1);
+    }, 1000);
+    if (sec === 0) {
+      router.replace('/');
+    }
+    return () => clearTimeout(timer);
+  }, [sec, start]);
 
   return (
     <div className='relative overflow-hidden w-full h-screen flex items-center justify-center'>
-      <div className='absolute w-full xl:w-auto top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center'>
+      <div className='absolute w-full xl:w-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center'>
         <Image
           className={''}
           src={moving}
