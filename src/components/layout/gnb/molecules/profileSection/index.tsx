@@ -1,13 +1,12 @@
-import { useState } from 'react';
 import ProfileIcon from '../../atoms/icons/profileIcon';
 import { PROFILE_NAME_STYLES, PROFILE_STYLES } from './constant';
-import { ProfileSecrionProps } from './profileSecrion.type';
+import { ProfileSectionProps } from './profileSection.type';
 import Profile from '@/components/dropdown/children/profile';
 
-export default function ProfileSecrion({
+export default function ProfileSection({
   userName,
   imageUrl,
-}: ProfileSecrionProps) {
+}: ProfileSectionProps) {
   return (
     <Profile className=''>
       <div className={PROFILE_STYLES}>
