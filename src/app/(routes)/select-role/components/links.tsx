@@ -27,7 +27,12 @@ function LinkBox({ href, children }: LinkBoxProps) {
       className={s.linkBox}
       color='#4da9ff'
     >
-      <Link href={href}>{children}</Link>
+      <Link
+        className='w-full h-full flex flex-col justify-center items-center'
+        href={href}
+      >
+        {children}
+      </Link>
     </Animate>
   );
 }
