@@ -1,4 +1,4 @@
-export interface ProfileSecrionProps {
+export interface ProfileSectionProps {
   userName: string;
   imageUrl?: string;
 }

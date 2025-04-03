@@ -3,7 +3,8 @@ import { createContext, useContext } from 'react';
 import { type ToastType } from '@/components/toast@hook/types/type';
 
 export const ToasterContext = createContext<
-  { toaster: (type: ToastType, message: string) => void } | undefined
+  | { toaster: (type: ToastType, message: string, timer?: number) => void }
+  | undefined
 >(undefined);
 
 export function useToaster() {

@@ -25,10 +25,10 @@ export default function ToasterProvider({ children }: PropsWithChildren) {
     setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
   }
 
-  function toaster(type: ToastType, message: string) {
+  function toaster(type: ToastType, message: string, timer?: number) {
     const newToast = addToast(type, message);
 
-    setTimeout(() => removeToast(newToast.id), 2000);
+    setTimeout(() => removeToast(newToast.id), timer ? timer : 2000);
   }
 
   return (
