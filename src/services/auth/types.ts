@@ -12,9 +12,10 @@ export interface SignUpData {
 }
 
 interface profile {
-  name: string;
-  imageUrl: string;
-  role: string;
+  id: string;
+  userId: string;
+  profileImage: string;
+  location: string;
 }
 
 export interface AuthResponse {
