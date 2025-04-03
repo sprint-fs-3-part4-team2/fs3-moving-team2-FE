@@ -71,15 +71,10 @@ export function middleware(request: NextRequest) {
 
       return NextResponse.redirect(new URL(urlPath, url));
     }
-    console.log(
-      pathname,
-      roleId,
-      pathname.includes('/profile/register'),
-      referer,
-    );
+
     // 프로필 등록 유저 블럭
     if (roleId && pathname.includes('/profile/register')) {
-      if (roleId === 'customer') {
+      if (type === 'customer') {
         return NextResponse.redirect(
           new URL('/user/quotes/request' + noAccess, url),
         );
