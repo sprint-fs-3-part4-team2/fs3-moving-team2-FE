@@ -7,6 +7,7 @@ import CommonButton from '../common/commonBtn/commonBtn';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
 import { rejectQuoteByMover } from '@/services/targetedQuotes';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRejectQuoteByMoverMutation } from '@/hooks/useRejectQuoteByMoverMutation';
 
 interface MoverQuoteDeclineModalProps {
   selectedCustomer: CustomerRequest | null;
@@ -27,18 +28,16 @@ export default function MoverQuoteDeclineModal({
   const quoteCommentValue = watch('quoteComment') || '';
   const queryClient = useQueryClient();
 
-  const onSubmit = async (data: FieldValues) => {
-    if (selectedCustomer?.quoteId) {
-      await rejectQuoteByMover(
-        selectedCustomer.quoteId,
-        data.quoteComment, // 반려 사유 전달
-      );
-      queryClient.invalidateQueries({
-        queryKey: ['customerRequests'],
-        exact: false,
-      });
+  const rejectMutation = useRejectQuoteByMoverMutation(() => {
+    setShowDeclineModal(false);
+  });
 
-      setShowDeclineModal(false);
+  const onSubmit = (data: FieldValues) => {
+    if (selectedCustomer?.quoteId) {
+      rejectMutation.mutate({
+        quoteId: selectedCustomer.quoteId,
+        rejectionReason: data.quoteComment,
+      });
     } else {
       console.error('선택된 고객 정보가 없습니다.');
     }
