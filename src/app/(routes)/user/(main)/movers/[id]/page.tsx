@@ -147,7 +147,7 @@ export default function Page() {
         });
       }
     } catch (error) {
-      console.error('찜하기 상태 확인 중 오류:', error);
+      // 에러 발생 시 조용히 실패 처리
     }
   };
 
@@ -225,12 +225,9 @@ export default function Page() {
   // 일반 견적 요청 여부 확인
   const checkGeneralQuote = async () => {
     try {
-      console.log('일반 견적 요청 확인 시작');
       const token = localStorage.getItem('accessToken');
-      console.log('현재 토큰:', token);
 
       if (!token) {
-        console.log('토큰이 없습니다.');
         setIsLoggedIn(false);
         return;
       }
@@ -241,19 +238,13 @@ export default function Page() {
         },
       });
 
-      console.log('일반 견적 요청 응답:', response.data);
-
       if (response.data && response.data.isRequested !== undefined) {
         setHasGeneralQuote(response.data.isRequested);
-        console.log('일반 견적 요청 여부:', response.data.isRequested);
       } else {
-        console.log('응답 데이터 형식이 올바르지 않습니다:', response.data);
         setHasGeneralQuote(false);
       }
     } catch (error: any) {
-      console.error('일반 견적 요청 조회 에러:', error);
       if (error.response?.status === 401) {
-        console.log('인증 에러 발생, 로그인 상태 초기화');
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
       }
@@ -263,14 +254,12 @@ export default function Page() {
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    console.log('초기 토큰 확인:', token);
 
     if (token) {
       setIsLoggedIn(true);
       checkGeneralQuote();
     } else {
       setIsLoggedIn(false);
-      console.log('토큰이 없어 로그인 상태가 아닙니다.');
     }
   }, []);
 
