@@ -2,12 +2,10 @@
 
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
 import SearchInput from '@/components/common/inputSection/atoms/customInput/inputs/searchInput';
-import { MovingTypes } from '@/components/common/shared/atoms/movingTypeBadge/movingTypeBadge.types';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 import Image from 'next/image';
 import { useState } from 'react';
-import { FieldValues } from 'react-hook-form';
 import noReviewImage from '@/public/img/no-review.svg';
 import filterIcon from '@/public/icons/filter-blue.svg';
 import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/MoverQuoteDeclineModal';

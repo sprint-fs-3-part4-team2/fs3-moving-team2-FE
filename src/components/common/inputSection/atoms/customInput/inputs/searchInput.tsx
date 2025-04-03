@@ -25,6 +25,16 @@ export default function SearchInput({
     setSearchValue(e.target.value); // 내부 상태 업데이트
   };
 
+  const handleSearch = () => {
+    // 부모 컴포넌트에 검색어 전달
+    onChange?.({
+      target: { value: searchValue },
+    } as React.ChangeEvent<HTMLInputElement>);
+
+    // 검색 액션 실행
+    onSearch();
+  };
+
   const inputProps = {
     className: cn(
       INPUT_STYLES.common,
@@ -40,7 +50,7 @@ export default function SearchInput({
 
   return (
     <div className={cn('relative flex items-center')}>
-      <SearchButton onClick={onSearch} />
+      <SearchButton onClick={handleSearch} />
       <input {...inputProps} />
     </div>
   );
