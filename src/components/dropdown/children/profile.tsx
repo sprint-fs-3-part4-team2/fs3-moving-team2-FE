@@ -19,11 +19,6 @@ function Profile({
   const logout = useLogout();
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<MyProfile>(['userProfile']);
-  useEffect(() => {
-    // 지울 코드
-    // 주스탄드로 전역으로 유저정보 처리 할 것
-    setName(data?.name || '');
-  }, []);
 
   useEffect(() => {
     setOpen(false);
