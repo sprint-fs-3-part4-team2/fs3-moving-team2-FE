@@ -33,12 +33,9 @@ export function middleware(request: NextRequest) {
   const authQuery = '?warn=login';
   const noAccess = '?warn=noAccess';
 
-  // 커스텀 헤더 추가
-
   // dev 환경에선 미들웨어 막기
-  // if (process.env.NODE_ENV === 'development') return res;
+  if (process.env.NODE_ENV === 'development') return res;
 
-  // if (process.env.NODE_ENV === 'production') {
   // 비 로그인
   if (!token) {
     localStorage.removeItem('ssr-token');
@@ -121,7 +118,6 @@ export function middleware(request: NextRequest) {
       headers: requestHeaders,
     },
   });
-  // }
 }
 
 interface CustomJWTPayload {
