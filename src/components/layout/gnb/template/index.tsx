@@ -18,7 +18,8 @@ export default function GNB() {
 
   const isAuthorized = data ? true : false;
   const userName = data?.name || '';
-  const imageUrl = data?.profile?.imageUrl || '/icons/gnb/default-profile.svg';
+  const imageUrl =
+    data?.profile?.profileImage || '/icons/gnb/default-profile.svg';
   const userType = data?.userType || 'guest';
 
   const hidePathnames = [
