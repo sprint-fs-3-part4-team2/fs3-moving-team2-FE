@@ -21,6 +21,10 @@ import { MovingTypeKey } from '../page';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { useQuery } from '@tanstack/react-query';
 import { getMoverReviewsById } from '@/services/reviewsService';
+import {
+  createTargetedQuoteRequest,
+  checkGeneralQuoteExists,
+} from '@/services/targetedQuoteRequestService';
 
 type MoverDetail = {
   id: string;
@@ -265,34 +269,40 @@ export default function Page() {
 
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = async (): Promise<void> => {
-    if (!checkLoginStatus()) return;
+    console.log('지정 견적 요청 시작:', { moverId });
+
+    if (!checkLoginStatus()) {
+      console.log('로그인 상태 확인 실패');
+      return;
+    }
 
     try {
-      const token = localStorage.getItem('accessToken');
-      const response = await axiosInstance.get(
-        `/quote-requests/check/${moverId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      // 일반 견적 요청 여부만 확인
+      const quoteResponse = await checkGeneralQuoteExists();
+      console.log('일반 견적 요청 확인:', quoteResponse);
 
-      // 이미 지정 견적을 요청한 경우
-      if (response.data.isRequested) {
-        setIsQuoteRequested(true);
-        return;
-      }
-
-      // 일반 견적 요청 여부 확인
-      if (!hasGeneralQuote) {
+      if (!quoteResponse.isRequested) {
+        console.log('일반 견적 요청 필요');
         setShowGeneralQuoteModal(true);
         return;
       }
 
+      // 이미 지정 견적을 요청한 경우
+      if (quoteResponse.hasTargetedQuote) {
+        console.log('이미 지정 견적 요청됨');
+        setIsQuoteRequested(true);
+        return;
+      }
+
+      console.log('지정 견적 요청 모달 표시');
       setShowSpecificQuoteModal(true);
     } catch (error: any) {
-      console.error('지정 견적 요청 확인 중 오류:', error);
+      console.error('지정 견적 요청 확인 중 오류:', {
+        status: error.response?.status,
+        message: error.message,
+        data: error.response?.data,
+      });
+
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
@@ -309,29 +319,37 @@ export default function Page() {
 
   // 지정 견적 요청 확인
   const confirmSpecificQuote = async (): Promise<void> => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      const response = await axiosInstance.post(
-        `/quote-requests/specific/${moverId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+    console.log('지정 견적 요청 확인 시작:', { moverId });
 
-      if (response.status === 200) {
+    try {
+      const response = await createTargetedQuoteRequest(moverId);
+      console.log('지정 견적 요청 응답:', response);
+
+      if (response) {
+        console.log('지정 견적 요청 성공');
         setIsQuoteRequested(true);
         setShowSpecificQuoteModal(false);
         alert('지정 견적 요청이 완료되었습니다.');
       }
     } catch (error: any) {
-      console.error('지정 견적 요청 에러:', error);
+      console.error('지정 견적 요청 에러:', {
+        status: error.response?.status,
+        message: error.message,
+        data: error.response?.data,
+      });
+
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
         setShowLoginModal(true);
+      } else if (error.response?.status === 409) {
+        alert(error.response.data.error || '이미 지정 견적 요청이 존재합니다.');
+        setIsQuoteRequested(true);
+        setShowSpecificQuoteModal(false);
+      } else if (error.response?.status === 400) {
+        alert(error.response.data.error || '잘못된 요청입니다.');
+      } else {
+        alert('지정 견적 요청 중 오류가 발생했습니다.');
       }
     }
   };
