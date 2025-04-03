@@ -7,26 +7,31 @@ import MovingInfo from '@/components/common/movingInfo/organisms/movingInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import ShareButtons from '@/components/common/ShareButtons';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
-import { useQuery } from '@tanstack/react-query';
-import { getQuoteByCustomer } from '@/services/moverQuotes';
 import { MOVING_TYPES } from '@/constants/movingTypes';
-import { useMemo } from 'react';
+import { useQuoteDetailByCustomerQuery } from '@/hooks/useQuoteDetailByCustomerQuery';
+import ModalWrapper from '@/components/modal/ModalWrapper';
+import ConfirmQuoteModalContent from '@/components/common/confirmQuoteModalContent';
+import { useHandleModalOpen } from '@/hooks/useHandleModalOpen';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const { data } = useQuery({
-    queryKey: ['quotes', 'customer', id],
-    queryFn: async () => getQuoteByCustomer(id),
-  });
-
-  const movingType = useMemo(
-    () => data?.request.moveType as keyof typeof MOVING_TYPES,
-    [data],
-  );
+  const {
+    quoteDetail: { data },
+  } = useQuoteDetailByCustomerQuery(id);
+  const { modalOpen, openModal, closeModal } = useHandleModalOpen();
+  const movingType = data?.request.moveType as keyof typeof MOVING_TYPES;
 
   return (
     data && (
       <div className='relative flex flex-col mx-auto w-full items-center overflow-auto pb-24'>
+        {modalOpen && (
+          <ModalWrapper onClose={closeModal}>
+            <ConfirmQuoteModalContent
+              onClose={closeModal}
+              moverQuoteId={id}
+            />
+          </ModalWrapper>
+        )}
         <div className='flex w-full px-6 md:px-[72px] xl:px-0 max-w-[1400px]'>
           <PageHeader>견적 상세</PageHeader>
         </div>
@@ -70,6 +75,7 @@ export default function Page({ params }: { params: { id: string } }) {
                   heightType='primary'
                   backgroundColorType='blue'
                   textColorType='white'
+                  onClick={openModal}
                 >
                   견적 확정하기
                 </CommonBtn>

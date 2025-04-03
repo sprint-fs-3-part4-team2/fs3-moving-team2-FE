@@ -67,7 +67,7 @@ export default function MyPage() {
       <div className='max-w-[1920px]'></div>
       <div className='max-w-[1400px] mx-auto w-full'>
         <MoverStatInfo
-          imageUrl={profileData.imageUrl || '/profile-placeholder.png'}
+          imageUrl={profileData.imageUrl}
           rating={reviewsData.averageRating}
           ratingCount={reviewsData.ratingCount}
           experienceYears={profileData.experienceYears}
