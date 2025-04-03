@@ -38,6 +38,7 @@ export const getlatestQuoteRequest = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
   const response = await fetch(`${baseUrl}/quote-requests/latest`, {
     cache: 'no-store',
+    credentials: 'include',
   });
   if (!response.ok) {
     throw new Error('Failed to fetch getlatestQuoteRequest');

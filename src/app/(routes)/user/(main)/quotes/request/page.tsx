@@ -8,11 +8,13 @@ export default async function Page() {
   let data = null;
   try {
     data = await getlatestQuoteRequest();
+    console.log('getlatestQuoteRequest', data);
   } catch (error) {
     console.error('Error fetching : getlatestQuoteRequest', error);
+    return (
+      <div>데이터를 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.</div>
+    );
   }
-
-  console.log('data : ', data);
 
   return data.isRequested ? (
     <QuoteRequestInProgressPage />
