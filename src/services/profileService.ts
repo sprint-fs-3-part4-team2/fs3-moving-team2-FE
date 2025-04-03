@@ -6,9 +6,11 @@ export const createCustomerProfile = async (data: any) => {
     const response = await axiosInstance.post('/profile/user/register', data);
     return response;
   } catch (err: any) {
+    console.error('API 요청 오류:', err);
+    console.log('서버 응답 데이터:', err.response?.data);
     const errorMessage = err.response?.data?.message || '알 수 없는 오류 발생';
     alert(errorMessage);
-    console.error('API 요청 오류:', err);
+
     throw err;
   }
 };

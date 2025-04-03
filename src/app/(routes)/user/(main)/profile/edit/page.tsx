@@ -115,6 +115,7 @@ export default function Page() {
   };
   // 프로필 수정 버튼
   const onSubmit = async (data: FormData) => {
+    if (!isValid) return; // 유효하지 않으면 제출 차단
     try {
       console.log('Submitted data:', data);
       const response = await updateCustomerProfile(data);

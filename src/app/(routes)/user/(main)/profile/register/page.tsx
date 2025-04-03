@@ -89,13 +89,20 @@ export default function Page() {
 
   // 프로필 등록
   const onSubmit = async (data: FormData) => {
+    if (!isValid) return; // 유효하지 않으면 제출 차단
     try {
       console.log('Submitted data:', data);
       const response = await createCustomerProfile(data);
       console.log('프로필 등록 성공', response);
+      // 응답 데이터 확인
+      if (response.status !== 201) {
+        console.error('서버 응답 상태가 201이 아님:', response);
+        alert('프로필 등록 중 문제가 발생했습니다.');
+        return;
+      }
       router.push('/user/quotes/request');
     } catch (error) {
-      console.error('프로필 수정 실패:', error);
+      console.error('프로필 등록 실패:', error);
     }
   };
 

@@ -103,6 +103,7 @@ export default function Page() {
 
   // 프로필 수정
   const onSubmit = async (data: FormData) => {
+    if (!isValid) return; // 유효하지 않으면 제출 차단
     try {
       console.log('Submitted data:', data);
       const response = await updateMoverProfile(data);
@@ -185,7 +186,13 @@ export default function Page() {
                       placeholder='한 줄 소개를 입력해 주세요'
                       name='shortIntro'
                       type='text'
-                      validation={{ required: '8자 이상 입력해주세요.' }}
+                      validation={{
+                        required: '8자 이상 입력해주세요.',
+                        minLength: {
+                          value: 8,
+                          message: '8자 이상 입력해주세요.', // 8자 미만일 때 표시될 메시지
+                        },
+                      }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
@@ -207,7 +214,13 @@ export default function Page() {
                       name='description'
                       type='text'
                       rows={5}
-                      validation={{ required: '10자 이상 입력해주세요.' }}
+                      validation={{
+                        required: '8자 이상 입력해주세요.',
+                        minLength: {
+                          value: 10,
+                          message: '10자 이상 입력해주세요.', // 10자 미만일 때 표시될 메시지
+                        },
+                      }}
                       inputType='textarea'
                       styleVariant='primary'
                       inputVariant='form'
