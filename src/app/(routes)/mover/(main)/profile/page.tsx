@@ -7,7 +7,7 @@ import ReviewBlock from '@/components/common/reviewBlock/template/reviewBlock';
 import Pagination from '@/components/pagination/molecule/pagination';
 import { getMoverReviews } from '@/services/reviewsService';
 import { getMoverProfile } from '@/services/profileService';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
 
@@ -25,6 +25,7 @@ export default function MyPage() {
   } = useQuery({
     queryKey: ['moverReviews'],
     queryFn: async () => await getMoverReviews(),
+    staleTime: 0,
   });
 
   const {
@@ -34,6 +35,7 @@ export default function MyPage() {
   } = useQuery({
     queryKey: ['moverProfile'],
     queryFn: async () => await getMoverProfile(),
+    staleTime: 0,
   });
 
   if (isLoadingReviews || isLoadingProfile)
@@ -67,7 +69,7 @@ export default function MyPage() {
       <div className='max-w-[1920px]'></div>
       <div className='max-w-[1400px] mx-auto w-full'>
         <MoverStatInfo
-          imageUrl={profileData.profileImage || '/profile-placeholder.png'}
+          imageUrl={profileData.imageUrl}
           rating={reviewsData.averageRating}
           ratingCount={reviewsData.ratingCount}
           experienceYears={profileData.experienceYears}

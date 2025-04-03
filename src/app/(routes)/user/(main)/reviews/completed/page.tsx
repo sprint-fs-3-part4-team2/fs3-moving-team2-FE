@@ -1,5 +1,5 @@
 'use client';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
@@ -22,6 +22,7 @@ export default function Page() {
   } = useQuery({
     queryKey: ['completedReviews'],
     queryFn: getCompletedReviews,
+    staleTime: 0,
   });
 
   interface Mover {
