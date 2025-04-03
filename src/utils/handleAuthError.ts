@@ -3,8 +3,6 @@ const handleAuthError = (
   authType: 'sign-in' | 'sign-up',
   error: any,
 ) => {
-  console.log('errorCode: ', error.status);
-
   let errorMessage = '';
 
   if (authType === 'sign-in') {
@@ -35,9 +33,7 @@ const handleAuthError = (
         errorMessage = 'signUpDefault';
     }
   }
-  console.log('errorMessage: ', error.response?.data?.message);
   const wariningUrl = `/${userType}/${authType}?warn=${errorMessage}`;
-  console.log('wariningUrl: ', wariningUrl);
   return wariningUrl;
 };
 
