@@ -15,12 +15,14 @@ import {
   VALIDATION_MESSAGES,
   VALIDATION_PATTERN,
 } from '../constants';
+import { useToaster } from '@/hooks/useToaster';
 
 export default function SignInFormGroup({
   userType = 'customer',
 }: {
   userType: UserType;
 }) {
+  const toast = useToaster();
   const userSignIn = useUserSignIn();
   const moverSignIn = useMoverSignIn();
   const {
@@ -36,8 +38,11 @@ export default function SignInFormGroup({
     userType === 'customer' ? userSignIn : moverSignIn;
 
   const onSubmit = async (data: FieldValues) => {
-    console.log('data: ', data);
-    mutate(data as SignInData);
+    mutate(data as SignInData, {
+      onSuccess: () => {
+        toast('info', '로그인 성공!');
+      },
+    });
   };
 
   const onError = (errors: FieldErrors) => {
