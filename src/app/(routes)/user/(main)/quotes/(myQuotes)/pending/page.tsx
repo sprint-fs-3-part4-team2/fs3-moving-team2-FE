@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
 import axiosInstance from '@/lib/axiosInstance';
+import Image from 'next/image';
+import fileImg from '@/public/img/no-review.svg';
 
 interface Address {
   id: string;
@@ -118,7 +120,6 @@ export default function Page() {
         axiosInstance.get('/quote/pending-quotes'),
       ]);
       const quotes: Quote = response.data.data;
-      console.log('quotes:', quotes);
       if (quotes && Array.isArray(quotes.moverQuotes)) {
         const transformedMovers = quotes.moverQuotes.map(
           (moverQuote: MoverQuote) => {
@@ -238,17 +239,32 @@ export default function Page() {
 
   return (
     <>
-      <div className='grid grid-cols-1 gap-6 py-[32px] max-w-[1400px] mx-auto xl:py-[40px] xl:grid-cols-2'>
-        {currentMovers.map((mover) => (
-          <MoverInfo
-            key={mover.quoteId}
-            {...mover}
-            imageUrl={mover.imageUrl}
-            favoriteCount={mover.totalCustomerFavorite ?? 0}
-            ratingCount={mover.ratingCount ?? 0}
-            onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
-          />
-        ))}
+      <div className='max-w-[1400px] mx-auto px-6 py-[32px] md:px-[72px] xl:py-[40px] xl:px-0'>
+        {currentMovers.length === 0 ? (
+          <div className='flex flex-col justify-center items-center w-full mx-auto'>
+            <Image
+              className='w-[100px] h-[100px] md:w-[250px] md:h-[250px] xl:w-[400px] xl:h-[400px]'
+              src={fileImg}
+              alt='무빙 차량 이미지'
+            />
+            <p className='mt-5 text-center text-xl font-semibold text-gray-500'>
+              대기 중인 견적이 없습니다.
+            </p>
+          </div>
+        ) : (
+          <div className='grid grid-cols-1 gap-6 xl:grid-cols-2'>
+            {currentMovers.map((mover) => (
+              <MoverInfo
+                key={mover.quoteId}
+                {...mover}
+                imageUrl={mover.imageUrl}
+                favoriteCount={mover.totalCustomerFavorite ?? 0}
+                ratingCount={mover.ratingCount ?? 0}
+                onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <div className='flex justify-center items-center'>
         <Pagination
