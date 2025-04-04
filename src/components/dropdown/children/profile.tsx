@@ -14,17 +14,11 @@ function Profile({
   className,
 }: Omit<DropdownProps, 'dispatch'>) {
   const [open, setOpen] = useState(isOpen || false);
-  const [name, setName] = useState('테스트');
   const pathname = usePathname();
   const divRef = useRef<HTMLDivElement | null>(null);
   const logout = useLogout();
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<MyProfile>(['userProfile']);
-  useEffect(() => {
-    // 지울 코드
-    // 주스탄드로 전역으로 유저정보 처리 할 것
-    setName(data?.name || '');
-  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -73,7 +67,7 @@ function Profile({
             'xl:py-[14px] xl:pl-6 xl:text-[18px]',
           )}
         >
-          {name} 고객님
+          {data?.name} 고객님
         </h2>
         <ul>
           <ProfileList href={'/user/profile/edit'}>프로필 수정</ProfileList>

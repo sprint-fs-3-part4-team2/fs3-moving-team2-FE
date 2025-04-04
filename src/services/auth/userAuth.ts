@@ -31,6 +31,15 @@ const userAuthService = {
       return handleApiError(error, 'user signin');
     }
   },
+
+  signOut: async () => {
+    try {
+      axiosInstance.post('/auth/sign-out');
+    } catch (error) {
+      console.error('로그아웃 실패 : ', error);
+      throw error;
+    }
+  },
 };
 
 export default userAuthService;
