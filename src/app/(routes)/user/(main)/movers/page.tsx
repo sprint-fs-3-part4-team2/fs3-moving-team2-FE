@@ -8,6 +8,7 @@ import Area from '@/components/dropdown/cta/area';
 import Service from '@/components/dropdown/cta/service';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { DropdownCta } from '@/components/dropdown/dropdown';
+import { useRouter } from 'next/navigation';
 
 import cn from '@/utils/cn';
 import axiosInstance from '@/lib/axiosInstance';
@@ -48,6 +49,7 @@ export default function Page() {
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const router = useRouter();
 
   const checkAuth = async () => {
     const token = localStorage.getItem('accessToken');
@@ -234,23 +236,28 @@ export default function Page() {
             <p className='text-xl font-semibold'>찜한 기사님</p>
 
             {favoriteMovers.map((mover) => (
-              <MoverInfo
+              <div
                 key={mover.id}
-                variant='quote'
-                subVariant='completed'
-                moverName={mover.moverName}
-                imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-                movingType={mover.movingType}
-                isCustomQuote={mover.isCustomQuote}
-                rating={mover.rating ?? 0}
-                ratingCount={mover.ratingCount}
-                experienceYears={mover.experienceYears}
-                quoteCount={mover.quoteCount}
-                isFavorite={true}
-                favoriteCount={mover.favoriteCount ?? 0}
-                isFavoriteMoverList={true}
-                description={mover.description}
-              />
+                onClick={() => router.push(`/user/movers/${mover.id}`)}
+                className='cursor-pointer'
+              >
+                <MoverInfo
+                  variant='quote'
+                  subVariant='completed'
+                  moverName={mover.moverName}
+                  imageUrl={mover.imageUrl || '/profile-placeholder.png'}
+                  movingType={mover.movingType}
+                  isCustomQuote={mover.isCustomQuote}
+                  rating={mover.rating ?? 0}
+                  ratingCount={mover.ratingCount}
+                  experienceYears={mover.experienceYears}
+                  quoteCount={mover.quoteCount}
+                  isFavorite={true}
+                  favoriteCount={mover.favoriteCount ?? 0}
+                  isFavoriteMoverList={true}
+                  description={mover.description}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -345,23 +352,28 @@ export default function Page() {
               </div>
             ) : (
               movers.map((mover) => (
-                <MoverInfo
+                <div
                   key={mover.id}
-                  variant='quote'
-                  subVariant='completed'
-                  moverName={mover.moverName}
-                  imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-                  movingType={mover.movingType}
-                  isCustomQuote={mover.isCustomQuote}
-                  rating={mover.rating ?? 0}
-                  ratingCount={mover.ratingCount}
-                  experienceYears={mover.experienceYears}
-                  quoteCount={mover.quoteCount}
-                  isFavorite={mover.isFavorite}
-                  favoriteCount={mover.favoriteCount ?? 0}
-                  isFavoriteMoverList={false}
-                  description={mover.description}
-                />
+                  onClick={() => router.push(`/user/movers/${mover.id}`)}
+                  className='cursor-pointer hover:bg-gray-50 rounded-lg transition-colors duration-200'
+                >
+                  <MoverInfo
+                    variant='quote'
+                    subVariant='completed'
+                    moverName={mover.moverName}
+                    imageUrl={mover.imageUrl || '/profile-placeholder.png'}
+                    movingType={mover.movingType}
+                    isCustomQuote={mover.isCustomQuote}
+                    rating={mover.rating ?? 0}
+                    ratingCount={mover.ratingCount}
+                    experienceYears={mover.experienceYears}
+                    quoteCount={mover.quoteCount}
+                    isFavorite={mover.isFavorite}
+                    favoriteCount={mover.favoriteCount ?? 0}
+                    isFavoriteMoverList={false}
+                    description={mover.description}
+                  />
+                </div>
               ))
             )}
           </div>

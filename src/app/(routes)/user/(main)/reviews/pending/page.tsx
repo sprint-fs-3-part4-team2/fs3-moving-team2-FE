@@ -22,11 +22,11 @@ function ConfirmationModal({
 }) {
   return (
     <div
-      className='fixed top-0 left-0 w-full h-full bg-[#141414] bg-opacity-60 backdrop-blur-[5px] z-10'
+      className='fixed top-0 left-0 w-full h-full bg-[#141414] bg-opacity-60 backdrop-blur-[5px] z-[150]'
       onClick={onClose}
     >
       <dialog
-        className='w-[350px] md:w-[500px] h-[320px] md:h-[300px] px-[24px] pt-[34px] pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-20'
+        className='w-[350px] md:w-[500px] h-[320px] md:h-[300px] px-[24px] pt-[34px] pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-[200]'
         open
         onClick={(e) => e.stopPropagation()}
       >
