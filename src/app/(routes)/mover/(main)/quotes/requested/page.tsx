@@ -12,8 +12,11 @@ import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/MoverQuoteD
 import MoverQuoteSubmitModal from '@/components/moverQuoteRequested/MoverQuoteSubmitModal';
 import MoverReceivedRequestFilter from '@/components/moverQuoteRequested/MoverReceivedRequestFilter';
 import MoverReceivedRequestFilterModal from '@/components/moverQuoteRequested/MoverReceivedRequestFilterModal';
-import { useQuery } from '@tanstack/react-query';
-import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import {
+  CustomerRequest,
+  QuoteRequestsResponse,
+} from '@/services/types/allQuotes/allQuoteRequests.types';
 import { getAllQuoteRequests } from '@/services/quoteRequests';
 import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
 import Pagination from '@/components/pagination/molecule/pagination';
@@ -56,7 +59,8 @@ export default function Page() {
     data: customerRequests,
     isLoading,
     isError,
-  } = useQuery({
+    isPending,
+  } = useQuery<QuoteRequestsResponse, Error>({
     queryKey: [
       'customerRequests',
       currentPage,
@@ -76,6 +80,7 @@ export default function Page() {
         isServiceRegionMatch,
         isTargetedQuote,
       ),
+    placeholderData: keepPreviousData, // 이전 데이터를 유지, 페이지네이션 시 깜빡임 방지
   });
 
   const totalCustomerRequests = customerRequests?.totalCount ?? 0;
@@ -179,7 +184,10 @@ export default function Page() {
                 <Pagination
                   currentPage={currentPage}
                   totalPages={customerRequests?.totalPages ?? 1}
-                  onPageChange={(currentPage) => setCurrentPage(currentPage)}
+                  onPageChange={(currentPage) => {
+                    window.scrollTo(0, 100);
+                    setCurrentPage(currentPage);
+                  }}
                 />
               </div>
             </>
