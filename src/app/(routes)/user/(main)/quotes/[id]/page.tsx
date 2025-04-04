@@ -20,6 +20,10 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: profile } = useUserProfile();
   const { modalOpen, openModal, closeModal } = useHandleModalOpen();
   const movingType = data?.request.moveType as keyof typeof MOVING_TYPES;
+  const notMatched = data?.matched === false;
+  const isRequestedStatus = data?.request.currentStatus === 'QUOTE_REQUESTED';
+  const isCustomersQuote = data?.request.customerId === profile?.profile?.id;
+  const showConfirmButton = notMatched && isRequestedStatus && isCustomersQuote;
 
   return (
     data && (
@@ -44,7 +48,13 @@ export default function Page({ params }: { params: { id: string } }) {
               imageUrl={data.mover.profileImage}
               movingType={[movingType]}
               isCustomQuote={data.isCustomRequest}
-              quoteState={data.matched ? 'confirmedQuote' : 'pendingQuote'}
+              quoteState={
+                data.matched
+                  ? 'confirmedQuote'
+                  : isRequestedStatus
+                    ? 'pendingQuote'
+                    : undefined
+              }
               rating={data.mover.averageRating}
               experienceYears={data.mover.experienceYears}
               quoteCount={data.mover.totalConfirmedCount}
@@ -68,31 +78,31 @@ export default function Page({ params }: { params: { id: string } }) {
             />
           </div>
           <div className='w-[328px] gap-[40px] hidden md:hidden xl:flex flex-col'>
-            {!data.matched &&
-              data.request.customerId === profile?.profile?.id && (
-                <>
-                  <CommonBtn
-                    widthType='full'
-                    heightType='primary'
-                    backgroundColorType='blue'
-                    textColorType='white'
-                    onClick={openModal}
-                  >
-                    견적 확정하기
-                  </CommonBtn>
-                  <HorizontalDivider />
-                </>
-              )}
+            {showConfirmButton && (
+              <>
+                <CommonBtn
+                  widthType='full'
+                  heightType='primary'
+                  backgroundColorType='blue'
+                  textColorType='white'
+                  onClick={openModal}
+                >
+                  견적 확정하기
+                </CommonBtn>
+                <HorizontalDivider />
+              </>
+            )}
             <ShareButtons text='견적서 공유하기' />
           </div>
         </div>
-        {!data.matched && (
+        {showConfirmButton && (
           <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-6 md:px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
             <CommonBtn
               widthType='full'
               heightType='primary'
               backgroundColorType='blue'
               textColorType='white'
+              onClick={openModal}
             >
               견적 확정하기
             </CommonBtn>
