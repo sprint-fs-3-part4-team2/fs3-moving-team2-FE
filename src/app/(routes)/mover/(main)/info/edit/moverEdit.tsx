@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
 
 interface MoverBasicInfoEditClientProps {
-  defaultValues: FieldValues;
+  defaultValues?: FieldValues;
 }
 
 export default function MoverBasicInfoEditClient({

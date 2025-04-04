@@ -1,5 +1,5 @@
 import { headers } from 'next/headers';
-import MoverBasicInfoEditClient from './client';
+import MoverBasicInfoEditClient from './moverEdit';
 import { moverInfoApi } from '@/services/moverEdit';
 
 export default async function Page() {
@@ -8,11 +8,10 @@ export default async function Page() {
   let value = null;
 
   try {
-    if (!ssrToken) return;
-    value = await moverInfoApi(ssrToken);
+    if (ssrToken) value = await moverInfoApi(ssrToken);
   } catch (err) {
-    console.error(err);
+    console.error('ssr error:', err);
   }
 
-  return <MoverBasicInfoEditClient defaultValues={value.data} />;
+  return <MoverBasicInfoEditClient defaultValues={value?.data} />;
 }
