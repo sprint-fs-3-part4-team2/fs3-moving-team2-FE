@@ -3,7 +3,6 @@
 import { usePathname } from 'next/navigation';
 import GNBLayout from '../atoms/layout/gnbLayout';
 import GNBLogo from '../molecules/gnbLogo';
-import GNBMenu from '../molecules/gnbMenu';
 import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
 import dynamic from 'next/dynamic';
 import useUserProfile from '@/hooks/auth/useUserProfile';
@@ -12,11 +11,11 @@ import Text from '../atoms/menus/common/gnbText';
 const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
   ssr: false,
 });
+const GNBMenu = dynamic(() => import('../molecules/gnbMenu'));
 
 export default function GNB() {
   const pathname = usePathname();
-  const { data } = useUserProfile();
-  console.log('user data: ', data);
+  const { data, isFetched } = useUserProfile();
 
   const isAuthorized = data ? true : false;
   const userName = data?.name || '';
@@ -39,7 +38,7 @@ export default function GNB() {
     <div className={GNB_STYLES}>
       <GNBLayout>
         <div className={GNB_LOGO_MENU_STYLES}>
-          <GNBLogo isAuthorized={isAuthorized} />
+          <GNBLogo isAuthorized={true} />
           <GNBMenu userType={userType} />
         </div>
         {/* 테스트 페이지 이동 */}
@@ -68,12 +67,14 @@ export default function GNB() {
           <Text linkHref='/mover/profile'>기사님 마이페이지</Text>
         </CustomLink>
 
-        <GNBRightSection
-          isAuthorized={isAuthorized}
-          userName={userName}
-          imageUrl={imageUrl}
-          userType={userType}
-        />
+        {isFetched && (
+          <GNBRightSection
+            isAuthorized={isAuthorized}
+            userName={userName}
+            imageUrl={imageUrl}
+            userType={userType}
+          />
+        )}
       </GNBLayout>
     </div>
   );

@@ -14,17 +14,12 @@ function Profile({
   className,
 }: Omit<DropdownProps, 'dispatch'>) {
   const [open, setOpen] = useState(isOpen || false);
-  const [name, setName] = useState('테스트');
   const pathname = usePathname();
   const divRef = useRef<HTMLDivElement | null>(null);
   const logout = useLogout();
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<MyProfile>(['userProfile']);
-  useEffect(() => {
-    // 지울 코드
-    // 주스탄드로 전역으로 유저정보 처리 할 것
-    setName(data?.name || '');
-  }, []);
+
   let userType = '고객님';
   if (data?.userType === 'customer') userType = '고객님';
   else if (data?.userType === 'mover') userType = '기사님';
@@ -78,9 +73,9 @@ function Profile({
         >
           <span
             className='block w-full max-w-[100px] truncate overflow-hidden whitespace-nowrap'
-            title={name}
+            title={data?.name}
           >
-            {name}
+            {data?.name}
           </span>{' '}
           {userType}
         </h2>

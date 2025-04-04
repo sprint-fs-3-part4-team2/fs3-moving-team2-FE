@@ -11,7 +11,6 @@ export default function LogoAuthorized(): JSX.Element {
           fill
           className='object-contain'
           priority
-        
         />
       </div>
       <div className={LOGO_ONLY_STYLES}>
