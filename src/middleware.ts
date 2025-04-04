@@ -38,7 +38,6 @@ export function middleware(request: NextRequest) {
 
   // 비 로그인
   if (!token) {
-    localStorage.removeItem('ssr-token');
     const nouserProtected =
       PROTECT.NO_USER.some((path) => pathname.startsWith(path)) &&
       !pathname.includes('sign-in') &&
