@@ -17,6 +17,7 @@ import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.typ
 import { getAllQuoteRequests } from '@/services/quoteRequests';
 import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
 import Pagination from '@/components/pagination/molecule/pagination';
+import Loading from '@/app/loading';
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -133,7 +134,7 @@ export default function Page() {
           </div>
           {isLoading && (
             <div className='flex justify-center items-center h-[400px]'>
-              <p>로딩 중...</p>
+              <Loading />
             </div>
           )}
           {isError && (
