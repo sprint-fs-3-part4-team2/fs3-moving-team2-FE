@@ -39,3 +39,23 @@ export const getMoverReviews = async () => {
     return;
   }
 };
+
+// 특정 기사의 리뷰 목록 조회
+export const getMoverReviewsById = async (
+  moverId: string,
+  page: number,
+  limit: number,
+) => {
+  try {
+    const response = await axiosInstance.get(`/movers/${moverId}/reviews`, {
+      params: {
+        page,
+        limit,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
