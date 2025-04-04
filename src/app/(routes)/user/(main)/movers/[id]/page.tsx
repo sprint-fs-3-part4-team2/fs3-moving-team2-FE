@@ -608,7 +608,8 @@ export default function Page() {
           >
             <div className='mt-4'>
               <p className='mb-10'>
-                김코드 기사님에게 지정 견적을 요청하시겠습니까?
+                {moverDetail?.moverName} 기사님에게 지정 견적을
+                요청하시겠습니까?
               </p>
               <div className='flex justify-center'>
                 <CommonButton
