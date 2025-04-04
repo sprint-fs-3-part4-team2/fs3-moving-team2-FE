@@ -23,7 +23,7 @@ const PROTECT = {
 };
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
   const { cookies, url, headers } = request;
   const token = cookies.get('accessToken')?.value;
   const reToken = cookies.get('refreshToken')?.value;
@@ -90,17 +90,21 @@ export function middleware(request: NextRequest) {
       );
 
     //프로필 미등록 유저 블럭
-    if (!roleId && !pathname.includes('/profile/register')) {
+    if (
+      !roleId &&
+      !pathname.includes('/profile/register') &&
+      !searchParams.has('register')
+    ) {
       const referer = request.headers.get('referer');
       const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
       if (!referer) return NextResponse.redirect(new URL(urlPath, url));
 
-      // if (referer.includes('/profile/register'))
-      //   return NextResponse.redirect(
-      //     new URL(urlPath + '?warn=profileRegister', url),
-      //   );
+      if (referer.includes('/profile/register'))
+        return NextResponse.redirect(
+          new URL(urlPath + '?warn=profileRegister', url),
+        );
 
-      return NextResponse.redirect(new URL(urlPath, url));
+      return NextResponse.redirect(new URL(urlPath + '?register', url));
     }
 
     // 프로필 등록 유저 블럭
