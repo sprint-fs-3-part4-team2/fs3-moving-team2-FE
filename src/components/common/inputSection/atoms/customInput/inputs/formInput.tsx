@@ -16,6 +16,7 @@ export default function FormInput<T extends FieldValues>({
   rows,
   styleVariant,
   inputClassName,
+  disabled,
 }: FormTypeProps<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = name.includes('password');
@@ -27,8 +28,10 @@ export default function FormInput<T extends FieldValues>({
       INPUT_STYLES[styleVariant],
       errors[name] && 'border border-secondary-red-200 bg-gray-50',
       inputClassName,
+      !!disabled && 'bg-gray-200 cursor-not-allowed', // 추가된 부분
     ),
     placeholder,
+    disabled,
     ...register(name, validation),
   };
 

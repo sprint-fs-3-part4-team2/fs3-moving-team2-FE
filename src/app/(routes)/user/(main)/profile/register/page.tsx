@@ -6,6 +6,7 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useForm } from 'react-hook-form';
 import { createCustomerProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
+import { useToaster } from '@/hooks/useToaster';
 
 type FormData = {
   profileImage: string | null;
@@ -87,16 +88,26 @@ export default function Page() {
     );
   };
 
+  const toaster = useToaster();
+
   // 프로필 등록
   const onSubmit = async (data: FormData) => {
+    if (!isValid) return; // 유효하지 않으면 제출 차단
     try {
       console.log('Submitted data:', data);
       const response = await createCustomerProfile(data);
       console.log('프로필 등록 성공', response);
       // router.push('/user/quotes/request');
       router.refresh();
-    } catch (error) {
-      console.error('프로필 수정 실패:', error);
+    } catch (error: unknown) {
+      console.error('프로필 등록 실패:', error);
+      if (typeof error === 'string') {
+        toaster('warn', error); // errorMessage가 string이면 그대로 사용
+      } else if (error instanceof Error) {
+        toaster('warn', error.message); // 일반적인 Error 객체라면 메시지 출력
+      } else {
+        toaster('warn', '알 수 없는 오류 발생');
+      }
     }
   };
 
