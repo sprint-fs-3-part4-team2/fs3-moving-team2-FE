@@ -5,7 +5,7 @@ import SearchInput from '@/components/common/inputSection/atoms/customInput/inpu
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import noReviewImage from '@/public/img/no-review.svg';
 import filterIcon from '@/public/icons/filter-blue.svg';
 import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/MoverQuoteDeclineModal';
@@ -32,16 +32,36 @@ export default function Page() {
 
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, boolean>
-  >({
-    small: false,
-    home: false,
-    office: false,
-    service: false,
-    targeted: false,
+  >(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('selectedFilters');
+      return saved
+        ? JSON.parse(saved)
+        : {
+            small: false,
+            home: false,
+            office: false,
+            service: false,
+            targeted: false,
+          };
+    }
+    return {
+      small: false,
+      home: false,
+      office: false,
+      service: false,
+      targeted: false,
+    };
   });
 
   const [query, setQuery] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('이사 빠른순'); // Dropdown 선택된 값
+  const [sortBy, setSortBy] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sortBy');
+      return saved ? saved : '이사빠른순';
+    }
+    return '이사빠른순';
+  });
 
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
 
@@ -84,6 +104,29 @@ export default function Page() {
   });
 
   const totalCustomerRequests = customerRequests?.totalCount ?? 0;
+
+  useEffect(() => {
+    const savedFilters = localStorage.getItem('selectedFilters');
+    const savedSortBy = localStorage.getItem('sortBy');
+    if (savedFilters) {
+      setSelectedFilters(JSON.parse(savedFilters));
+    }
+    if (savedSortBy) {
+      setSortBy(savedSortBy);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selectedFilters', JSON.stringify(selectedFilters));
+    }
+  }, [selectedFilters]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sortBy', sortBy);
+    }
+  }, [sortBy]);
 
   return (
     <main className='w-full xl:max-w-[1400px] mx-auto sm:px-6 md:px-[72px] xl:px-0'>
