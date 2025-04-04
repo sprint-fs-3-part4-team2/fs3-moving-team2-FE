@@ -27,7 +27,7 @@ const onRefreshError = (error: Error) => {
 axiosInstance.interceptors.response.use(
   async (response) => {
     if (
-      response.config.url === 'users/me' &&
+      response.config.url === '/users/me' &&
       response.data === null &&
       !refreshAttempted
     ) {
