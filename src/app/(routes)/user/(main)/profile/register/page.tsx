@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useEffect } from 'react';
 import ImageUpload from '@/components/profile/ImageUpload';
 import BtGrid from '@/components/profile/BtGrid';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
@@ -93,11 +93,18 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await createCustomerProfile(data);
       console.log('프로필 등록 성공', response);
-      router.push('/user/quotes/request');
+      // router.push('/user/quotes/request');
+      router.refresh();
     } catch (error) {
       console.error('프로필 수정 실패:', error);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      router.replace('?');
+    }, 1000);
+  }, []);
 
   return (
     <>

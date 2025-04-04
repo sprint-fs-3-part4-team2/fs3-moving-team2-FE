@@ -54,25 +54,26 @@ export function middleware(request: NextRequest) {
   if (token) {
     const decode = jwtDecode(token) as CustomJWTPayload;
     const referer = request.headers.get('referer');
-
+    const ssrToken = request.headers.get('ssr-token');
     if (!decode) return res;
 
     const { roleId, type } = decode;
-
+    console.log('roleId', roleId);
     //ssr 용 token
-    if (roleId) requestHeaders.set('ssr-token', 'accessToken=' + token);
+    if (roleId && !ssrToken)
+      requestHeaders.set('ssr-token', 'accessToken=' + token);
 
     //프로필 미등록 유저 블럭
     if (!roleId && !pathname.includes('/profile/register')) {
       const referer = request.headers.get('referer');
       const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
-
+      console.log(urlPath);
       if (!referer) return NextResponse.redirect(new URL(urlPath, url));
 
-      if (referer.includes('/profile/register'))
-        return NextResponse.redirect(
-          new URL(urlPath + '?warn=profileRegister', url),
-        );
+      // if (referer.includes('/profile/register'))
+      //   return NextResponse.redirect(
+      //     new URL(urlPath + '?warn=profileRegister', url),
+      //   );
 
       return NextResponse.redirect(new URL(urlPath, url));
     }
