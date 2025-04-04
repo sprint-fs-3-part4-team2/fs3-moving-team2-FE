@@ -9,7 +9,8 @@ const useLogout = () => {
   return useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ['userProfile'] });
+      queryClient.resetQueries({ queryKey: ['userProfile'] });
+      queryClient.clear();
       router.push('/');
     },
     onError: (error) => {

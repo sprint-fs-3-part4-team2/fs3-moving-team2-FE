@@ -6,6 +6,7 @@ import FormInput from '@/components/common/inputSection/atoms/customInput/inputs
 import { useForm } from 'react-hook-form';
 import { createMoverProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useToaster } from '@/hooks/useToaster';
 
 type FormData = {
@@ -101,6 +102,12 @@ export default function Page() {
     );
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      router.replace('?');
+    }, 1000);
+  }, []);
+
   const toaster = useToaster();
 
   // 프로필 등록
@@ -110,8 +117,7 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await createMoverProfile(data);
       console.log('프로필 등록 성공', response);
-      toaster('info', '등록 성공!');
-      router.push('/mover/quotes/requested');
+      router.refresh();
     } catch (error: unknown) {
       console.error('프로필 등록 실패:', error);
       if (typeof error === 'string') {

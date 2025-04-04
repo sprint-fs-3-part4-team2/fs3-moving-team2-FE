@@ -1,4 +1,5 @@
 import axiosInstance from '@/lib/axiosInstance';
+import { UserProfile } from './types/profile/profile.types';
 
 // 고객 프로필 등록
 export const createCustomerProfile = async (data: any) => {
@@ -59,5 +60,15 @@ export const getMoverProfile = async () => {
   } catch (error) {
     console.log(error);
     return;
+  }
+};
+
+export const getMyProfile = async () => {
+  try {
+    const response = await axiosInstance.get<UserProfile>('users/me');
+    return response.data;
+  } catch (error) {
+    console.error('프로필 조회 실패', error);
+    throw error;
   }
 };
