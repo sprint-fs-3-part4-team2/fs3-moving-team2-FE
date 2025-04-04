@@ -16,12 +16,10 @@ export const useUserSignUp = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userProfile = queryClient.getQueryData<MyProfile>([
-          'userProfile',
-        ]);
-        if (userProfile?.profile === null)
-          router.push('/user/profile/register');
-        router.push('/user/movers');
+        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
+        const userProfile = userData?.profile;
+        if (userProfile !== null) router.push('/user/movers');
+        if (userProfile === null) router.push('/user/profile/register');
       }, 2000);
     },
     onError: (error: any) => {
@@ -41,12 +39,10 @@ export const useUserSignIn = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userProfile = queryClient.getQueryData<MyProfile>([
-          'userProfile',
-        ]);
-        if (userProfile?.profile === null)
-          router.push('/user/profile/register');
-        router.push('/user/movers');
+        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
+        const userProfile = userData?.profile;
+        if (userProfile !== null) router.push('/user/movers');
+        if (userProfile === null) router.push('/user/profile/register');
       }, 2000);
     },
     onError: (error: any) => {
@@ -67,12 +63,10 @@ export const useMoverSignUp = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userProfile = queryClient.getQueryData<MyProfile>([
-          'userProfile',
-        ]);
-        if (userProfile?.profile === null)
-          router.push('/mover/profile/register');
-        router.push('/mover/quotes/requested');
+        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
+        const userProfile = userData?.profile;
+        if (userProfile !== null) router.push('/mover/quotes/requested');
+        if (userProfile === null) router.push('/mover/profile/register');
       }, 2000);
     },
     onError: (error: any) => {
@@ -92,12 +86,10 @@ export const useMoverSignIn = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userProfile = queryClient.getQueryData<MyProfile>([
-          'userProfile',
-        ]);
-        if (userProfile?.profile === null)
-          router.push('/mover/profile/register');
-        router.push('/mover/quotes/requested');
+        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
+        const userProfile = userData?.profile;
+        if (userProfile !== null) router.push('/mover/quotes/requested');
+        if (userProfile === null) router.push('/mover/profile/register');
       }, 2000);
     },
     onError: (error: any) => {
