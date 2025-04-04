@@ -6,6 +6,7 @@ import FormInput from '@/components/common/inputSection/atoms/customInput/inputs
 import { useForm } from 'react-hook-form';
 import { createMoverProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 type FormData = {
   experience: number;
@@ -100,14 +101,19 @@ export default function Page() {
     );
   };
 
-  // 프로필 등록
+  useEffect(() => {
+    setTimeout(() => {
+      router.replace('?');
+    }, 1000);
+  }, []);
 
+  // 프로필 등록
   const onSubmit = async (data: FormData) => {
     try {
       console.log('Submitted data:', data);
       const response = await createMoverProfile(data);
       console.log('프로필 등록 성공', response);
-      router.push('/mover/quotes/requested');
+      router.refresh();
     } catch (error) {
       console.error('프로필 등록 실패:', error);
     }
