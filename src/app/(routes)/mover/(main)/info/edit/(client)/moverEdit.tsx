@@ -6,6 +6,7 @@ import { moverEditApi } from '@/services/moverEdit';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface MoverBasicInfoEditClientProps {
   defaultValues?: FieldValues;
@@ -27,6 +28,7 @@ export default function MoverBasicInfoEditClient({
   const newPassword = watch('new_password');
   const toaster = useToaster();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const onSubmit = async (data: FieldValues) => {
     const { _newConfirmPassword, ...rest } = data;
@@ -34,12 +36,20 @@ export default function MoverBasicInfoEditClient({
       ...rest,
     };
     const res = await moverEditApi(body);
+
     if (res.ok) {
       router.replace('/mover/profile');
-      toaster('info', '프로필 수정이 완료됐습니다.');
+      toaster('info', res.message);
+      queryClient.setQueryData(['userProfile'], (oldData: object) => ({
+        ...oldData,
+        ...res.data,
+      }));
       return;
     } else {
-      toaster('warn', '프로필 수정에 실패했습니다.');
+      toaster('warn', res.message);
+      if (res.message === '비밀번호가 일치하지 않습니다.') {
+        setFocus('current_password');
+      }
       return;
     }
   };
@@ -51,9 +61,6 @@ export default function MoverBasicInfoEditClient({
       }
     });
   };
-
-  // 클라이언트 컴포넌트이므로 추가적인 useEffect 등도 사용할 수 있습니다.
-  // 기본값은 서버에서 전달받았으므로 별도의 fetch는 필요하지 않습니다.
 
   return (
     <form
@@ -125,7 +132,6 @@ export default function MoverBasicInfoEditClient({
                   value: /^(01[016789])[-]?[0-9]{3,4}[-]?[0-9]{4}$/,
                   message: '올바른 핸드폰 번호를 입력해주세요.',
                 },
-                max: 11,
               }}
               name='phoneNumber'
               register={register}
