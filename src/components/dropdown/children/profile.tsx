@@ -25,6 +25,9 @@ function Profile({
     // 주스탄드로 전역으로 유저정보 처리 할 것
     setName(data?.name || '');
   }, []);
+  let userType = '고객님';
+  if (data?.userType === 'customer') userType = '고객님';
+  else if (data?.userType === 'mover') userType = '기사님';
 
   useEffect(() => {
     setOpen(false);
@@ -73,7 +76,7 @@ function Profile({
             'xl:py-[14px] xl:pl-6 xl:text-[18px]',
           )}
         >
-          {name} 고객님
+          {name} {userType}
         </h2>
         <ul>
           <ProfileList href={'/user/profile/edit'}>프로필 수정</ProfileList>
