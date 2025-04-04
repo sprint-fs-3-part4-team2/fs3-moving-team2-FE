@@ -120,6 +120,7 @@ export default function Page() {
         axiosInstance.get('/quote/pending-quotes'),
       ]);
       const quotes: Quote = response.data.data;
+
       if (quotes && Array.isArray(quotes.moverQuotes)) {
         const transformedMovers = quotes.moverQuotes.map(
           (moverQuote: MoverQuote) => {
@@ -238,41 +239,45 @@ export default function Page() {
   const currentMovers = movers.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <>
-      <div className='max-w-[1400px] mx-auto px-6 py-[32px] md:px-[72px] xl:py-[40px] xl:px-0'>
-        {currentMovers.length === 0 ? (
-          <div className='flex flex-col justify-center items-center w-full mx-auto'>
+    <div className='bg-backgroundVariants-50'>
+      {currentMovers.length === 0 ? (
+        <div className='max-w-[1400px] mx-auto px-6 md:px-[72px] xl:px-0'>
+          <div className='h-[calc(100vh-(84px+88px+4px))] flex flex-col justify-center items-center w-full mx-auto'>
             <Image
-              className='w-[100px] h-[100px] md:w-[250px] md:h-[250px] xl:w-[400px] xl:h-[400px]'
+              className='w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'
               src={fileImg}
-              alt='무빙 차량 이미지'
+              alt='무빙 파일 이미지'
             />
-            <p className='mt-5 text-center text-xl font-semibold text-gray-500'>
+            <p className='text-center text-grayscale-400 mt-8 text-2xl font-normal'>
               대기 중인 견적이 없습니다.
             </p>
           </div>
-        ) : (
+        </div>
+      ) : (
+        <div className='max-w-[1400px] mx-auto px-6 md:px-[72px] xl:px-0 py-[32px] xl:py-[40px]'>
           <div className='grid grid-cols-1 gap-6 xl:grid-cols-2'>
             {currentMovers.map((mover) => (
-              <MoverInfo
-                key={mover.quoteId}
-                {...mover}
-                imageUrl={mover.imageUrl}
-                favoriteCount={mover.totalCustomerFavorite ?? 0}
-                ratingCount={mover.ratingCount ?? 0}
-                onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
-              />
+              <div className='bg-white'>
+                <MoverInfo
+                  key={mover.quoteId}
+                  {...mover}
+                  imageUrl={mover.imageUrl}
+                  favoriteCount={mover.totalCustomerFavorite ?? 0}
+                  ratingCount={mover.ratingCount ?? 0}
+                  onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
+                />
+              </div>
             ))}
           </div>
-        )}
-      </div>
-      <div className='flex justify-center items-center'>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(movers.length / itemsPerPage)}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-      </div>
-    </>
+          <div className='flex justify-center items-center pt-2 md:pt-8 xl:pt-6'>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(movers.length / itemsPerPage)}
+              onPageChange={(page) => setCurrentPage(page)}
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

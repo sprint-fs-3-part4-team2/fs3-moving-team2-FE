@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import MovingInfo from '@/components/common/movingInfo/organisms/movingInfo';
 import axiosInstance from '@/lib/axiosInstance';
+import Image from 'next/image';
+import fileImg from '@/public/img/no-review.svg';
 
 interface Address {
   id: string;
@@ -57,7 +59,7 @@ interface MoverQuote {
   createdAt: string;
   updatedAt: string;
   mover: Mover;
-  targetedQuoteRequestId: string;
+  targetedQuoteRequestId: string | null;
 }
 
 interface Quote {
@@ -273,59 +275,71 @@ export default function Page() {
   };
 
   return (
-    <div className='bg-backgroundVariants-50'>
-      <div className='max-w-[1400px] h-[auto] mx-auto rounded-[40px] bg-white'>
-        <div className='mt-6 md:mt-8 xl:mt-[64px]'>
-          {quoteRequests.map((quote, index) => {
-            const relatedQuotes = quotesFromDrivers.filter(
-              (mover) =>
-                new Date(mover.movingDate).getTime() ===
-                new Date(quote.movingDate).getTime(),
-            );
-            return (
-              <div
-                key={index}
-                className='mb-[6px] py-[16px] px-[24px] rounded-[24px] border shadow-lg 
-              md:mb-4 md:py-[16px] md:px-[32px] md:rounded-[24px]
-              xl:mb-8 xl:py-[40px] xl:px-[48px] xl:rounded-[40px]'
-              >
-                <MovingInfo
-                  requestedDate={quote.requestedDate}
-                  movingDate={quote.movingDate}
-                  movingType={quote.movingType.join(', ')}
-                  departure={quote.departure}
-                  arrival={quote.arrival}
-                />
-                <div className='mt-8'>
-                  <p className='text-lg md:mt-12 md:mb-10 xl:text-2xl text-black-400 font-semibold mt-8 mb-6'>
-                    견적서 목록
-                  </p>
-                  {relatedQuotes.length > 0 ? (
-                    relatedQuotes.map((mover) => (
-                      <div
-                        className='mb-2 md:mb-4 xl:mb-9'
-                        key={mover.moverId}
-                      >
-                        <MoverInfo
-                          {...mover}
-                          imageUrl={mover.imageUrl}
-                          favoriteCount={mover.totalCustomerFavorite ?? 0}
-                          ratingCount={mover.ratingCount ?? 0}
-                          onFavoriteClick={() =>
-                            handleFavoriteClick(mover.moverId)
-                          }
-                        />
-                      </div>
-                    ))
-                  ) : (
-                    <p className='text-gray-500'>견적이 없습니다.</p>
-                  )}
+    <>
+      <div className='bg-backgroundVariants-50'>
+        {quoteRequests.length === 0 && quotesFromDrivers.length === 0 ? (
+          <div className=' max-w-[1400px] h-[calc(100vh-(84px+88px+4px))] mx-auto flex justify-center items-center'>
+            <div className='flex flex-col justify-center items-center w-full text-center'>
+              <Image
+                className='w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'
+                src={fileImg}
+                alt='무빙 파일 이미지'
+              />
+              <p className='text-center text-grayscale-400 mt-8 text-2xl font-normal'>
+                받았던 견적이 없습니다.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className=' max-w-[1400px] mx-auto py-6 md:py-8 md:px-[72px] xl:px-0 xl: xl:py-[64px]'>
+            {quoteRequests.map((quote, index) => {
+              return (
+                <div
+                  key={index}
+                  className='pb-[6px] py-[16px] px-[24px] rounded-[24px] border shadow-lg bg-white 
+                  md:pb-4 md:py-[16px] md:px-[32px] md:rounded-[24px]
+                  xl:pb-8 xl:py-[40px] xl:px-[48px] xl:rounded-[40px]'
+                >
+                  <MovingInfo
+                    requestedDate={quote.requestedDate}
+                    movingDate={quote.movingDate}
+                    movingType={quote.movingType.join(', ')}
+                    departure={quote.departure}
+                    arrival={quote.arrival}
+                  />
+                  <div className='mt-8'>
+                    <p className='text-lg md:mt-12 md:mb-10 xl:text-2xl text-black-400 font-semibold mt-8 mb-6'>
+                      견적서 목록
+                    </p>
+                    {quotesFromDrivers.length > 0 ? (
+                      quotesFromDrivers.map((mover) => (
+                        <div
+                          className='mb-2 md:mb-4 xl:mb-9'
+                          key={mover.moverId}
+                        >
+                          <MoverInfo
+                            {...mover}
+                            imageUrl={mover.imageUrl}
+                            favoriteCount={mover.totalCustomerFavorite ?? 0}
+                            ratingCount={mover.ratingCount ?? 0}
+                            onFavoriteClick={() =>
+                              handleFavoriteClick(mover.moverId)
+                            }
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <p className='text-center text-grayscale-400 mt-8 text-2xl font-normal'>
+                        견적이 없습니다.
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 }
