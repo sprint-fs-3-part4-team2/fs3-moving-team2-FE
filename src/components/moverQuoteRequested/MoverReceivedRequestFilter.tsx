@@ -37,7 +37,7 @@ export default function MoverReceivedRequestFilter({
       <div className='border-b pb-1'>
         <div className='flex justify-between items-center py-3 px-4 border-b '>
           <h2 className='text-xl font-medium '>이사 유형</h2>
-          <div className='flex items-center'>
+          <label className='flex items-center cursor-pointer'>
             <input
               type='checkbox'
               className='h-5 w-5 rounded border-gray-300'
@@ -45,26 +45,28 @@ export default function MoverReceivedRequestFilter({
               onChange={(e) => selectAll(moveTypes, e.target.checked)}
             />
             <span className='ml-2 text-2lg text-gray-400'>전체선택</span>
-          </div>
+          </label>
         </div>
 
         <div>
           {moveTypes.map((option) => (
-            <div
+            <label
               key={option.id}
-              className='flex justify-between items-center py-5 px-4 border-t'
+              htmlFor={`move-${option.id}`}
+              className='flex justify-between items-center py-5 px-4 border-t cursor-pointer'
             >
               <span className='text-2lg font-medium'>
                 {option.label}
                 {/* ({option.count}) */}
               </span>
               <input
+                id={`move-${option.id}`}
                 type='checkbox'
                 className='h-5 w-5 rounded border-gray-300 text-blue-500'
                 checked={selectedFilters[option.id]}
                 onChange={() => toggleFilter(option.id)}
               />
-            </div>
+            </label>
           ))}
         </div>
       </div>
@@ -73,7 +75,7 @@ export default function MoverReceivedRequestFilter({
       <div className='border-b mt-6'>
         <div className='flex justify-between items-center py-3 px-4  border-b'>
           <h2 className='text-xl font-medium'>필터</h2>
-          <div className='flex items-center'>
+          <label className='flex items-center cursor-pointer'>
             <input
               type='checkbox'
               className='h-5 w-5 rounded border-gray-300'
@@ -83,26 +85,28 @@ export default function MoverReceivedRequestFilter({
               onChange={(e) => selectAll(filterTypes, e.target.checked)}
             />
             <span className='ml-2 text-2lg text-gray-400'>전체선택</span>
-          </div>
+          </label>
         </div>
 
         <div>
           {filterTypes.map((option) => (
-            <div
+            <label
               key={option.id}
-              className='flex justify-between items-center py-5 px-4 border-t'
+              htmlFor={`filter-${option.id}`}
+              className='flex justify-between items-center py-5 px-4 border-t cursor-pointer'
             >
               <span className='text-2lg font-medium'>
                 {option.label}
                 {/* ({option.count}) */}
               </span>
               <input
+                id={`filter-${option.id}`}
                 type='checkbox'
                 className='h-5 w-5 rounded border-gray-300 text-blue-500'
                 checked={selectedFilters[option.id]}
                 onChange={() => toggleFilter(option.id)}
               />
-            </div>
+            </label>
           ))}
         </div>
       </div>
