@@ -76,7 +76,13 @@ function Profile({
             'xl:py-[14px] xl:pl-6 xl:text-[18px]',
           )}
         >
-          {name} {userType}
+          <span
+            className='block w-full max-w-[100px] truncate overflow-hidden whitespace-nowrap'
+            title={name}
+          >
+            {name}
+          </span>{' '}
+          {userType}
         </h2>
         <ul>
           <ProfileList href={'/user/profile/edit'}>프로필 수정</ProfileList>
