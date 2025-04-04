@@ -22,9 +22,8 @@ export const createMoverProfile = async (data: any) => {
     return response;
   } catch (err: any) {
     const errorMessage = err.response?.data?.message || '알 수 없는 오류 발생';
-    alert(errorMessage);
     console.error('API 요청 오류:', err);
-    throw err;
+    return Promise.reject(errorMessage);
   }
 };
 
@@ -35,9 +34,8 @@ export const updateCustomerProfile = async (data: any) => {
     return response;
   } catch (err: any) {
     const errorMessage = err.response?.data?.message || '알 수 없는 오류 발생';
-    alert(errorMessage);
     console.error('API 요청 오류:', err);
-    throw err;
+    return Promise.reject(errorMessage);
   }
 };
 
@@ -48,9 +46,8 @@ export const updateMoverProfile = async (data: any) => {
     return response;
   } catch (err: any) {
     const errorMessage = err.response?.data?.message || '알 수 없는 오류 발생';
-    alert(errorMessage);
     console.error('API 요청 오류:', err);
-    throw err;
+    return Promise.reject(errorMessage);
   }
 };
 

@@ -6,6 +6,9 @@ import FormInput from '@/components/common/inputSection/atoms/customInput/inputs
 import { useForm } from 'react-hook-form';
 import { updateCustomerProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useToaster } from '@/hooks/useToaster';
+import useUserProfile from '@/hooks/auth/useUserProfile';
 
 type FormData = {
   name: string;
@@ -22,6 +25,10 @@ type FormData = {
 export default function Page() {
   const router = useRouter();
 
+  const [loading, setLoading] = useState(true);
+  const { data: userProfile } = useUserProfile();
+  const defaultUrl = userProfile?.profile?.profileImage;
+
   const {
     register,
     watch,
@@ -37,11 +44,21 @@ export default function Page() {
       passwordCurrent: '',
       passwordNew: '',
       passwordConfirm: '',
-      profileImage: null,
+      profileImage: '',
       selectedMoveTypes: [],
       selectedRegions: [],
     },
   });
+
+  useEffect(() => {
+    if (userProfile) {
+      setValue('name', userProfile.name);
+      setValue('email', userProfile.email);
+      setValue('phoneAddress', userProfile.phoneNumber);
+      setValue('profileImage', userProfile.profile?.profileImage || null);
+      setLoading(false);
+    }
+  }, [userProfile, setValue]);
 
   // user 타입
   const userType: string = 'user';
@@ -80,9 +97,9 @@ export default function Page() {
   const profileImage = watch('profileImage');
 
   const isValid =
-    name.trim() !== '' &&
-    email.trim() !== '' &&
-    phoneAddress.trim() !== '' &&
+    name?.trim() !== '' &&
+    email?.trim() !== '' &&
+    phoneAddress?.trim() !== '' &&
     passwordCurrent.trim() !== '' &&
     passwordNew.trim() !== '' &&
     passwordConfirm.trim() === passwordNew.trim() &&
@@ -113,6 +130,9 @@ export default function Page() {
       { shouldValidate: true },
     );
   };
+
+  const toaster = useToaster();
+
   // 프로필 수정 버튼
   const onSubmit = async (data: FormData) => {
     if (!isValid) return; // 유효하지 않으면 제출 차단
@@ -120,9 +140,17 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await updateCustomerProfile(data);
       console.log('프로필 수정 성공', response);
+      toaster('info', '수정 성공!');
       router.push('/user/quotes/requested');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('프로필 수정 실패:', error);
+      if (typeof error === 'string') {
+        toaster('warn', error); // errorMessage가 string이면 그대로 사용
+      } else if (error instanceof Error) {
+        toaster('warn', error.message); // 일반적인 Error 객체라면 메시지 출력
+      } else {
+        toaster('warn', '알 수 없는 오류 발생');
+      }
     }
   };
 
@@ -159,13 +187,14 @@ export default function Page() {
                     <FormInput
                       register={register}
                       errors={errors}
-                      placeholder='성함을 입력해 주세요.'
+                      placeholder={watch('name') || '성함을 입력해 주세요.'}
                       name='name'
                       type='text'
                       validation={{ required: '성함을 입력해 주세요.' }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
+                      disabled={true}
                     />
                   </div>
                   <div className='border-b border-solid border-gray-100'></div>
@@ -177,13 +206,14 @@ export default function Page() {
                     <FormInput
                       register={register}
                       errors={errors}
-                      placeholder='codeit@email.com'
+                      placeholder={watch('email') || 'codeit@email.com'}
                       name='email'
                       type='text'
                       validation={{ required: '이메일을 입력해 주세요.' }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
+                      disabled={true}
                     />
                   </div>
                   <div className='border-b border-solid border-gray-100'></div>
@@ -195,13 +225,16 @@ export default function Page() {
                     <FormInput
                       register={register}
                       errors={errors}
-                      placeholder='전화번호를 입력해주세요'
+                      placeholder={
+                        watch('phoneAddress') || '전화번호를 입력해주세요'
+                      }
                       name='phoneAddress'
                       type='text'
                       validation={{ required: '전화번호를 입력해 주세요.' }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
+                      disabled={true}
                     />
                   </div>
                   <div className='border-b border-solid border-gray-100'></div>
@@ -256,7 +289,12 @@ export default function Page() {
                       placeholder='새 비밀번호를 다시 한번 입력해주세요'
                       name='passwordConfirm'
                       type='password'
-                      validation={{ required: '비밀번호가 같지 않습니다.' }}
+                      validation={{
+                        required: '비밀번호를 한번 더 입력해 주세요.',
+                        validate: (value) =>
+                          value === watch('passwordNew') ||
+                          '비밀번호가 일치하지 않습니다.',
+                      }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
@@ -272,7 +310,7 @@ export default function Page() {
                       프로필 이미지
                     </div>
                     <ImageUpload
-                      imageUrl={profileImage}
+                      imageUrl={profileImage ?? defaultUrl ?? null}
                       onChange={(url) =>
                         setValue('profileImage', url, { shouldValidate: true })
                       }
