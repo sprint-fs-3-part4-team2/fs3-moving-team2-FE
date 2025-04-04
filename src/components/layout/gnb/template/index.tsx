@@ -6,6 +6,8 @@ import GNBLogo from '../molecules/gnbLogo';
 import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
 import dynamic from 'next/dynamic';
 import useUserProfile from '@/hooks/auth/useUserProfile';
+import CustomLink from '../atoms/menus/common/customLink';
+import Text from '../atoms/menus/common/gnbText';
 const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
   ssr: false,
 });
@@ -39,6 +41,32 @@ export default function GNB() {
           <GNBLogo isAuthorized={true} />
           <GNBMenu userType={userType} />
         </div>
+        {/* 테스트 페이지 이동 */}
+        <CustomLink href='/user/sign-in'>
+          <Text linkHref='/user/sign-in'>로그인</Text>
+        </CustomLink>
+
+        <CustomLink href='/user/sign-up'>
+          <Text linkHref='/user/sign-up'>회원가입</Text>
+        </CustomLink>
+
+        <div className='flex flex-col'>
+          <CustomLink href='/user/profile/register'>
+            <Text linkHref='/user/profile/register'>일반 프로필 등록</Text>
+          </CustomLink>
+          <CustomLink href='/mover/profile/register'>
+            <Text linkHref='/mover/profile/register'>기사님 프로필 등록</Text>
+          </CustomLink>
+        </div>
+
+        <CustomLink href='/mover/profile/edit'>
+          <Text linkHref='/mover/profile/edit'>기사님 프로필 수정</Text>
+        </CustomLink>
+
+        <CustomLink href='/mover/profile'>
+          <Text linkHref='/mover/profile'>기사님 마이페이지</Text>
+        </CustomLink>
+
         {isFetched && (
           <GNBRightSection
             isAuthorized={isAuthorized}
