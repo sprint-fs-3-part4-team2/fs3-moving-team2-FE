@@ -26,7 +26,7 @@ function ConfirmationModal({
       onClick={onClose}
     >
       <dialog
-        className='w-[350px] md:w-[500px] xl:w-[580px] h-[320px] md:h-[300px] px-[24px] pt-[34px] pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-20'
+        className='w-[350px] md:w-[500px] h-[320px] md:h-[300px] px-[24px] pt-[34px] pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-20'
         open
         onClick={(e) => e.stopPropagation()}
       >
@@ -34,7 +34,7 @@ function ConfirmationModal({
         <p className='absolute w-full px-[24px] text-center break-keep top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[94px] md:-translate-y-[84px] text-[21px] font-[500] py-[50px]'>
           {message}
         </p>
-        <div className='absolute bottom-[28px] w-[calc(350px-48px)] md:w-[calc(500px-48px)] xl:w-[calc(580px-48px)] flex justify-center gap-[16px]'>
+        <div className='absolute bottom-[28px] w-[calc(350px-48px)] md:w-[calc(500px-48px)] flex justify-center gap-[16px]'>
           {showCancel && (
             <button
               onClick={onCancel}

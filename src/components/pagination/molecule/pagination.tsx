@@ -217,7 +217,7 @@ export default function Pagination({
 
   return (
     <div
-      className={`flex items-center justify-center w-[476px] h-[48px] ${containerClassName}`}
+      className={`flex items-center justify-center w-full max-w-[476px] h-[48px] ${containerClassName}`}
     >
       <Button
         onClick={handlePrev}
