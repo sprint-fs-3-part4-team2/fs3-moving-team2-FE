@@ -328,6 +328,9 @@ export default function Page() {
       if (response) {
         console.log('지정 견적 요청 성공');
         setIsQuoteRequested(true);
+        setMoverDetail((prev) =>
+          prev ? { ...prev, isCustomQuote: true } : null,
+        );
         setShowSpecificQuoteModal(false);
         alert('지정 견적 요청이 완료되었습니다.');
       }
