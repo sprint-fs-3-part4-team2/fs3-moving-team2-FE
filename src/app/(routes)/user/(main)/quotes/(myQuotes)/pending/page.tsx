@@ -257,9 +257,11 @@ export default function Page() {
         <div className='max-w-[1400px] mx-auto px-6 md:px-[72px] xl:px-0 py-[32px] xl:py-[40px]'>
           <div className='grid grid-cols-1 gap-6 xl:grid-cols-2'>
             {currentMovers.map((mover) => (
-              <div className='bg-white'>
+              <div
+                className='bg-white'
+                key={mover.quoteId}
+              >
                 <MoverInfo
-                  key={mover.quoteId}
                   {...mover}
                   imageUrl={mover.imageUrl}
                   favoriteCount={mover.totalCustomerFavorite ?? 0}
