@@ -3,22 +3,23 @@
 import { usePathname } from 'next/navigation';
 import GNBLayout from '../atoms/layout/gnbLayout';
 import GNBLogo from '../molecules/gnbLogo';
-import GNBMenu from '../molecules/gnbMenu';
 import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
-import { GNBProps } from './gnb.type';
 import dynamic from 'next/dynamic';
+import useUserProfile from '@/hooks/auth/useUserProfile';
 const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
   ssr: false,
 });
+const GNBMenu = dynamic(() => import('../molecules/gnbMenu'));
 
-export default function GNB({
-  isAuthorized,
-  userType,
-  userName,
-  imageUrl,
-  hasNotification,
-}: GNBProps) {
+export default function GNB() {
   const pathname = usePathname();
+  const { data, isFetched } = useUserProfile();
+
+  const isAuthorized = data ? true : false;
+  const userName = data?.name || '';
+  const imageUrl =
+    data?.profile?.profileImage || '/icons/gnb/default-profile.svg';
+  const userType = data?.userType || 'guest';
 
   const hidePathnames = [
     '/select-role',
@@ -35,16 +36,17 @@ export default function GNB({
     <div className={GNB_STYLES}>
       <GNBLayout>
         <div className={GNB_LOGO_MENU_STYLES}>
-          <GNBLogo isAuthorized={isAuthorized} />
+          <GNBLogo isAuthorized={true} />
           <GNBMenu userType={userType} />
         </div>
-        <GNBRightSection
-          isAuthorized={isAuthorized}
-          hasNotification={hasNotification}
-          userName={userName}
-          imageUrl={imageUrl}
-          userType={userType}
-        />
+        {isFetched && (
+          <GNBRightSection
+            isAuthorized={isAuthorized}
+            userName={userName}
+            imageUrl={imageUrl}
+            userType={userType}
+          />
+        )}
       </GNBLayout>
     </div>
   );

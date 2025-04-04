@@ -14,6 +14,7 @@ type RefreshTokenCallback = (token: string | null, error?: any) => void;
 
 let isRefreshing = false;
 let refreshSubscribers: RefreshTokenCallback[] = [];
+let refreshAttempted = false;
 const onRefreshed = (accessToken: string) => {
   refreshSubscribers.forEach((callback) => callback(accessToken));
   refreshSubscribers = [];
@@ -24,7 +25,34 @@ const onRefreshError = (error: Error) => {
 };
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  async (response) => {
+    if (
+      response.config.url === '/users/me' &&
+      response.data === null &&
+      !refreshAttempted
+    ) {
+      refreshAttempted = true;
+
+      try {
+        const refreshResponse = await axiosInstance.post(
+          'auth/refresh-token',
+          {},
+          { withCredentials: true },
+        );
+        if (refreshResponse.status === 200) {
+          const originalRequest = response.config;
+          refreshAttempted = false;
+          return axiosInstance(originalRequest);
+        }
+        return response;
+      } catch (error) {
+        console.error('토큰 리프레쉬 실패', error);
+        refreshAttempted = false;
+        return response;
+      }
+    }
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 

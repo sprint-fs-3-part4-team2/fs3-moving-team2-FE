@@ -10,11 +10,9 @@ export async function moverEditApi(body: FieldValues) {
   }
 }
 
-export async function moverInfoApi() {
-  try {
-    const res = await axiosInstance.get('/users/mover/basicinfo');
-    return await res.data;
-  } catch (err) {
-    return err;
-  }
+export async function moverInfoApi(cookie?: string) {
+  const res = await axiosInstance.get('/users/mover/basicinfo', {
+    headers: { Cookie: cookie },
+  });
+  return await res.data;
 }

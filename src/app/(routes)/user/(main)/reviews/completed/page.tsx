@@ -22,6 +22,7 @@ export default function Page() {
   } = useQuery({
     queryKey: ['completedReviews'],
     queryFn: getCompletedReviews,
+    staleTime: 0,
   });
 
   interface Mover {
