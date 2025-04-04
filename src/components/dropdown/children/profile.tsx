@@ -20,6 +20,10 @@ function Profile({
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<MyProfile>(['userProfile']);
 
+  let userType = '고객님';
+  if (data?.userType === 'customer') userType = '고객님';
+  else if (data?.userType === 'mover') userType = '기사님';
+
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -67,7 +71,13 @@ function Profile({
             'xl:py-[14px] xl:pl-6 xl:text-[18px]',
           )}
         >
-          {data?.name} 고객님
+          <span
+            className='block w-full max-w-[100px] truncate overflow-hidden whitespace-nowrap'
+            title={data?.name}
+          >
+            {data?.name}
+          </span>{' '}
+          {userType}
         </h2>
         <ul>
           <ProfileList href={'/user/profile/edit'}>프로필 수정</ProfileList>
