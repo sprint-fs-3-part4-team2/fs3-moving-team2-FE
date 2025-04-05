@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { getPendingReviews } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import ReviewModal from '@/components/modal/children/ReviewModal';
+import NoData from '@/components/noData/NoData';
 
 function ConfirmationModal({
   message,
@@ -30,7 +31,9 @@ function ConfirmationModal({
         open
         onClick={(e) => e.stopPropagation()}
       >
-        <p className='text-[20px] md:text-[24px]/[32px] font-[600]'>리뷰 작성 완료</p>
+        <p className='text-[20px] md:text-[24px]/[32px] font-[600]'>
+          리뷰 작성 완료
+        </p>
         <p className='absolute w-full px-[24px] text-center break-keep top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[26px] md:-translate-y-[84px] text-[16px] md:text-[21px] font-[500] md:py-[50px]'>
           {message}
         </p>
@@ -492,7 +495,7 @@ export default function Page() {
         </div>
       ) : (
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
-          <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
+          {/* <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
             <Image
               src='/img/car.svg'
               alt='no-review'
@@ -502,7 +505,8 @@ export default function Page() {
           </div>
           <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
             작성 가능한 리뷰가 없어요
-          </div>
+          </div> */}
+          <NoData text='작성 가능한 리뷰가 없어요' />
         </div>
       )}
       {/* 모달 렌더링 */}
