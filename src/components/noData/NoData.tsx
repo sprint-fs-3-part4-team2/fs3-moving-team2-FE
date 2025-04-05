@@ -14,7 +14,7 @@ const NoData: React.FC<NoDataProps> = ({
     <div className='flex flex-col items-center'>
       <div className='group relative w-[214px] md:w-[321px] xl:w-[428px] h-[180px] md:h-[270px] xl:h-[360px]'>
         <Image
-          src='/img/no_data.png'
+          src='/img/no-data/no_data.png'
           alt='not_found'
           fill
           priority
@@ -22,7 +22,7 @@ const NoData: React.FC<NoDataProps> = ({
           className='block group-hover:hidden'
         />
         <Image
-          src='/img/no_data_empty.png'
+          src='/img/no-data/no_data_empty.png'
           alt='not_found_hover'
           fill
           priority
