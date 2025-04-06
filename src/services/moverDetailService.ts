@@ -1,9 +1,14 @@
 import { MoverDetail } from '@/services/types/mover';
 import axiosInstance from '@/lib/axiosInstance';
 
-export async function getMoverDetail(moverId: string): Promise<MoverDetail> {
-  const response = await axiosInstance.get(`/movers/${moverId}`);
-  return response.data;
+export async function getMoverDetail(
+  moverId: string,
+  cookie?: string | null,
+): Promise<MoverDetail> {
+  const response = await axiosInstance.get(`/movers/${moverId}`, {
+    headers: cookie ? { Cookie: cookie } : undefined,
+  });
+  return response.data.data;
 }
 
 export async function toggleFavorite(

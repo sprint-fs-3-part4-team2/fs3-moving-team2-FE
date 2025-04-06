@@ -45,6 +45,7 @@ export const getMoverReviewsById = async (
   moverId: string,
   page: number,
   limit: number,
+  cookie?: string,
 ) => {
   try {
     const response = await axiosInstance.get(`/movers/${moverId}/reviews`, {
@@ -52,6 +53,7 @@ export const getMoverReviewsById = async (
         page,
         limit,
       },
+      headers: cookie ? { Cookie: cookie } : undefined,
     });
     return response.data;
   } catch (error) {
