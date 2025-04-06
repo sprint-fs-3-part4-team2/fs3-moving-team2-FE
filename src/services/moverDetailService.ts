@@ -6,10 +6,7 @@ export async function getMoverDetail(
   cookie?: string | null,
 ): Promise<MoverDetail> {
   const response = await axiosInstance.get(`/movers/${moverId}`, {
-    headers: {
-      ...(cookie ? { Cookie: cookie } : {}),
-      Origin: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
-    },
+    headers: cookie ? { Cookie: cookie } : undefined,
   });
   return response.data.data;
 }

@@ -348,51 +348,27 @@ export default function MoverDetailClient({
     },
   });
 
-  // 로그인 상태가 변경될 때 상태 업데이트
-  useEffect(() => {
-    if (!isLoggedIn) {
-      // 로그아웃 시 모든 상태 초기화
-      setIsQuoteRequested(false);
-      setIsFavorite(false);
-      setMoverDetail((prev) => ({
-        ...prev,
-        isFavorite: false,
-        isCustomQuote: false,
-      }));
-    } else {
-      // 로그인 시 서버에서 받아온 초기값으로 설정 후 최신 상태 체크
-      setIsQuoteRequested(initialMoverDetail.isCustomQuote);
-      setIsFavorite(initialMoverDetail.isFavorite);
+  // 찜하기 상태 체크
+  const checkFavoriteStatus = async () => {
+    try {
+      if (!isLoggedIn) return;
 
-      const checkStatus = async () => {
-        try {
-          const [quoteResponse, favoriteResponse] = await Promise.all([
-            checkGeneralQuoteExists(),
-            axiosInstance.get(`/favorites/check/${moverId}`),
-          ]);
+      const response = await axiosInstance.get(`/favorites/check/${moverId}`);
 
-          setIsQuoteRequested(
-            quoteResponse.hasTargetedQuote || initialMoverDetail.isCustomQuote,
-          );
-
-          if (
-            favoriteResponse.data &&
-            favoriteResponse.data.isFavorite !== undefined
-          ) {
-            setIsFavorite(favoriteResponse.data.isFavorite);
-            setMoverDetail((prev) => ({
-              ...prev,
-              isFavorite: favoriteResponse.data.isFavorite,
-            }));
-          }
-        } catch (error) {
-          console.error('상태 체크 중 오류:', error);
-        }
-      };
-
-      checkStatus();
+      if (response.data && response.data.isFavorite !== undefined) {
+        setIsFavorite(response.data.isFavorite);
+        setMoverDetail((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            isFavorite: response.data.isFavorite,
+          };
+        });
+      }
+    } catch (error) {
+      // 에러 발생 시 조용히 실패 처리
     }
-  }, [isLoggedIn, initialMoverDetail, moverId]);
+  };
 
   // 찜하기 토글
   const toggleFavorite = async () => {
@@ -414,12 +390,15 @@ export default function MoverDetailClient({
         setIsFavorite((prev) => !prev);
 
         // 기사 정보 업데이트
-        setMoverDetail((prev) => ({
-          ...prev,
-          favoriteCount: response.data.totalCustomerFavorite,
-          isFavorite: !isFavorite,
-          isFavoriteMoverList: !isFavorite,
-        }));
+        setMoverDetail((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            favoriteCount: response.data.totalCustomerFavorite,
+            isFavorite: !isFavorite,
+            isFavoriteMoverList: !isFavorite,
+          };
+        });
       }
     } catch (error: any) {
       console.error('찜하기 처리 중 오류 발생:', error);
@@ -524,9 +503,20 @@ export default function MoverDetailClient({
 
   // 로그인 페이지로 이동
   const goToLogin = (): void => {
-    router.push('/user/sign-in');
+    router.push('/user/auth/sign-in');
     setShowLoginModal(false);
   };
+
+  // 페이지 로드 시 초기 상태 체크
+  useEffect(() => {
+    const initializePage = async () => {
+      if (isLoggedIn) {
+        await Promise.all([checkFavoriteStatus()]);
+      }
+    };
+
+    initializePage();
+  }, [moverId, isLoggedIn]);
 
   if (reviewsError) {
     return <div>리뷰 목록을 불러오는 중 오류가 발생했습니다.</div>;
