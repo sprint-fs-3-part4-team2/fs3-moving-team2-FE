@@ -25,7 +25,9 @@ import {
   createTargetedQuoteRequest,
   checkGeneralQuoteExists,
 } from '@/services/targetedQuoteRequestService';
+import useUserProfile from '@/hooks/auth/useUserProfile';
 
+// 타입 정의
 type MoverDetail = {
   id: string;
   moverName: string;
@@ -75,6 +77,247 @@ type ReviewResponse = {
 
 const ITEMS_PER_PAGE = 5;
 
+// 모달 컴포넌트
+const LoginModal = ({
+  onClose,
+  onLogin,
+}: {
+  onClose: () => void;
+  onLogin: () => void;
+}) => (
+  <ModalWrapper
+    title='로그인이 필요합니다'
+    onClose={onClose}
+    className='max-w-md xl:max-w-[610px] w-full'
+  >
+    <div className='mt-4'>
+      <p className='mt-10 mb-10'>
+        이 기능을 사용하기 위해서는 로그인이 필요합니다.
+      </p>
+      <div className='flex gap-3 justify-end'>
+        <CommonButton
+          widthType='full'
+          heightType='primary'
+          backgroundColorType='blue'
+          textColorType='white'
+          onClick={onLogin}
+        >
+          로그인하기
+        </CommonButton>
+      </div>
+    </div>
+  </ModalWrapper>
+);
+
+const GeneralQuoteModal = ({
+  onClose,
+  onRequest,
+}: {
+  onClose: () => void;
+  onRequest: () => void;
+}) => (
+  <ModalWrapper
+    title='지정 견적 요청하기'
+    onClose={onClose}
+    className='max-w-md xl:max-w-[610px] w-full'
+  >
+    <div className='mt-4'>
+      <p className='mt-10 mb-10'>일반 견적 요청을 먼저 진행해 주세요.</p>
+      <div className='flex justify-center'>
+        <CommonButton
+          widthType='full'
+          heightType='primary'
+          backgroundColorType='blue'
+          textColorType='white'
+          onClick={onRequest}
+        >
+          일반 견적 요청하기
+        </CommonButton>
+      </div>
+    </div>
+  </ModalWrapper>
+);
+
+const SpecificQuoteModal = ({
+  onClose,
+  onConfirm,
+  moverName,
+}: {
+  onClose: () => void;
+  onConfirm: () => void;
+  moverName: string;
+}) => (
+  <ModalWrapper
+    title='지정 견적 요청하기'
+    onClose={onClose}
+    className='max-w-md xl:max-w-[610px] w-full'
+  >
+    <div className='mt-4'>
+      <p className='mb-10'>
+        {moverName} 기사님에게 지정 견적을 요청하시겠습니까?
+      </p>
+      <div className='flex justify-center'>
+        <CommonButton
+          widthType='full'
+          heightType='primary'
+          backgroundColorType='blue'
+          textColorType='white'
+          onClick={onConfirm}
+        >
+          지정 견적 요청하기
+        </CommonButton>
+      </div>
+    </div>
+  </ModalWrapper>
+);
+
+// 리뷰 섹션 컴포넌트
+const ReviewSection = ({
+  reviewsData,
+  isLoadingReviews,
+  currentPage,
+  setCurrentPage,
+}: {
+  reviewsData: ReviewResponse | undefined;
+  isLoadingReviews: boolean;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+}) => {
+  const totalPages = reviewsData?.totalPages ?? 1;
+  const currentReviews = reviewsData?.reviews ?? [];
+
+  return (
+    <div className='px-6'>
+      <RatingStat
+        ratingCounts={
+          reviewsData?.ratingCounts ?? {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+          }
+        }
+        averageRating={reviewsData?.averageRating ?? 0}
+        totalCount={reviewsData?.ratingCount ?? 0}
+      />
+
+      {/* 리뷰 리스트 */}
+      {isLoadingReviews ? (
+        <div>리뷰 로딩 중...</div>
+      ) : (
+        <>
+          {currentReviews.map((review: Review) => (
+            <ReviewBlock
+              key={review.id}
+              name={review.name}
+              writtenAt={review.writtenAt}
+              rating={review.rating}
+              content={review.content}
+            />
+          ))}
+
+          {/* 페이지네이션 */}
+          {totalPages > 1 && (
+            <div className='flex justify-center mt-[40px] mb-[59px]'>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+// 서비스 정보 섹션 컴포넌트
+const ServiceInfoSection = ({
+  movingType,
+  regions,
+}: {
+  movingType: MovingTypeKey[];
+  regions: string[];
+}) => (
+  <>
+    <div className='gap-0 px-6'>
+      <PageHeader>제공 서비스</PageHeader>
+      <div className='flex gap-3'>
+        {movingType.map((type, index) => (
+          <ServiceBadge
+            key={index}
+            color='blue'
+          >
+            {MOVING_TYPES[type].value}
+          </ServiceBadge>
+        ))}
+      </div>
+    </div>
+    <HorizontalDivider />
+
+    <div className='gap-0 px-6'>
+      <PageHeader>서비스 가능 지역</PageHeader>
+      <div className='flex gap-3'>
+        {regions.map((region, index) => (
+          <ServiceBadge
+            key={index}
+            color='gray'
+          >
+            {region}
+          </ServiceBadge>
+        ))}
+      </div>
+    </div>
+    <HorizontalDivider />
+  </>
+);
+
+// 모바일 하단 버튼 컴포넌트
+const MobileBottomButtons = ({
+  isFavorite,
+  toggleFavorite,
+  isQuoteRequested,
+  handleQuoteRequest,
+}: {
+  isFavorite: boolean;
+  toggleFavorite: () => void;
+  isQuoteRequested: boolean;
+  handleQuoteRequest: () => void;
+}) => (
+  <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
+    <div className='flex gap-2'>
+      <CommonButton
+        widthType='dynamic'
+        heightType='primary'
+        backgroundColorType='white'
+        textColorType='black'
+        borderColorsType='gray'
+        className='flex items-center justify-center p-[15px]'
+        onClick={toggleFavorite}
+      >
+        <Image
+          src={isFavorite ? redFilledHeart : filledHeart}
+          alt='찜하기'
+          width={28}
+          height={28}
+        />
+      </CommonButton>
+      <CommonButton
+        widthType='full'
+        heightType='primary'
+        backgroundColorType={isQuoteRequested ? 'gray' : 'blue'}
+        textColorType='white'
+        onClick={handleQuoteRequest}
+        disabled={isQuoteRequested}
+      >
+        {isQuoteRequested ? '지정 견적 요청 완료' : '지정 견적 요청하기'}
+      </CommonButton>
+    </div>
+  </div>
+);
+
 export default function Page() {
   const router = useRouter();
   const params = useParams();
@@ -93,6 +336,10 @@ export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  // 사용자 프로필 정보 (로그인 상태 확인용)
+  const { data: userProfile, isLoading: isLoadingProfile } = useUserProfile();
+  const isLoggedIn = !!userProfile;
+
   // 리뷰 목록 조회
   const {
     data: reviewsData,
@@ -110,35 +357,12 @@ export default function Page() {
     },
   });
 
-  // 로그인 상태 확인용 (테스트용)
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  // 일반 견적 요청 상태 (테스트용)
-  const [hasGeneralQuote, setHasGeneralQuote] = useState<boolean>(false);
-
-  // 로그인 상태 체크
-  const checkLoginStatus = () => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      setIsLoggedIn(false);
-      setShowLoginModal(true);
-      return false;
-    }
-    setIsLoggedIn(true);
-    return true;
-  };
-
   // 찜하기 상태 체크
   const checkFavoriteStatus = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) return;
+      if (!isLoggedIn) return;
 
-      const response = await axiosInstance.get(`/favorites/check/${moverId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.get(`/favorites/check/${moverId}`);
 
       if (response.data && response.data.isFavorite !== undefined) {
         setIsFavorite(response.data.isFavorite);
@@ -157,23 +381,18 @@ export default function Page() {
 
   // 찜하기 토글
   const toggleFavorite = async () => {
-    if (!checkLoginStatus()) return;
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
 
     try {
-      const token = localStorage.getItem('accessToken');
       const endpoint = isFavorite
         ? `/favorites/delete/${moverId}`
         : `/favorites/create/${moverId}`;
 
-      const response = await axiosInstance[isFavorite ? 'delete' : 'post'](
-        endpoint,
-        undefined,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response =
+        await axiosInstance[isFavorite ? 'delete' : 'post'](endpoint);
 
       if (response.status === 200 || response.status === 201) {
         // 찜하기 상태 업데이트
@@ -193,8 +412,6 @@ export default function Page() {
     } catch (error: any) {
       console.error('찜하기 처리 중 오류 발생:', error);
       if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
         setShowLoginModal(true);
       } else if (error.response?.status === 400) {
         console.error(error.response.data.error || '잘못된 요청입니다.');
@@ -226,53 +443,13 @@ export default function Page() {
     }
   }, [moverId]);
 
-  // 일반 견적 요청 여부 확인
-  const checkGeneralQuote = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
-
-      if (!token) {
-        setIsLoggedIn(false);
-        return;
-      }
-
-      const response = await axiosInstance.get('/quote-requests/latest', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.data && response.data.isRequested !== undefined) {
-        setHasGeneralQuote(response.data.isRequested);
-      } else {
-        setHasGeneralQuote(false);
-      }
-    } catch (error: any) {
-      if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
-      }
-      setHasGeneralQuote(false);
-    }
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-
-    if (token) {
-      setIsLoggedIn(true);
-      checkGeneralQuote();
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
-
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = async (): Promise<void> => {
     console.log('지정 견적 요청 시작:', { moverId });
 
-    if (!checkLoginStatus()) {
+    if (!isLoggedIn) {
       console.log('로그인 상태 확인 실패');
+      setShowLoginModal(true);
       return;
     }
 
@@ -304,8 +481,6 @@ export default function Page() {
       });
 
       if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
         setShowLoginModal(true);
       }
     }
@@ -342,8 +517,6 @@ export default function Page() {
       });
 
       if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
         setShowLoginModal(true);
       } else if (error.response?.status === 409) {
         alert(error.response.data.error || '이미 지정 견적 요청이 존재합니다.');
@@ -366,17 +539,13 @@ export default function Page() {
   // 페이지 로드 시 초기 상태 체크
   useEffect(() => {
     const initializePage = async () => {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        setIsLoggedIn(true);
-        await Promise.all([checkGeneralQuote(), checkFavoriteStatus()]);
-      } else {
-        setIsLoggedIn(false);
+      if (isLoggedIn) {
+        await Promise.all([checkFavoriteStatus()]);
       }
     };
 
     initializePage();
-  }, [moverId]);
+  }, [moverId, isLoggedIn]);
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -389,9 +558,6 @@ export default function Page() {
   if (reviewsError) {
     return <div>리뷰 목록을 불러오는 중 오류가 발생했습니다.</div>;
   }
-
-  const totalPages = reviewsData?.totalPages ?? 1;
-  const currentReviews = reviewsData?.reviews ?? [];
 
   // 찜하기 버튼 렌더링 부분 수정
   const renderFavoriteButton = () => (
@@ -448,79 +614,17 @@ export default function Page() {
           </div>
           <HorizontalDivider />
 
-          <div className='gap-0 px-6'>
-            <PageHeader>제공 서비스</PageHeader>
-            <div className='flex gap-3'>
-              {moverDetail.movingType.map((type, index) => (
-                <ServiceBadge
-                  key={index}
-                  color='blue'
-                >
-                  {MOVING_TYPES[type].value}
-                </ServiceBadge>
-              ))}
-            </div>
-          </div>
-          <HorizontalDivider />
+          <ServiceInfoSection
+            movingType={moverDetail.movingType}
+            regions={moverDetail.regions}
+          />
 
-          <div className='gap-0 px-6'>
-            <PageHeader>서비스 가능 지역</PageHeader>
-            <div className='flex gap-3'>
-              {moverDetail.regions.map((region, index) => (
-                <ServiceBadge
-                  key={index}
-                  color='gray'
-                >
-                  {region}
-                </ServiceBadge>
-              ))}
-            </div>
-          </div>
-          <HorizontalDivider />
-
-          <div className='px-6'>
-            <RatingStat
-              ratingCounts={
-                reviewsData?.ratingCounts ?? {
-                  1: 0,
-                  2: 0,
-                  3: 0,
-                  4: 0,
-                  5: 0,
-                }
-              }
-              averageRating={reviewsData?.averageRating ?? 0}
-              totalCount={reviewsData?.ratingCount ?? 0}
-            />
-
-            {/* 리뷰 리스트 */}
-            {isLoadingReviews ? (
-              <div>리뷰 로딩 중...</div>
-            ) : (
-              <>
-                {currentReviews.map((review: Review) => (
-                  <ReviewBlock
-                    key={review.id}
-                    name={review.name}
-                    writtenAt={review.writtenAt}
-                    rating={review.rating}
-                    content={review.content}
-                  />
-                ))}
-
-                {/* 페이지네이션 */}
-                {totalPages > 1 && (
-                  <div className='flex justify-center mt-[40px] mb-[59px]'>
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={setCurrentPage}
-                    />
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+          <ReviewSection
+            reviewsData={reviewsData}
+            isLoadingReviews={isLoadingReviews}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
 
         {/* 데스크탑 */}
@@ -549,114 +653,36 @@ export default function Page() {
         {/* 모달 */}
         {/* 로그인 모달 */}
         {showLoginModal && (
-          <ModalWrapper
-            title='로그인이 필요합니다'
+          <LoginModal
             onClose={() => setShowLoginModal(false)}
-            className='max-w-md xl:max-w-[610px] w-full'
-          >
-            <div className='mt-4'>
-              <p className='mt-10 mb-10'>
-                이 기능을 사용하기 위해서는 로그인이 필요합니다.
-              </p>
-              <div className='flex gap-3 justify-end'>
-                <CommonButton
-                  widthType='full'
-                  heightType='primary'
-                  backgroundColorType='blue'
-                  textColorType='white'
-                  onClick={goToLogin}
-                >
-                  로그인하기
-                </CommonButton>
-              </div>
-            </div>
-          </ModalWrapper>
+            onLogin={goToLogin}
+          />
         )}
 
         {/* 일반 견적 요청 필요 모달 */}
         {showGeneralQuoteModal && (
-          <ModalWrapper
-            title='지정 견적 요청하기'
+          <GeneralQuoteModal
             onClose={() => setShowGeneralQuoteModal(false)}
-            className='max-w-md xl:max-w-[610px] w-full'
-          >
-            <div className='mt-4'>
-              <p className='mt-10 mb-10'>
-                일반 견적 요청을 먼저 진행해 주세요.
-              </p>
-              <div className='flex justify-center'>
-                <CommonButton
-                  widthType='full'
-                  heightType='primary'
-                  backgroundColorType='blue'
-                  textColorType='white'
-                  onClick={goToGeneralQuote}
-                >
-                  일반 견적 요청하기
-                </CommonButton>
-              </div>
-            </div>
-          </ModalWrapper>
+            onRequest={goToGeneralQuote}
+          />
         )}
 
         {/* 지정 견적 요청 모달 */}
         {showSpecificQuoteModal && (
-          <ModalWrapper
-            title='지정 견적 요청하기'
+          <SpecificQuoteModal
             onClose={() => setShowSpecificQuoteModal(false)}
-            className='max-w-md xl:max-w-[610px] w-full'
-          >
-            <div className='mt-4'>
-              <p className='mb-10'>
-                {moverDetail?.moverName} 기사님에게 지정 견적을
-                요청하시겠습니까?
-              </p>
-              <div className='flex justify-center'>
-                <CommonButton
-                  widthType='full'
-                  heightType='primary'
-                  backgroundColorType='blue'
-                  textColorType='white'
-                  onClick={confirmSpecificQuote}
-                >
-                  지정 견적 요청하기
-                </CommonButton>
-              </div>
-            </div>
-          </ModalWrapper>
+            onConfirm={confirmSpecificQuote}
+            moverName={moverDetail.moverName}
+          />
         )}
 
         {/* 모바일 하단 고정 버튼 */}
-        <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
-          <div className='flex gap-2'>
-            <CommonButton
-              widthType='dynamic'
-              heightType='primary'
-              backgroundColorType='white'
-              textColorType='black'
-              borderColorsType='gray'
-              className='flex items-center justify-center p-[15px]'
-              onClick={toggleFavorite}
-            >
-              <Image
-                src={isFavorite ? redFilledHeart : filledHeart}
-                alt='찜하기'
-                width={28}
-                height={28}
-              />
-            </CommonButton>
-            <CommonButton
-              widthType='full'
-              heightType='primary'
-              backgroundColorType={isQuoteRequested ? 'gray' : 'blue'}
-              textColorType='white'
-              onClick={handleQuoteRequest}
-              disabled={isQuoteRequested}
-            >
-              {isQuoteRequested ? '지정 견적 요청 완료' : '지정 견적 요청하기'}
-            </CommonButton>
-          </div>
-        </div>
+        <MobileBottomButtons
+          isFavorite={isFavorite}
+          toggleFavorite={toggleFavorite}
+          isQuoteRequested={isQuoteRequested}
+          handleQuoteRequest={handleQuoteRequest}
+        />
       </div>
     </div>
   );
