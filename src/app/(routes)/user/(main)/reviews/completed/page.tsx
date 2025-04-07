@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
-import Image from 'next/image';
+
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { getCompletedReviews } from '@/services/reviewsService';
 import { MOVING_TYPES } from '@/constants/movingTypes';
+import NoData from '@/components/noData/NoData';
 
 export default function Page() {
   const router = useRouter();
@@ -52,14 +53,10 @@ export default function Page() {
   if (emptyData)
     return (
       <div className='flex flex-col items-center justify-center w-full h-[656px]'>
-        <div>
-          <Image
-            src='/img/no-review.svg'
-            alt='리뷰없음 이미지'
-            width={184}
-            height={136}
-          />
+        <div className='py-[24px] xl:py-[32px]'>
+          <NoData text='여기 등록된 리뷰가 없어요!' />
         </div>
+
         <div className='text-gray-400 my-[32px]'>
           여기 등록된 리뷰가 없어요!
         </div>
