@@ -5,16 +5,11 @@ import SearchInput from '@/components/common/inputSection/atoms/customInput/inpu
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { DropdownCta } from '@/components/dropdown/dropdown';
-import cn from '@/utils/cn';
-import {
-  Mover,
-  checkAuth,
-  searchMovers,
-  getMovers,
-} from '@/services/moverService';
+import { Mover, searchMovers, getMovers } from '@/services/moverService';
 import MoverList from '@/components/movers/MoverList';
 import MoverFilters from '@/components/movers/MoverFilters';
 import FavoriteMovers from '@/components/movers/FavoriteMovers';
+import useUserProfile from '@/hooks/auth/useUserProfile';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 
@@ -26,7 +21,9 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
+  const { data: profile } = useUserProfile();
 
+  // 검색
   const handleSearch = async () => {
     const searchInput = document.querySelector(
       'input[type="text"]',
@@ -47,20 +44,32 @@ export default function Page() {
       const moversData = await searchMovers(searchTerm);
       setMovers(moversData);
       setAllMovers(moversData);
-
-      const isAuth = await checkAuth();
-      if (isAuth) {
-        const favoriteMoversData = moversData
-          .filter((mover: Mover) => mover.isFavorite)
-          .slice(0, 2);
-        setFavoriteMovers(favoriteMoversData);
-      }
     } catch (err: any) {
       console.error('검색 중 오류 발생:', err);
       setError('기사님 검색 중 오류가 발생했습니다.');
     }
   };
 
+  // 엔터키 이벤트 핸들러
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        const searchInput = document.querySelector(
+          'input[type="text"]',
+        ) as HTMLInputElement;
+        if (document.activeElement === searchInput) {
+          handleSearch();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // 정렬
   const handleSort = async (value: string | object) => {
     const sortValue = typeof value === 'string' ? value : 'reviews';
     setSelectedSort(sortValue);
@@ -68,20 +77,13 @@ export default function Page() {
       const moversData = await getMovers({ sortBy: sortValue });
       setAllMovers(moversData);
       setMovers(moversData);
-
-      const isAuth = await checkAuth();
-      if (isAuth) {
-        const favoriteMoversData = moversData
-          .filter((mover: Mover) => mover.isFavorite)
-          .slice(0, 2);
-        setFavoriteMovers(favoriteMoversData);
-      }
     } catch (err: any) {
       console.error('정렬 중 오류 발생:', err);
       setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
     }
   };
 
+  // 기사님 목록 가져오기
   const fetchMovers = async () => {
     try {
       const moversData = await getMovers({
@@ -93,13 +95,11 @@ export default function Page() {
       setAllMovers(moversData);
       setMovers(moversData);
 
-      const isAuth = await checkAuth();
-      if (isAuth) {
-        const favoriteMoversData = moversData
-          .filter((mover: Mover) => mover.isFavorite)
-          .slice(0, 2);
-        setFavoriteMovers(favoriteMoversData);
-      }
+      // 찜한 기사님 목록 불러오기
+      const favoriteMoversData = moversData
+        .filter((mover: Mover) => mover.isFavorite)
+        .slice(0, 2);
+      setFavoriteMovers(favoriteMoversData);
     } catch (err: any) {
       console.error('API 호출 오류:', err);
       setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
