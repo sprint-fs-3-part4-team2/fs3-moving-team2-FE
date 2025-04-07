@@ -1,12 +1,13 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import CommonButton from '../common/commonBtn/commonBtn';
-import ModalWrapper from '../modal/ModalWrapper';
-import CustomerInfo from '../common/customerInfo/templates/customerInfo';
-import FormInput from '../common/inputSection/atoms/customInput/inputs/formInput';
+import CommonButton from '../../common/commonBtn/commonBtn';
+import ModalWrapper from '../../modal/ModalWrapper';
+import CustomerInfo from '../../common/customerInfo/templates/customerInfo';
+import FormInput from '../../common/inputSection/atoms/customInput/inputs/formInput';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSubmitQuoteByMoverMutation } from '@/hooks/useSubmitQuoteByMoverMutation';
+import { useSessionStorage } from '@/hooks/useStorage';
 
 interface MoverQuoteSubmitModalProps {
   selectedCustomer: CustomerRequest | null;
@@ -17,18 +18,36 @@ export default function MoverQuoteSubmitModal({
   selectedCustomer,
   setShowSubmitModal,
 }: MoverQuoteSubmitModalProps) {
+  const draftStorageKey = selectedCustomer?.quoteId
+    ? `quote_draft_${selectedCustomer.quoteId}`
+    : 'quote_draft_temp';
+
+  // 세션 스토리지에서 저장된 데이터 가져오기 (있다면)
+  const [draftData, setDraftData, removeDraftData] = useSessionStorage<{
+    quotePrice?: string;
+    quoteComment?: string;
+  }>(draftStorageKey, {});
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isValid },
-  } = useForm<FieldValues>({ mode: 'onChange' });
+  } = useForm<FieldValues>({ mode: 'onChange', defaultValues: draftData });
 
-  const quoteCommentValue = watch('quoteComment') || '';
+  const quotePrice = watch('quotePrice');
+  const quoteComment = watch('quoteComment') || '';
 
-  const queryClient = useQueryClient();
+  // 폼 값이 변경될 때마다 세션 스토리지에 저장
+  useEffect(() => {
+    if (quotePrice || quoteComment) {
+      setDraftData({ quotePrice, quoteComment });
+    }
+  }, [draftStorageKey, quotePrice, quoteComment]);
 
   const submitMutation = useSubmitQuoteByMoverMutation(() => {
+    // 제출 성공 시 임시 저장 데이터 삭제
+    removeDraftData();
     setShowSubmitModal(false);
   });
 
@@ -44,10 +63,24 @@ export default function MoverQuoteSubmitModal({
     }
   };
 
+  // 모달 닫기 전 확인 (작성 중인 데이터가 있는 경우)
+  const handleCloseModal = () => {
+    const hasUnsavedChanges =
+      (quotePrice || quoteComment) && !submitMutation.isSuccess;
+
+    if (hasUnsavedChanges) {
+      if (window.confirm('작성 중인 견적이 있습니다. 정말 닫으시겠습니까?')) {
+        setShowSubmitModal(false);
+      }
+    } else {
+      setShowSubmitModal(false);
+    }
+  };
+
   return (
     <ModalWrapper
       title='견적 보내기'
-      onClose={() => setShowSubmitModal(false)}
+      onClose={handleCloseModal}
     >
       <div className='mb-7 xl:mb-10' />
       <CustomerInfo
@@ -103,7 +136,7 @@ export default function MoverQuoteSubmitModal({
           styleVariant='primary'
         />
         <p className='text-xs text-gray-500 mt-1'>
-          {quoteCommentValue.length} / 10자 이상
+          {quoteComment.length} / 10자 이상
         </p>
         <CommonButton
           type='submit'

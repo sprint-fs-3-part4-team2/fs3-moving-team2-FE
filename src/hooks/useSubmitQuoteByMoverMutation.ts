@@ -16,6 +16,7 @@ export const useSubmitQuoteByMoverMutation = (onClose: () => void) => {
     mutationFn: ({ quoteId, price, comment }: SubmitQuoteParams) =>
       submitQuoteByMover(quoteId, price, comment),
     onSuccess: () => {
+      // 해당 API 가 다른 API에 영향을 받는다면 invalidateQueries를 사용 -> 목록 조회이니 영향을 받으니 invalidateQueries 사용
       queryClient.invalidateQueries({ queryKey: ['customerRequests'] });
       toast('info', '견적 보내기 성공');
       onClose();
