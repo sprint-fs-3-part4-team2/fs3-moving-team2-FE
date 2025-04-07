@@ -23,7 +23,7 @@ const PROTECT = {
 };
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
   const { cookies, url, headers } = request;
   const token = cookies.get('accessToken')?.value;
   const reToken = cookies.get('refreshToken')?.value;
@@ -37,15 +37,16 @@ export function middleware(request: NextRequest) {
 
   if (!process.env.NEXT_PUBLIC_SSR) {
     console.error('🚨 [ERROR] SSR 환경 설정 필요');
-    return res;
+    // return res; // env 처리 전까지 주석
   }
+
   // dev 환경에선 미들웨어 막기
   // 미들웨어 사용안하실거면 여기 주석처리 해주세요
   // if (process.env.NODE_ENV === 'development') return res;
 
   // 비 로그인
   if (!token && !reToken) {
-    requestHeaders.delete(process.env.NEXT_PUBLIC_SSR);
+    requestHeaders.delete(process.env.NEXT_PUBLIC_SSR || 'ssr-token');
     const nouserProtected =
       PROTECT.NO_USER.some((path) => pathname.startsWith(path)) &&
       !pathname.includes('sign-in') &&
@@ -75,26 +76,35 @@ export function middleware(request: NextRequest) {
   // 로그인
   if (token) {
     const decode = jwtDecode(token) as CustomJWTPayload;
-    const ssrToken = request.headers.get(process.env.NEXT_PUBLIC_SSR);
+    const ssrToken = request.headers.get(
+      process.env.NEXT_PUBLIC_SSR || 'ssr-token',
+    );
     if (!decode) return res;
 
     const { roleId, type } = decode;
     //ssr 용 token
     if (roleId && !ssrToken)
-      requestHeaders.set(process.env.NEXT_PUBLIC_SSR, 'accessToken=' + token);
+      requestHeaders.set(
+        process.env.NEXT_PUBLIC_SSR || 'ssr-token',
+        'accessToken=' + token,
+      );
 
     //프로필 미등록 유저 블럭
-    if (!roleId && !pathname.includes('/profile/register')) {
+    if (
+      !roleId &&
+      !pathname.includes('/profile/register') &&
+      !searchParams.has('register')
+    ) {
       const referer = request.headers.get('referer');
       const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
       if (!referer) return NextResponse.redirect(new URL(urlPath, url));
 
-      // if (referer.includes('/profile/register'))
-      //   return NextResponse.redirect(
-      //     new URL(urlPath + '?warn=profileRegister', url),
-      //   );
+      if (referer.includes('/profile/register'))
+        return NextResponse.redirect(
+          new URL(urlPath + '?warn=profileRegister', url),
+        );
 
-      return NextResponse.redirect(new URL(urlPath, url));
+      return NextResponse.redirect(new URL(urlPath + '?register', url));
     }
 
     // 프로필 등록 유저 블럭
