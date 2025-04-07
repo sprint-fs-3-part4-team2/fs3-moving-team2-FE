@@ -62,6 +62,11 @@ export default function MoverBasicInfoEditClient({
     });
   };
 
+  // 취소 버튼
+  const cancel = () => {
+    router.back(); // 이전 페이지로 이동
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
@@ -208,10 +213,11 @@ export default function MoverBasicInfoEditClient({
           </li>
         </ul>
       </div>
-      <div className={cn('flex flex-wrap lg:justify-between')}>
+      <div className={cn('flex flex-wrap lg:justify-between lg:flex-row-reverse')}>
         <div className={cn(button)}>
           <CommonButton
-            type='reset'
+            // type='reset'
+            onClick={cancel}
             className={cn('h-14 text-primary-blue-200', 'lg:h-15')}
             widthType='full'
             backgroundColorType='white'

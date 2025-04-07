@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ImageUpload from '@/components/profile/ImageUpload';
 import BtGrid from '@/components/profile/BtGrid';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
@@ -18,11 +18,13 @@ type FormData = {
   selectedMoveTypes: string[];
   selectedRegions: string[];
 };
-// const { data: userProfile } = useUserProfile();
-// const defaultUrl = userProfile?.profile?.profileImage;
 
 export default function Page() {
   const router = useRouter();
+
+  const { data: userProfile } = useUserProfile();
+  const defaultUrl = userProfile?.profile?.profileImage;
+
   const {
     handleSubmit,
     register,
@@ -40,6 +42,15 @@ export default function Page() {
       selectedRegions: [],
     },
   });
+
+  useEffect(() => {
+    if (userProfile) {
+      setValue('experience', userProfile.profile?.experienceYears || 0);
+      setValue('shortIntro', userProfile.profile?.introduction || '');
+      setValue('description', userProfile.profile?.description || '');
+      setValue('profileImage', defaultUrl || null);
+    }
+  }, [userProfile, setValue]);
 
   // user 타입
   const userType: string = 'mover';
