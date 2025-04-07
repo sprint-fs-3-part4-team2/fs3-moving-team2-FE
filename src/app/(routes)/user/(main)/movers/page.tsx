@@ -2,13 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import SearchInput from '@/components/common/inputSection/atoms/customInput/inputs/searchInput';
-import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
-import Area from '@/components/dropdown/cta/area';
-import Service from '@/components/dropdown/cta/service';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { DropdownCta } from '@/components/dropdown/dropdown';
-import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import {
   Mover,
@@ -16,6 +12,9 @@ import {
   searchMovers,
   getMovers,
 } from '@/services/moverService';
+import MoverList from '@/components/movers/MoverList';
+import MoverFilters from '@/components/movers/MoverFilters';
+import FavoriteMovers from '@/components/movers/FavoriteMovers';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 
@@ -27,7 +26,6 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
-  const router = useRouter();
 
   const handleSearch = async () => {
     const searchInput = document.querySelector(
@@ -123,110 +121,26 @@ export default function Page() {
       <div className='relative flex px-6 w-full mx-auto gap-[107px]'>
         {/* 데스크탑 */}
         <div className='flex flex-col max-w-[328px] w-full xl:flex mx-auto md:hidden hidden'>
-          <div className='flex flex-col items-center w-full mx-auto mb-[46px] gap-8'>
-            <div className='flex justify-between w-full px-3 py-4 border-b border-gray-200'>
-              <p className='text-xl font-semibold'>필터</p>
-              <button
-                onClick={() => {
-                  setSelectedArea('지역');
-                  setSelectedService('서비스');
-                }}
-                className='bg-none text-gray-300 border-none hover:text-gray-500'
-              >
-                초기화
-              </button>
-            </div>
-
-            <div className='flex flex-col w-full gap-4'>
-              <p className='text-2lg font-semibold'>지역을 선택해주세요</p>
-              <Area dispatch={(value) => setSelectedArea(value as string)} />
-            </div>
-
-            <div className='flex flex-col w-full gap-4'>
-              <p className='text-2lg font-semibold'>
-                어떤 서비스가 필요하세요?
-              </p>
-              <Service
-                dispatch={(value) => setSelectedService(value as string)}
-              />
-            </div>
-          </div>
-
-          <div className='flex flex-col w-full gap-4'>
-            <p className='text-xl font-semibold'>찜한 기사님</p>
-
-            {favoriteMovers.length > 0 ? (
-              favoriteMovers.map((mover) => (
-                <div
-                  key={mover.id}
-                  onClick={() => router.push(`/user/movers/${mover.id}`)}
-                  className='cursor-pointer'
-                >
-                  <MoverInfo
-                    variant='quote'
-                    subVariant='completed'
-                    moverName={mover.moverName}
-                    imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-                    movingType={mover.movingType}
-                    isCustomQuote={mover.isCustomQuote}
-                    rating={mover.rating ?? 0}
-                    ratingCount={mover.ratingCount}
-                    experienceYears={mover.experienceYears}
-                    quoteCount={mover.quoteCount}
-                    isFavorite={true}
-                    favoriteCount={mover.favoriteCount ?? 0}
-                    isFavoriteMoverList={true}
-                    description={mover.description}
-                  />
-                </div>
-              ))
-            ) : (
-              <div className='flex items-center justify-center py-20 text-gray-500'>
-                <p>찜한 기사님이 없어요</p>
-              </div>
-            )}
-          </div>
+          <MoverFilters
+            selectedArea={selectedArea}
+            selectedService={selectedService}
+            onAreaChange={setSelectedArea}
+            onServiceChange={setSelectedService}
+            onSortChange={handleSort}
+          />
+          <FavoriteMovers favoriteMovers={favoriteMovers} />
         </div>
 
         {/* 모바일 */}
         <div className='flex flex-col w-full mx-auto'>
-          <div className='flex flex-row justify-between w-full my-4 xl:hidden'>
-            <div className='flex items-center gap-2'>
-              <Area
-                className={cn('w-[75px]')}
-                dispatch={(value) => setSelectedArea(value as string)}
-              />
-
-              <Service
-                className={cn('w-[95px]')}
-                dispatch={(value) => setSelectedService(value as string)}
-              />
-            </div>
-            <div className='flex items-center'>
-              <DropdownCta
-                name='review-sort'
-                border={false}
-                isOpen={false}
-                allbtn={false}
-                className='w-auto'
-                data={[
-                  { name: '리뷰 많은순' },
-                  { name: '평점 높은순' },
-                  { name: '확정 많은순' },
-                  { name: '경력 높은순' },
-                ]}
-                dispatch={(value) => {
-                  const sortMap: { [key: string]: string } = {
-                    '리뷰 많은순': 'reviews',
-                    '평점 높은순': 'rating',
-                    '확정 많은순': 'confirmed',
-                    '경력 높은순': 'experience',
-                  };
-                  handleSort(sortMap[value as string] || 'reviews');
-                }}
-              />
-            </div>
-          </div>
+          <MoverFilters
+            selectedArea={selectedArea}
+            selectedService={selectedService}
+            onAreaChange={setSelectedArea}
+            onServiceChange={setSelectedService}
+            onSortChange={handleSort}
+            isMobile
+          />
 
           <div className='relative flex flex-col flex-1 w-full mt-6 gap-6'>
             <div className='flex-row justify-end xl:flex md:hidden hidden'>
@@ -260,36 +174,7 @@ export default function Page() {
               inputVariant='search'
             />
 
-            {movers.length === 0 ? (
-              <div className='flex flex-col items-center justify-center py-10'>
-                <p className='text-gray-500'>검색 결과가 없습니다.</p>
-              </div>
-            ) : (
-              movers.map((mover) => (
-                <div
-                  key={mover.id}
-                  onClick={() => router.push(`/user/movers/${mover.id}`)}
-                  className='cursor-pointer hover:bg-gray-50 rounded-lg transition-colors duration-200'
-                >
-                  <MoverInfo
-                    variant='quote'
-                    subVariant='completed'
-                    moverName={mover.moverName}
-                    imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-                    movingType={mover.movingType}
-                    isCustomQuote={mover.isCustomQuote}
-                    rating={mover.rating ?? 0}
-                    ratingCount={mover.ratingCount}
-                    experienceYears={mover.experienceYears}
-                    quoteCount={mover.quoteCount}
-                    isFavorite={mover.isFavorite}
-                    favoriteCount={mover.favoriteCount ?? 0}
-                    isFavoriteMoverList={false}
-                    description={mover.description}
-                  />
-                </div>
-              ))
-            )}
+            <MoverList movers={movers} />
           </div>
         </div>
       </div>
