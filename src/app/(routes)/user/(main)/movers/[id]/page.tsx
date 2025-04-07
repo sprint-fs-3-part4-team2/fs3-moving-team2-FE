@@ -359,14 +359,16 @@ export default function Page() {
 
   // 로그인 페이지로 이동
   const goToLogin = (): void => {
-    router.push('/user/auth/sign-in');
+    router.push('/user/sign-in');
     setShowLoginModal(false);
   };
 
   // 페이지 로드 시 초기 상태 체크
   useEffect(() => {
     const initializePage = async () => {
-      const token = localStorage.getItem('accessToken');
+      const token = document.cookie
+        .split(';')
+        .find((cookie) => cookie.trim().startsWith('accessToken='));
       if (token) {
         setIsLoggedIn(true);
         await Promise.all([checkGeneralQuote(), checkFavoriteStatus()]);

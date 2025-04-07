@@ -52,7 +52,9 @@ export default function Page() {
   const router = useRouter();
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('accessToken');
+    const token = document.cookie
+      .split(';')
+      .find((cookie) => cookie.trim().startsWith('accessToken='));
     if (!token) {
       setIsAuthenticated(false);
       return false;
