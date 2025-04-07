@@ -216,7 +216,8 @@ export default function MoverBasicInfoEditClient({
       <div className={cn('flex flex-wrap lg:justify-between lg:flex-row-reverse')}>
         <div className={cn(button)}>
           <CommonButton
-            type='reset'
+            // type='reset'
+            onClick={cancel}
             className={cn('h-14 text-primary-blue-200', 'lg:h-15')}
             widthType='full'
             backgroundColorType='white'
@@ -229,8 +230,7 @@ export default function MoverBasicInfoEditClient({
         </div>
         <div className={cn(button)}>
           <CommonButton
-            // type='submit'
-            onClick={cancel}
+            type='submit'
             className={cn('h-14', 'lg:h-15')}
             widthType='full'
             heightType='dynamic'
