@@ -16,7 +16,7 @@ interface profile {
   userId: string;
   profileImage: string;
   location: string;
-  experienceYears: Number; // 여기 3개 추가
+  experienceYears: number; // 여기 3개 추가
   introduction: string;
   description: string;
 }
