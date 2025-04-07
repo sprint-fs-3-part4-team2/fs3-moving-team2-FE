@@ -11,7 +11,7 @@ interface MoverReceivedRequestFilterProps {
   setSelectedFilters: Dispatch<SetStateAction<Record<string, boolean>>>;
 }
 
-export default function MoverReceivedRequestFilter({
+export default function MoverReceivedRequestFilterSidebar({
   selectedFilters,
   setSelectedFilters,
 }: MoverReceivedRequestFilterProps) {

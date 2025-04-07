@@ -3,13 +3,11 @@
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
 import SearchInput from '@/components/common/inputSection/atoms/customInput/inputs/searchInput';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
-import { DropdownCta } from '@/components/dropdown/dropdown';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/MoverQuoteDeclineModal';
 import MoverQuoteSubmitModal from '@/components/moverQuoteRequested/MoverQuoteSubmitModal';
-import MoverReceivedRequestFilterSidebar from '@/components/moverQuoteRequested/MoverReceivedRequestFilter';
+import MoverReceivedRequestFilterSidebar from '@/components/moverQuoteRequested/MoverReceivedRequestFilterSidebar';
 import MoverReceivedRequestFilterModal from '@/components/moverQuoteRequested/MoverReceivedRequestFilterModal';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import {
