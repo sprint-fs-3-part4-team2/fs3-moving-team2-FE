@@ -123,7 +123,7 @@ function Alarm({
         isOpen={open}
         className={cn(
           'fixed block left-1/2 -translate-x-1/2 top-[140%] w-[80%] max-w-[330px] h-auto max-h-[360px] z-[99]',
-          'md:absolute md:right-0 md:-translate-x-0 md:left-auto md:w-[60%] md:max-w-[312px]',
+          'md:absolute md:right-0 md:-translate-x-0 md:left-auto md:w-[340px] md:max-w-[312px]',
           'xl:max-h-[352px] xl:w-[360px]',
           'overflow-hidden px-0 pl-0 shadow-2xl',
         )}
