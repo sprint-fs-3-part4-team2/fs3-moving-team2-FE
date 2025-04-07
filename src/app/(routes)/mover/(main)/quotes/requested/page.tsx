@@ -21,6 +21,7 @@ import { getAllQuoteRequests } from '@/services/quoteRequests';
 import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
 import Pagination from '@/components/pagination/molecule/pagination';
 import Loading from '@/app/loading';
+import { useLocalStorage } from '@/hooks/useStorage';
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -29,39 +30,21 @@ export default function Page() {
   const [showFilterModal, setShowFilterModal] = useState<boolean>(false); // 필터 모달
   const [selectedCustomer, setSelectedCustomer] =
     useState<CustomerRequest | null>(null); // 선택된 고객 요청
+  const [query, setQuery] = useState<string>(''); // 검색어
 
-  const [selectedFilters, setSelectedFilters] = useState<
-    Record<string, boolean>
-  >(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('selectedFilters');
-      return saved
-        ? JSON.parse(saved)
-        : {
-            small: false,
-            home: false,
-            office: false,
-            service: false,
-            targeted: false,
-          };
-    }
-    return {
+  const [selectedFilters, setSelectedFilters, removeSelectedFilters] =
+    useLocalStorage<Record<string, boolean>>('selectedFilters', {
       small: false,
       home: false,
       office: false,
       service: false,
       targeted: false,
-    };
-  });
+    }); // 필터 상태
 
-  const [query, setQuery] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('sortBy');
-      return saved ? saved : '이사빠른순';
-    }
-    return '이사빠른순';
-  });
+  const [sortBy, setSortBy, removeSortBy] = useLocalStorage<string>(
+    'sortBy',
+    '이사빠른순',
+  ); // 드롭다운 정렬 상태
 
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
 
