@@ -3,7 +3,7 @@ import {
   FilterOption,
   filterTypes,
   moveTypes,
-} from './MoverQuoteFilterOption.types';
+} from '../MoverQuoteFilterOption.types';
 
 // 이사 유형 필터 컴포넌트
 interface MoverReceivedRequestFilterProps {

@@ -5,14 +5,14 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import SearchInput from '@/components/common/inputSection/atoms/customInput/inputs/searchInput';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
-import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/MoverQuoteDeclineModal';
-import MoverQuoteSubmitModal from '@/components/moverQuoteRequested/MoverQuoteSubmitModal';
-import MoverReceivedRequestFilterSidebar from '@/components/moverQuoteRequested/MoverReceivedRequestFilterSidebar';
-import MoverReceivedRequestFilterModal from '@/components/moverQuoteRequested/MoverReceivedRequestFilterModal';
+import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/modals/MoverQuoteDeclineModal';
+import MoverQuoteSubmitModal from '@/components/moverQuoteRequested/modals/MoverQuoteSubmitModal';
+import MoverReceivedRequestFilterSidebar from '@/components/moverQuoteRequested/organisms/MoverReceivedRequestFilterSidebar';
+import MoverReceivedRequestFilterModal from '@/components/moverQuoteRequested/modals/MoverReceivedRequestFilterModal';
 import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
-import { FilterIcon } from '@/components/moverQuoteRequested/FilterIcon';
-import SortingOptions from '@/components/moverQuoteRequested/SortingOptions';
-import QuoteList from '@/components/moverQuoteRequested/QuoteList';
+import { FilterIcon } from '@/components/moverQuoteRequested/atoms/FilterIcon';
+import SortingOptions from '@/components/moverQuoteRequested/molecules/SortingOptions';
+import QuoteList from '@/components/moverQuoteRequested/organisms/QuoteList';
 
 import { useLocalStorage } from '@/hooks/useStorage';
 

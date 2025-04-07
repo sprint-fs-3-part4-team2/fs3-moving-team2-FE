@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import CommonButton from '../common/commonBtn/commonBtn';
-import ModalWrapper from '../modal/ModalWrapper';
-import CustomerInfo from '../common/customerInfo/templates/customerInfo';
-import FormInput from '../common/inputSection/atoms/customInput/inputs/formInput';
+import CommonButton from '../../common/commonBtn/commonBtn';
+import ModalWrapper from '../../modal/ModalWrapper';
+import CustomerInfo from '../../common/customerInfo/templates/customerInfo';
+import FormInput from '../../common/inputSection/atoms/customInput/inputs/formInput';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSubmitQuoteByMoverMutation } from '@/hooks/useSubmitQuoteByMoverMutation';

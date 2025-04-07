@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DropdownCta } from '../dropdown/dropdown';
+import { DropdownCta } from '../../dropdown/dropdown';
 
 interface SortingOptionsProps {
   onChange: (value: string) => void;

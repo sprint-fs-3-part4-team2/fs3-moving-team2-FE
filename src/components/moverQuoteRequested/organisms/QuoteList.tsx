@@ -2,10 +2,10 @@ import {
   CustomerRequest,
   QuoteRequestsResponse,
 } from '@/services/types/allQuotes/allQuoteRequests.types';
-import CustomerInfo from '../common/customerInfo/templates/customerInfo';
-import NoData from '../noData/NoData';
+import CustomerInfo from '../../common/customerInfo/templates/customerInfo';
+import NoData from '../../noData/NoData';
 import Loading from '@/app/loading';
-import Pagination from '../pagination/molecule/pagination';
+import Pagination from '../../pagination/molecule/pagination';
 
 interface QuoteListProps {
   customerRequests?: QuoteRequestsResponse | null;

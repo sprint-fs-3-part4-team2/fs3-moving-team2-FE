@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import ModalWrapper from '../modal/ModalWrapper';
+import ModalWrapper from '../../modal/ModalWrapper';
 import cn from '@/utils/cn';
-import CommonButton from '../common/commonBtn/commonBtn';
+import CommonButton from '../../common/commonBtn/commonBtn';
 import {
   FilterOption,
   filterTypes,
   moveTypes,
-} from './MoverQuoteFilterOption.types';
+} from '../MoverQuoteFilterOption.types';
 
 interface MoverReceivedRequestFilterModalProps {
   selectedFilters: Record<string, boolean>;
