@@ -45,20 +45,30 @@ export default function Page() {
   const [selectedService, setSelectedService] = useState<string>('서비스');
   const [selectedSort, setSelectedSort] = useState<string>('reviews');
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      setIsAuthenticated(false);
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        return false;
+      }
+
+      // 토큰 유효성 검증
+      const response = await axiosInstance.get('/auth/verify', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.status === 200;
+    } catch (error) {
+      // 토큰이 유효하지 않거나 만료된 경우
+      localStorage.removeItem('accessToken');
       return false;
     }
-    setIsAuthenticated(true);
-    return true;
   };
 
   const handleSearch = async () => {
@@ -103,7 +113,6 @@ export default function Page() {
     } catch (err: any) {
       if (err.response?.status === 401) {
         localStorage.removeItem('accessToken');
-        setIsAuthenticated(false);
       } else {
         console.error('검색 중 오류 발생:', err);
         setError('기사님 검색 중 오류가 발생했습니다.');
@@ -140,7 +149,6 @@ export default function Page() {
     } catch (err: any) {
       if (err.response?.status === 401) {
         localStorage.removeItem('accessToken');
-        setIsAuthenticated(false);
       } else {
         console.error('정렬 중 오류 발생:', err);
         setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
@@ -179,7 +187,6 @@ export default function Page() {
     } catch (err: any) {
       if (err.response?.status === 401) {
         localStorage.removeItem('accessToken');
-        setIsAuthenticated(false);
       } else {
         console.error('API 호출 오류:', err);
         setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
@@ -191,7 +198,6 @@ export default function Page() {
     fetchMovers();
   }, [selectedArea, selectedService, selectedSort]);
 
-  if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류 발생: {error}</p>;
 
   return (
