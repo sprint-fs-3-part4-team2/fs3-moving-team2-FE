@@ -195,15 +195,15 @@ export default function Page() {
   if (error) return <p>오류 발생: {error}</p>;
 
   return (
-    <div className='flex flex-col w-full mx-auto gap-6'>
-      <div className='xl:flex md:hidden hidden xl:px-[260px] max-h-[96px]'>
+    <div className='flex flex-col w-full md:px-[72px] xl:max-w-[1400px] mx-auto gap-6'>
+      <div className='xl:flex md:hidden hidden max-h-[96px]'>
         <PageHeader>기사님 찾기</PageHeader>
       </div>
 
-      <div className='relative flex px-6 md:px-[72px] xl:px-[260px] w-full mx-auto gap-[107px]'>
+      <div className='relative flex px-6 w-full mx-auto gap-[107px]'>
         {/* 데스크탑 */}
-        <div className='flex flex-col max-w-[328px] w-full xl:flex md:hidden hidden'>
-          <div className='flex flex-col items-center w-full mb-[46px] gap-8'>
+        <div className='flex flex-col max-w-[328px] w-full xl:flex mx-auto md:hidden hidden'>
+          <div className='flex flex-col items-center w-full mx-auto mb-[46px] gap-8'>
             <div className='flex justify-between w-full px-3 py-4 border-b border-gray-200'>
               <p className='text-xl font-semibold'>필터</p>
               <button
@@ -337,18 +337,6 @@ export default function Page() {
             {movers.length === 0 ? (
               <div className='flex flex-col items-center justify-center py-10'>
                 <p className='text-gray-500'>검색 결과가 없습니다.</p>
-                <button
-                  onClick={() => {
-                    const searchInput = document.querySelector(
-                      'input[type="text"]',
-                    ) as HTMLInputElement;
-                    if (searchInput) searchInput.value = '';
-                    setMovers(allMovers);
-                  }}
-                  className='mt-4 px-4 py-2 text-sm text-blue-600 hover:text-blue-800'
-                >
-                  전체 목록 보기
-                </button>
               </div>
             ) : (
               movers.map((mover) => (
