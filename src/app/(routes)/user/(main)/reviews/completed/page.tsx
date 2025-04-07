@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
-
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { getCompletedReviews } from '@/services/reviewsService';
-import { MOVING_TYPES } from '@/constants/movingTypes';
 import NoData from '@/components/noData/NoData';
+import { Mover } from '@/services/auth/types';
 
 export default function Page() {
   const router = useRouter();
@@ -28,19 +27,6 @@ export default function Page() {
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ['completedReviews'] });
   }, []);
-
-  interface Mover {
-    id: string;
-    moverName: string;
-    movingType: (keyof typeof MOVING_TYPES)[];
-    isCustomQuote: boolean;
-    movingDate: Date;
-    price: number;
-    reviewContent: string;
-    rating: number;
-    writtenAt: Date;
-    imageUrl: string;
-  }
 
   useEffect(() => {
     if (!isLoading && (!movers || movers.length === 0 || error)) {
