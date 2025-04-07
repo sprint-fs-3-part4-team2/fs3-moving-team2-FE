@@ -12,7 +12,8 @@ const NoData: React.FC<NoDataProps> = ({
 }) => {
   return (
     <div className='flex flex-col items-center'>
-      <div className='group relative w-[214px] md:w-[321px] xl:w-[428px] h-[180px] md:h-[270px] xl:h-[360px]'>
+{/*       <div className='group relative w-[214px] md:w-[321px] xl:w-[428px] h-[180px] md:h-[270px] xl:h-[360px]'> */}
+      <div className='group relative w-[214px] md:w-[321px] h-[180px] md:h-[270px]'>
         <Image
           src='/img/no-data/no_data.png'
           alt='not_found'
@@ -30,7 +31,7 @@ const NoData: React.FC<NoDataProps> = ({
           className='hidden group-hover:block'
         />
       </div>
-      <div className='pt-[24px] xl:pt-[32px] text-grayscale-400 text-[16px] xl:text-[24px]'>
+      <div className='pt-[24px] xl:pt-[32px] text-grayscale-400 text-[16px] md:text-[24px]'>
         {text}
       </div>
     </div>

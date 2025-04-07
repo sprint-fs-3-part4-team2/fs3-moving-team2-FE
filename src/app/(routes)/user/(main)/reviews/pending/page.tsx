@@ -3,10 +3,11 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getPendingReviews } from '@/services/reviewsService';
+import { getPendingReviews, submitReview } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import ReviewModal from '@/components/modal/children/ReviewModal';
 import NoData from '@/components/noData/NoData';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 function ConfirmationModal({
   message,
@@ -29,7 +30,9 @@ function ConfirmationModal({
       <dialog
         className='w-[350px] md:w-[500px] h-[230px] md:h-[300px] px-[24px] pt-[24px] md:pt-[34px] pb-[24px] md:pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-[200]'
         open
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent<HTMLDialogElement>) =>
+          e.stopPropagation()
+        }
       >
         <p className='text-[20px] md:text-[24px]/[32px] font-[600]'>
           리뷰 작성 완료
@@ -60,6 +63,7 @@ function ConfirmationModal({
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // 예: n개의 목데이터 생성
   // const createMockData = (count: number) => {
@@ -95,9 +99,33 @@ export default function Page() {
     isTargeted: boolean;
   }
 
-  const [estimates, setEstimates] = useState<ReviewableEstimate[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  interface CompletedReview {
+    writtenAt: string;
+    id: string;
+    moverName: string;
+    imageUrl: string;
+    movingDate: string;
+    movingType: string[];
+    price: number;
+    rating: number;
+    reviewContent: string;
+    isCustomQuote: boolean;
+  }
+
+  const {
+    data: estimates,
+    isLoading,
+    error,
+  } = useQuery<ReviewableEstimate[], Error>({
+    queryKey: ['pendingReviews'],
+    queryFn: getPendingReviews,
+    staleTime: 0,
+    // refetchInterval: 1000,
+  });
+
+  // const [estimates, setEstimates] = useState<ReviewableEstimate[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEstimate, setSelectedEstimate] =
     useState<ReviewableEstimate | null>(null);
@@ -107,20 +135,83 @@ export default function Page() {
     showCancel: false,
   });
 
-  useEffect(() => {
-    setLoading(true);
-    getPendingReviews()
-      .then((data) => {
-        setEstimates(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching estimates:', error);
-        const errorMessage = error.response?.data?.message || '알 수 없는 에러';
-        setError(`에러가 발생했어요.\n${errorMessage}`);
-        setLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   getPendingReviews()
+  //     .then((data) => {
+  //       setEstimates(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching estimates:', error);
+  //       const errorMessage = error.response?.data?.message || '알 수 없는 에러';
+  //       setError(`에러가 발생했어요.\n${errorMessage}`);
+  //       setLoading(false);
+  //     });
+  // }, []);
+
+  const reviewMutation = useMutation({
+    mutationFn: (reviewData: {
+      estimateId: string;
+      rating: number;
+      comment: string;
+    }) => submitReview(reviewData),
+    onSuccess: (response, variables) => {
+      queryClient.setQueryData(
+        ['pendingReviews'],
+        (oldData: ReviewableEstimate[] | undefined) => {
+          if (!oldData) return [];
+          return oldData.filter(
+            (estimate) => estimate.id !== variables.estimateId,
+          );
+        },
+      );
+
+      queryClient.setQueryData<CompletedReview[]>(
+        ['completedReviews'],
+        (oldCompleted) => {
+          const estimate = estimates?.find(
+            (e) => e.id === variables.estimateId,
+          );
+          const newReview = {
+            writtenAt: new Date().toISOString().split('T')[0],
+            id: variables.estimateId,
+            moverName: estimate?.driverName || 'Unknown',
+            imageUrl:
+              estimate?.driverProfileImage ||
+              '/img/sample-profile/sample-1.svg',
+            movingDate: estimate?.serviceDate || 'Unknown',
+            movingType: [moveTypeLabels[estimate?.moveType || 'HOME_MOVE']],
+            price: estimate?.estimatePrice || 0,
+            rating: variables.rating,
+            reviewContent: variables.comment,
+            isCustomQuote: estimate?.isTargeted || false,
+          };
+          return oldCompleted ? [...oldCompleted, newReview] : [newReview];
+        },
+      );
+
+      const remainingEstimates = (estimates || []).filter(
+        (estimate) => estimate.id !== variables.estimateId,
+      );
+      if (remainingEstimates.length > 0) {
+        setPostSubmitModal({
+          isOpen: true,
+          message: '내가 작성한 리뷰 페이지로 이동하시겠습니까?',
+          showCancel: true,
+        });
+      } else {
+        setPostSubmitModal({
+          isOpen: true,
+          message: '내가 작성한 리뷰 페이지로 이동합니다.',
+          showCancel: false,
+        });
+      }
+    },
+    onError: (error: Error) => {
+      alert(`리뷰 제출에 실패했습니다: ${error.message || '알 수 없는 에러'}`);
+    },
+  });
 
   const handleReviewButtonClick = (estimate: ReviewableEstimate) => {
     setSelectedEstimate(estimate);
@@ -134,32 +225,38 @@ export default function Page() {
   //   );
   // };
 
-  const handleReviewSubmit = (estimateId: string) => {
-    const remainingEstimates = estimates.filter(
-      (estimate) => estimate.id !== estimateId,
-    );
-    setEstimates(remainingEstimates);
+  // const handleReviewSubmit = (estimateId: string) => {
+  //   const remainingEstimates = estimates.filter(
+  //     (estimate) => estimate.id !== estimateId,
+  //   );
+  //   setEstimates(remainingEstimates);
 
-    if (remainingEstimates.length > 0) {
-      setPostSubmitModal({
-        isOpen: true,
-        message: '내가 작성한 리뷰 페이지로 이동하시겠습니까?',
-        showCancel: true,
-      });
-    } else {
-      setPostSubmitModal({
-        isOpen: true,
-        message: '내가 작성한 리뷰 페이지로 이동합니다.',
-        showCancel: false,
-      });
-    }
+  //   if (remainingEstimates.length > 0) {
+  //     setPostSubmitModal({
+  //       isOpen: true,
+  //       message: '내가 작성한 리뷰 페이지로 이동하시겠습니까?',
+  //       showCancel: true,
+  //     });
+  //   } else {
+  //     setPostSubmitModal({
+  //       isOpen: true,
+  //       message: '내가 작성한 리뷰 페이지로 이동합니다.',
+  //       showCancel: false,
+  //     });
+  //   }
+  // };
+
+  const handleReviewSubmit = (
+    estimateId: string,
+    rating: number,
+    comment: string,
+  ) => {
+    reviewMutation.mutate({ estimateId, rating, comment });
   };
 
   const handleConfirm = () => {
     setPostSubmitModal({ ...postSubmitModal, isOpen: false });
     router.push('/user/reviews/completed');
-    // router.push('/user/reviews/completed?refresh=true');
-    // window.location.href = '/user/reviews/completed';
   };
 
   const handleCancel = () => {
@@ -398,7 +495,8 @@ export default function Page() {
   };
 
   //로딩중
-  if (loading) {
+  // if (loading) {
+  if (isLoading) {
     return (
       <div>
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
@@ -432,7 +530,8 @@ export default function Page() {
             />
           </div>
           <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px] whitespace-pre-line text-center'>
-            {error}
+            {/* {error}*/}
+            {`에러가 발생했어요.\n${error.message || '알 수 없는 에러'}`}
           </div>
         </div>
       </div>
@@ -444,7 +543,7 @@ export default function Page() {
       {estimates && estimates.length > 0 ? (
         <div className='px-[24px] md:px-[72px] xl:px-[0px] xl:max-w-[1400px] xl:mx-auto'>
           <div className='grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
-            {currentEstimates.map((data) => (
+            {currentEstimates.map((data: ReviewableEstimate) => (
               <div
                 key={data.id}
                 className='bg-white'
@@ -453,7 +552,7 @@ export default function Page() {
                   variant='review'
                   subVariant='pending'
                   moverName={data.driverName}
-                  movingType={[moveTypeLabels[data.moveType]]}
+                  movingType={[moveTypeLabels[data.moveType as MoveType]]}
                   isCustomQuote={data.isTargeted}
                   movingDate={new Date(data.serviceDate)}
                   price={data.estimatePrice}
