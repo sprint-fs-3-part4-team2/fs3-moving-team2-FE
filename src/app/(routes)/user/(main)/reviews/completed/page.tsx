@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [emptyData, setEmptyData] = useState(false);
-
+  const queryClient = useQueryClient();
   const {
     data: movers,
     isLoading,
@@ -22,8 +22,11 @@ export default function Page() {
   } = useQuery({
     queryKey: ['completedReviews'],
     queryFn: getCompletedReviews,
-    staleTime: 0,
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['completedReviews'] });
+  }, []);
 
   interface Mover {
     id: string;
