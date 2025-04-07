@@ -1,6 +1,5 @@
 'use client';
 
-import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
 import SearchInput from '@/components/common/inputSection/atoms/customInput/inputs/searchInput';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
 import { useState } from 'react';
@@ -16,11 +15,10 @@ import {
 } from '@/services/types/allQuotes/allQuoteRequests.types';
 import { getAllQuoteRequests } from '@/services/quoteRequests';
 import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
-import Pagination from '@/components/pagination/molecule/pagination';
-import Loading from '@/app/loading';
 import { useLocalStorage } from '@/hooks/useStorage';
 import { FilterIcon } from '@/components/moverQuoteRequested/FilterIcon';
 import SortingOptions from '@/components/moverQuoteRequested/SortingOptions';
+import QuoteList from '@/components/moverQuoteRequested/QuoteList';
 
 export default function RequestedQuotesPage() {
   const [showSubmitModal, setShowSubmitModal] = useState<boolean>(false); // 제출 모달
@@ -53,12 +51,7 @@ export default function RequestedQuotesPage() {
   const isServiceRegionMatch = selectedFilters.service;
   const isTargetedQuote = selectedFilters.targeted;
 
-  const {
-    data: customerRequests,
-    isLoading,
-    isError,
-    isPending,
-  } = useQuery<QuoteRequestsResponse, Error>({
+  const { data, isLoading, isError } = useQuery<QuoteRequestsResponse, Error>({
     queryKey: [
       'customerRequests',
       currentPage,
@@ -74,14 +67,14 @@ export default function RequestedQuotesPage() {
         10, // pageSize
         query, // search
         selectedMoveTypes, // moveType
-        sortBy, // sortBy (필요 시 추가)
+        sortBy, // sortBy
         isServiceRegionMatch,
         isTargetedQuote,
       ),
     placeholderData: keepPreviousData, // 이전 데이터를 유지, 페이지네이션 시 깜빡임 방지
   });
 
-  const totalCustomerRequests = customerRequests?.totalCount ?? 0;
+  const totalCustomerRequests = data?.totalCount ?? 0;
 
   return (
     <main className='w-full xl:max-w-[1400px] mx-auto sm:px-6 md:px-[72px] xl:px-0'>
@@ -120,57 +113,26 @@ export default function RequestedQuotesPage() {
             </div>
           </div>
 
-          {isLoading && (
-            <div className='flex justify-center items-center h-[400px]'>
-              <Loading />
-            </div>
-          )}
-          {isError && (
-            <div className='flex justify-center items-center h-[400px]'>
-              <p>에러가 발생했습니다.</p>
-            </div>
-          )}
-          {totalCustomerRequests === 0 && !isLoading && !isError ? (
-            // 고객 요청이 없을 때
-            <div className='flex justify-center items-center h-[400px] flex-col gap-6 xl:gap-8'>
-              <p className='text-grayscale-400'>아직 받은 요청이 없어요!</p>
-            </div>
-          ) : (
-            <>
-              <ul>
-                {/* 고객 요청 리스트 */}
-                {customerRequests?.list?.map((customer) => (
-                  <li
-                    key={customer.quoteId}
-                    className='mb-12'
-                  >
-                    <CustomerInfo
-                      {...customer}
-                      variant='requested'
-                      onSubmit={() => {
-                        setSelectedCustomer(customer);
-                        setShowSubmitModal(true);
-                      }}
-                      onDecline={() => {
-                        setSelectedCustomer(customer);
-                        setShowDeclineModal(true);
-                      }}
-                    />
-                  </li>
-                ))}
-              </ul>
-              <div className='flex justify-center items-center mt-6 mb-8'>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={customerRequests?.totalPages ?? 1}
-                  onPageChange={(currentPage) => {
-                    window.scrollTo(0, 100);
-                    setCurrentPage(currentPage);
-                  }}
-                />
-              </div>
-            </>
-          )}
+          <QuoteList
+            customerRequests={data}
+            isLoading={isLoading}
+            isError={isError}
+            totalCustomerRequests={totalCustomerRequests}
+            currentPage={currentPage}
+            totalPages={data?.totalPages ?? 1}
+            onPageChange={(page) => {
+              window.scrollTo(0, 100);
+              setCurrentPage(page);
+            }}
+            onSubmitQuote={(customer) => {
+              setSelectedCustomer(customer);
+              setShowSubmitModal(true);
+            }}
+            onDeclineQuote={(customer) => {
+              setSelectedCustomer(customer);
+              setShowDeclineModal(true);
+            }}
+          />
         </section>
       </div>
       {showSubmitModal && (
