@@ -51,25 +51,6 @@ export default function Page() {
     setSearchQuery('');
   };
 
-  // 엔터키 이벤트 핸들러
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        const searchInput = document.querySelector(
-          'input[type="text"]',
-        ) as HTMLInputElement;
-        if (document.activeElement === searchInput) {
-          handleSearch();
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [searchQuery]);
-
   // 정렬
   const handleSort = async (value: string | object) => {
     const sortValue = typeof value === 'string' ? value : 'reviews';
@@ -170,10 +151,17 @@ export default function Page() {
 
             <SearchInput
               placeholder='검색어를 입력해 주세요.'
-              onSearch={handleSearch}
+              onSearch={() => {}}
               styleVariant='secondary'
               inputVariant='search'
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (e.target.value === '') {
+                  handleReset();
+                } else {
+                  handleSearch();
+                }
+              }}
             />
 
             <MoverList
