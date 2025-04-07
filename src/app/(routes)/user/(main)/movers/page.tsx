@@ -9,35 +9,15 @@ import Service from '@/components/dropdown/cta/service';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { DropdownCta } from '@/components/dropdown/dropdown';
 import { useRouter } from 'next/navigation';
-
 import cn from '@/utils/cn';
-import axiosInstance from '@/lib/axiosInstance';
+import {
+  Mover,
+  checkAuth,
+  searchMovers,
+  getMovers,
+} from '@/services/moverService';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
-
-interface LoginResponse {
-  data: {
-    accessToken: string;
-  };
-}
-
-interface Mover {
-  id: number;
-  variant: string;
-  subVariant: string;
-  moverName: string;
-  imageUrl: string;
-  movingType: MovingTypeKey[];
-  isCustomQuote: boolean;
-  rating?: number;
-  ratingCount: number;
-  experienceYears: number;
-  quoteCount: number;
-  isFavorite?: boolean;
-  favoriteCount?: number;
-  isFavoriteMoverList?: boolean;
-  description?: string;
-}
 
 export default function Page() {
   const [movers, setMovers] = useState<Mover[]>([]);
@@ -48,28 +28,6 @@ export default function Page() {
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
   const router = useRouter();
-
-  const checkAuth = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        return false;
-      }
-
-      // 토큰 유효성 검증
-      const response = await axiosInstance.get('/auth/verify', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return response.status === 200;
-    } catch (error) {
-      // 토큰이 유효하지 않거나 만료된 경우
-      localStorage.removeItem('accessToken');
-      return false;
-    }
-  };
 
   const handleSearch = async () => {
     const searchInput = document.querySelector(
@@ -88,22 +46,11 @@ export default function Page() {
     }
 
     try {
-      const isAuth = await checkAuth();
-      const headers = isAuth
-        ? {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          }
-        : {};
-
-      const { data } = await axiosInstance.get('/movers/search', {
-        headers,
-        params: { keyword: searchTerm },
-      });
-
-      const moversData = data.data || data;
+      const moversData = await searchMovers(searchTerm);
       setMovers(moversData);
       setAllMovers(moversData);
 
+      const isAuth = await checkAuth();
       if (isAuth) {
         const favoriteMoversData = moversData
           .filter((mover: Mover) => mover.isFavorite)
@@ -111,12 +58,8 @@ export default function Page() {
         setFavoriteMovers(favoriteMoversData);
       }
     } catch (err: any) {
-      if (err.response?.status === 401) {
-        localStorage.removeItem('accessToken');
-      } else {
-        console.error('검색 중 오류 발생:', err);
-        setError('기사님 검색 중 오류가 발생했습니다.');
-      }
+      console.error('검색 중 오류 발생:', err);
+      setError('기사님 검색 중 오류가 발생했습니다.');
     }
   };
 
@@ -124,22 +67,11 @@ export default function Page() {
     const sortValue = typeof value === 'string' ? value : 'reviews';
     setSelectedSort(sortValue);
     try {
-      const isAuth = await checkAuth();
-      const headers = isAuth
-        ? {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          }
-        : {};
-
-      const { data } = await axiosInstance.get('/movers', {
-        headers,
-        params: { sortBy: sortValue },
-      });
-
-      const moversData = data.data || data;
+      const moversData = await getMovers({ sortBy: sortValue });
       setAllMovers(moversData);
       setMovers(moversData);
 
+      const isAuth = await checkAuth();
       if (isAuth) {
         const favoriteMoversData = moversData
           .filter((mover: Mover) => mover.isFavorite)
@@ -147,37 +79,23 @@ export default function Page() {
         setFavoriteMovers(favoriteMoversData);
       }
     } catch (err: any) {
-      if (err.response?.status === 401) {
-        localStorage.removeItem('accessToken');
-      } else {
-        console.error('정렬 중 오류 발생:', err);
-        setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
-      }
+      console.error('정렬 중 오류 발생:', err);
+      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
     }
   };
 
   const fetchMovers = async () => {
     try {
-      const isAuth = await checkAuth();
-      const headers = isAuth
-        ? {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          }
-        : {};
-
-      const { data } = await axiosInstance.get('/movers', {
-        headers,
-        params: {
-          sortBy: selectedSort,
-          area: selectedArea !== '지역' ? selectedArea : undefined,
-          service: selectedService !== '서비스' ? selectedService : undefined,
-        },
+      const moversData = await getMovers({
+        sortBy: selectedSort,
+        area: selectedArea !== '지역' ? selectedArea : undefined,
+        service: selectedService !== '서비스' ? selectedService : undefined,
       });
 
-      const moversData = data.data || data;
       setAllMovers(moversData);
       setMovers(moversData);
 
+      const isAuth = await checkAuth();
       if (isAuth) {
         const favoriteMoversData = moversData
           .filter((mover: Mover) => mover.isFavorite)
@@ -185,12 +103,8 @@ export default function Page() {
         setFavoriteMovers(favoriteMoversData);
       }
     } catch (err: any) {
-      if (err.response?.status === 401) {
-        localStorage.removeItem('accessToken');
-      } else {
-        console.error('API 호출 오류:', err);
-        setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
-      }
+      console.error('API 호출 오류:', err);
+      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
     }
   };
 
