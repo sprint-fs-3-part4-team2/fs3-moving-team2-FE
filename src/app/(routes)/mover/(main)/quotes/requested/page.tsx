@@ -1,24 +1,26 @@
 'use client';
 
+import { useMemo, useState } from 'react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+
 import SearchInput from '@/components/common/inputSection/atoms/customInput/inputs/searchInput';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
-import { useState } from 'react';
-
 import MoverQuoteDeclineModal from '@/components/moverQuoteRequested/MoverQuoteDeclineModal';
 import MoverQuoteSubmitModal from '@/components/moverQuoteRequested/MoverQuoteSubmitModal';
 import MoverReceivedRequestFilterSidebar from '@/components/moverQuoteRequested/MoverReceivedRequestFilterSidebar';
 import MoverReceivedRequestFilterModal from '@/components/moverQuoteRequested/MoverReceivedRequestFilterModal';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
+import { FilterIcon } from '@/components/moverQuoteRequested/FilterIcon';
+import SortingOptions from '@/components/moverQuoteRequested/SortingOptions';
+import QuoteList from '@/components/moverQuoteRequested/QuoteList';
+
+import { useLocalStorage } from '@/hooks/useStorage';
+
 import {
   CustomerRequest,
   QuoteRequestsResponse,
 } from '@/services/types/allQuotes/allQuoteRequests.types';
 import { getAllQuoteRequests } from '@/services/quoteRequests';
-import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOption.types';
-import { useLocalStorage } from '@/hooks/useStorage';
-import { FilterIcon } from '@/components/moverQuoteRequested/FilterIcon';
-import SortingOptions from '@/components/moverQuoteRequested/SortingOptions';
-import QuoteList from '@/components/moverQuoteRequested/QuoteList';
 
 export default function RequestedQuotesPage() {
   const [showSubmitModal, setShowSubmitModal] = useState<boolean>(false); // 제출 모달
@@ -28,24 +30,29 @@ export default function RequestedQuotesPage() {
     useState<CustomerRequest | null>(null); // 선택된 고객 요청
   const [query, setQuery] = useState<string>(''); // 검색어
 
-  const [selectedFilters, setSelectedFilters, removeSelectedFilters] =
-    useLocalStorage<Record<string, boolean>>('selectedFilters', {
-      small: false,
-      home: false,
-      office: false,
-      service: false,
-      targeted: false,
-    }); // 필터 상태
+  const [selectedFilters, setSelectedFilters] = useLocalStorage<
+    Record<string, boolean>
+  >('selectedFilters', {
+    small: false,
+    home: false,
+    office: false,
+    service: false,
+    targeted: false,
+  }); // 필터 상태
 
-  const [sortBy, setSortBy] = useLocalStorage<string>('sortBy', '이사빠른순'); // 드롭다운 정렬 상태
+  const [sortBy, setSortBy] = useState<string>('이사빠른순'); // 드롭다운 정렬 상태
 
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
 
   // 선택된 이사 유형을 쉼표로 구분된 문자열로 변환
-  const selectedMoveTypes = moveTypes
-    .filter((option) => selectedFilters[option.id])
-    .map((option) => option.label)
-    .join(',');
+  const selectedMoveTypes = useMemo(
+    () =>
+      moveTypes
+        .filter((option) => selectedFilters[option.id])
+        .map((option) => option.label)
+        .join(','),
+    [selectedFilters],
+  );
 
   // 필터 값 추출
   const isServiceRegionMatch = selectedFilters.service;
