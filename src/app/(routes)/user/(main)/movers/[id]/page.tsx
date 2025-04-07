@@ -13,7 +13,6 @@ import Pagination from '@/components/pagination/molecule/pagination';
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import axiosInstance from '@/lib/axiosInstance';
 import filledHeart from '@/public/icons/favorite/filled.svg';
 import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
 import Image from 'next/image';
@@ -25,24 +24,15 @@ import {
   createTargetedQuoteRequest,
   checkGeneralQuoteExists,
 } from '@/services/targetedQuoteRequestService';
+import {
+  getMoverDetail,
+  checkFavoriteStatus as checkFavoriteStatusService,
+  toggleFavorite,
+  checkGeneralQuote,
+  MoverDetail as MoverDetailType,
+} from '@/services/moverService';
 
-type MoverDetail = {
-  id: string;
-  moverName: string;
-  imageUrl: string;
-  movingType: MovingTypeKey[];
-  isCustomQuote: boolean;
-  rating: number;
-  ratingCount: number;
-  experienceYears: number;
-  quoteCount: number;
-  isFavorite: boolean;
-  isFavoriteMoverList: boolean;
-  favoriteCount: number;
-  introduction: string;
-  description: string;
-  regions: string[];
-};
+type MoverDetail = MoverDetailType;
 
 type Review = {
   id: string;
@@ -131,22 +121,14 @@ export default function Page() {
   // 찜하기 상태 체크
   const checkFavoriteStatus = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) return;
-
-      const response = await axiosInstance.get(`/favorites/check/${moverId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.data && response.data.isFavorite !== undefined) {
-        setIsFavorite(response.data.isFavorite);
+      const response = await checkFavoriteStatusService(moverId);
+      if (response && response.isFavorite !== undefined) {
+        setIsFavorite(response.isFavorite);
         setMoverDetail((prev) => {
           if (!prev) return null;
           return {
             ...prev,
-            isFavorite: response.data.isFavorite,
+            isFavorite: response.isFavorite,
           };
         });
       }
@@ -156,26 +138,13 @@ export default function Page() {
   };
 
   // 찜하기 토글
-  const toggleFavorite = async () => {
+  const handleToggleFavorite = async () => {
     if (!checkLoginStatus()) return;
 
     try {
-      const token = localStorage.getItem('accessToken');
-      const endpoint = isFavorite
-        ? `/favorites/delete/${moverId}`
-        : `/favorites/create/${moverId}`;
+      const response = await toggleFavorite(moverId, isFavorite);
 
-      const response = await axiosInstance[isFavorite ? 'delete' : 'post'](
-        endpoint,
-        undefined,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (response.status === 200 || response.status === 201) {
+      if (response) {
         // 찜하기 상태 업데이트
         setIsFavorite((prev) => !prev);
 
@@ -184,7 +153,7 @@ export default function Page() {
           if (!prev) return null;
           return {
             ...prev,
-            favoriteCount: response.data.totalCustomerFavorite,
+            favoriteCount: response.totalCustomerFavorite,
             isFavorite: !isFavorite,
             isFavoriteMoverList: !isFavorite,
           };
@@ -209,8 +178,7 @@ export default function Page() {
   useEffect(() => {
     const fetchMoverDetail = async () => {
       try {
-        const response = await axiosInstance.get(`/movers/${moverId}`);
-        const data = response.data.data;
+        const data = await getMoverDetail(moverId);
         setMoverDetail(data);
         setIsFavorite(data.isFavorite);
         setIsQuoteRequested(data.isCustomQuote);
@@ -227,23 +195,12 @@ export default function Page() {
   }, [moverId]);
 
   // 일반 견적 요청 여부 확인
-  const checkGeneralQuote = async () => {
+  const checkGeneralQuoteStatus = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
+      const response = await checkGeneralQuote();
 
-      if (!token) {
-        setIsLoggedIn(false);
-        return;
-      }
-
-      const response = await axiosInstance.get('/quote-requests/latest', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.data && response.data.isRequested !== undefined) {
-        setHasGeneralQuote(response.data.isRequested);
+      if (response && response.isRequested !== undefined) {
+        setHasGeneralQuote(response.isRequested);
       } else {
         setHasGeneralQuote(false);
       }
@@ -261,7 +218,7 @@ export default function Page() {
 
     if (token) {
       setIsLoggedIn(true);
-      checkGeneralQuote();
+      checkGeneralQuoteStatus();
     } else {
       setIsLoggedIn(false);
     }
@@ -371,7 +328,7 @@ export default function Page() {
         .find((cookie) => cookie.trim().startsWith('accessToken='));
       if (token) {
         setIsLoggedIn(true);
-        await Promise.all([checkGeneralQuote(), checkFavoriteStatus()]);
+        await Promise.all([checkGeneralQuoteStatus(), checkFavoriteStatus()]);
       } else {
         setIsLoggedIn(false);
       }
@@ -404,7 +361,7 @@ export default function Page() {
       textColorType='black'
       borderColorsType='gray'
       className='flex items-center justify-center gap-2'
-      onClick={toggleFavorite}
+      onClick={handleToggleFavorite}
     >
       <Image
         src={isFavorite ? redFilledHeart : filledHeart}
@@ -427,10 +384,10 @@ export default function Page() {
             imageUrl={moverDetail.imageUrl}
             movingType={moverDetail.movingType}
             isCustomQuote={moverDetail.isCustomQuote}
-            rating={moverDetail.rating}
+            rating={moverDetail.rating ?? 0}
             experienceYears={moverDetail.experienceYears}
             quoteCount={moverDetail.quoteCount}
-            favoriteCount={moverDetail.favoriteCount}
+            favoriteCount={moverDetail.favoriteCount ?? 0}
             ratingCount={moverDetail.ratingCount}
             isFavorite={moverDetail.isFavorite}
             isFavoriteMoverList={false}
@@ -638,7 +595,7 @@ export default function Page() {
               textColorType='black'
               borderColorsType='gray'
               className='flex items-center justify-center p-[15px]'
-              onClick={toggleFavorite}
+              onClick={handleToggleFavorite}
             >
               <Image
                 src={isFavorite ? redFilledHeart : filledHeart}
