@@ -24,7 +24,10 @@ export interface Mover {
 export const searchMovers = async (searchTerm: string) => {
   try {
     const { data } = await axiosInstance.get('/movers/search', {
-      params: { keyword: searchTerm },
+      params: {
+        keyword: searchTerm,
+        searchFields: ['moverName', 'description'],
+      },
     });
 
     return data.data || data;
@@ -37,6 +40,7 @@ export const getMovers = async (params: {
   sortBy: string;
   area?: string;
   service?: string;
+  isFavorite?: boolean;
 }) => {
   try {
     const { data } = await axiosInstance.get('/movers', {

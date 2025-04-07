@@ -4,15 +4,24 @@ import { Mover } from '@/services/moverService';
 
 interface MoverListProps {
   movers: Mover[];
+  onReset?: () => void;
 }
 
-export default function MoverList({ movers }: MoverListProps) {
+export default function MoverList({ movers, onReset }: MoverListProps) {
   const router = useRouter();
 
   if (movers.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-center py-10'>
+      <div className='flex flex-col items-center justify-center py-10 gap-4'>
         <p className='text-gray-500'>검색 결과가 없습니다.</p>
+        {onReset && (
+          <button
+            onClick={onReset}
+            className='px-4 py-2 text-blue-500 border-none cursor-pointer'
+          >
+            목록 초기화
+          </button>
+        )}
       </div>
     );
   }

@@ -21,33 +21,34 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [allMovers, setAllMovers] = useState<Mover[]>([]);
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const { data: profile } = useUserProfile();
 
   // 검색
   const handleSearch = async () => {
-    const searchInput = document.querySelector(
-      'input[type="text"]',
-    ) as HTMLInputElement;
-    const searchTerm = searchInput?.value.trim();
-
-    if (!searchTerm) {
+    if (!searchQuery.trim()) {
       setMovers(allMovers);
       return;
     }
 
-    if (searchTerm.length < 2) {
+    if (searchQuery.length < 2) {
       setError('검색어는 2자 이상이어야 합니다.');
       return;
     }
 
     try {
-      const moversData = await searchMovers(searchTerm);
+      const moversData = await searchMovers(searchQuery);
       setMovers(moversData);
-      setAllMovers(moversData);
     } catch (err: any) {
       console.error('검색 중 오류 발생:', err);
       setError('기사님 검색 중 오류가 발생했습니다.');
     }
+  };
+
+  // 목록 초기화
+  const handleReset = () => {
+    fetchMovers();
+    setSearchQuery('');
   };
 
   // 엔터키 이벤트 핸들러
@@ -67,7 +68,7 @@ export default function Page() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [searchQuery]);
 
   // 정렬
   const handleSort = async (value: string | object) => {
@@ -172,9 +173,13 @@ export default function Page() {
               onSearch={handleSearch}
               styleVariant='secondary'
               inputVariant='search'
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
 
-            <MoverList movers={movers} />
+            <MoverList
+              movers={movers}
+              onReset={handleReset}
+            />
           </div>
         </div>
       </div>
