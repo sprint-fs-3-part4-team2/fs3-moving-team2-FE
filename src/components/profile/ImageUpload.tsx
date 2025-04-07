@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, DragEvent, ChangeEvent } from 'react';
+import { useState, useEffect, useRef, DragEvent, ChangeEvent } from 'react';
 import Image from 'next/image';
 import { getUploadUrl, uploadImageOnS3 } from '@/services/s3Upload';
 import { useForm } from 'react-hook-form';
@@ -15,6 +15,10 @@ export default function ImageUpload({
 }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(imageUrl);
+
+  useEffect(() => {
+    setPreviewImage(imageUrl); // imageUrl 변경 시 preview 업데이트
+  }, [imageUrl]);
 
   // 파일 업로드 핸들러
   const handleFileUpload = async (file: File) => {
