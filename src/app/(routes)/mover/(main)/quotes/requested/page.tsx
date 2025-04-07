@@ -22,6 +22,8 @@ import { moveTypes } from '@/components/moverQuoteRequested/MoverQuoteFilterOpti
 import Pagination from '@/components/pagination/molecule/pagination';
 import Loading from '@/app/loading';
 import { useLocalStorage } from '@/hooks/useStorage';
+import { FilterIcon } from '@/components/moverQuoteRequested/FilterIcon';
+import SortingOptions from '@/components/moverQuoteRequested/SortingOptions';
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -156,10 +158,7 @@ export default function Page() {
                 className='xl:hidden'
                 onClick={() => setShowFilterModal(true)}
               >
-                <Image
-                  src={filterIcon}
-                  alt='필터 아이콘'
-                />
+                <FilterIcon />
               </button>
             </div>
           </div>
