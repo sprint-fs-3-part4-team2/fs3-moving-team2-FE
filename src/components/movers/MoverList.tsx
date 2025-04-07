@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import { Mover } from '@/services/moverService';
+import { MovingStates } from '@/components/common/shared/atoms/movingTypeBadge/movingTypeBadge.types';
 
 interface MoverListProps {
   movers: Mover[];
@@ -49,6 +50,7 @@ export default function MoverList({ movers, onReset }: MoverListProps) {
             favoriteCount={mover.favoriteCount ?? 0}
             isFavoriteMoverList={false}
             description={mover.description}
+            quoteState={mover.quoteState?.[0] as MovingStates | undefined}
           />
         </div>
       ))}

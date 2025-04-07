@@ -1,7 +1,8 @@
 import axiosInstance from '@/lib/axiosInstance';
-import { MOVING_TYPES } from '@/constants/movingTypes';
+import { MOVING_TYPES, MOVING_STATE } from '@/constants/movingTypes';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
+export type MovingStateKey = keyof typeof MOVING_STATE;
 
 export interface Mover {
   id: number;
@@ -11,6 +12,7 @@ export interface Mover {
   imageUrl: string;
   movingType: MovingTypeKey[];
   isCustomQuote: boolean;
+  quoteState?: MovingStateKey[];
   rating?: number;
   ratingCount: number;
   experienceYears: number;
@@ -47,6 +49,7 @@ export const getMovers = async (params: {
       params,
     });
 
+    console.log('API Response:', data);
     return data.data || data;
   } catch (error: any) {
     throw error;
