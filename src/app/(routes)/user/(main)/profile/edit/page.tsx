@@ -25,7 +25,6 @@ type FormData = {
 export default function Page() {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
   const { data: userProfile } = useUserProfile();
   const defaultUrl = userProfile?.profile?.profileImage;
 
@@ -55,8 +54,7 @@ export default function Page() {
       setValue('name', userProfile.name);
       setValue('email', userProfile.email);
       setValue('phoneAddress', userProfile.phoneNumber);
-      setValue('profileImage', userProfile.profile?.profileImage || null);
-      setLoading(false);
+      setValue('profileImage', defaultUrl || null);
     }
   }, [userProfile, setValue]);
 
