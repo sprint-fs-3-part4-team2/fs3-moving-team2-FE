@@ -11,7 +11,7 @@ import { useToaster } from '@/hooks/useToaster';
 import useUserProfile from '@/hooks/auth/useUserProfile';
 
 type FormData = {
-  experience: Number;
+  experience: number;
   shortIntro: string;
   description: string;
   profileImage: string | null;
