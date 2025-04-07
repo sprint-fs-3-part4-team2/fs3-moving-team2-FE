@@ -129,12 +129,6 @@ const config: Config = {
         primary:
           '2px 2px 10px 0px rgba(220,220,220,0.2), -2px -2px 10px 0px rgba(220,220,220,0.2)',
       },
-      textShadow: {
-        sm: '1px 1px 2px rgba(0, 0, 0, 0.1)',
-        default: '2px 2px 4px rgba(0, 0, 0, 0.2)',
-        lg: '3px 3px 6px rgba(0, 0, 0, 0.3)',
-        strong: '3px 3px 0px rgba(0, 0, 0, 0.5)',
-      }
     },
   },
   plugins: [forms],
