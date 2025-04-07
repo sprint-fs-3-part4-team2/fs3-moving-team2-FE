@@ -107,6 +107,7 @@ function Alarm({
     e.preventDefault();
     setOpen((prev) => !prev);
   }
+
   return (
     <div
       className={cn('relative', className && className)}
@@ -121,7 +122,8 @@ function Alarm({
       <Dropdown
         isOpen={open}
         className={cn(
-          'absolute block right-0 top-[140%] w-[312px] h-auto max-h-[314px] z-[99]',
+          'fixed block left-1/2 -translate-x-1/2 top-[140%] w-[80%] max-w-[330px] h-auto max-h-[360px] z-[99]',
+          'md:absolute md:right-0 md:-translate-x-0 md:left-auto md:w-[60%] md:max-w-[312px]',
           'xl:max-h-[352px] xl:w-[360px]',
           'overflow-hidden px-0 pl-0 shadow-2xl',
         )}
@@ -139,7 +141,12 @@ function Alarm({
             onClick={closeAlarm}
           />
         </div>
-        <ul className={cn('w-full overflow-y-scroll h-[250px] custom-scroll')}>
+        <ul
+          className={cn(
+            'w-full overflow-y-scroll h-[300px] custom-scroll',
+            'md:h-[250px]',
+          )}
+        >
           {data.length > 0 ? (
             data.map((v, i) => {
               const { id, isRead, highlight, message } = v;

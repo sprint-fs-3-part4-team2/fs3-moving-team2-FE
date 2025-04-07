@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { getPendingReviews } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import ReviewModal from '@/components/modal/children/ReviewModal';
+import NoData from '@/components/noData/NoData';
 
 function ConfirmationModal({
   message,
@@ -26,26 +27,28 @@ function ConfirmationModal({
       onClick={onClose}
     >
       <dialog
-        className='w-[350px] md:w-[500px] h-[320px] md:h-[300px] px-[24px] pt-[34px] pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-[200]'
+        className='w-[350px] md:w-[500px] h-[230px] md:h-[300px] px-[24px] pt-[24px] md:pt-[34px] pb-[24px] md:pb-[40px] bg-white rounded-[32px] fixed top-1/2 transform -translate-y-1/2 border-[2px] border-gray-200 z-[200]'
         open
         onClick={(e) => e.stopPropagation()}
       >
-        <p className='text-[24px]/[32px] font-[600]'>리뷰 작성 완료</p>
-        <p className='absolute w-full px-[24px] text-center break-keep top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[94px] md:-translate-y-[84px] text-[21px] font-[500] py-[50px]'>
+        <p className='text-[20px] md:text-[24px]/[32px] font-[600]'>
+          리뷰 작성 완료
+        </p>
+        <p className='absolute w-full px-[24px] text-center break-keep top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[26px] md:-translate-y-[84px] text-[16px] md:text-[21px] font-[500] md:py-[50px]'>
           {message}
         </p>
-        <div className='absolute bottom-[28px] w-[calc(350px-48px)] md:w-[calc(500px-48px)] flex justify-center gap-[16px]'>
+        <div className='absolute bottom-[24px] md:bottom-[28px] w-[calc(350px-48px)] md:w-[calc(500px-48px)] flex justify-center gap-[10px] md:gap-[16px]'>
           {showCancel && (
             <button
               onClick={onCancel}
-              className='text-[20px] font-[600] bg-gray-300 text-white w-[100%] h-[64px] text-center rounded-[16px] border-[2px] border-black cursor-pointer'
+              className='text-[16px] md:text-[20px] font-[600] text-primary-blue-300 w-[100%] h-[54px] md:h-[64px] text-center rounded-[16px] border-[1px] border-primary-blue-300 cursor-pointer'
             >
               취소
             </button>
           )}
           <button
             onClick={onConfirm}
-            className='text-[20px] font-[600] bg-primary-blue-300 text-white w-[100%] h-[64px] text-center rounded-[16px] border-[2px] border-black cursor-pointer'
+            className='text-base md:text-[20px] font-[600] bg-primary-blue-300 text-white w-[100%] h-[54px] md:h-[64px] text-center rounded-[16px] border-[1px] border-primary-blue-300 cursor-pointer'
           >
             확인
           </button>
@@ -399,10 +402,10 @@ export default function Page() {
     return (
       <div>
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
-          <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
+          <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
             <Image
-              src='/img/logo/logo-with-icon.svg'
-              alt='logo'
+              src='/img/car.svg'
+              alt='loading'
               fill
               // style={{ objectFit: 'cover' }}
             />
@@ -492,9 +495,9 @@ export default function Page() {
         </div>
       ) : (
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
-          <div className='relative w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'>
+          {/* <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
             <Image
-              src='/img/no-review.svg'
+              src='/img/car.svg'
               alt='no-review'
               fill
               style={{ objectFit: 'cover' }}
@@ -502,7 +505,8 @@ export default function Page() {
           </div>
           <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
             작성 가능한 리뷰가 없어요
-          </div>
+          </div> */}
+          <NoData text='작성 가능한 리뷰가 없어요' />
         </div>
       )}
       {/* 모달 렌더링 */}

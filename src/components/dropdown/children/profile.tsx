@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import useLogout from '@/hooks/auth/useLogout';
 import { useQueryClient } from '@tanstack/react-query';
 import { MyProfile } from '@/services/auth/types';
+import { useToaster } from '@/hooks/useToaster';
 
 function Profile({
   isOpen,
@@ -19,6 +20,11 @@ function Profile({
   const logout = useLogout();
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<MyProfile>(['userProfile']);
+  const toaster = useToaster();
+
+  let userType = '고객님';
+  if (data?.userType === 'customer') userType = '고객님';
+  else if (data?.userType === 'mover') userType = '기사님';
 
   useEffect(() => {
     setOpen(false);
@@ -57,38 +63,57 @@ function Profile({
         isOpen={open}
         className={cn(
           'absolute left-1/2 transform -translate-x-1/2',
-          'block w-[152px] min-h-[224px] px-[6px] pt-[10px] pb-2 top-[140%] z-[100]',
-          'xl:rightw-[248px] xl:pt-3 xl:pb-[6px] xl:px-1',
+          'block w-[170px] px-[6px] pt-[10px] pb-2 top-[140%] z-[100]',
+          'xl:w-[240px] xl:rightw-[270px] xl:pt-3 xl:pb-[6px] xl:px-1',
         )}
       >
         <h2
           className={cn(
-            'text-black-400 py-[10px] pl-3 font-bold text-lg',
-            'xl:py-[14px] xl:pl-6 xl:text-[18px]',
+            'text-black-400 py-[10px] pl-3 font-bold text-xl',
+            'xl:py-[14px] xl:text-2xl xl:pl-6 xl:text-[18px]',
           )}
         >
-          {data?.name} 고객님
+          <span
+            className='w-full max-w-[100px] truncate overflow-hidden whitespace-nowrap mr-1'
+            title={data?.name}
+          >
+            {data?.name}
+          </span>
+          {userType}
         </h2>
         <ul>
-          <ProfileList href={'/user/profile/edit'}>프로필 수정</ProfileList>
-          <ProfileList href={'/user/movers/favorite'}>찜한 기사님</ProfileList>
-          <ProfileList href={'/user/reviews/completed'}>이사 리뷰</ProfileList>
+          {data?.userType === 'customer' ? (
+            <>
+              <ProfileList href={'/user/profile/edit'}>프로필 수정</ProfileList>
+              <ProfileList href={'/user/movers/favorite'}>
+                찜한 기사님
+              </ProfileList>
+              <ProfileList href={'/user/reviews/completed'}>
+                이사 리뷰
+              </ProfileList>
+            </>
+          ) : (
+            <>
+              <ProfileList href={'/mover/profile'}>내 프로필</ProfileList>
+            </>
+          )}
           <li
             className={cn(
               'h-[38px] flex items-center justify-center border-t border-line-200 mt-2 cursor-pointer',
-              'xl:h-[46px] xl:mt-3',
+              'xl:h-[55px] xl:mt-3',
               'group hover:bg-grayscale-50',
             )}
           >
             <button
               className={cn(
-                'text-grayscale-500 text-xs font-normal',
-                'xl:text-lg xl:font-medium ',
+                'text-grayscale-500 text-lg font-normal',
+                'xl:text-[17px] xl:font-medium ',
                 'group-hover:text-primary-blue-200 group-hover:font-bold',
               )}
               onClick={(e) => {
                 e.preventDefault();
                 logout.mutate();
+                toaster('info', '로그아웃 되었습니다.');
               }}
             >
               로그아웃

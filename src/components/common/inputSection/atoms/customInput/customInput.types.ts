@@ -27,6 +27,7 @@ export interface FormTypeProps<T extends FieldValues> extends InputBaseProps {
   validation?: RegisterOptions<T, Path<T>>;
   inputType?: 'input' | 'textarea';
   rows?: number;
+  disabled?: boolean; // 추가된 것
 }
 
 export type CustomInputProps<T extends FieldValues> =

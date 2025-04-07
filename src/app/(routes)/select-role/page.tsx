@@ -1,37 +1,46 @@
 'use client';
 import { PropsWithChildren, useState } from 'react';
-import s from './styles/select-role.module.css';
 import Link from 'next/link';
 import Links from './components/links';
 import Image from 'next/image';
 import Content from './components/content';
 import MobileLink from './components/mobile-link';
 import Tooltip from './components/tooltip';
+import cn from '@/utils/cn';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const commonText = '일반유저';
 const partnerText = '파트너';
 
 export default function SliceBox() {
-  const [location, setLocation] = useState<string>(s.right);
   const [tt, setTT] = useState(partnerText);
+  const router = useRouter();
+  const query = useSearchParams();
+  const userType = query.get('userType');
 
   function changeBg(e: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) {
     e.preventDefault();
     e.stopPropagation();
-    setLocation((prev) => (prev === s.left ? s.right : s.left));
     setTT((prev) => (prev === partnerText ? commonText : partnerText));
+    router.push(
+      userType === 'mover' ? '?userType=customer' : '?userType=mover',
+    );
   }
 
   return (
-    <div className={`${s.page} bg-backgroundVariants-50`}>
+    <div
+      className={cn(
+        'relative w-full h-screen text-white bg-backgroundVariants-50',
+      )}
+    >
       <div
-        className={`${s.container} 
-   `}
+        className={cn(
+          'absolute w-full h-full max-h-none flex left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-blue-200 transition-all',
+        )}
       >
         <Content
-          className={`${s.content} ${s.left} ${
-            location !== s.left && s.active
-          }`}
+          className={cn(userType !== 'mover' && 'w-full md:w-1/2 opacity-100 ')}
+          location={cn('-right-full', userType !== 'mover' && 'right-0')}
           title='Customer'
           comment='편리한 이사, 합리적인 이사, 맞춤형 이사'
         >
@@ -39,9 +48,8 @@ export default function SliceBox() {
           <MobileLink onClick={changeBg}>{partnerText}</MobileLink>
         </Content>
         <Content
-          className={`${s.content} ${s.right} ${
-            location !== s.right && s.active
-          }`}
+          className={cn(userType === 'mover' && 'w-full md:w-1/2 opacity-100')}
+          location={cn('-left-full', userType === 'mover' && 'left-0')}
           title='Mover'
           comment='고객들과 더 가깝고 편리하게'
         >
@@ -51,10 +59,7 @@ export default function SliceBox() {
           <MobileLink onClick={changeBg}>{commonText}</MobileLink>
         </Content>
 
-        <Background
-          location={location}
-          onClick={changeBg}
-        >
+        <Background onClick={changeBg}>
           <Tooltip
             open={true}
             bottom={50}
@@ -70,19 +75,22 @@ export default function SliceBox() {
 function Background({
   onClick,
   children,
-  location,
 }: {
   onClick: React.MouseEventHandler<HTMLAnchorElement>;
-  location: string;
 } & PropsWithChildren) {
+  const query = useSearchParams();
+  const userType = query.get('userType');
+
   return (
     <div
-      className={`${s.background} ${location}`}
-      // onClick={changeBg}
+      className={cn(
+        'hidden w-1/2 h-full bg-white absolute top-0 transition-all duration-700 md:flex items-center justify-center text-[46px] text-black-500',
+        userType === 'mover' ? 'left-0' : 'left-1/2',
+      )}
     >
       <Link
         href={'/'}
-        className={s.bgLogo}
+        // className={s.bgLogo}
       >
         <Image
           src='/img/logo/logo-with-icon.svg'
@@ -94,11 +102,19 @@ function Background({
       <Link
         href='#'
         onClick={onClick}
-        className={s.moveLink}
+        className={cn(
+          'group absolute text-[18px] font-semibold w-[inherit] h-[30px] bottom-[10%] flex items-center justify-center text-center text-grayscale-400 transition-all duration-700',
+        )}
       >
         {children}
-        <p className={s.moveLink}>
-          {location === s.left ? commonText : partnerText}
+        <p
+          className={cn(
+            'absolute text-[18px] font-semibold  h-[30px] bottom-[10%] flex items-center justify-center text-center text-grayscale-400 transition-all duration-700',
+            'text-[18px] font-semibold text-center',
+            'group-hover: text-[19px] group-hover:text-black-500 group-hover:font-bold',
+          )}
+        >
+          {userType === 'mover' ? commonText : partnerText}
         </p>
       </Link>
     </div>
