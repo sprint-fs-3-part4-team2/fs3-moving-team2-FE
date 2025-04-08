@@ -5,7 +5,7 @@ import Alarm, { AlarmData } from '@/components/dropdown/children/alarm';
 import { getNotificationApi } from '@/services/notification';
 import { readNotificationApi } from '@/services/notification';
 import { NOTIFICATION_STYLES } from '../../styles/variables';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 async function readAlarm(id?: string) {
   if (!id) return;
@@ -13,6 +13,7 @@ async function readAlarm(id?: string) {
 }
 
 export default function Notification(): JSX.Element {
+  const user = useQueryClient().getQueryData(['userProfile']);
   const {
     data: notification,
     isStale,
@@ -21,9 +22,9 @@ export default function Notification(): JSX.Element {
     queryKey: ['notification'],
     queryFn: getNotificationApi,
     staleTime: 1000 * 30,
+    enabled: !!user,
   });
   const [data, setData] = useState<AlarmData[]>([]);
-
   useEffect(() => {
     refetch();
   }, [isStale]);
