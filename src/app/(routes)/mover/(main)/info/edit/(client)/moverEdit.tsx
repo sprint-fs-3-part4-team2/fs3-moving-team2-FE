@@ -7,6 +7,10 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
 import { useQueryClient } from '@tanstack/react-query';
+import {
+  VALIDATION_MESSAGES,
+  VALIDATION_PATTERN,
+} from '@/components/authPage/organisms/constants';
 
 interface MoverBasicInfoEditClientProps {
   defaultValues?: FieldValues;
@@ -113,10 +117,10 @@ export default function MoverBasicInfoEditClient({
               placeholder='이메일을 입력해주세요'
               name='email'
               validation={{
-                required: '이메일은 필수 입니다.',
+                required: VALIDATION_MESSAGES.REQUIRED_EMAIL,
                 pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: '올바른 이메일 형식을 입력해주세요.',
+                  value: VALIDATION_PATTERN.EMAIL,
+                  message: VALIDATION_MESSAGES.INVALID_EMAIL,
                 },
                 disabled: true,
               }}
@@ -132,10 +136,10 @@ export default function MoverBasicInfoEditClient({
               styleVariant='secondary'
               placeholder='전화번호를 입력해주세요'
               validation={{
-                required: '전화번호를 입력해주세요',
+                required: VALIDATION_MESSAGES.REQUIRED_PHONE_NUMBER,
                 pattern: {
-                  value: /^(01[016789])[-]?[0-9]{3,4}[-]?[0-9]{4}$/,
-                  message: '올바른 핸드폰 번호를 입력해주세요.',
+                  value: VALIDATION_PATTERN.PHONE_NUMBER,
+                  message: VALIDATION_MESSAGES.INVALID_PHONE_NUMBER,
                 },
               }}
               name='phoneNumber'
@@ -154,10 +158,14 @@ export default function MoverBasicInfoEditClient({
               styleVariant='secondary'
               placeholder='현재 비밀번호를 입력해주세요'
               validation={{
-                required: '비밀 번호를 입력해주세요',
+                required: VALIDATION_MESSAGES.REQUIRED_PASSWORD,
+                pattern: {
+                  value: VALIDATION_PATTERN.PASSWORD,
+                  message: VALIDATION_MESSAGES.INVALID_PASSWORD,
+                },
                 minLength: {
                   value: 8,
-                  message: '비밀번호는 8자 이상이어야 합니다.',
+                  message: VALIDATION_MESSAGES.MIN_LENGTH_PASSWORD,
                 },
               }}
               name='current_password'
@@ -174,9 +182,13 @@ export default function MoverBasicInfoEditClient({
               placeholder='새 비밀번호를 입력해주세요'
               validation={{
                 required: '새 비밀번호를 입력해주세요',
+                pattern: {
+                  value: VALIDATION_PATTERN.PASSWORD,
+                  message: VALIDATION_MESSAGES.INVALID_PASSWORD,
+                },
                 minLength: {
                   value: 8,
-                  message: '비밀번호는 8자 이상이어야 합니다.',
+                  message: VALIDATION_MESSAGES.MIN_LENGTH_PASSWORD,
                 },
                 validate: (v) => {
                   if (v === currentPassowrd) {
@@ -198,9 +210,13 @@ export default function MoverBasicInfoEditClient({
               placeholder='새 비밀번호 확인을 입력해주세요'
               validation={{
                 required: '새 비밀번호 확인을 입력해주세요',
+                pattern: {
+                  value: VALIDATION_PATTERN.PASSWORD,
+                  message: VALIDATION_MESSAGES.INVALID_PASSWORD,
+                },
                 minLength: {
                   value: 8,
-                  message: '비밀번호는 8자 이상이어야 합니다.',
+                  message: VALIDATION_MESSAGES.MIN_LENGTH_PASSWORD,
                 },
                 validate: (v) =>
                   v === newPassword || '새 비밀번호가 일치 하지 않습니다.',
@@ -213,7 +229,9 @@ export default function MoverBasicInfoEditClient({
           </li>
         </ul>
       </div>
-      <div className={cn('flex flex-wrap lg:justify-between lg:flex-row-reverse')}>
+      <div
+        className={cn('flex flex-wrap lg:justify-between lg:flex-row-reverse')}
+      >
         <div className={cn(button)}>
           <CommonButton
             // type='reset'
