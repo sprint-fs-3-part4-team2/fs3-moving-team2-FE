@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import { Mover } from '@/services/moverService';
-import { MovingStates } from '@/components/common/shared/atoms/movingTypeBadge/movingTypeBadge.types';
 
 interface MoverListProps {
   movers: Mover[];
@@ -29,31 +28,32 @@ export default function MoverList({ movers, onReset }: MoverListProps) {
 
   return (
     <>
-      {movers.map((mover) => (
-        <div
-          key={mover.id}
-          onClick={() => router.push(`/user/movers/${mover.id}`)}
-          className='cursor-pointer hover:bg-gray-50 rounded-lg transition-colors duration-200'
-        >
-          <MoverInfo
-            variant='quote'
-            subVariant='completed'
-            moverName={mover.moverName}
-            imageUrl={mover.imageUrl || '/profile-placeholder.png'}
-            movingType={mover.movingType}
-            isCustomQuote={mover.isCustomQuote}
-            rating={mover.rating ?? 0}
-            ratingCount={mover.ratingCount}
-            experienceYears={mover.experienceYears}
-            quoteCount={mover.quoteCount}
-            isFavorite={mover.isFavorite}
-            favoriteCount={mover.favoriteCount ?? 0}
-            isFavoriteMoverList={false}
-            description={mover.description}
-            quoteState={mover.quoteState?.[0] as MovingStates | undefined}
-          />
-        </div>
-      ))}
+      {movers.map((mover) => {
+        return (
+          <div
+            key={mover.id}
+            onClick={() => router.push(`/user/movers/${mover.id}`)}
+            className='cursor-pointer hover:bg-gray-50 rounded-lg transition-colors duration-200'
+          >
+            <MoverInfo
+              variant='quote'
+              subVariant='completed'
+              moverName={mover.moverName}
+              imageUrl={mover.imageUrl}
+              movingType={mover.movingType}
+              isCustomQuote={mover.isCustomQuote}
+              rating={mover.rating ?? 0}
+              ratingCount={mover.ratingCount}
+              experienceYears={mover.experienceYears}
+              quoteCount={mover.quoteCount}
+              isFavorite={mover.isFavorite}
+              favoriteCount={mover.favoriteCount ?? 0}
+              isFavoriteMoverList={false}
+              description={mover.description}
+            />
+          </div>
+        );
+      })}
     </>
   );
 }
