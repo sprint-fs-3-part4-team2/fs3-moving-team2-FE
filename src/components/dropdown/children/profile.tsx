@@ -106,7 +106,7 @@ function Profile({
           >
             <button
               className={cn(
-                'text-grayscale-500 text-lg font-normal',
+                'text-grayscale-500 text-lg font-normal w-full h-full',
                 'xl:text-[17px] xl:font-medium ',
                 'group-hover:text-primary-blue-200 group-hover:font-bold',
               )}
