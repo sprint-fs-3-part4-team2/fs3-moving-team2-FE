@@ -52,6 +52,7 @@ export default function CommonButton({
           'h-[48px] md:h-[48px] xl:h-[64px]': heightType === 'secondary',
           'h-[44px]': heightType === 'tertiary',
         },
+        'disabled:bg-grayscale-100 disabled:cursor-not-allowed',
         className,
       )}
       {...props}

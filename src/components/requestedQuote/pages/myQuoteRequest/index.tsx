@@ -21,6 +21,7 @@ export default function MyQuoteRequest() {
         movingType={data.quote.moveType}
         departure={data.quote.departure.fullAddress}
         arrival={data.quote.arrival.fullAddress}
+        status={data.quote.status}
       />
     );
   return <NoQuoteRequest />;
