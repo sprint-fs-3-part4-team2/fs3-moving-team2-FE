@@ -32,7 +32,8 @@ export default function Notification(): JSX.Element {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${process.env.NEXT_PUBLIC_API_URL || `http://localhost:8080`}/notification/events`,
+      `${process.env.NEXT_PUBLIC_API_URL}/notification/events`,
+      { withCredentials: true },
     ); // 백엔드 SSE 엔드포인트
 
     // 메시지 수신
