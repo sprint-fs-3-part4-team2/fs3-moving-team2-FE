@@ -6,8 +6,7 @@ import GNBLogo from '../molecules/gnbLogo';
 import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
 import dynamic from 'next/dynamic';
 import useUserProfile from '@/hooks/auth/useUserProfile';
-import CustomLink from '../atoms/menus/common/customLink';
-import Text from '../atoms/menus/common/gnbText';
+
 const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
   ssr: false,
 });
