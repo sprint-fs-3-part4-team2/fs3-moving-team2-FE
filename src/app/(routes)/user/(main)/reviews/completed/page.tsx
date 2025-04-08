@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
