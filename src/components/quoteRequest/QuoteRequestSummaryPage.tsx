@@ -9,7 +9,7 @@ import Link from 'next/link';
 import noQuoteImage from '@/public/img/car.svg';
 import Image from 'next/image';
 
-export default function QuoteRequestInProgressPage() {
+export default function QuoteRequestSummaryPage() {
   const { data } = useQuery({
     queryKey: ['myQuoteRequest'],
     queryFn: getQuoteRequest,
