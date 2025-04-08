@@ -3,9 +3,9 @@
 import { usePathname } from 'next/navigation';
 import GNBLayout from '../atoms/layout/gnbLayout';
 import GNBLogo from '../molecules/gnbLogo';
-import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from './constant';
 import dynamic from 'next/dynamic';
 import useUserProfile from '@/hooks/auth/useUserProfile';
+import { GNB_LOGO_MENU_STYLES, GNB_STYLES } from '../styles/variables';
 
 const GNBRightSection = dynamic(() => import('../organisms/gnbRightSection'), {
   ssr: false,
