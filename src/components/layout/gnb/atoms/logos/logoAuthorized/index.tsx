@@ -1,5 +1,8 @@
 import Image from 'next/image';
-import { LOGO_WITH_TEXT_STYLES, LOGO_ONLY_STYLES } from './constant';
+import {
+  LOGO_ONLY_STYLES,
+  LOGO_WITH_TEXT_STYLES,
+} from '../../../styles/variables';
 
 export default function LogoAuthorized(): JSX.Element {
   return (

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import BellIcon from '../../atoms/icons/bellIcon';
 import NotificationDot from '../../atoms/icons/notificationDot';
 import Alarm, { AlarmData } from '@/components/dropdown/children/alarm';
-import { NOTIFICATION_STYLES } from './constant';
 import { getNotificationApi } from '@/services/notification';
 import { readNotificationApi } from '@/services/notification';
+import { NOTIFICATION_STYLES } from '../../styles/variables';
 
 async function readAlarm(id?: string) {
   if (!id) return;
