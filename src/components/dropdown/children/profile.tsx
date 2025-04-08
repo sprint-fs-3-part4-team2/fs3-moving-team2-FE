@@ -74,7 +74,7 @@ function Profile({
           )}
         >
           <span
-            className='block w-[6ch] truncate overflow-hidden whitespace-nowrap'
+            className='max-w-[6ch] truncate overflow-hidden whitespace-nowrap mr-1'
             title={data?.name}
           >
             <span className='w-full'>{data?.name}</span>
