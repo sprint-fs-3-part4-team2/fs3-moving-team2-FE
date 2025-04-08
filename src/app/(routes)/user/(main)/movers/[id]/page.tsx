@@ -29,8 +29,6 @@ import MoverDetailModals from '@/components/moverDetail/MoverDetailModals';
 
 type MoverDetail = MoverDetailType;
 
-const ITEMS_PER_PAGE = 5;
-
 export default function Page() {
   const router = useRouter();
   const params = useParams();
@@ -66,10 +64,10 @@ export default function Page() {
     },
   });
 
-  // 로그인 상태 확인용 (테스트용)
+  // 로그인 상태 확인용
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  // 일반 견적 요청 상태 (테스트용)
+  // 일반 견적 요청 상태
   const [hasGeneralQuote, setHasGeneralQuote] = useState<boolean>(false);
 
   // 로그인 상태 체크
@@ -192,39 +190,26 @@ export default function Page() {
 
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = async (): Promise<void> => {
-    console.log('지정 견적 요청 시작:', { moverId });
-
-    if (!checkLoginStatus()) {
-      console.log('로그인 상태 확인 실패');
-      return;
-    }
+    if (!checkLoginStatus()) return;
 
     try {
       // 일반 견적 요청 여부만 확인
       const quoteResponse = await checkGeneralQuoteExists();
-      console.log('일반 견적 요청 확인:', quoteResponse);
 
       if (!quoteResponse.isRequested) {
-        console.log('일반 견적 요청 필요');
         setShowGeneralQuoteModal(true);
         return;
       }
 
       // 이미 지정 견적을 요청한 경우
       if (quoteResponse.hasTargetedQuote) {
-        console.log('이미 지정 견적 요청됨');
         setIsQuoteRequested(true);
         return;
       }
 
-      console.log('지정 견적 요청 모달 표시');
       setShowSpecificQuoteModal(true);
     } catch (error: any) {
-      console.error('지정 견적 요청 확인 중 오류:', {
-        status: error.response?.status,
-        message: error.message,
-        data: error.response?.data,
-      });
+      console.error('지정 견적 요청 확인 중 오류:', error);
 
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
@@ -242,14 +227,10 @@ export default function Page() {
 
   // 지정 견적 요청 확인
   const confirmSpecificQuote = async (): Promise<void> => {
-    console.log('지정 견적 요청 확인 시작:', { moverId });
-
     try {
       const response = await createTargetedQuoteRequest(moverId);
-      console.log('지정 견적 요청 응답:', response);
 
       if (response) {
-        console.log('지정 견적 요청 성공');
         setIsQuoteRequested(true);
         setMoverDetail((prev) =>
           prev ? { ...prev, isCustomQuote: true } : null,
@@ -258,11 +239,7 @@ export default function Page() {
         alert('지정 견적 요청이 완료되었습니다.');
       }
     } catch (error: any) {
-      console.error('지정 견적 요청 에러:', {
-        status: error.response?.status,
-        message: error.message,
-        data: error.response?.data,
-      });
+      console.error('지정 견적 요청 에러:', error);
 
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
