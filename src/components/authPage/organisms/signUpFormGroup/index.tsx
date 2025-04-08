@@ -1,23 +1,21 @@
 'use client';
 
-import InputSection from '@/components/common/inputSection/molecules';
-import cn from '@/utils/cn';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
-import { FORM_LAYOUT_STYLES } from '../formGroupSection/constant';
+import { VALIDATION_MESSAGES, VALIDATION_PATTERN } from '../constants';
+import InputSection from '@/components/common/inputSection/molecules';
+import { useMoverSignUp, useUserSignUp } from '@/hooks/auth/useAuth';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
+import { SignUpData } from '@/services/auth/types';
+import { useToaster } from '@/hooks/useToaster';
+import { UserType } from '../../common.types';
+import cn from '@/utils/cn';
 import {
   BUTTON_BASIC_STYLES,
   BUTTON_DESCTOP_STYLES,
   BUTTON_DISABLED_STYLES,
+  FORM_LAYOUT_STYLES,
   PHONE_NUMBER_INPUT_CLASS_NAME,
-  VALIDATION_MESSAGES,
-  VALIDATION_PATTERN,
-} from '../constants';
-import { UserType } from '../../common.types';
-import { useMoverSignUp, useUserSignUp } from '@/hooks/auth/useAuth';
-import { SignUpData } from '@/services/auth/types';
-import { useToaster } from '@/hooks/useToaster';
-import axios from 'axios';
+} from '../../styles/variables';
 
 export default function SignUpFormGroup({
   userType = 'customer',

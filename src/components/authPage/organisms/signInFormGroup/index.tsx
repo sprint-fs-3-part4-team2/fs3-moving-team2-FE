@@ -1,21 +1,20 @@
 'use client';
 
-import InputSection from '@/components/common/inputSection/molecules';
-import { UserType } from '../../common.types';
-import { useMoverSignIn, useUserSignIn } from '@/hooks/auth/useAuth';
-import { SignInData } from '@/services/auth/types';
 import { useForm, type FieldValues, type FieldErrors } from 'react-hook-form';
-import cn from '@/utils/cn';
-import { FORM_LAYOUT_STYLES } from '../formGroupSection/constant';
+import { VALIDATION_MESSAGES, VALIDATION_PATTERN } from '../constants';
+import InputSection from '@/components/common/inputSection/molecules';
+import { useMoverSignIn, useUserSignIn } from '@/hooks/auth/useAuth';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
+import { SignInData } from '@/services/auth/types';
+import { useToaster } from '@/hooks/useToaster';
+import { UserType } from '../../common.types';
+import cn from '@/utils/cn';
 import {
   BUTTON_BASIC_STYLES,
   BUTTON_DESCTOP_STYLES,
   BUTTON_DISABLED_STYLES,
-  VALIDATION_MESSAGES,
-  VALIDATION_PATTERN,
-} from '../constants';
-import { useToaster } from '@/hooks/useToaster';
+  FORM_LAYOUT_STYLES,
+} from '../../styles/variables';
 
 export default function SignInFormGroup({
   userType = 'customer',

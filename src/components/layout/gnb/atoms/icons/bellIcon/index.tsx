@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { BellIconProp } from './bellIcon.type';
-import { BELL_ICON_STYLES } from './constant';
+import { BELL_ICON_STYLES } from '../../../styles/variables';
 
 export default function BellIcon({ onClick }: BellIconProp): JSX.Element {
   return (

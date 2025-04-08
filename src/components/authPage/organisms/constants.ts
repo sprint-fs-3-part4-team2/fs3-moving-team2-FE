@@ -23,9 +23,3 @@ export const VALIDATION_PATTERN = {
   PHONE_NUMBER: /^010\d{7,8}$/,
   PASSWORD: /^(?=.*[A-Za-z])(?=.*[!@#$%^&*])/,
 };
-
-export const BUTTON_BASIC_STYLES = 'font-semibold text-lg mt-[16px]';
-export const BUTTON_DESCTOP_STYLES = 'xl:text-xl xl:mt-[24px]';
-export const BUTTON_DISABLED_STYLES = 'bg-grayscale-100 border-none';
-export const PHONE_NUMBER_INPUT_CLASS_NAME =
-  '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none';

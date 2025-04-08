@@ -1,5 +1,5 @@
 import ProfileIcon from '../../atoms/icons/profileIcon';
-import { PROFILE_NAME_STYLES, PROFILE_STYLES } from './constant';
+import { PROFILE_NAME_STYLES, PROFILE_STYLES } from '../../styles/variables';
 import { ProfileSectionProps } from './profileSection.type';
 import Profile from '@/components/dropdown/children/profile';
 

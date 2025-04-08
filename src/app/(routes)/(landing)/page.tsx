@@ -14,7 +14,7 @@ import {
   TEXT_BOX_STYLES,
   THIRD_IMAGE_BOX_STYLES,
   THIRD_IMAGE_STYLES,
-} from './constant';
+} from './styles';
 
 export default function Home(): JSX.Element {
   return (

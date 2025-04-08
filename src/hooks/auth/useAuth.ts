@@ -16,10 +16,8 @@ export const useUserSignUp = () => {
     mutationFn: userAuthService.signUp,
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      setTimeout(() => {
-        if (data.profile === null) router.push('/user/profile/register');
-        router.push('/user/movers');
-      }, 2000);
+      if (data.profile === null) router.push('/user/profile/register');
+      router.push('/user/movers');
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data.message || '회원가입 실패');
@@ -37,10 +35,8 @@ export const useUserSignIn = () => {
     mutationFn: userAuthService.signIn,
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      setTimeout(() => {
-        if (data.profile === null) router.push('/user/profile/register');
-        router.push('/user/movers');
-      }, 2000);
+      if (data.profile === null) router.push('/user/profile/register');
+      router.push('/user/movers');
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data?.message || '로그인 실패');
@@ -59,10 +55,8 @@ export const useMoverSignUp = () => {
     mutationFn: moverAuthService.signUp,
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      setTimeout(() => {
-        if (data.profile === null) router.push('/mover/profile/register');
-        router.push('/mover/quotes/requested');
-      }, 2000);
+      if (data.profile === null) router.push('/mover/profile/register');
+      router.push('/mover/quotes/requested');
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data.message || '회원가입 실패');
@@ -80,10 +74,8 @@ export const useMoverSignIn = () => {
     mutationFn: moverAuthService.signIn,
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      setTimeout(() => {
-        if (data.profile === null) router.push('/mover/profile/register');
-        router.push('/mover/quotes/requested');
-      }, 2000);
+      if (data.profile === null) router.push('/mover/profile/register');
+      router.push('/mover/quotes/requested');
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data.message || '로그인 실패');
