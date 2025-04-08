@@ -9,6 +9,7 @@ import { updateMoverProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
 import useUserProfile from '@/hooks/auth/useUserProfile';
+import { useQueryClient } from '@tanstack/react-query';
 
 type FormData = {
   experience: number;
@@ -21,6 +22,7 @@ type FormData = {
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { data: userProfile } = useUserProfile();
   const defaultUrl = userProfile?.profile?.profileImage;
@@ -125,6 +127,7 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await updateMoverProfile(data);
       console.log('프로필 수정 성공', response);
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
       toaster('info', '수정 성공!');
     } catch (error: unknown) {
       console.error('프로필 수정 실패:', error);
