@@ -1,7 +1,7 @@
+import cn from '@/utils/cn';
 import Image from 'next/image';
 import { MenuIconProp } from './menuIcon.type';
-import { MENU_ICON_STYLES } from './constant';
-import cn from '@/utils/cn';
+import { MENU_ICON_STYLES } from '../../../styles/variables';
 
 export default function MenuIcon({ menuOnClick, className }: MenuIconProp) {
   return (

@@ -1,10 +1,11 @@
-'user client';
+'use client';
 
 import cn from '@/utils/cn';
 import CustomText from '../customText';
 import CustomLinkText from '../customLinkText';
 import { TextUnderButtonProps } from './textUnderButton.type';
-import { TEXT_UNDER_BUTTON_LAYOUT_STYLES, pageTypeContent } from './constant';
+import { pageTypeContent } from './constant';
+import { TEXT_UNDER_BUTTON_LAYOUT_STYLES } from '../../styles/variables';
 
 export default function TextUnderButton({
   pageType = 'signIn',

@@ -29,3 +29,5 @@ netlify.*
 
 # 문서
 *.md
+
+storybook-static
