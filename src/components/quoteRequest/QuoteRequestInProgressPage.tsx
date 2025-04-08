@@ -25,7 +25,7 @@ export default function QuoteRequestInProgressPage() {
       <section className='flex-1 bg-backgroundVariants-200 flex flex-col items-center justify-center'>
         {data?.quote ? (
           <MovingInfo
-            requestedDate={data.quote.moveDate}
+            requestedDate={data.quote.requestedDate}
             movingType={data.quote.moveType}
             movingDate={data.quote.moveDate}
             departure={data.quote.departure.fullAddress}
