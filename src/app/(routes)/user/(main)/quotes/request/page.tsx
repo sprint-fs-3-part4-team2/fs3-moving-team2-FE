@@ -20,7 +20,7 @@ export default function Page() {
   }
 
   return data?.isRequested ? (
-    <QuoteRequestSummaryPage /> // 요약 페이지
+    <QuoteRequestSummaryPage data={data} /> // 요약 페이지
   ) : (
     <QuoteRequestPage />
   );
