@@ -1,11 +1,11 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
-import { getCompletedReviews } from '@/services/reviewsService';
 import NoData from '@/components/noData/NoData';
 import { Mover } from '@/services/auth/types';
 
@@ -13,37 +13,21 @@ export default function Page() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const [emptyData, setEmptyData] = useState(false);
-  const queryClient = useQueryClient();
-  const {
-    data: movers,
-    isLoading,
-    error,
-  } = useQuery({
+
+  const { data: movers } = useQuery<Mover[]>({
     queryKey: ['completedReviews'],
-    queryFn: getCompletedReviews,
+
+    enabled: false,
   });
 
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ['completedReviews'] });
-  }, []);
+  const isEmpty = !movers || movers.length === 0;
 
-  useEffect(() => {
-    if (!isLoading && (!movers || movers.length === 0 || error)) {
-      setEmptyData(true);
-    }
-  }, [isLoading, movers, error]);
-
-  if (isLoading) return <p className='text-center'> 잠시만 기다려주세요...</p>;
-
-  if (emptyData)
+  if (isEmpty)
     return (
       <div className='flex flex-col items-center justify-center w-full h-[656px]'>
         <div className='py-[24px] xl:py-[32px]'>
           <NoData text='여기 등록된 리뷰가 없어요!' />
         </div>
-
-        <div className='text-gray-400 '>{/* 여기 등록된 리뷰가 없어요! */}</div>
         <div>
           <CommonButton
             widthType='dynamic'
@@ -60,17 +44,18 @@ export default function Page() {
       </div>
     );
 
-  const totalPages = Math.ceil((movers?.length ?? 0) / itemsPerPage);
+  const totalPages = Math.ceil(movers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentData = movers?.slice(startIndex, startIndex + itemsPerPage);
+  const currentData = movers.slice(startIndex, startIndex + itemsPerPage);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
-    <div className=' flex flex-col max-w-[1400px] mx-auto items-center mx-auto '>
-      <div className=' w-full grid grid-cols-1 xl:grid-cols-2  xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
-        {currentData?.map((data: Mover) => (
+    <div className='flex flex-col max-w-[1400px] mx-auto items-center'>
+      <div className='w-full grid grid-cols-1 xl:grid-cols-2 xl:gap-x-[24px] gap-y-[32px] xl:gap-y-[48px] pt-[40px] pb-[24px]'>
+        {currentData.map((data) => (
           <div
             key={data.id}
             onClick={() => router.push(`/user/movers/${data.id}`)}
