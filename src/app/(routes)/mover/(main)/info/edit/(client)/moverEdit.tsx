@@ -124,6 +124,7 @@ export default function MoverBasicInfoEditClient({
                 },
                 disabled: true,
               }}
+              disabled={true}
               register={register}
               errors={errors}
               inputVariant='form'
