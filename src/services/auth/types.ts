@@ -22,7 +22,7 @@ interface profile {
   description: string;
 }
 
-export interface Mover {
+export interface MoverType {
   id: string;
   moverName: string;
   movingType: (keyof typeof MOVING_TYPES)[];
