@@ -1,7 +1,6 @@
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import ShareButtons from '@/components/common/ShareButtons';
 import { MoverDetail } from '@/services/moverService';
-import { MovingStates } from '@/components/common/shared/atoms/movingTypeBadge/movingTypeBadge.types';
 
 interface MoverDetailHeaderProps {
   moverDetail: MoverDetail;
@@ -27,7 +26,6 @@ export default function MoverDetailHeader({
         isFavorite={moverDetail.isFavorite}
         isFavoriteMoverList={false}
         description={moverDetail.description}
-        quoteState={moverDetail.quoteState?.[0] as MovingStates | undefined}
       />
       {/* 모바일 */}
       <div className='flex-col gap-10 pl-6 flex md:flex xl:hidden'>
