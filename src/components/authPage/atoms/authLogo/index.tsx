@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { AUTH_LOGO_STYLES } from './constant';
 import Link from 'next/link';
+import { AUTH_LOGO_STYLES } from '../../styles/variables';
 
 export default function AuthLogo(): JSX.Element {
   return (
