@@ -1,5 +1,4 @@
 'use client';
-
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -13,10 +12,8 @@ export default function Page() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-
   const { data: movers } = useQuery<Mover[]>({
     queryKey: ['completedReviews'],
-
     enabled: false,
   });
 
@@ -47,7 +44,6 @@ export default function Page() {
   const totalPages = Math.ceil(movers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = movers.slice(startIndex, startIndex + itemsPerPage);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
