@@ -29,6 +29,12 @@ import MoverDetailModals from '@/components/moverDetail/MoverDetailModals';
 
 type MoverDetail = MoverDetailType;
 
+// 에러 상태 타입 정의
+type ErrorState = {
+  code: string;
+  message: string;
+} | null;
+
 export default function Page() {
   const router = useRouter();
   const params = useParams();
@@ -41,7 +47,7 @@ export default function Page() {
     useState<boolean>(false);
   const [showSpecificQuoteModal, setShowSpecificQuoteModal] =
     useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<ErrorState>(null);
 
   // 리뷰
   const [currentPage, setCurrentPage] = useState(1);
@@ -96,8 +102,11 @@ export default function Page() {
           };
         });
       }
-    } catch (error) {
-      // 에러 발생 시 조용히 실패 처리
+    } catch (error: any) {
+      setError({
+        code: 'FAVORITE_CHECK_ERROR',
+        message: '찜하기 상태 확인 중 오류가 발생했습니다.',
+      });
     }
   };
 
@@ -124,15 +133,24 @@ export default function Page() {
         });
       }
     } catch (error: any) {
-      console.error('찜하기 처리 중 오류 발생:', error);
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
         setShowLoginModal(true);
+        setError({
+          code: 'UNAUTHORIZED',
+          message: '로그인이 필요합니다.',
+        });
       } else if (error.response?.status === 400) {
-        console.error(error.response.data.error || '잘못된 요청입니다.');
+        setError({
+          code: 'BAD_REQUEST',
+          message: error.response.data.error || '잘못된 요청입니다.',
+        });
       } else {
-        console.error('찜하기 처리 중 오류가 발생했습니다.');
+        setError({
+          code: 'FAVORITE_TOGGLE_ERROR',
+          message: '찜하기 처리 중 오류가 발생했습니다.',
+        });
       }
       // 에러 발생 시 이전 상태로 되돌림
       setIsFavorite((prev) => prev);
@@ -146,10 +164,11 @@ export default function Page() {
         setMoverDetail(data);
         setIsFavorite(data.isFavorite);
         setIsQuoteRequested(data.isCustomQuote);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('기사 상세 정보 조회 에러:', error);
-        setIsLoading(false);
+      } catch (error: any) {
+        setError({
+          code: 'MOVER_DETAIL_ERROR',
+          message: '기사 상세 정보 조회 중 오류가 발생했습니다.',
+        });
       }
     };
 
@@ -172,6 +191,15 @@ export default function Page() {
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
+        setError({
+          code: 'UNAUTHORIZED',
+          message: '로그인이 필요합니다.',
+        });
+      } else {
+        setError({
+          code: 'GENERAL_QUOTE_CHECK_ERROR',
+          message: '일반 견적 요청 상태 확인 중 오류가 발생했습니다.',
+        });
       }
       setHasGeneralQuote(false);
     }
@@ -209,12 +237,19 @@ export default function Page() {
 
       setShowSpecificQuoteModal(true);
     } catch (error: any) {
-      console.error('지정 견적 요청 확인 중 오류:', error);
-
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
         setShowLoginModal(true);
+        setError({
+          code: 'UNAUTHORIZED',
+          message: '로그인이 필요합니다.',
+        });
+      } else {
+        setError({
+          code: 'QUOTE_REQUEST_CHECK_ERROR',
+          message: '견적 요청 확인 중 오류가 발생했습니다.',
+        });
       }
     }
   };
@@ -239,20 +274,32 @@ export default function Page() {
         alert('지정 견적 요청이 완료되었습니다.');
       }
     } catch (error: any) {
-      console.error('지정 견적 요청 에러:', error);
-
       if (error.response?.status === 401) {
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
         setShowLoginModal(true);
+        setError({
+          code: 'UNAUTHORIZED',
+          message: '로그인이 필요합니다.',
+        });
       } else if (error.response?.status === 409) {
-        alert(error.response.data.error || '이미 지정 견적 요청이 존재합니다.');
+        setError({
+          code: 'QUOTE_ALREADY_EXISTS',
+          message:
+            error.response.data.error || '이미 지정 견적 요청이 존재합니다.',
+        });
         setIsQuoteRequested(true);
         setShowSpecificQuoteModal(false);
       } else if (error.response?.status === 400) {
-        alert(error.response.data.error || '잘못된 요청입니다.');
+        setError({
+          code: 'BAD_REQUEST',
+          message: error.response.data.error || '잘못된 요청입니다.',
+        });
       } else {
-        alert('지정 견적 요청 중 오류가 발생했습니다.');
+        setError({
+          code: 'QUOTE_REQUEST_ERROR',
+          message: '지정 견적 요청 중 오류가 발생했습니다.',
+        });
       }
     }
   };
@@ -280,9 +327,31 @@ export default function Page() {
     initializePage();
   }, [moverId]);
 
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
+  // 에러 처리 함수
+  const handleError = () => {
+    if (error) {
+      // 에러 코드에 따른 처리
+      switch (error.code) {
+        case 'UNAUTHORIZED':
+          setShowLoginModal(true);
+          break;
+        case 'QUOTE_ALREADY_EXISTS':
+          alert(error.message);
+          break;
+        default:
+          alert(error.message);
+      }
+      // 에러 상태 초기화
+      setError(null);
+    }
+  };
+
+  // 에러 상태 변경 시 처리
+  useEffect(() => {
+    if (error) {
+      handleError();
+    }
+  }, [error]);
 
   if (!moverDetail) {
     return <div>기사를 찾을 수 없습니다.</div>;
