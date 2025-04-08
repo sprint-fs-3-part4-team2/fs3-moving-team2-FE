@@ -1,4 +1,4 @@
-'user client';
+'use client';
 
 import cn from '@/utils/cn';
 import CustomText from '../customText';
