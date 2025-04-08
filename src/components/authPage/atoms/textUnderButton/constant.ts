@@ -9,5 +9,3 @@ export const pageTypeContent = {
   },
 };
 
-export const TEXT_UNDER_BUTTON_LAYOUT_STYLES =
-  'w-full flex justify-center items-center gap-[4px] mt-[16px] mb-[48px]';
