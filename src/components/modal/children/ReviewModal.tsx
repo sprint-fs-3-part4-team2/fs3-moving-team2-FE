@@ -5,7 +5,7 @@ import ModalWrapper from '@/components/modal/ModalWrapper';
 import RatingStars from '@/components/common/shared/molecules/ratingStars';
 import MovingTypeGroup from '@/components/common/shared/molecules/movingTypeGroup';
 import MoverDatePrice from '@/components/common/moverInfo/organisms/moverDatePriceInfo';
-import { submitReview } from '@/services/reviewsService';
+// import { submitReview } from '@/services/reviewsService';
 
 const moveTypeLabels = {
   SMALL_MOVE: 'small',
@@ -28,7 +28,8 @@ interface ReviewableEstimate {
 interface ReviewModalProps {
   estimate: ReviewableEstimate;
   onClose: () => void;
-  onSubmit?: (estimateId: string) => void; // 콜백 prop 추가
+  // onSubmit?: (estimateId: string) => void; // 콜백 prop 추가
+  onSubmit: (estimateId: string, rating: number, comment: string) => void;
 }
 
 export default function ReviewModal({
@@ -52,13 +53,14 @@ export default function ReviewModal({
       return;
     }
     try {
-      await submitReview({
-        estimateId: estimate.id,
-        rating,
-        comment,
-      });
+      // await submitReview({
+      //   estimateId: estimate.id,
+      //   rating,
+      //   comment,
+      // });
       console.log('리뷰가 제출되었습니다!');
-      onSubmit?.(estimate.id); // 부모page에 제출완료 알림
+      // onSubmit?.(estimate.id); // 부모page에 제출완료 알림
+      onSubmit(estimate.id, rating, comment);
       onClose();
     } catch (error) {
       console.error('리뷰 제출 실패:', error);

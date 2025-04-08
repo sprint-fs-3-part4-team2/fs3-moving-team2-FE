@@ -26,7 +26,5 @@ export const useQuoteDetailByCustomerQuery = (id: string) => {
     }
   }, [error]);
 
-  return {
-    quoteDetail,
-  };
+  return quoteDetail;
 };
