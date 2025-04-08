@@ -34,7 +34,7 @@ export default function Page() {
     }
   }, [isLoading, movers, error]);
 
-  if (isLoading) return <p className='text-center'> 데이터 불러오는 중...</p>;
+  if (isLoading) return <p className='text-center'> 잠시만 기다려주세요...</p>;
 
   if (emptyData)
     return (
@@ -43,9 +43,7 @@ export default function Page() {
           <NoData text='여기 등록된 리뷰가 없어요!' />
         </div>
 
-        <div className='text-gray-400 my-[32px]'>
-          여기 등록된 리뷰가 없어요!
-        </div>
+        <div className='text-gray-400 '>{/* 여기 등록된 리뷰가 없어요! */}</div>
         <div>
           <CommonButton
             widthType='dynamic'
