@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useToaster } from '@/hooks/useToaster';
 import useUserProfile from '@/hooks/auth/useUserProfile';
+import { useQueryClient } from '@tanstack/react-query';
 
 type FormData = {
   name: string;
@@ -27,6 +28,8 @@ export default function Page() {
 
   const { data: userProfile } = useUserProfile();
   const defaultUrl = userProfile?.profile?.profileImage;
+
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -139,6 +142,9 @@ export default function Page() {
       const response = await updateCustomerProfile(data);
       console.log('프로필 수정 성공', response);
       toaster('info', '수정 성공!');
+
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
+
       router.push('/user/quotes/requested');
     } catch (error: unknown) {
       console.error('프로필 수정 실패:', error);
