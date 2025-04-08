@@ -1,5 +1,5 @@
 export const LANDING_PAGE_STYLES =
-'animate-fadeIn  w-full min-h-screen bg-background-400 flex flex-col items-center';
+  'animate-fadeIn  w-full min-h-screen bg-background-400 flex flex-col items-center';
 
 export const LANDING_DESCRIPTION_STYLES =
   'text-[27px] xl:text-[36px] w-[325px] xl:w-[440px] font-semibold leading-[50px] mt-20 text-black-500)] text-center animate-fadeIn';

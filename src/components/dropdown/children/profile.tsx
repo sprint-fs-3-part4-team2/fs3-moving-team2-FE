@@ -64,21 +64,21 @@ function Profile({
         isOpen={open}
         className={cn(
           'absolute left-1/2 transform -translate-x-1/2',
-          'block w-[170px] px-[6px] pt-[10px] pb-2 top-[140%] z-[100]',
-          'xl:w-[240px] xl:rightw-[270px] xl:pt-3 xl:pb-[6px] xl:px-1',
+          'block w-[170px] px-[6px] pt-[10px] pb-2 top-[140%] z-[100] md:left-[15%]',
+          'xl:w-[230px] xl:rightw-[270px] xl:pt-3 xl:pb-[6px] xl:px-1',
         )}
       >
         <h2
           className={cn(
-            'text-black-400 py-[10px] pl-3 font-bold text-xl',
+            'text-black-400 py-[10px] pl-3 font-bold text-xl flex items-start',
             'xl:py-[14px] xl:text-2xl xl:pl-6 xl:text-[18px]',
           )}
         >
           <span
-            className='w-full max-w-[100px] truncate overflow-hidden whitespace-nowrap mr-1'
+            className='max-w-[6ch] truncate overflow-hidden whitespace-nowrap mr-1'
             title={data?.name}
           >
-            {data?.name}
+            <span className='w-full'>{data?.name}</span>
           </span>
           {userType}
         </h2>
@@ -107,7 +107,7 @@ function Profile({
           >
             <button
               className={cn(
-                'text-grayscale-500 text-lg font-normal',
+                'text-grayscale-500 text-lg font-normal w-full h-full',
                 'xl:text-[17px] xl:font-medium ',
                 'group-hover:text-primary-blue-200 group-hover:font-bold',
               )}

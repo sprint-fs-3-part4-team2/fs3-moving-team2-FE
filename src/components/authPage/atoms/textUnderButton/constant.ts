@@ -8,4 +8,3 @@ export const pageTypeContent = {
     linkText: '로그인',
   },
 };
-
