@@ -76,6 +76,7 @@ export const MovingTime = ({
             <TimePicker
               value={date || ''}
               onChange={(e) => setDate(e.target.value)}
+              date={registerData.moveDate!}
             />
             <CommonButton
               widthType={'full'}
