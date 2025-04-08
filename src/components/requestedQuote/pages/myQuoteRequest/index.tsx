@@ -4,14 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import QuoteRequestExist from '../../templates/quoteRequestExist';
 import NoQuoteRequest from '../../templates/noQuoteRequest';
 import { getQuoteRequest } from '@/services/quoteRequests';
+import Loading from '@/app/loading';
 
 export default function MyQuoteRequest() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['myQuoteRequest'],
     queryFn: getQuoteRequest,
   });
 
-  console.log(data);
+  if (isLoading) return <Loading />;
+
   if (data && data?.isRequested && data?.quote)
     return (
       <QuoteRequestExist
