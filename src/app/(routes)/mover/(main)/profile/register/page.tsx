@@ -8,6 +8,7 @@ import { createMoverProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useToaster } from '@/hooks/useToaster';
+import { useQueryClient } from '@tanstack/react-query';
 
 type FormData = {
   experience: number;
@@ -20,6 +21,7 @@ type FormData = {
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const {
     handleSubmit,
     register,
@@ -117,6 +119,7 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await createMoverProfile(data);
       console.log('프로필 등록 성공', response);
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
       router.refresh();
     } catch (error: unknown) {
       console.error('프로필 등록 실패:', error);

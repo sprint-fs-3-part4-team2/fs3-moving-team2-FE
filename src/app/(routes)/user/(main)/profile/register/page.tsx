@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { createCustomerProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
 import { useToaster } from '@/hooks/useToaster';
+import { useQueryClient } from '@tanstack/react-query';
 
 type FormData = {
   profileImage: string | null;
@@ -16,6 +17,7 @@ type FormData = {
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const {
     handleSubmit,
     register,
@@ -97,6 +99,7 @@ export default function Page() {
       console.log('Submitted data:', data);
       const response = await createCustomerProfile(data);
       console.log('프로필 등록 성공', response);
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
       // router.push('/user/quotes/request');
       router.refresh();
     } catch (error: unknown) {
