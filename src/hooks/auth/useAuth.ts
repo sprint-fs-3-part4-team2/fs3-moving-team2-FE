@@ -3,12 +3,13 @@ import userAuthService from '@/services/auth/userAuth';
 import moverAuthService from '@/services/auth/moverAuth';
 import { useRouter } from 'next/navigation';
 import { MyProfile } from '@/services/auth/types';
-import handleAuthError from '@/utils/handleAuthError';
+import { useToaster } from '../useToaster';
 
 // User
 export const useUserSignUp = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const toast = useToaster();
 
   return useMutation({
     mutationKey: ['userSignUp'],
@@ -16,15 +17,12 @@ export const useUserSignUp = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
-        const userProfile = userData?.profile;
-        if (userProfile !== null) router.push('/user/movers');
-        if (userProfile === null) router.push('/user/profile/register');
+        if (data.profile === null) router.push('/user/profile/register');
+        router.push('/user/movers');
       }, 2000);
     },
-    onError: (error: any) => {
-      console.error('회원가입 실패:', error);
-      router.push(handleAuthError('user', 'sign-up', error));
+    onError: (error: ApiError) => {
+      toast('warn', error.response?.data.message || '회원가입 실패');
     },
   });
 };
@@ -32,6 +30,7 @@ export const useUserSignUp = () => {
 export const useUserSignIn = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const toast = useToaster();
 
   return useMutation({
     mutationKey: ['userSignIn'],
@@ -39,15 +38,12 @@ export const useUserSignIn = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
-        const userProfile = userData?.profile;
-        if (userProfile !== null) router.push('/user/movers');
-        if (userProfile === null) router.push('/user/profile/register');
+        if (data.profile === null) router.push('/user/profile/register');
+        router.push('/user/movers');
       }, 2000);
     },
-    onError: (error: any) => {
-      console.error('로그인 실패:', error);
-      router.push(handleAuthError('user', 'sign-in', error));
+    onError: (error: ApiError) => {
+      toast('warn', error.response?.data?.message || '로그인 실패');
     },
   });
 };
@@ -56,6 +52,7 @@ export const useUserSignIn = () => {
 export const useMoverSignUp = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const toast = useToaster();
 
   return useMutation({
     mutationKey: ['moverSignUp'],
@@ -63,15 +60,12 @@ export const useMoverSignUp = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
-        const userProfile = userData?.profile;
-        if (userProfile !== null) router.push('/mover/quotes/requested');
-        if (userProfile === null) router.push('/mover/profile/register');
+        if (data.profile === null) router.push('/mover/profile/register');
+        router.push('/mover/quotes/requested');
       }, 2000);
     },
-    onError: (error: any) => {
-      console.error('회원가입 실패:', error);
-      router.push(handleAuthError('mover', 'sign-up', error));
+    onError: (error: ApiError) => {
+      toast('warn', error.response?.data.message || '회원가입 실패');
     },
   });
 };
@@ -79,6 +73,7 @@ export const useMoverSignUp = () => {
 export const useMoverSignIn = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const toast = useToaster();
 
   return useMutation({
     mutationKey: ['moverSignIn'],
@@ -86,15 +81,12 @@ export const useMoverSignIn = () => {
     onSuccess: (data) => {
       queryClient.setQueryData<MyProfile>(['userProfile'], data);
       setTimeout(() => {
-        const userData = queryClient.getQueryData<MyProfile>(['userProfile']);
-        const userProfile = userData?.profile;
-        if (userProfile !== null) router.push('/mover/quotes/requested');
-        if (userProfile === null) router.push('/mover/profile/register');
+        if (data.profile === null) router.push('/mover/profile/register');
+        router.push('/mover/quotes/requested');
       }, 2000);
     },
-    onError: (error: any) => {
-      console.error('로그인 실패:', error);
-      router.push(handleAuthError('mover', 'sign-in', error));
+    onError: (error: ApiError) => {
+      toast('warn', error.response?.data.message || '로그인 실패');
     },
   });
 };

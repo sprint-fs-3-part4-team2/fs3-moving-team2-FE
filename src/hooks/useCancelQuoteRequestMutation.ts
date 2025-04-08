@@ -15,8 +15,8 @@ export const useCancelQuoteRequestMutation = (onClose: () => void) => {
       toast('info', '견적 요청 취소 성공');
       onClose();
     },
-    onError: () => {
-      toast('warn', '견적 요청 취소 실패');
+    onError: (error: ApiError) => {
+      toast('warn', error.response?.data?.message || '견적 요청 취소 실패');
       onClose();
     },
   });

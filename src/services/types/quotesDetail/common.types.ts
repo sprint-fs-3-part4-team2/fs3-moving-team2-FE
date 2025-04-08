@@ -10,6 +10,7 @@ export interface Address {
 export interface Request {
   id: string;
   customerId: string;
+  currentStatus: string;
   moveType: keyof typeof MOVING_TYPES;
   moveDate: Date;
   createdAt: Date;

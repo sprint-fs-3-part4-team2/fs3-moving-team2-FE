@@ -8,9 +8,11 @@ import CancelRequestModalContent from '../../molecules/cancelRequestModalContent
 import { useHandleModalOpen } from '@/hooks/useHandleModalOpen';
 
 export default function QuoteRequestExist(
-  props: MovingInfoProps & { id: string },
+  props: MovingInfoProps & { id: string; status: string },
 ) {
   const { modalOpen, openModal, closeModal } = useHandleModalOpen();
+  const quoteConfirmed =
+    props.status !== 'QUOTE_REQUESTED' && props.status !== 'MOVER_SUBMITTED';
 
   return (
     <div className='relative flex flex-col mx-auto w-full items-center overflow-auto pb-24'>
@@ -35,8 +37,9 @@ export default function QuoteRequestExist(
             widthType='full'
             heightType='primary'
             onClick={openModal}
+            disabled={quoteConfirmed}
           >
-            견적 취소하기
+            {quoteConfirmed ? '이미 확정된 견적입니다' : '견적 취소하기'}
           </CommonButton>
         </div>
       </div>

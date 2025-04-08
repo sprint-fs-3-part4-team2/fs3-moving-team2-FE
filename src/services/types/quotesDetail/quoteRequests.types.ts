@@ -5,5 +5,6 @@ export interface QuoteRequestResponse {
   quote?: QuoteRequest & {
     id: string;
     requestedDate: Date;
+    status: string;
   };
 }
