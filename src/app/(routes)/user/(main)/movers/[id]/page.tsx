@@ -40,23 +40,31 @@ export default function Page() {
   const router = useRouter();
   const params = useParams();
   const moverId = params.id as string;
+
+  // 기사 관련 상태
   const [moverDetail, setMoverDetail] = useState<MoverDetail | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isQuoteRequested, setIsQuoteRequested] = useState<boolean>(false);
+
+  // 모달 관련 상태
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [showGeneralQuoteModal, setShowGeneralQuoteModal] =
     useState<boolean>(false);
   const [showSpecificQuoteModal, setShowSpecificQuoteModal] =
     useState<boolean>(false);
+
+  // 에러 상태
   const [error, setError] = useState<ErrorState>(null);
 
-  // 리뷰
+  // 리뷰 관련 상태
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  // 견적 관련 상태
+  const [hasGeneralQuote, setHasGeneralQuote] = useState<boolean>(false);
+
   // 사용자 프로필 정보 조회
   const { data: profile } = useUserProfile();
-  console.log(profile);
 
   // 리뷰 목록 조회
   const {
@@ -74,9 +82,6 @@ export default function Page() {
       return response.data;
     },
   });
-
-  // 일반 견적 요청 상태
-  const [hasGeneralQuote, setHasGeneralQuote] = useState<boolean>(false);
 
   // 로그인 상태 체크
   const checkLoginStatus = () => {
@@ -117,10 +122,7 @@ export default function Page() {
       const response = await toggleFavorite(moverId, isFavorite);
 
       if (response) {
-        // 찜하기 상태 업데이트
         setIsFavorite((prev) => !prev);
-
-        // 기사 정보 업데이트
         setMoverDetail((prev) => {
           if (!prev) return null;
           return {
@@ -149,30 +151,9 @@ export default function Page() {
           message: '찜하기 처리 중 오류가 발생했습니다.',
         });
       }
-      // 에러 발생 시 이전 상태로 되돌림
       setIsFavorite((prev) => prev);
     }
   };
-
-  useEffect(() => {
-    const fetchMoverDetail = async () => {
-      try {
-        const data = await getMoverDetail(moverId);
-        setMoverDetail(data);
-        setIsFavorite(data.isFavorite);
-        setIsQuoteRequested(data.isCustomQuote);
-      } catch (error: any) {
-        setError({
-          code: 'MOVER_DETAIL_ERROR',
-          message: '기사 상세 정보 조회 중 오류가 발생했습니다.',
-        });
-      }
-    };
-
-    if (moverId) {
-      fetchMoverDetail();
-    }
-  }, [moverId]);
 
   // 일반 견적 요청 여부 확인
   const checkGeneralQuoteStatus = async () => {
@@ -200,18 +181,11 @@ export default function Page() {
     }
   };
 
-  useEffect(() => {
-    if (profile) {
-      checkGeneralQuoteStatus();
-    }
-  }, [profile]);
-
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = async (): Promise<void> => {
     if (!checkLoginStatus()) return;
 
     try {
-      // 일반 견적 요청 여부만 확인
       const quoteResponse = await checkGeneralQuoteExists();
 
       if (!quoteResponse.isRequested) {
@@ -219,7 +193,6 @@ export default function Page() {
         return;
       }
 
-      // 이미 지정 견적을 요청한 경우
       if (quoteResponse.hasTargetedQuote) {
         setIsQuoteRequested(true);
         return;
@@ -240,12 +213,6 @@ export default function Page() {
         });
       }
     }
-  };
-
-  // 일반 견적 요청 페이지로 이동
-  const goToGeneralQuote = (): void => {
-    router.push('/user/quotes/request');
-    setShowGeneralQuoteModal(false);
   };
 
   // 지정 견적 요청 확인
@@ -290,27 +257,9 @@ export default function Page() {
     }
   };
 
-  // 로그인 페이지로 이동
-  const goToLogin = (): void => {
-    router.push('/user/sign-in');
-    setShowLoginModal(false);
-  };
-
-  // 페이지 로드 시 초기 상태 체크
-  useEffect(() => {
-    const initializePage = async () => {
-      if (profile) {
-        await Promise.all([checkGeneralQuoteStatus(), checkFavoriteStatus()]);
-      }
-    };
-
-    initializePage();
-  }, [moverId, profile]);
-
   // 에러 처리 함수
   const handleError = () => {
     if (error) {
-      // 에러 코드에 따른 처리
       switch (error.code) {
         case 'UNAUTHORIZED':
           setShowLoginModal(true);
@@ -321,10 +270,59 @@ export default function Page() {
         default:
           alert(error.message);
       }
-      // 에러 상태 초기화
       setError(null);
     }
   };
+
+  // 페이지 이동 핸들러
+  const goToGeneralQuote = (): void => {
+    router.push('/user/quotes/request');
+    setShowGeneralQuoteModal(false);
+  };
+
+  const goToLogin = (): void => {
+    router.push('/user/sign-in');
+    setShowLoginModal(false);
+  };
+
+  // 초기 데이터 로드
+  useEffect(() => {
+    const fetchMoverDetail = async () => {
+      try {
+        const data = await getMoverDetail(moverId);
+        setMoverDetail(data);
+        setIsFavorite(data.isFavorite);
+        setIsQuoteRequested(data.isCustomQuote);
+      } catch (error: any) {
+        setError({
+          code: 'MOVER_DETAIL_ERROR',
+          message: '기사 상세 정보 조회 중 오류가 발생했습니다.',
+        });
+      }
+    };
+
+    if (moverId) {
+      fetchMoverDetail();
+    }
+  }, [moverId]);
+
+  // 프로필 변경 시 견적 상태 체크
+  useEffect(() => {
+    if (profile) {
+      checkGeneralQuoteStatus();
+    }
+  }, [profile]);
+
+  // 페이지 초기화
+  useEffect(() => {
+    const initializePage = async () => {
+      if (profile) {
+        await Promise.all([checkGeneralQuoteStatus(), checkFavoriteStatus()]);
+      }
+    };
+
+    initializePage();
+  }, [moverId, profile]);
 
   // 에러 상태 변경 시 처리
   useEffect(() => {
