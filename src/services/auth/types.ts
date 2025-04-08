@@ -1,3 +1,4 @@
+import { MOVING_TYPES } from '@/constants/movingTypes';
 export interface SignInData {
   email: string;
   password: string;
@@ -19,6 +20,19 @@ interface profile {
   experienceYears: number; // 여기 3개 추가
   introduction: string;
   description: string;
+}
+
+export interface Mover {
+  id: string;
+  moverName: string;
+  movingType: (keyof typeof MOVING_TYPES)[];
+  isCustomQuote: boolean;
+  movingDate: Date;
+  price: number;
+  reviewContent: string;
+  rating: number;
+  writtenAt: Date;
+  imageUrl: string;
 }
 
 export interface AuthResponse {

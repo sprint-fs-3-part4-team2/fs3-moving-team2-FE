@@ -149,7 +149,7 @@ function Alarm({
         >
           {data.length > 0 ? (
             data.map((v, i) => {
-              const { id, isRead, highlight, message } = v;
+              const { id, isRead, highlight, message, url } = v;
 
               return (
                 <li
@@ -157,7 +157,7 @@ function Alarm({
                   className={cn(
                     'min-h-[72px] lg:min-h-[84px] px-4 py-3 lg:px-6 lg:py-4',
                     i !== data.length - 1 && 'border-b border-line-200',
-                    isRead ? 'bg-line-100' : 'bg-white',
+                    isRead ? 'bg-grayscale-100' : 'bg-white',
                   )}
                 >
                   <Link
@@ -165,9 +165,9 @@ function Alarm({
                       'block text-md lg:text-lg font-medium w-full truncate',
                       isRead ? 'text-grayscale-400' : 'text-black-400',
                     )}
-                    href={v.url || '#'}
+                    href={url || '#'}
                     onClick={(e) => {
-                      e.preventDefault();
+                      if (!url) e.preventDefault();
                       readFn(id);
                     }}
                   >

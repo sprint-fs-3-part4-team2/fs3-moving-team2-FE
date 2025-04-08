@@ -7,6 +7,7 @@ import { ko } from 'date-fns/locale';
 import formatKoreanDate from '@/utils/formatKoreanDate';
 import { getStepIndex } from './QuoteRequestPage';
 import { MovingStepProps } from './quoteStep.types';
+import ModalWrapper from '../modal/ModalWrapper';
 
 export const MovingDate = ({
   onNext,
@@ -20,6 +21,7 @@ export const MovingDate = ({
   const { registerData, setRegisterData } = useQuoteRequestStore();
   const [isSubmitted, setIsSubmitted] = useState(false); // 수정 완료 시, 애니메이션 효과를 위해
   const localRef = useRef<HTMLDivElement>(null);
+  const [showWarningModal, setShowWarningModal] = useState(false); // 당일 신청시 유의사항 안내 모달
 
   if (step === undefined) {
     console.error('step props is required');
@@ -30,6 +32,26 @@ export const MovingDate = ({
     console.error('maxCompletedStep props is required');
     return null;
   }
+
+  // 오늘 날짜인지 확인하는 함수
+  const isToday = (selectedDate: Date) => {
+    const today = new Date();
+    return (
+      selectedDate.getDate() === today.getDate() &&
+      selectedDate.getMonth() === today.getMonth() &&
+      selectedDate.getFullYear() === today.getFullYear()
+    );
+  };
+
+  // 날짜 선택 핸들러 추가
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
+
+    // 선택된 날짜가 오늘인지 확인하고 모달 표시
+    if (selectedDate && isToday(selectedDate)) {
+      setShowWarningModal(true);
+    }
+  };
 
   // 수정 완료 시, 작성한 단계로 이동하는 함수
   const handleCompleteEdit = () => {
@@ -104,7 +126,7 @@ export const MovingDate = ({
                 mode='single'
                 selected={date}
                 locale={ko}
-                onSelect={setDate}
+                onSelect={handleDateSelect}
                 classNames={{
                   cell: 'h-9 w-9 xl:h-12 xl:w-12',
                   day: 'h-9 w-9 xl:h-12 xl:w-12 p-0 font-normal aria-selected:opacity-100 rounded-full',
@@ -144,6 +166,34 @@ export const MovingDate = ({
           </div>
         )
       }
+
+      {showWarningModal && (
+        <ModalWrapper
+          title='안내'
+          onClose={() => setShowWarningModal(false)}
+        >
+          <div className='py-4 text-center sm:text-base xl:text-xl'>
+            <p className='text-gray-700 leading-relaxed'>
+              오늘 날짜로 이사 예약 시, 견적을 받기 어려우실 수 있으니
+              참고해주세요.
+              <br />
+              <br />
+              가능한 한 여유있는 날짜로 예약하시면 더 많은 업체의 견적을 받으실
+              수 있습니다.
+            </p>
+            <div className='mt-6 flex justify-end'>
+              <CommonButton
+                widthType='full'
+                heightType='primary'
+                backgroundColorType='blue'
+                onClick={() => setShowWarningModal(false)}
+              >
+                확인
+              </CommonButton>
+            </div>
+          </div>
+        </ModalWrapper>
+      )}
     </div>
   );
 };

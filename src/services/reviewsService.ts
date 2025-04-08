@@ -1,5 +1,4 @@
 // services/reviewsService.ts
-import { response } from 'express';
 import axiosInstance from '../lib/axiosInstance';
 
 export const getPendingReviews = () => {
