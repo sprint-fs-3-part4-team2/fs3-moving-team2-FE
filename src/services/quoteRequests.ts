@@ -11,14 +11,16 @@ export const createQuoteRequest = async ({
   arrival,
 }: QuoteRequest) => {
   try {
-    await axiosInstance.post<QuoteRequest>(`/quote-requests`, {
+    const { data } = await axiosInstance.post<QuoteRequest>(`/quote-requests`, {
       moveType,
       moveDate,
       departure,
       arrival,
     });
+    return data;
   } catch (error: any) {
     console.error('견적 요청 실패', error);
+    throw error;
   }
 };
 
