@@ -72,15 +72,7 @@ export const getMoverDetail = async (moverId: string) => {
 
 export const checkFavoriteStatus = async (moverId: string) => {
   try {
-    const token = localStorage.getItem('accessToken');
-    if (!token) return null;
-
-    const response = await axiosInstance.get(`/favorites/check/${moverId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+    const response = await axiosInstance.get(`/favorites/check/${moverId}`);
     return response.data;
   } catch (error: any) {
     throw error;
@@ -89,21 +81,12 @@ export const checkFavoriteStatus = async (moverId: string) => {
 
 export const toggleFavorite = async (moverId: string, isFavorite: boolean) => {
   try {
-    const token = localStorage.getItem('accessToken');
     const endpoint = isFavorite
       ? `/favorites/delete/${moverId}`
       : `/favorites/create/${moverId}`;
 
-    const response = await axiosInstance[isFavorite ? 'delete' : 'post'](
-      endpoint,
-      undefined,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
+    const response =
+      await axiosInstance[isFavorite ? 'delete' : 'post'](endpoint);
     return response.data;
   } catch (error: any) {
     throw error;
@@ -112,15 +95,7 @@ export const toggleFavorite = async (moverId: string, isFavorite: boolean) => {
 
 export const checkGeneralQuote = async () => {
   try {
-    const token = localStorage.getItem('accessToken');
-    if (!token) return null;
-
-    const response = await axiosInstance.get('/quote-requests/latest', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+    const response = await axiosInstance.get('/quote-requests/latest');
     return response.data;
   } catch (error: any) {
     throw error;

@@ -20,6 +20,7 @@ import {
   createTargetedQuoteRequest,
   checkGeneralQuoteExists,
 } from '@/services/targetedQuoteRequestService';
+import useUserProfile from '@/hooks/auth/useUserProfile';
 
 import MoverDetailHeader from '@/components/moverDetail/MoverDetailHeader';
 import MoverDetailContent from '@/components/moverDetail/MoverDetailContent';
@@ -53,6 +54,10 @@ export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  // 사용자 프로필 정보 조회
+  const { data: profile } = useUserProfile();
+  console.log(profile);
+
   // 리뷰 목록 조회
   const {
     data: reviewsData,
@@ -70,21 +75,15 @@ export default function Page() {
     },
   });
 
-  // 로그인 상태 확인용
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
   // 일반 견적 요청 상태
   const [hasGeneralQuote, setHasGeneralQuote] = useState<boolean>(false);
 
   // 로그인 상태 체크
   const checkLoginStatus = () => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      setIsLoggedIn(false);
+    if (!profile) {
       setShowLoginModal(true);
       return false;
     }
-    setIsLoggedIn(true);
     return true;
   };
 
@@ -134,8 +133,6 @@ export default function Page() {
       }
     } catch (error: any) {
       if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
         setShowLoginModal(true);
         setError({
           code: 'UNAUTHORIZED',
@@ -189,8 +186,6 @@ export default function Page() {
       }
     } catch (error: any) {
       if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
         setError({
           code: 'UNAUTHORIZED',
           message: '로그인이 필요합니다.',
@@ -206,15 +201,10 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-
-    if (token) {
-      setIsLoggedIn(true);
+    if (profile) {
       checkGeneralQuoteStatus();
-    } else {
-      setIsLoggedIn(false);
     }
-  }, []);
+  }, [profile]);
 
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = async (): Promise<void> => {
@@ -238,8 +228,6 @@ export default function Page() {
       setShowSpecificQuoteModal(true);
     } catch (error: any) {
       if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
         setShowLoginModal(true);
         setError({
           code: 'UNAUTHORIZED',
@@ -275,8 +263,6 @@ export default function Page() {
       }
     } catch (error: any) {
       if (error.response?.status === 401) {
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
         setShowLoginModal(true);
         setError({
           code: 'UNAUTHORIZED',
@@ -313,19 +299,13 @@ export default function Page() {
   // 페이지 로드 시 초기 상태 체크
   useEffect(() => {
     const initializePage = async () => {
-      const token = document.cookie
-        .split(';')
-        .find((cookie) => cookie.trim().startsWith('accessToken='));
-      if (token) {
-        setIsLoggedIn(true);
+      if (profile) {
         await Promise.all([checkGeneralQuoteStatus(), checkFavoriteStatus()]);
-      } else {
-        setIsLoggedIn(false);
       }
     };
 
     initializePage();
-  }, [moverId]);
+  }, [moverId, profile]);
 
   // 에러 처리 함수
   const handleError = () => {
