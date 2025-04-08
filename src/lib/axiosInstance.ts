@@ -10,17 +10,17 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-type RefreshTokenCallback = (token: string | null, error?: any) => void;
+type RefreshTokenCallback = (error?: any) => void;
 
 let isRefreshing = false;
 let refreshSubscribers: RefreshTokenCallback[] = [];
 let refreshAttempted = false;
-const onRefreshed = (accessToken: string) => {
-  refreshSubscribers.forEach((callback) => callback(accessToken));
+const onRefreshed = () => {
+  refreshSubscribers.forEach((callback) => callback());
   refreshSubscribers = [];
 };
 const onRefreshError = (error: Error) => {
-  refreshSubscribers.forEach((callback) => callback(null, error));
+  refreshSubscribers.forEach((callback) => callback(error));
   refreshSubscribers = [];
 };
 
@@ -56,6 +56,16 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    const skipRefreshUrls = [
+      'auth/sign-in/customer',
+      'auth/sign-in/mover',
+      'auth/sign-up/customer',
+      'auth/sign-up/mover',
+    ];
+    if (skipRefreshUrls.includes(originalRequest.url)) {
+      return Promise.reject(error);
+    }
+
     if (originalRequest.url === 'auth/refresh-token') {
       return;
     }
@@ -64,11 +74,10 @@ axiosInstance.interceptors.response.use(
 
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
-          refreshSubscribers.push((token: string | null, error: any) => {
+          refreshSubscribers.push((error: any) => {
             if (error) {
               reject(error);
             } else {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
               resolve(axiosInstance(originalRequest));
             }
           });
@@ -78,7 +87,7 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await axiosInstance.post(
+        await axiosInstance.post(
           'auth/refresh-token',
           {},
           {
@@ -86,8 +95,7 @@ axiosInstance.interceptors.response.use(
           },
         );
 
-        const newToken = response.data.accessToken;
-        onRefreshed(newToken);
+        onRefreshed();
         isRefreshing = false;
 
         return axiosInstance(originalRequest);
