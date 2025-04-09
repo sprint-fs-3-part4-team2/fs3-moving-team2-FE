@@ -1,6 +1,6 @@
 import cn from '@/utils/cn';
 import { ChildrenProp } from '../../common.types';
-import { AUTH_PAGE_CONTENT_STYLES, AUTH_PAGE_LAYOUT_STYLES } from './constants';
+import { AUTH_PAGE_CONTENT_STYLES, AUTH_PAGE_LAYOUT_STYLES } from '../../styles/variables';
 
 export default function AuthPageLayout({
   children,
