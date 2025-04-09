@@ -4,9 +4,9 @@ import combineDateTime from '@/utils/combineDateTime';
 import { maxStep } from './QuoteRequestPage';
 import { useCreateQuoteRequestMutation } from '@/hooks/useCreateQuoteRequestMutation';
 import { useRouter } from 'next/navigation';
-import formatKoreanDate from '@/utils/formatKoreanDate';
-import formatKoreanTime from '@/utils/formatKoreanTime';
 import MovingInfo from '../common/movingInfo/organisms/movingInfo';
+import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface QuoteConfirmationModalProps {
   setShowModal: (value: boolean) => void;
@@ -18,11 +18,10 @@ export function QuoteConfirmationModal({
   setMaxCompletedStep,
 }: QuoteConfirmationModalProps) {
   const { registerData } = useQuoteRequestStore();
-  const createMutation = useCreateQuoteRequestMutation(() =>
-    setShowModal(false),
-  );
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // 소형이사 (원룸, 투룸, 20평대 미만) -> 소형이사
   const koreanMoveType = registerData.moveType.split('(')[0].trim() as
@@ -30,8 +29,43 @@ export function QuoteConfirmationModal({
     | '사무실이사'
     | '가정이사';
 
+  // 애니메이션 완료 후 페이지 이동 처리
+  useEffect(() => {
+    if (isAnimating) {
+      const timer = setTimeout(() => {
+        // 애니메이션 완료 후 캐시 업데이트 및 페이지 이동
+        const responseData = queryClient.getQueryData([
+          'myQuoteRequest-response',
+        ]);
+        if (responseData) {
+          queryClient.setQueryData(['myQuoteRequest'], responseData);
+          router.push('/user/quotes/requested');
+        }
+      }, 800); // 진행바 애니메이션 시간
+
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating, queryClient, router]);
+
+  const createMutation = useCreateQuoteRequestMutation(
+    // onSuccess
+    () => {
+      // 진행바 채우기
+      setMaxCompletedStep(maxStep);
+      // 애니메이션 상태 활성화
+      setIsAnimating(true);
+    },
+    // onError
+    () => {
+      setIsSubmitting(false);
+      setShowModal(false);
+    },
+  );
+
   const handleFinalConfirm = () => {
-    setMaxCompletedStep(maxStep);
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     // 최종 견적 제출을 위한 처리 (예: 백엔드 API 호출)
     const payload = {
       moveType: koreanMoveType,
@@ -43,10 +77,6 @@ export function QuoteConfirmationModal({
     console.log('최종 견적 요청 제출:', payload);
 
     createMutation.mutate(payload);
-
-    setTimeout(() => {
-      router.push('/user/quotes/requested');
-    }, 300);
   };
 
   return (

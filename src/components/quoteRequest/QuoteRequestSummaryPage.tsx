@@ -8,13 +8,15 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import noQuoteImage from '@/public/img/car.svg';
 import Image from 'next/image';
+import { QuoteRequestResponse } from '@/services/types/quotesDetail/quoteRequests.types';
 
-export default function QuoteRequestInProgressPage() {
-  const { data } = useQuery({
-    queryKey: ['myQuoteRequest'],
-    queryFn: getQuoteRequest,
-  });
+interface QuoteRequestSummaryPageProps {
+  data: QuoteRequestResponse;
+}
 
+export default function QuoteRequestSummaryPage({
+  data,
+}: QuoteRequestSummaryPageProps) {
   return (
     <main className='min-h-[calc(100vh-55px)] xl:min-h-[calc(100vh-89px)] flex flex-col'>
       <nav className='px-6 md:px-[72px] '>

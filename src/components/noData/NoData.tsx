@@ -12,7 +12,7 @@ const NoData: React.FC<NoDataProps> = ({
 }) => {
   return (
     <div className='flex flex-col items-center'>
-{/*       <div className='group relative w-[214px] md:w-[321px] xl:w-[428px] h-[180px] md:h-[270px] xl:h-[360px]'> */}
+      {/*       <div className='group relative w-[214px] md:w-[321px] xl:w-[428px] h-[180px] md:h-[270px] xl:h-[360px]'> */}
       <div className='group relative w-[214px] md:w-[321px] h-[180px] md:h-[270px]'>
         <Image
           src='/img/no-data/no_data.png'

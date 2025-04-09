@@ -24,7 +24,6 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { data: profile } = useUserProfile();
 
-  // 검색
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       setMovers(allMovers);
