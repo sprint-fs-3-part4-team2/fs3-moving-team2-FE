@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useQuoteRequestStore from '@/store/quoteRequestStore';
 import RequestMessage from './RequestMessage';
 import Image from 'next/image';
@@ -26,6 +26,13 @@ export const MovingType = ({
   const { registerData, setRegisterData } = useQuoteRequestStore();
 
   const localRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 전역 상태에 이사 종류가 있으면 로컬 상태에 반영
+    if (registerData.moveType) {
+      setSelected(registerData.moveType);
+    }
+  }, [registerData.moveType, step]);
 
   // 수정하기 버튼 클릭 시, 해당 컨테이너로 스크롤 후 onEdit 실행
   const handleEdit = () => {

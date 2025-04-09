@@ -14,7 +14,7 @@ export const useCreateQuoteRequestMutation = (
     mutationFn: (quoteRequestData: QuoteRequest) =>
       createQuoteRequest(quoteRequestData),
     onSuccess: (data) => {
-      toast('info', '견적 요청 생성 성공');
+      toast('info', '견적 요청 성공');
       // 다른 유저나 영향이 없는 쿼리라면 invalidateQueries를 사용하지 않고 setQueryData로 직접 업데이트 -> 낙관적인 업데이트
       queryClient.setQueryData(['myQuoteRequest-response'], data);
 
@@ -23,7 +23,7 @@ export const useCreateQuoteRequestMutation = (
       }
     },
     onError: () => {
-      toast('warn', '견적 요청 생성 실패');
+      toast('warn', '견적 요청 실패');
       if (onError) {
         onError();
       }

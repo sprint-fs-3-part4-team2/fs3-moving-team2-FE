@@ -16,14 +16,14 @@ export default function MoverDatePrice({
   price,
   rating,
 }: MoverDatePriceInfoProps) {
-  const formattedDate = formatDate(movingDate, true, false);
+  const formattedDate = formatDate(movingDate, false, false);
   const formattedPrice = `${price.toLocaleString()}원`;
 
   return (
     <div
       className={cn(
         'flex items-center gap-3 md:gap-4 xl:gap-6 border-0 md:border-0 xl:border-[1px] xl:border-line-200 rounded-[6px]',
-        'px-[8px] py-[10px] md:px-[8px] md:py-[8px] xl:px-[18px] xl:py-[16px]',
+        'px-[8px] pl-0 py-[10px] md:px-[8px] md:py-[8px] xl:px-[18px] xl:py-[16px]',
       )}
     >
       <ProfileImage
