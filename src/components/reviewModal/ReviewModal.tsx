@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import ModalWrapper from '@/components/modal/ModalWrapper';
+import { useState, useRef, useEffect } from 'react';
+import ModalWrapper from '@/components/reviewModal/ModalWrapper';
 import RatingStars from '@/components/common/shared/molecules/ratingStars';
 import MovingTypeGroup from '@/components/common/shared/molecules/movingTypeGroup';
 import MoverDatePrice from '@/components/common/moverInfo/organisms/moverDatePriceInfo';
-// import { submitReview } from '@/services/reviewsService';
 
 const moveTypeLabels = {
   SMALL_MOVE: 'small',
@@ -28,7 +27,6 @@ interface ReviewableEstimate {
 interface ReviewModalProps {
   estimate: ReviewableEstimate;
   onClose: () => void;
-  // onSubmit?: (estimateId: string) => void; // 콜백 prop 추가
   onSubmit: (estimateId: string, rating: number, comment: string) => void;
 }
 
@@ -40,31 +38,30 @@ export default function ReviewModal({
   const [rating, setRating] = useState(0); // 별점 상태
   const [comment, setComment] = useState(''); // 코멘트 상태
   const [isDragging, setIsDragging] = useState(false); // 드래그 중인지 여부
+  const [isModified, setIsModified] = useState(false); // 변경 여부
   const ratingRef = useRef<HTMLDivElement>(null); // 별점 컨테이너 참조
+
+  useEffect(() => {
+    if (rating !== 0 || comment !== '') {
+      setIsModified(true);
+    } else {
+      setIsModified(false);
+    }
+  }, [rating, comment]);
 
   // 리뷰 제출 함수
   const handleSubmit = async () => {
     if (rating === 0) {
-      console.log('별점을 선택해주세요.');
       return;
     }
     if (comment.length < 10) {
-      console.log('코멘트를 10자 이상 입력해주세요.');
       return;
     }
     try {
-      // await submitReview({
-      //   estimateId: estimate.id,
-      //   rating,
-      //   comment,
-      // });
-      console.log('리뷰가 제출되었습니다!');
-      // onSubmit?.(estimate.id); // 부모page에 제출완료 알림
       onSubmit(estimate.id, rating, comment);
       onClose();
     } catch (error) {
       console.error('리뷰 제출 실패:', error);
-      console.log('리뷰 제출에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -72,7 +69,7 @@ export default function ReviewModal({
   const handleStart = (
     e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
   ) => {
-    e.preventDefault(); // 브라우저 기본 동작(드래그, 선택) 차단
+    e.preventDefault();
     setIsDragging(true);
   };
 
@@ -95,17 +92,18 @@ export default function ReviewModal({
     <ModalWrapper
       title='리뷰 쓰기'
       onClose={onClose}
-      className='w-[375px] md:w-[407px] xl:w-[608px] absolute bottom-0 md:relative'
+      className='w-[375px] md:w-[407px] xl:w-[560px] absolute bottom-0 md:relative'
+      disableBackdropClose={isModified}
     >
       {/* 라벨 */}
-      <div className='pt-[28px] xl:pt-[44px]'>
+      <div className='pt-[14px]'>
         <MovingTypeGroup
           movingType={[moveTypeLabels[estimate.moveType]]}
           isCustomQuote={estimate.isTargeted}
         />
       </div>
       {/* 무버 정보 */}
-      <div className='pt-[14px] xl:pt-[24px]'>
+      <div className='pt-[7px]'>
         <MoverDatePrice
           moverName={estimate.driverName}
           imageUrl={estimate.driverProfileImage}
@@ -114,7 +112,7 @@ export default function ReviewModal({
         />
       </div>
       {/* 별점 */}
-      <div className='pt-[32px]'>
+      <div className='pt-[16px]'>
         <div className='pb-[20px]'>
           <label className='text-black-300 font-[600] text-[16px] xl:text-[20px]'>
             평점을 선택해 주세요
@@ -140,11 +138,11 @@ export default function ReviewModal({
             iconClassName='text-yellow-400 xl:w-[40px] xl:h-[40px] w-[32px] h-[32px]'
           />
         </div>
-        <div className='border-b-[1px]  border-line-100 h-[20px] xl:h-[32px]'></div>
+        <div className='border-b-[1px]  border-line-100 h-[20px]'></div>
       </div>
 
       {/* 코멘트 입력 */}
-      <div className='pt-[20px] xl:pt-[32px]'>
+      <div className='pt-[20px]'>
         <label className='text-black-300 font-[600] text-[16px] xl:text-[20px]'>
           상세 후기를 작성해 주세요
         </label>
@@ -153,7 +151,7 @@ export default function ReviewModal({
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder='최소 10자 이상 입력해주세요'
-            className='bg-backgroundVariants-200 placeholder-gray-300 text-black-400 text-[16px] xl:text-[20px] w-full h-[160px] px-[16px] xl:px-[24px] py-[14px] rounded-[16px] resize-none border-none focus:border-none focus:outline-none'
+            className='bg-backgroundVariants-200 placeholder-gray-300 text-black-400 text-[16px] xl:text-[20px] w-full h-[130px] px-[16px] xl:px-[24px] py-[14px] rounded-[16px] resize-none border-none focus:border-none focus:outline-none'
           />
         </div>
         <p

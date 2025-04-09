@@ -29,7 +29,11 @@ export default function Page({ params }: { params: { id: string } }) {
     data && (
       <div className='relative flex flex-col mx-auto w-full items-center overflow-auto pb-24'>
         {modalOpen && (
-          <ModalWrapper onClose={closeModal}>
+          <ModalWrapper
+            onClose={closeModal}
+            title='견적 확정하기'
+            className='xl:w-[608px]'
+          >
             <ConfirmQuoteModalContent
               onClose={closeModal}
               moverQuoteId={id}
