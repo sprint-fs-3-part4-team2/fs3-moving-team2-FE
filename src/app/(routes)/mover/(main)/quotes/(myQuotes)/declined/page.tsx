@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { getRejectedQuotes } from '@/services/rejectionService';
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
 import NoData from '@/components/noData/NoData';
+import Loading from '@/app/loading';
 
 export default function Page() {
   // 예: n개의 목데이터 생성
@@ -289,7 +290,8 @@ export default function Page() {
     return (
       <div>
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
-          <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
+          <Loading />
+          {/* <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
             <Image
               src='/img/car.svg'
               alt='logo'
@@ -299,7 +301,7 @@ export default function Page() {
           </div>
           <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
             로딩중입니다...
-          </div>
+          </div> */}
         </div>
       </div>
     );
