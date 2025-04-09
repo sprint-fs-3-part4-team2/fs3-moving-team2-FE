@@ -71,7 +71,7 @@ export default function Page() {
     queryClient.invalidateQueries({ queryKey: ['favorites'] });
     queryClient.invalidateQueries({ queryKey: ['customerQuotes'] });
   };
-
+  //asda
   return (
     <div className='bg-backgroundVariants-50'>
       {quoteRequests.length === 0 && quotesFromDrivers.length === 0 ? (
