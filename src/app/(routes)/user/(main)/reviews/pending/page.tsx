@@ -158,6 +158,7 @@ export default function Page() {
       comment: string;
     }) => submitReview(reviewData),
     onSuccess: (response, variables) => {
+      const moverId = response.data.moverId;
       queryClient.setQueryData(
         ['pendingReviews'],
         (oldData: ReviewableEstimate[] | undefined) => {
@@ -176,7 +177,7 @@ export default function Page() {
           );
           const newReview = {
             writtenAt: new Date().toISOString().split('T')[0],
-            id: variables.estimateId,
+            id: moverId,
             moverName: estimate?.driverName || 'Unknown',
             imageUrl:
               estimate?.driverProfileImage ||
