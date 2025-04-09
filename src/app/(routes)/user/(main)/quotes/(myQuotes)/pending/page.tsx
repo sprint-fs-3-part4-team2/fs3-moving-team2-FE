@@ -1,3 +1,143 @@
+// 'use client';
+
+// import { useRouter } from 'next/navigation';
+// import { useEffect, useState } from 'react';
+// import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
+// import Pagination from '@/components/pagination/molecule/pagination';
+// import axiosInstance from '@/lib/axiosInstance';
+// import NoData from '@/components/noData/NoData';
+// import { useQuery, useQueryClient } from '@tanstack/react-query';
+// import * as userQuotes from '@/services/types/userQuotes/userQuotes';
+// import * as pendingApi from '@/services/userQuotes';
+
+// export default function Page() {
+//   const queryClient = useQueryClient();
+//   const router = useRouter();
+
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 4;
+
+//   const { data: favorites = [] } = useQuery({
+//     queryKey: ['favorites'],
+//     queryFn: pendingApi.fetchFavorites,
+//   });
+
+//   const { data: quotes = [] } = useQuery({
+//     queryKey: ['customerQuotes'],
+//     queryFn: pendingApi.fetchCustomerQuotes,
+//   });
+//   console.log('quotes:', quotes);
+
+//   const transformedMovers = Object.values(quotes).flatMap((quote) => {
+//     if (quote.moverQuotes && Array.isArray(quote.moverQuotes)) {
+//       return quote.moverQuotes.map((moverQuote) => {
+//         return {
+//           variant: 'quote' as userQuotes.Variant,
+//           subVariant: 'pending' as userQuotes.SubVariant,
+//           moverName: moverQuote.mover.user?.name || '알 수 없음',
+//           movingType: userQuotes.getMovingTypes(moverQuote.mover.moverServices),
+//           isCustomQuote: !!moverQuote.targetedQuoteRequestId,
+//           quoteState: 'pendingQuote' as userQuotes.QuoteState,
+//           rating: moverQuote.mover.averageRating,
+//           experienceYears: moverQuote.mover.experienceYears,
+//           quoteCount: moverQuote.mover.totalConfirmedCount,
+//           isFavorite: favorites.includes(moverQuote.mover.id),
+//           totalCustomerFavorite: moverQuote.mover.totalCustomerFavorite,
+//           ratingCount: moverQuote.mover.totalReviews,
+//           price: moverQuote.price,
+//           quoteId: moverQuote.id,
+//           movingDate: new Date(quote.moveDate),
+//           departure: userQuotes.getAddress(
+//             quote.quoteRequestAddresses,
+//             'DEPARTURE',
+//           ),
+//           arrival: userQuotes.getAddress(
+//             quote.quoteRequestAddresses,
+//             'ARRIVAL',
+//           ),
+//           imageUrl: moverQuote.mover.profileImage,
+//           moverId: moverQuote.mover.id,
+//           onConfirmClick: () => confirmQuote(moverQuote.id),
+//           onDetailClick: () =>
+//             router.push(`/user/quotes/${moverQuote.mover.id}`),
+//           onFavoriteClick: (moverId: string) => handleFavoriteClick(moverId),
+//         };
+//       });
+//     }
+//     return [];
+//   });
+
+//   console.log('transformedMovers:', transformedMovers);
+
+//   const confirmQuote = async (quoteId: string) => {
+//     const response = await axiosInstance.post(
+//       `/quote/confirm-quote/${quoteId}`,
+//     );
+//     if (response.status !== 200) {
+//       throw new Error('견적 확정 실패');
+//     }
+//     return quoteId;
+//   };
+
+//   const handleFavoriteClick = async (moverId: string) => {
+//     const isFavorite = favorites.includes(moverId);
+//     if (isFavorite) {
+//       await axiosInstance.post(`/favorites/create/${moverId}`);
+//     } else {
+//       await axiosInstance.delete(`/favorites/delete/${moverId}`);
+//     }
+//     queryClient.invalidateQueries({ queryKey: ['favorites'] });
+//     queryClient.invalidateQueries({ queryKey: ['customerQuotes'] });
+//   };
+
+//   const indexOfLastItem = currentPage * itemsPerPage;
+//   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+//   const currentMovers = transformedMovers.slice(
+//     indexOfFirstItem,
+//     indexOfLastItem,
+//   );
+
+//   return (
+//     <>
+//       {transformedMovers.length === 0 ? (
+//         <div className='bg-backgroundVariants-50'>
+//           <div className='flex flex-col justify-center items-center w-full h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+88px+2px))] md:px-[72.5px] xl:px-0'>
+//             <NoData text='대기 중인 견적이 없습니다.' />
+//           </div>
+//         </div>
+//       ) : (
+//         <div className='min-h-[calc(100vh-(54px+54px+2px))] bg-backgroundVariants-50'>
+//           <div className='w-full max-w-[1400px] mx-auto pt-8 px-[24px] md:pt-8 xl:pt-10 md:px-[72.5px] xl:px-0'>
+//             <div className='grid grid-cols-1 gap-6 xl:grid-cols-2'>
+//               {currentMovers.map((mover) => (
+//                 <div
+//                   key={mover.quoteId}
+//                   className='bg-white'
+//                 >
+//                   <MoverInfo
+//                     {...mover}
+//                     imageUrl={mover.imageUrl}
+//                     favoriteCount={mover.totalCustomerFavorite ?? 0}
+//                     ratingCount={mover.ratingCount ?? 0}
+//                     onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
+//                   />
+//                 </div>
+//               ))}
+//             </div>
+//             <div className='flex justify-center items-center pt-2 md:pt-8 xl:pt-6'>
+//               <Pagination
+//                 currentPage={currentPage}
+//                 totalPages={Math.ceil(transformedMovers.length / itemsPerPage)}
+//                 onPageChange={(page) => setCurrentPage(page)}
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// }
+
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -5,8 +145,7 @@ import { useEffect, useState } from 'react';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
 import axiosInstance from '@/lib/axiosInstance';
-import Image from 'next/image';
-import fileImg from '@/public/img/no-review.svg';
+import NoData from '@/components/noData/NoData';
 
 interface Address {
   id: string;
@@ -239,47 +378,42 @@ export default function Page() {
   const currentMovers = movers.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className='bg-backgroundVariants-50'>
+    <>
       {currentMovers.length === 0 ? (
-        <div className='max-w-[1400px] mx-auto px-6 md:px-[72px] xl:px-0'>
-          <div className='h-[calc(100vh-(84px+88px+4px))] flex flex-col justify-center items-center w-full mx-auto'>
-            <Image
-              className='w-[110px] h-[82px] xl:w-[184px] xl:h-[136px]'
-              src={fileImg}
-              alt='무빙 파일 이미지'
-            />
-            <p className='text-center text-grayscale-400 mt-8 text-2xl font-normal'>
-              대기 중인 견적이 없습니다.
-            </p>
+        <div className='bg-backgroundVariants-50'>
+          <div className='flex flex-col justify-center items-center w-full h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+88px+2px))] md:px-[72.5px] xl:px-0'>
+            <NoData text='대기 중인 견적이 없습니다.' />
           </div>
         </div>
       ) : (
-        <div className='max-w-[1400px] mx-auto px-6 md:px-[72px] xl:px-0 py-[32px] xl:py-[40px]'>
-          <div className='grid grid-cols-1 gap-6 xl:grid-cols-2'>
-            {currentMovers.map((mover) => (
-              <div
-                className='bg-white'
-                key={mover.quoteId}
-              >
-                <MoverInfo
-                  {...mover}
-                  imageUrl={mover.imageUrl}
-                  favoriteCount={mover.totalCustomerFavorite ?? 0}
-                  ratingCount={mover.ratingCount ?? 0}
-                  onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
-                />
-              </div>
-            ))}
-          </div>
-          <div className='flex justify-center items-center pt-2 md:pt-8 xl:pt-6'>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(movers.length / itemsPerPage)}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+        <div className='min-h-[calc(100vh-(54px+54px+2px))] bg-backgroundVariants-50'>
+          <div className='w-full max-w-[1400px] mx-auto pt-8 px-[24px] md:pt-8 xl:pt-10 md:px-[72.5px] xl:px-0'>
+            <div className='grid grid-cols-1 gap-6 xl:grid-cols-2'>
+              {currentMovers.map((mover) => (
+                <div
+                  key={mover.quoteId}
+                  className='bg-white'
+                >
+                  <MoverInfo
+                    {...mover}
+                    imageUrl={mover.imageUrl}
+                    favoriteCount={mover.totalCustomerFavorite ?? 0}
+                    ratingCount={mover.ratingCount ?? 0}
+                    onFavoriteClick={() => handleFavoriteClick(mover.moverId)}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className='flex justify-center items-center pt-2 md:pt-8 xl:pt-6'>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(movers.length / itemsPerPage)}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
