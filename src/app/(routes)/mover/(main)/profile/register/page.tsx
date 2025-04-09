@@ -74,6 +74,7 @@ export default function Page() {
 
   const isValid =
     experience !== undefined &&
+    experience >= 0 &&
     shortIntro.trim().length >= 8 &&
     description.trim().length >= 10 &&
     selectedMoveTypes.length > 0 &&
@@ -182,7 +183,13 @@ export default function Page() {
                       placeholder='기사님의 경력을 입력해 주세요'
                       name='experience'
                       type='number'
-                      validation={{ required: '숫자만 입력해주세요.' }}
+                      validation={{
+                        required: '숫자를 입력해주세요.',
+                        min: {
+                          value: 0,
+                          message: '음수는 입력할 수 없습니다.',
+                        },
+                      }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
