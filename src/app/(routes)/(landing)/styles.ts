@@ -1,12 +1,12 @@
-export const LANDING_PAGE_STYLES =
-  'animate-fadeIn  w-full min-h-screen bg-background-400 flex flex-col items-center';
-
+// Top
+export const LANDING_PAGE_LAYOUT_STYLES =
+  'animate-fadeIn  w-full min-h-[115vh] xl:min-h-[105vh] bg-background-400 flex flex-col items-center';
 export const LANDING_DESCRIPTION_STYLES =
   'text-[27px] xl:text-[36px] w-[325px] xl:w-[440px] font-semibold leading-[50px] mt-20 text-black-500)] text-center animate-fadeIn';
 
+// Main Grid
 export const GRID_BOX_STYLES =
   'mt-[40px] mb-[100px] grid grid-cols-1 gap-[36px] auto-rows-fr xxl:grid-cols-3 xxl:gap-[24px] cursor-pointer';
-
 export const LANDING_CARDS_COMMON_STYLES =
   'transform transition-all duration-500 hover:scale-[1.03] hover:shadow-[4px_4px_8px_-1px_rgba(0,0,0,0.2)] rounded-[32px] shadow-[3px_3px_5px_0px_rgba(0,0,0,0.1)] overflow-hidden group';
 

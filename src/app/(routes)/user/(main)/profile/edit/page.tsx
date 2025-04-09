@@ -145,7 +145,7 @@ export default function Page() {
 
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
 
-      router.push('/user/quotes/requested');
+      router.replace('/user/quotes/requested');
     } catch (error: unknown) {
       console.error('프로필 수정 실패:', error);
       if (typeof error === 'string') {

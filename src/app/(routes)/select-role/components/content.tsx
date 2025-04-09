@@ -30,15 +30,19 @@ export default function Content({
         )}
       >
         <h2
-          className={cn('text-[60px] font-bold', 'md:text-[70px]')}
+          className={cn(
+            'text-[48px] font-bold',
+            'md:text-[55px]',
+            'xl:text-[70px]',
+          )}
           style={{ textShadow: '3px 3px 0px rgba(0,0,0,0.1)' }}
         >
           {title}
         </h2>
         <p
           className={cn(
-            'text-[18px] my-[10px]',
-            'mx-auto xl:my-4 xl:text-[22px] font-normal w-[30ch] text-center break-words whitespace-normal',
+            'text-[18px] my-6',
+            'mx-auto md:my-5 xl:my-4 xl:text-[22px] font-normal w-[30ch] text-center break-words whitespace-normal',
             'md:my-5 text-[18px]',
           )}
           style={{ textShadow: '3px 3px 0px rgba(0,0,0,0.1)' }}
