@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useQuoteRequestStore from '@/store/quoteRequestStore';
 import RequestMessage from './RequestMessage';
 import { Calendar } from '@/components/ui/calendar';
@@ -22,6 +22,12 @@ export const MovingDate = ({
   const [isSubmitted, setIsSubmitted] = useState(false); // 수정 완료 시, 애니메이션 효과를 위해
   const localRef = useRef<HTMLDivElement>(null);
   const [showWarningModal, setShowWarningModal] = useState(false); // 당일 신청시 유의사항 안내 모달
+
+  useEffect(() => {
+    if (registerData.moveDate) {
+      setDate(registerData.moveDate);
+    }
+  }, [registerData.moveDate, step]);
 
   if (step === undefined) {
     console.error('step props is required');
