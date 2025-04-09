@@ -74,6 +74,7 @@ export default function Page() {
 
   const isValid =
     experience !== undefined &&
+    experience >= 0 &&
     shortIntro.trim().length >= 8 &&
     description.trim().length >= 10 &&
     selectedMoveTypes.length > 0 &&
@@ -104,25 +105,17 @@ export default function Page() {
     );
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      router.replace('?');
-    }, 1000);
-  }, []);
-
   const toaster = useToaster();
 
   // 프로필 등록
   const onSubmit = async (data: FormData) => {
     if (!isValid) return; // 유효하지 않으면 제출 차단
     try {
-      console.log('Submitted data:', data);
-      const response = await createMoverProfile(data);
-      console.log('프로필 등록 성공', response);
+      await createMoverProfile(data);
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
+      toaster('info', '프로필이 등록 되었습니다.');
       router.refresh();
     } catch (error: unknown) {
-      console.error('프로필 등록 실패:', error);
       if (typeof error === 'string') {
         toaster('warn', error); // errorMessage가 string이면 그대로 사용
       } else if (error instanceof Error) {
@@ -132,6 +125,14 @@ export default function Page() {
       }
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      toaster('info', '프로필을 등록해주세요');
+      router.replace('?');
+    }, 50);
+  }, []);
+
   return (
     <>
       <div className='flex justify-center h-screen items-start'>
@@ -182,7 +183,13 @@ export default function Page() {
                       placeholder='기사님의 경력을 입력해 주세요'
                       name='experience'
                       type='number'
-                      validation={{ required: '숫자만 입력해주세요.' }}
+                      validation={{
+                        required: '숫자를 입력해주세요.',
+                        min: {
+                          value: 0,
+                          message: '음수는 입력할 수 없습니다.',
+                        },
+                      }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'

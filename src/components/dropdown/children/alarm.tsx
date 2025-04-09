@@ -129,7 +129,7 @@ function Alarm({
         )}
       >
         <div className='py-[14px] h-[54px] relative'>
-          <h2 className='text-lg lg:text-[18px] px-4 font-bold text-black-400'>
+          <h2 className='text-lg md:text-[18px] px-4 font-bold text-black-400'>
             알림
           </h2>
           <CloseBtn
@@ -155,14 +155,14 @@ function Alarm({
                 <li
                   key={v.id + i}
                   className={cn(
-                    'min-h-[72px] lg:min-h-[84px] px-4 py-3 lg:px-6 lg:py-4',
+                    'min-h-[72px] md:min-h-[84px] px-4 py-3 lg:px-6 lg:py-4',
                     i !== data.length - 1 && 'border-b border-line-200',
                     isRead ? 'bg-grayscale-100' : 'bg-white',
                   )}
                 >
                   <Link
                     className={cn(
-                      'block text-md lg:text-lg font-medium w-full truncate',
+                      'block text-md lg:text-lg font-medium w-full keep-all',
                       isRead ? 'text-grayscale-400' : 'text-black-400',
                     )}
                     href={url || '#'}

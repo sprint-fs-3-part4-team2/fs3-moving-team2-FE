@@ -88,6 +88,7 @@ export default function ImageUpload({
         className='sm:w-[200px] sm:h-[100px] xl:w-[300px] xl:h-[160px] border-2 border-dashed border-gray-400 flex cursor-pointer items-center justify-center'
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
+        onClick={handleImageClick}
       >
         <span className='text-gray-500'>이미지를 드래그하여 업로드</span>
       </div>

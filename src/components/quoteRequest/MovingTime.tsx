@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useQuoteRequestStore from '@/store/quoteRequestStore';
 import RequestMessage from './RequestMessage';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
@@ -17,6 +17,12 @@ export const MovingTime = ({
   const [date, setDate] = useState<string | null>(null);
   const { registerData, setRegisterData } = useQuoteRequestStore();
   const [isSubmitted, setIsSubmitted] = useState(false); // 수정 완료 시, 애니메이션 효과를 위해
+
+  useEffect(() => {
+    if (registerData.moveTime) {
+      setDate(registerData.moveTime);
+    }
+  }, [registerData.moveTime, step]);
 
   if (maxCompletedStep === undefined || maxCompletedStep === null) {
     console.error('maxCompletedStep props is required');

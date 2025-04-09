@@ -1,5 +1,5 @@
 'use client';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Links from './components/links';
 import Image from 'next/image';
@@ -13,10 +13,13 @@ const commonText = '일반유저';
 const partnerText = '파트너';
 
 export default function SliceBox() {
-  const [tt, setTT] = useState(partnerText);
+  const [tt, setTT] = useState('');
   const router = useRouter();
   const query = useSearchParams();
   const userType = query.get('userType');
+  useEffect(() => {
+    setTT(() => (userType === 'mover' ? commonText : partnerText));
+  }, [userType]);
 
   function changeBg(e: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) {
     e.preventDefault();

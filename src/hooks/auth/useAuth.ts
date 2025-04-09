@@ -15,9 +15,10 @@ export const useUserSignUp = () => {
     mutationKey: ['userSignUp'],
     mutationFn: userAuthService.signUp,
     onSuccess: (data) => {
-      queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      if (data.profile === null) router.push('/user/profile/register');
-      router.push('/user/movers');
+      setTimeout(() => {
+        queryClient.setQueryData<MyProfile>(['userProfile'], data);
+        router.push('/user/movers');
+      }, 1000);
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data.message || '회원가입 실패');
@@ -34,9 +35,10 @@ export const useUserSignIn = () => {
     mutationKey: ['userSignIn'],
     mutationFn: userAuthService.signIn,
     onSuccess: (data) => {
-      queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      if (data.profile === null) router.push('/user/profile/register');
-      router.push('/user/movers');
+      setTimeout(() => {
+        queryClient.setQueryData<MyProfile>(['userProfile'], data);
+        router.push('/user/movers');
+      }, 1000);
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data?.message || '로그인 실패');
@@ -54,9 +56,10 @@ export const useMoverSignUp = () => {
     mutationKey: ['moverSignUp'],
     mutationFn: moverAuthService.signUp,
     onSuccess: (data) => {
-      queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      if (data.profile === null) router.push('/mover/profile/register');
-      router.push('/mover/quotes/requested');
+      setTimeout(() => {
+        queryClient.setQueryData<MyProfile>(['userProfile'], data);
+        return router.push('/mover/quotes/requested');
+      }, 1000);
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data.message || '회원가입 실패');
@@ -73,9 +76,10 @@ export const useMoverSignIn = () => {
     mutationKey: ['moverSignIn'],
     mutationFn: moverAuthService.signIn,
     onSuccess: (data) => {
-      queryClient.setQueryData<MyProfile>(['userProfile'], data);
-      if (data.profile === null) router.push('/mover/profile/register');
-      router.push('/mover/quotes/requested');
+      setTimeout(() => {
+        queryClient.setQueryData<MyProfile>(['userProfile'], data);
+        return router.push('/mover/quotes/requested');
+      }, 1000);
     },
     onError: (error: ApiError) => {
       toast('warn', error.response?.data.message || '로그인 실패');

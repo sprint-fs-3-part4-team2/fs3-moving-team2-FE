@@ -7,12 +7,13 @@ interface NoDataProps {
   text?: string;
 }
 
-const NoData: React.FC<NoDataProps> = ({
-  text = '작성 가능한 리뷰가 없어요',
-}) => {
+/**
+ * 데이터가 없을 때 표시되는 공통 컴포넌트입니다.
+ * @param {string} [text] - 표시할 텍스트 (선택)
+ */
+const NoData: React.FC<NoDataProps> = ({ text }) => {
   return (
     <div className='flex flex-col items-center'>
-      {/*       <div className='group relative w-[214px] md:w-[321px] xl:w-[428px] h-[180px] md:h-[270px] xl:h-[360px]'> */}
       <div className='group relative w-[214px] md:w-[321px] h-[180px] md:h-[270px]'>
         <Image
           src='/img/no-data/no_data.png'

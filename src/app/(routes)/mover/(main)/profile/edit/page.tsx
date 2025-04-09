@@ -89,6 +89,7 @@ export default function Page() {
 
   const isValid =
     experience !== undefined &&
+    experience >= 0 &&
     shortIntro.trim().length >= 8 &&
     description.trim().length >= 10 &&
     selectedMoveTypes.length > 0 &&
@@ -128,7 +129,10 @@ export default function Page() {
       const response = await updateMoverProfile(data);
       console.log('프로필 수정 성공', response);
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
+      queryClient.invalidateQueries({ queryKey: ['customerRequests'] }); // 기사님 받은 요청, 프로필 수정 바로 반영(서비스 가능 지역, 이사 유형)
       toaster('info', '수정 성공!');
+      router.replace('/mover/quotes/requested');
+      // router.refresh();
     } catch (error: unknown) {
       console.error('프로필 수정 실패:', error);
       if (typeof error === 'string') {
@@ -193,7 +197,13 @@ export default function Page() {
                       placeholder='기사님의 경력을 입력해 주세요'
                       name='experience'
                       type='number'
-                      validation={{ required: '숫자만 입력해주세요.' }}
+                      validation={{
+                        required: '숫자를 입력해주세요.',
+                        min: {
+                          value: 0,
+                          message: '음수는 입력할 수 없습니다.',
+                        },
+                      }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
