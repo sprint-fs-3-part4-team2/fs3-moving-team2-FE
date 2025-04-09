@@ -131,6 +131,8 @@ export default function Page() {
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
       queryClient.invalidateQueries({ queryKey: ['customerRequests'] }); // 기사님 받은 요청, 프로필 수정 바로 반영(서비스 가능 지역, 이사 유형)
       toaster('info', '수정 성공!');
+      router.replace('/mover/quotes/requested');
+      // router.refresh();
     } catch (error: unknown) {
       console.error('프로필 수정 실패:', error);
       if (typeof error === 'string') {

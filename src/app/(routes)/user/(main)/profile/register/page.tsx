@@ -100,8 +100,8 @@ export default function Page() {
       const response = await createCustomerProfile(data);
       console.log('프로필 등록 성공', response);
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
-      // router.push('/user/quotes/request');
-      router.refresh();
+      router.replace('/user/quotes/request');
+      // router.refresh();
     } catch (error: unknown) {
       console.error('프로필 등록 실패:', error);
       if (typeof error === 'string') {
