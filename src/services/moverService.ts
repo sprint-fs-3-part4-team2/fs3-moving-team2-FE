@@ -23,6 +23,11 @@ export interface Mover {
   description?: string;
 }
 
+export interface MoverDetail extends Mover {
+  introduction: string;
+  regions: string[];
+}
+
 export const searchMovers = async (searchTerm: string) => {
   try {
     const { data } = await axiosInstance.get('/movers/search', {
@@ -51,6 +56,47 @@ export const getMovers = async (params: {
 
     console.log('API Response:', data);
     return data.data || data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getMoverDetail = async (moverId: string) => {
+  try {
+    const response = await axiosInstance.get(`/movers/${moverId}`);
+    return response.data.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const checkFavoriteStatus = async (moverId: string) => {
+  try {
+    const response = await axiosInstance.get(`/favorites/check/${moverId}`);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const toggleFavorite = async (moverId: string, isFavorite: boolean) => {
+  try {
+    const endpoint = isFavorite
+      ? `/favorites/delete/${moverId}`
+      : `/favorites/create/${moverId}`;
+
+    const response =
+      await axiosInstance[isFavorite ? 'delete' : 'post'](endpoint);
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const checkGeneralQuote = async () => {
+  try {
+    const response = await axiosInstance.get('/quote-requests/latest');
+    return response.data;
   } catch (error: any) {
     throw error;
   }

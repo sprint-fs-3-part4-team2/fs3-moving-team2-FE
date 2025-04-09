@@ -10,7 +10,7 @@ import { getMoverProfile } from '@/services/profileService';
 import { useRouter } from 'next/navigation';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
-
+import Loading from '@/app/loading';
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 
@@ -39,7 +39,11 @@ export default function MyPage() {
   });
 
   if (isLoadingReviews || isLoadingProfile)
-    return <p className='text-center'>로딩 중...</p>;
+    return (
+      <p className='text-center'>
+        <Loading />
+      </p>
+    );
   if (reviewsError || profileError || !reviewsData || !profileData)
     return (
       <p className='text-center'>데이터를 불러오는 중 오류가 발생했습니다.</p>

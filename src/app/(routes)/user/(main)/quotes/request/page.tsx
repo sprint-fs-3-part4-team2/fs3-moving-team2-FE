@@ -1,6 +1,6 @@
 'use client';
 import QuoteRequestPage from '@/components/quoteRequest/QuoteRequestPage';
-import QuoteRequestInProgressPage from '@/components/quoteRequest/QuoteRequestInProgressPage';
+import QuoteRequestSummaryPage from '@/components/quoteRequest/QuoteRequestSummaryPage';
 import { getQuoteRequest } from '@/services/quoteRequests';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '@/app/loading';
@@ -20,7 +20,7 @@ export default function Page() {
   }
 
   return data?.isRequested ? (
-    <QuoteRequestInProgressPage />
+    <QuoteRequestSummaryPage data={data} /> // 요약 페이지
   ) : (
     <QuoteRequestPage />
   );

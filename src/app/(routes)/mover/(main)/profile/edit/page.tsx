@@ -129,6 +129,7 @@ export default function Page() {
       const response = await updateMoverProfile(data);
       console.log('프로필 수정 성공', response);
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
+      queryClient.invalidateQueries({ queryKey: ['customerRequests'] }); // 기사님 받은 요청, 프로필 수정 바로 반영(서비스 가능 지역, 이사 유형)
       toaster('info', '수정 성공!');
     } catch (error: unknown) {
       console.error('프로필 수정 실패:', error);

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { LOGO_UNAUTHORIZED_STYLES } from './constant';
+import { LOGO_UNAUTHORIZED_STYLES } from '../../../styles/variables';
 
 export default function LogoUnauthorized(): JSX.Element {
   return (

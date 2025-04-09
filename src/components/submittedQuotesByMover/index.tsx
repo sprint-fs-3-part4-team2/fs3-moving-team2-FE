@@ -3,15 +3,15 @@
 import { UseSubmittedQuotes } from '@/hooks/useSubmittedQuotes';
 import ExistingQuotes from './existingQuotes';
 import NoQuoteToDisplay from './noQuoteToDisplay';
-import SubmittedQuotesSkeleton from './submittedQuotesSkeleton';
+import Loading from '@/app/loading';
 
 export default function SubmittedQuotesByMover() {
   const { submittedQuotes, onPageChange, page } = UseSubmittedQuotes();
   const { data, isLoading } = submittedQuotes;
 
-  if (isLoading) return <SubmittedQuotesSkeleton />;
+  if (isLoading) return <Loading />;
 
-  if (data)
+  if (data?.list.length)
     return (
       <ExistingQuotes
         data={data}

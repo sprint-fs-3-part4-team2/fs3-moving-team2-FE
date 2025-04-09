@@ -4,12 +4,12 @@ import CommonButton from '@/components/common/commonBtn/commonBtn';
 import MenuIcon from '../../atoms/icons/menuIcon';
 import Notification from '../../molecules/notification';
 import Profile from '../../molecules/profileSection';
-import { GNB_RIGHT_SECTION_BOX_STYLES } from './constant';
 import { GNBRightSectionProps } from './gnbRightSection.type';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SideNavigationBar from '@/components/sideMenuBar/organisms';
 import cn from '@/utils/cn';
+import { GNB_RIGHT_SECTION_BOX_STYLES } from '../../styles/variables';
 
 export default function GNBRightSection({
   isAuthorized,

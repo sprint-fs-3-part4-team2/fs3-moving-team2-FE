@@ -93,6 +93,7 @@ export function middleware(request: NextRequest) {
     if (
       !roleId &&
       !pathname.includes('/profile/register') &&
+      !pathname.includes('/user/movers') &&
       !searchParams.has('register')
     ) {
       const referer = request.headers.get('referer');
