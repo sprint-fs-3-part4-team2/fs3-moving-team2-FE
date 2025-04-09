@@ -121,7 +121,7 @@ export default function Page() {
       const response = await createMoverProfile(data);
       console.log('프로필 등록 성공', response);
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
-      router.refresh();
+      router.replace('/mover/quotes/requested');
     } catch (error: unknown) {
       console.error('프로필 등록 실패:', error);
       if (typeof error === 'string') {
