@@ -204,6 +204,12 @@ body {
     background: #555;
   }
 
+  @layer utilities {
+    .keep-all {
+      word-break: keep-all;
+    }
+  }
+
   /* toaster animation */
   @keyframes warn {
     0% {
