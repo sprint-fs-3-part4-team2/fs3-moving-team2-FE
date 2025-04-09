@@ -11,7 +11,7 @@ export default function SubmittedQuotesByMover() {
 
   if (isLoading) return <Loading />;
 
-  if (data)
+  if (data?.list.length)
     return (
       <ExistingQuotes
         data={data}

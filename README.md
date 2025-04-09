@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 무빙
 
-## Getting Started
+## 프로젝트 소개
 
-First, run the development server:
+- 이사 소비자와 이사 전문가 매칭 서비스
+- 🗓️ 프로젝트 기간: 2025.02.18 ~ 2025.04.10
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# 풀스택 3기 파트4 2팀
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 링크
+- [팀 문서](https://weak-lancer-c84.notion.site/1a06152b67c6817ebfd7c32764490c9f?v=1a06152b67c681a39668000c39caa079&pvs=4)
+- [스토리북](https://d2fawnkpgj9lx8.cloudfront.net/?path=/story/common-moverinfo-templates-moverinfo--written-review-info)
+- [공통 컴포넌트 피그마](https://www.figma.com/design/lXt37bEptE7xr8iHeNu1t7/2%ED%8C%80-%EB%AC%B4%EB%B9%99-%EB%AC%B8%EC%84%9C?node-id=0-1&p=f&t=8FxIfnJBhvXWd4p3-0)
+- [배포 링크](https://moving-app.site)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 팀원 구성
+| 이름 | Github |
+|------|---------|
+| 강대원| 
+| 김태훈|
+| 김현묵|
+| 배진한|
+| 전준기|
+| 정유석|
+| 최종훈|
+| 최혜지|
+| 함헌규|
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 기술 스택
 
-## Learn More
+- Next.js
+- Typescript
+- Tailwind CSS
+- Storybook
+- react-hook-form
+- Tanstack-query
+- Zustand
+- axios
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 팀원별 구현 기능 상세
