@@ -8,7 +8,7 @@ export const TEXT_UNDER_BUTTON_LAYOUT_STYLES =
 // Organisms styles
 // FormGroupSection
 export const FORM_LAYOUT_STYLES =
-  'flex flex-col gap-4 w-full mt-[40px] xl:gap-8 xl:mt-[72px]';
+  'flex flex-col gap-4 w-full mt-[40px] px-[20px] xl:gap-8 xl:mt-[72px]';
 export const BUTTON_BASIC_STYLES = 'font-semibold text-lg mt-[16px]';
 export const BUTTON_DESCTOP_STYLES = 'xl:text-xl xl:mt-[24px]';
 export const BUTTON_DISABLED_STYLES = 'bg-grayscale-100 border-none';
