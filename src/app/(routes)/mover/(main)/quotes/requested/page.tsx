@@ -84,7 +84,7 @@ export default function RequestedQuotesPage() {
   const totalCustomerRequests = data?.totalCount ?? 0;
 
   return (
-    <main className='w-full xl:max-w-[1400px] mx-auto sm:px-6 md:px-[72px] xl:px-0'>
+    <main className='w-full xl:max-w-[1400px] mx-auto px-6 md:px-[72px] xl:px-0'>
       <PageHeader>받은 요청</PageHeader>
 
       <div className='flex gap-28 mt-6'>
