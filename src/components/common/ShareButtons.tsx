@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect } from 'react';
+import { useToaster } from '@/hooks/useToaster';
 
 interface ShareButtonsProps {
   text: string;
@@ -15,6 +16,7 @@ declare global {
 
 const ShareButtons = ({ text }: ShareButtonsProps) => {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const toast = useToaster();
 
   useEffect(() => {
     // 카카오 SDK 스크립트 로드
@@ -37,9 +39,9 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(currentUrl);
-      alert('링크가 복사되었습니다!');
+      toast('info', '링크가 복사되었습니다!');
     } catch (error) {
-      console.error('링크 복사 실패', error);
+      toast('warn', '링크 복사에 실패했습니다.');
     }
   };
 
@@ -68,7 +70,7 @@ const ShareButtons = ({ text }: ShareButtonsProps) => {
         ],
       });
     } else {
-      alert('카카오톡 SDK가 로드되지 않았습니다.');
+      toast('warn', '카카오톡 SDK가 로드되지 않았습니다.');
     }
   };
 
