@@ -16,7 +16,7 @@ export default function MoverDetailContent({
       <div className='gap-0 px-6'>
         <PageHeader>상세설명</PageHeader>
         <p className='text-2lg text-[18px] font-regular'>
-          {moverDetail.introduction}
+          {moverDetail.description}
         </p>
       </div>
       <HorizontalDivider />
