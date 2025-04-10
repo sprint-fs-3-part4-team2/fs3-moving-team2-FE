@@ -215,7 +215,7 @@ export default function Page() {
       }
     }
   };
-  //asdas
+
   const handleFavoriteClick = async (moverId: string) => {
     const createFavorite = async (moverId: string) => {
       const response = await axiosInstance.post(`/favorites/create/${moverId}`);
