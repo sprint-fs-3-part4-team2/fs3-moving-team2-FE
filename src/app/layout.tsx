@@ -2,10 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import Provider from '../providers/_provider';
-import dynamic from 'next/dynamic';
-import ChatRoomList from '@/components/chat/chat';
 import GNB from '@/components/layout/gnb/template';
-// import Analytics from '@/components/analytics/page';
+import Analytics from '@/components/analytics/page';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -28,8 +26,7 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} antialiased h-screen flex flex-col`}
       >
-        {/* 개발이 끝나고 활성화 */}
-        {/* <Analytics /> */}
+        <Analytics />
         <Provider>
           <GNB />
           {children}

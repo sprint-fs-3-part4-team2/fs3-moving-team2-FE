@@ -9,8 +9,6 @@ export default function Area({
   dispatch,
   currentValue,
 }: Omit<DropdownCtaProps, 'data'>) {
-  const displayLabel =
-    currentValue === '지역' || !currentValue ? undefined : currentValue;
   return (
     <DropdownCta
       name='area'
