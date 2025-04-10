@@ -11,19 +11,19 @@ export default function MovingTypeBadge({
     <div
       className={cn(
         'inline-flex pr-[6px] pl-[3px] py-[4px] font-semibold text-[13px] md:text-[13px] xl:text-base rounded-[4px]',
-        options[type].style,
+        options[type]?.style,
         className,
       )}
     >
       <div className='flex justify-between items-center gap-1'>
-        {options[type].icon && (
+        {options[type]?.icon && (
           <Image
-            src={options[type].icon}
+            src={options[type]?.icon}
             alt={type}
             width={16}
           />
         )}
-        <span>{options[type].text}</span>
+        <span>{options[type]?.text}</span>
       </div>
     </div>
   );

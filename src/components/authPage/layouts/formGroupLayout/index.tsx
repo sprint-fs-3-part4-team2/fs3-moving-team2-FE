@@ -1,5 +1,5 @@
 import { ChildrenProp } from '../../common.types';
-import { FORM_GROUP_LAYOUT_STYLES } from './constant';
+import { FORM_GROUP_LAYOUT_STYLES } from '../../styles/variables';
 
 export default function FormGroupLayout({
   children,

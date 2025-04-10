@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getRejectedQuotes } from '@/services/rejectionService';
 import CustomerInfo from '@/components/common/customerInfo/templates/customerInfo';
+import Loading from '@/app/loading';
 import NoData from '@/components/noData/NoData';
 
 export default function Page() {
@@ -287,21 +288,22 @@ export default function Page() {
   //로딩중
   if (loading) {
     return (
-      <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
-          <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
-            <Image
-              src='/img/car.svg'
-              alt='logo'
-              fill
-              // style={{ objectFit: 'cover' }}
-            />
-          </div>
-          <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
-            로딩중입니다...
-          </div>
-        </div>
-      </div>
+      <Loading />
+      // <div>
+      //   <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
+      //     <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
+      //       <Image
+      //         src='/img/car.svg'
+      //         alt='logo'
+      //         fill
+      //         // style={{ objectFit: 'cover' }}
+      //       />
+      //     </div>
+      //     <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
+      //       로딩중입니다...
+      //     </div>
+      //   </div>
+      // </div>
     );
   }
 

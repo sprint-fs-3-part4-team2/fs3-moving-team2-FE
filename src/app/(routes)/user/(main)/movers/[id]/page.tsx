@@ -27,6 +27,7 @@ import MoverDetailContent from '@/components/moverDetail/MoverDetailContent';
 import MoverDetailReviews from '@/components/moverDetail/MoverDetailReviews';
 import MoverDetailSidebar from '@/components/moverDetail/MoverDetailSidebar';
 import MoverDetailModals from '@/components/moverDetail/MoverDetailModals';
+import { useToaster } from '@/hooks/useToaster';
 
 type MoverDetail = MoverDetailType;
 
@@ -40,6 +41,9 @@ export default function Page() {
   const router = useRouter();
   const params = useParams();
   const moverId = params.id as string;
+
+  // 토스트 훅 사용
+  const toast = useToaster();
 
   // 기사 관련 상태
   const [moverDetail, setMoverDetail] = useState<MoverDetail | null>(null);
@@ -226,7 +230,8 @@ export default function Page() {
           prev ? { ...prev, isCustomQuote: true } : null,
         );
         setShowSpecificQuoteModal(false);
-        alert('지정 견적 요청이 완료되었습니다.');
+        // alert('지정 견적 요청이 완료되었습니다.');
+        toast('info', '지정 견적 요청이 완료되었습니다.');
       }
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -265,10 +270,12 @@ export default function Page() {
           setShowLoginModal(true);
           break;
         case 'QUOTE_ALREADY_EXISTS':
-          alert(error.message);
+          // alert(error.message);
+          toast('warn', error.message);
           break;
         default:
-          alert(error.message);
+          // alert(error.message);
+          toast('warn', error.message);
       }
       setError(null);
     }

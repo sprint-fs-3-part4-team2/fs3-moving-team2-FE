@@ -167,7 +167,7 @@ export default function Page() {
     <>
       <div className='flex justify-center h-screen items-start'>
         <div className='flex flex-col align-center items-center gap-[64px] sm:w-[375px] md:w-[744px] lg:w-[1400px] p-8'>
-          <div className='flex flex-col sm:items-center md:items-center xl:items-start sm:gap-[32px] xl:gap-[40px] '>
+          <div className='flex flex-col gap-2 sm:items-center md:items-center xl:items-start sm:gap-[32px] xl:gap-[40px] '>
             <div className='flex flex-col sm:gap-[16px] xl:gap-[32px] sm:w-[327px] xl:w-[640px]'>
               <div className='sm:text-2lg md:text-2lg xl:text-3xl font-semibold sm:font-bold'>
                 프로필 수정
@@ -179,9 +179,9 @@ export default function Page() {
               onSubmit={handleSubmit(onSubmit)}
               className='flex flex-col gap-[48px]'
             >
-              <div className='flex sm:gap-4 sm:flex-col xl:items-start xl:flex-row xl:justify-between sm:items-center md:items-center xl:w-[1352px]'>
+              <div className='flex flex-col gap-1 sm:gap-4 sm:flex-col xl:items-start xl:flex-row xl:justify-between sm:items-center md:items-center xl:w-[1352px]'>
                 {/* 왼쪽 */}
-                <div className='flex flex-col sm:gap-5 xl:gap-8 sm:w-[327px] xl:w-[640px]'>
+                <div className='flex flex-col gap-4 sm:gap-5 xl:gap-8 sm:w-[327px] xl:w-[640px]'>
                   {/* 이름 */}
                   <div className='flex flex-col gap-4 text-xl'>
                     <span className='sm:text-lg xl:text-xl font-semibold'>
@@ -307,7 +307,7 @@ export default function Page() {
                 </div>
 
                 {/* 오른쪽 */}
-                <div className='flex flex-col sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
+                <div className='flex flex-col gap-4 sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
                   {/* 이미지 업로더 */}
                   <div className='flex flex-col gap-6 '>
                     <div className='sm:text-lg xl:text-xl font-semibold'>
@@ -360,14 +360,14 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className='flex xl:flex-row-reverse sm:flex-col sm:gap-2 xl:gap-8 a w-full'>
+              <div className='flex flex-col gap-2 w-full xl:flex-row-reverse sm:flex-col sm:gap-2 xl:gap-8 '>
                 <CommonButton
                   widthType='half'
                   heightType='primary'
                   backgroundColorType='gray'
                   borderColorsType='none'
                   type='submit'
-                  className={`sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px] ${
+                  className={` w-full sm:h-[54px] xl:w-[660px] xl:h-[64px] ${
                     isValid
                       ? 'bg-blue-500 cursor-pointer'
                       : 'bg-gray-300 cursor-not-allowed'
@@ -381,7 +381,7 @@ export default function Page() {
                   backgroundColorType='gray'
                   borderColorsType='gray'
                   type='button'
-                  className='text-gray-400 sm:w-[327px] sm:h-[54px] xl:w-[660px] xl:h-[64px]'
+                  className='text-gray-400 w-full sm:h-[54px] xl:w-[660px] xl:h-[64px]'
                   onClick={cancel}
                 >
                   취소

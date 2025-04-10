@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getPendingReviews, submitReview } from '@/services/reviewsService';
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
-import ReviewModal from '@/components/modal/children/ReviewModal';
+import ReviewModal from '@/components/reviewModal/ReviewModal';
+import Loading from '@/app/loading';
 import NoData from '@/components/noData/NoData';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -65,21 +66,6 @@ export default function Page() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // 예: n개의 목데이터 생성
-  // const createMockData = (count: number) => {
-  //   return Array.from({ length: count }, (_, index) => ({
-  //     id: `cm8drulsx00g5wam0xj25y9${index.toString().padStart(2, '0')}`, // 고유 ID 생성
-  //     driverName: "흑",
-  //     driverProfileImage: "/img/sample-profile/sample-1.svg",
-  //     serviceDate: "2025-03-24",
-  //     estimatePrice: 170000,
-  //     moveType: "HOME_MOVE",
-  //     isTargeted: true,
-  //   }));
-  // };
-
-  // const mockData = createMockData(100);
-
   const moveTypeLabels = {
     SMALL_MOVE: 'small',
     HOME_MOVE: 'home',
@@ -88,7 +74,6 @@ export default function Page() {
 
   type MoveType = keyof typeof moveTypeLabels;
 
-  // ReviewableEstimate 인터페이스 정의
   interface ReviewableEstimate {
     id: string;
     driverName: string;
@@ -120,12 +105,8 @@ export default function Page() {
     queryKey: ['pendingReviews'],
     queryFn: getPendingReviews,
     staleTime: 0,
-    // refetchInterval: 1000,
   });
 
-  // const [estimates, setEstimates] = useState<ReviewableEstimate[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEstimate, setSelectedEstimate] =
     useState<ReviewableEstimate | null>(null);
@@ -135,21 +116,6 @@ export default function Page() {
     showCancel: false,
   });
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   getPendingReviews()
-  //     .then((data) => {
-  //       setEstimates(data);
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching estimates:', error);
-  //       const errorMessage = error.response?.data?.message || '알 수 없는 에러';
-  //       setError(`에러가 발생했어요.\n${errorMessage}`);
-  //       setLoading(false);
-  //     });
-  // }, []);
-
   const reviewMutation = useMutation({
     mutationFn: (reviewData: {
       estimateId: string;
@@ -157,6 +123,7 @@ export default function Page() {
       comment: string;
     }) => submitReview(reviewData),
     onSuccess: (response, variables) => {
+      const moverId = response.data.moverId;
       queryClient.setQueryData(
         ['pendingReviews'],
         (oldData: ReviewableEstimate[] | undefined) => {
@@ -175,7 +142,7 @@ export default function Page() {
           );
           const newReview = {
             writtenAt: new Date().toISOString().split('T')[0],
-            id: variables.estimateId,
+            id: moverId,
             moverName: estimate?.driverName || 'Unknown',
             imageUrl:
               estimate?.driverProfileImage ||
@@ -217,34 +184,6 @@ export default function Page() {
     setSelectedEstimate(estimate);
     setIsModalOpen(true);
   };
-
-  // 리뷰 제출 후 estimates에서 해당 리뷰 제거
-  // const handleReviewSubmit = (estimateId: string) => {
-  //   setEstimates((prev) =>
-  //     prev.filter((estimate) => estimate.id !== estimateId),
-  //   );
-  // };
-
-  // const handleReviewSubmit = (estimateId: string) => {
-  //   const remainingEstimates = estimates.filter(
-  //     (estimate) => estimate.id !== estimateId,
-  //   );
-  //   setEstimates(remainingEstimates);
-
-  //   if (remainingEstimates.length > 0) {
-  //     setPostSubmitModal({
-  //       isOpen: true,
-  //       message: '내가 작성한 리뷰 페이지로 이동하시겠습니까?',
-  //       showCancel: true,
-  //     });
-  //   } else {
-  //     setPostSubmitModal({
-  //       isOpen: true,
-  //       message: '내가 작성한 리뷰 페이지로 이동합니다.',
-  //       showCancel: false,
-  //     });
-  //   }
-  // };
 
   const handleReviewSubmit = (
     estimateId: string,
@@ -495,25 +434,8 @@ export default function Page() {
   };
 
   //로딩중
-  // if (loading) {
   if (isLoading) {
-    return (
-      <div>
-        <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
-          <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
-            <Image
-              src='/img/car.svg'
-              alt='loading'
-              fill
-              // style={{ objectFit: 'cover' }}
-            />
-          </div>
-          <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
-            로딩중입니다...
-          </div>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   // 에러
@@ -530,7 +452,6 @@ export default function Page() {
             />
           </div>
           <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px] whitespace-pre-line text-center'>
-            {/* {error}*/}
             {`에러가 발생했어요.\n${error.message || '알 수 없는 에러'}`}
           </div>
         </div>
@@ -594,17 +515,6 @@ export default function Page() {
         </div>
       ) : (
         <div className='px-[24px] md:px-[72px] xl:px-[260px] h-[calc(100vh-(54px+54px+2px))] md:h-[calc(100vh-(54px+54px+2px))] xl:h-[calc(100vh-(84px+84px+6px))] flex flex-col justify-center items-center bg-backgroundVariants-50'>
-          {/* <div className='relative w-[210.6px] h-[84px] xl:w-[351px] xl:h-[140px]'>
-            <Image
-              src='/img/car.svg'
-              alt='no-review'
-              fill
-              style={{ objectFit: 'cover' }}
-            />
-          </div>
-          <div className='pt-[24px] xl:pt-[32px] text-gray-400 text-[16px] xl:text-[24px]'>
-            작성 가능한 리뷰가 없어요
-          </div> */}
           <NoData text='작성 가능한 리뷰가 없어요' />
         </div>
       )}

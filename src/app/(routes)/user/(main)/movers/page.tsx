@@ -10,6 +10,7 @@ import MoverList from '@/components/movers/MoverList';
 import MoverFilters from '@/components/movers/MoverFilters';
 import FavoriteMovers from '@/components/movers/FavoriteMovers';
 import useUserProfile from '@/hooks/auth/useUserProfile';
+import { useToaster } from '@/hooks/useToaster';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 
@@ -23,6 +24,7 @@ export default function Page() {
   const [favoriteMovers, setFavoriteMovers] = useState<Mover[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { data: profile } = useUserProfile();
+  const toast = useToaster();
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
@@ -31,21 +33,27 @@ export default function Page() {
     }
 
     if (searchQuery.length < 2) {
-      setError('검색어는 2자 이상이어야 합니다.');
+      // setError('검색어는 2자 이상이어야 합니다.');
+      toast('warn', '검색어는 2자 이상이어야 합니다.');
       return;
     }
 
     try {
       const moversData = await searchMovers(searchQuery);
       setMovers(moversData);
+      setError(null);
     } catch (err: any) {
       console.error('검색 중 오류 발생:', err);
-      setError('기사님 검색 중 오류가 발생했습니다.');
+      // setError('기사님 검색 중 오류가 발생했습니다.');
+      toast('warn', '기사님 검색 중 오류가 발생했습니다.');
     }
   };
 
   // 목록 초기화
   const handleReset = () => {
+    setSelectedArea('지역');
+    setSelectedService('서비스');
+    setSelectedSort('reviews');
     fetchMovers();
     setSearchQuery('');
   };
@@ -60,7 +68,8 @@ export default function Page() {
       setMovers(moversData);
     } catch (err: any) {
       console.error('정렬 중 오류 발생:', err);
-      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+      // setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+      toast('warn', '기사님 목록을 불러오는 중 오류가 발생했습니다.');
     }
   };
 
@@ -83,7 +92,8 @@ export default function Page() {
       setFavoriteMovers(favoriteMoversData);
     } catch (err: any) {
       console.error('API 호출 오류:', err);
-      setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+      // setError('기사님 목록을 불러오는 중 오류가 발생했습니다.');
+      toast('warn', '기사님 목록을 불러오는 중 오류가 발생했습니다.');
     }
   };
 

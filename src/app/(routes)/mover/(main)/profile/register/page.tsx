@@ -74,6 +74,7 @@ export default function Page() {
 
   const isValid =
     experience !== undefined &&
+    experience >= 0 &&
     shortIntro.trim().length >= 8 &&
     description.trim().length >= 10 &&
     selectedMoveTypes.length > 0 &&
@@ -104,25 +105,17 @@ export default function Page() {
     );
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      router.replace('?');
-    }, 1000);
-  }, []);
-
   const toaster = useToaster();
 
   // 프로필 등록
   const onSubmit = async (data: FormData) => {
     if (!isValid) return; // 유효하지 않으면 제출 차단
     try {
-      console.log('Submitted data:', data);
-      const response = await createMoverProfile(data);
-      console.log('프로필 등록 성공', response);
+      await createMoverProfile(data);
       queryClient.invalidateQueries({ queryKey: ['userProfile'] }); // 프로필 정보 바로 반영
+      toaster('info', '프로필이 등록 되었습니다.');
       router.refresh();
     } catch (error: unknown) {
-      console.error('프로필 등록 실패:', error);
       if (typeof error === 'string') {
         toaster('warn', error); // errorMessage가 string이면 그대로 사용
       } else if (error instanceof Error) {
@@ -132,16 +125,24 @@ export default function Page() {
       }
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      toaster('info', '프로필을 등록해주세요');
+      router.replace('?');
+    }, 50);
+  }, []);
+
   return (
     <>
       <div className='flex justify-center h-screen items-start'>
         <div className='flex flex-col align-center items-center gap-[56px] sm:w-[375px] md:w-[744px] lg:w-[1400px] p-8'>
-          <div className='flex flex-col sm:items-center md:items-center xl:items-start sm:gap-[24px] xl:gap-[48px] '>
-            <div className='flex flex-col sm:gap-[16px] xl:gap-[32px] sm:w-[327px] xl:w-[640px]'>
+          <div className='flex flex-col gap-5 sm:items-center md:items-center xl:items-start sm:gap-[24px] xl:gap-[48px] '>
+            <div className='flex flex-col gap-4 sm:gap-[16px] xl:gap-[32px] sm:w-[327px] xl:w-[640px]'>
               <div className='sm:text-2lg md:text-2lg xl:text-3xl xl:font-semibold sm:font-bold'>
                 기사님 프로필 등록
               </div>
-              <div className='sm:text-xs xl:text-xl font-regular text-black-200 '>
+              <div className='text-xs sm:text-xs xl:text-xl font-regular text-black-200 '>
                 추가 정보를 입력하여 회원가입을 완료해주세요.
               </div>
             </div>
@@ -151,9 +152,9 @@ export default function Page() {
               onSubmit={handleSubmit(onSubmit)}
               className='flex flex-col gap-[48px]'
             >
-              <div className='flex sm:gap-4 sm:flex-col xl:items-start xl:flex-row xl:justify-between sm:items-center md:items-center xl:w-[1352px]'>
+              <div className='flex flex-col gap-3 sm:gap-4 sm:flex-col xl:items-start xl:flex-row xl:justify-between sm:items-center md:items-center xl:w-[1352px]'>
                 {/* 왼쪽 */}
-                <div className='flex flex-col sm:gap-5 xl:gap-8 sm:w-[327px] xl:w-[640px]'>
+                <div className='flex flex-col gap-4 sm:gap-5 xl:gap-8 sm:w-[327px] xl:w-[640px]'>
                   {/* 이미지 업로더 */}
                   <div className='flex flex-col gap-6 '>
                     <div className='w-auto text-xl font-semibold'>
@@ -182,7 +183,13 @@ export default function Page() {
                       placeholder='기사님의 경력을 입력해 주세요'
                       name='experience'
                       type='number'
-                      validation={{ required: '숫자만 입력해주세요.' }}
+                      validation={{
+                        required: '숫자를 입력해주세요.',
+                        min: {
+                          value: 0,
+                          message: '음수는 입력할 수 없습니다.',
+                        },
+                      }}
                       inputType='input'
                       styleVariant='primary'
                       inputVariant='form'
@@ -217,7 +224,7 @@ export default function Page() {
                   </div>
                 </div>
                 {/* 오른쪽 */}
-                <div className='flex flex-col sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
+                <div className='flex flex-col gap-3 sm:gap-5  xl:gap-8 sm:w-[327px] xl:w-[640px]'>
                   <div className='flex flex-col gap-4 text-xl'>
                     <div className='flex gap-1'>
                       <span className='sm:text-lg xl:text-xl font-semibold'>
@@ -285,7 +292,7 @@ export default function Page() {
                   backgroundColorType='gray'
                   borderColorsType='none'
                   type='submit'
-                  className={`sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] ${
+                  className={`w-full sm:w-[327px] sm:h-[54px] xl:w-[640px] xl:h-[64px] ${
                     isValid
                       ? 'bg-blue-500 cursor-pointer'
                       : 'bg-gray-300 cursor-not-allowed'
