@@ -382,7 +382,7 @@ export default function Page() {
         />
 
         {/* 모바일 하단 고정 버튼 */}
-        <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
+        <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-6 md:px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
           <div className='flex gap-2'>
             <CommonButton
               widthType='dynamic'
