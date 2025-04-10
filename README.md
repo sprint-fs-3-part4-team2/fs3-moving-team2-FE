@@ -18,7 +18,7 @@
 |------|---------|
 | 강대원| 
 | 김태훈|
-| 김현묵| <a href ="https://github.com/kimhyunmook" style="display:block;text-align:center;"><img src="https://github.com/user-attachments/assets/b5741cbb-23f1-4d32-84f3-820acc00953b" alt="깃허브" style="width:30px;" /></a>
+| 김현묵| <a href ="https://github.com/kimhyunmook" style="display:flex;align-items:center;justify-content:center;"><img src="https://github.com/user-attachments/assets/b5741cbb-23f1-4d32-84f3-820acc00953b" alt="깃허브" style="width:30px;" /></a>
 | 배진한|
 | 전준기|
 | 정유석|
