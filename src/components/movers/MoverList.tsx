@@ -49,7 +49,7 @@ export default function MoverList({ movers, onReset }: MoverListProps) {
               isFavorite={mover.isFavorite}
               favoriteCount={mover.favoriteCount ?? 0}
               isFavoriteMoverList={false}
-              description={mover.description}
+              description={mover.introduction}
             />
           </div>
         );
