@@ -41,10 +41,12 @@ export default function MoverFilters({
           <Area
             className={cn('w-[75px]')}
             dispatch={(value) => onAreaChange(value as string)}
+            currentValue={selectedArea}
           />
           <Service
             className={cn('w-[95px]')}
             dispatch={(value) => onServiceChange(value as string)}
+            currentValue={selectedService}
           />
         </div>
         <div className='flex items-center'>
