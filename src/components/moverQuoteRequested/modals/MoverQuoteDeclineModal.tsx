@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import ModalWrapper from '../../modal/ModalWrapper';
 import CustomerInfo from '../../common/customerInfo/templates/customerInfo';
@@ -12,11 +12,13 @@ import { useRejectQuoteByMoverMutation } from '@/hooks/useRejectQuoteByMoverMuta
 interface MoverQuoteDeclineModalProps {
   selectedCustomer: CustomerRequest | null;
   setShowDeclineModal: Dispatch<SetStateAction<boolean>>;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 export default function MoverQuoteDeclineModal({
   selectedCustomer,
   setShowDeclineModal,
+  setQuery,
 }: MoverQuoteDeclineModalProps) {
   const {
     register,
@@ -26,9 +28,9 @@ export default function MoverQuoteDeclineModal({
   } = useForm<FieldValues>({ mode: 'onChange' });
 
   const quoteCommentValue = watch('quoteComment') || '';
-  const queryClient = useQueryClient();
 
   const rejectMutation = useRejectQuoteByMoverMutation(() => {
+    setQuery(''); // 반려 후 검색어 초기화
     setShowDeclineModal(false);
   });
 
