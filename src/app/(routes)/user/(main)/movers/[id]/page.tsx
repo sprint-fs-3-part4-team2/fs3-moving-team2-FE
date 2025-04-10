@@ -7,6 +7,7 @@ import Image from 'next/image';
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import filledHeart from '@/public/icons/favorite/filled.svg';
 import redFilledHeart from '@/public/icons/favorite/red-filled.svg';
+import Loading from '@/app/loading';
 
 import {
   getMoverDetail,
@@ -361,11 +362,11 @@ export default function Page() {
   }, [error]);
 
   if (!moverDetail) {
-    return <div>기사를 찾을 수 없습니다.</div>;
+    return <Loading />;
   }
 
   if (reviewsError) {
-    return <div>리뷰 목록을 불러오는 중 오류가 발생했습니다.</div>;
+    return <Loading />;
   }
 
   return (
