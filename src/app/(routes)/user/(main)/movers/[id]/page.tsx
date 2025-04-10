@@ -56,6 +56,7 @@ export default function Page() {
     useState<boolean>(false);
   const [showSpecificQuoteModal, setShowSpecificQuoteModal] =
     useState<boolean>(false);
+  const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
 
   // 에러 상태
   const [error, setError] = useState<ErrorState>(null);
@@ -96,6 +97,15 @@ export default function Page() {
     return true;
   };
 
+  // 프로필 등록 상태 체크
+  const checkProfileStatus = () => {
+    if (!profile?.isProfileRegistered) {
+      setShowProfileModal(true);
+      return false;
+    }
+    return true;
+  };
+
   // 찜하기 상태 체크
   const checkFavoriteStatus = async () => {
     try {
@@ -121,6 +131,10 @@ export default function Page() {
   // 찜하기 토글
   const handleToggleFavorite = async () => {
     if (!checkLoginStatus()) return;
+    if (!profile?.isProfileRegistered) {
+      setShowProfileModal(true);
+      return;
+    }
 
     try {
       const response = await toggleFavorite(moverId, isFavorite);
@@ -188,6 +202,10 @@ export default function Page() {
   // 지정 견적 요청 핸들러
   const handleQuoteRequest = async (): Promise<void> => {
     if (!checkLoginStatus()) return;
+    if (!profile?.isProfileRegistered) {
+      setShowProfileModal(true);
+      return;
+    }
 
     try {
       const quoteResponse = await checkGeneralQuoteExists();
@@ -221,6 +239,11 @@ export default function Page() {
 
   // 지정 견적 요청 확인
   const confirmSpecificQuote = async (): Promise<void> => {
+    if (!profile?.isProfileRegistered) {
+      setShowProfileModal(true);
+      return;
+    }
+
     try {
       const response = await createTargetedQuoteRequest(moverId);
 
@@ -230,7 +253,6 @@ export default function Page() {
           prev ? { ...prev, isCustomQuote: true } : null,
         );
         setShowSpecificQuoteModal(false);
-        // alert('지정 견적 요청이 완료되었습니다.');
         toast('info', '지정 견적 요청이 완료되었습니다.');
       }
     } catch (error: any) {
@@ -270,11 +292,9 @@ export default function Page() {
           setShowLoginModal(true);
           break;
         case 'QUOTE_ALREADY_EXISTS':
-          // alert(error.message);
           toast('warn', error.message);
           break;
         default:
-          // alert(error.message);
           toast('warn', error.message);
       }
       setError(null);
@@ -298,8 +318,10 @@ export default function Page() {
       try {
         const data = await getMoverDetail(moverId);
         setMoverDetail(data);
-        setIsFavorite(data.isFavorite);
-        setIsQuoteRequested(data.isCustomQuote);
+        // 프로필이 등록된 경우에만 찜하기 상태와 견적 상태를 확인
+        if (profile?.isProfileRegistered) {
+          await Promise.all([checkFavoriteStatus(), checkGeneralQuoteStatus()]);
+        }
       } catch (error: any) {
         setError({
           code: 'MOVER_DETAIL_ERROR',
@@ -311,25 +333,25 @@ export default function Page() {
     if (moverId) {
       fetchMoverDetail();
     }
-  }, [moverId]);
+  }, [moverId, profile?.isProfileRegistered]);
 
   // 프로필 변경 시 견적 상태 체크
   useEffect(() => {
-    if (profile) {
+    if (profile?.isProfileRegistered) {
       checkGeneralQuoteStatus();
     }
-  }, [profile]);
+  }, [profile?.isProfileRegistered]);
 
   // 페이지 초기화
   useEffect(() => {
     const initializePage = async () => {
-      if (profile) {
+      if (profile?.isProfileRegistered) {
         await Promise.all([checkGeneralQuoteStatus(), checkFavoriteStatus()]);
       }
     };
 
     initializePage();
-  }, [moverId, profile]);
+  }, [moverId, profile?.isProfileRegistered]);
 
   // 에러 상태 변경 시 처리
   useEffect(() => {
@@ -361,7 +383,7 @@ export default function Page() {
         </div>
 
         <MoverDetailSidebar
-          moverName={moverDetail.moverName}
+          moverName={moverDetail?.moverName}
           isFavorite={isFavorite}
           isQuoteRequested={isQuoteRequested}
           onToggleFavorite={handleToggleFavorite}
@@ -372,13 +394,16 @@ export default function Page() {
           showLoginModal={showLoginModal}
           showGeneralQuoteModal={showGeneralQuoteModal}
           showSpecificQuoteModal={showSpecificQuoteModal}
-          moverName={moverDetail.moverName}
+          showProfileModal={showProfileModal}
+          moverName={moverDetail?.moverName}
           onCloseLoginModal={() => setShowLoginModal(false)}
           onCloseGeneralQuoteModal={() => setShowGeneralQuoteModal(false)}
           onCloseSpecificQuoteModal={() => setShowSpecificQuoteModal(false)}
+          onCloseProfileModal={() => setShowProfileModal(false)}
           onLogin={goToLogin}
           onGeneralQuote={goToGeneralQuote}
           onSpecificQuote={confirmSpecificQuote}
+          onProfile={() => router.push('/user/profile/register')}
         />
 
         {/* 모바일 하단 고정 버튼 */}
