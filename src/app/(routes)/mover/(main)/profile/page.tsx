@@ -11,7 +11,8 @@ import { useRouter } from 'next/navigation';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
 import Loading from '@/app/loading';
-import HiddenButton from '@/components/moverMypage/hiddenButton';
+import HiddenButton from '@/components/moverMypage/hiddenButtonComponent';
+
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 
