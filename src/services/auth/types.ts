@@ -41,6 +41,7 @@ export interface AuthResponse {
   phoneNumber: string;
   userType: 'customer' | 'mover';
   profile: profile | null;
+  isProfileRegistered: boolean;
 }
 
 export type MyProfile = AuthResponse;

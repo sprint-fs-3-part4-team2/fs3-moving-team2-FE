@@ -38,7 +38,7 @@ export default function MoverDetailContent({
 
       <div className='gap-0 px-6'>
         <PageHeader>서비스 가능 지역</PageHeader>
-        <div className='flex gap-3'>
+        <div className='flex flex-wrap gap-3'>
           {moverDetail.regions.map((region, index) => (
             <ServiceBadge
               key={index}
