@@ -18,7 +18,7 @@
 |------|---------|
 | 강대원| 
 | 김태훈|
-| 김현묵|
+| 김현묵| <a href ="https://github.com/kimhyunmook">![Image](https://github.com/user-attachments/assets/b5741cbb-23f1-4d32-84f3-820acc00953b)</a>
 | 배진한|
 | 전준기|
 | 정유석|
@@ -40,3 +40,11 @@
 ---
 
 ## 팀원별 구현 기능 상세
+
+
+### 김현묵
+- dropdown Components 제작
+- select-role 페이지 제작
+- 토스트 메세지 ui 및 hook 제작
+- 기사님 기본 정보 수정 페이지  제작
+- 미들웨어 세팅
