@@ -15,6 +15,7 @@ export default function ToasterContainer({ children }: PropsWithChildren) {
     <div
       className={cn(
         'fixed flex flex-col-reverse gap-6 justify-center items-center top-16 left-1/2 -translate-x-1/2 pointer-events-none transition-[height] duration-500 ease-in-out z-[1000]',
+        'w-4/5 md:w-auto',
       )}
     >
       {children}
