@@ -25,7 +25,7 @@ export default function MoverDetailHeader({
         ratingCount={moverDetail.ratingCount}
         isFavorite={moverDetail.isFavorite}
         isFavoriteMoverList={false}
-        description={moverDetail.description}
+        description={moverDetail.introduction}
       />
       {/* 모바일 */}
       <div className='flex-col gap-10 pl-6 flex md:flex xl:hidden'>
