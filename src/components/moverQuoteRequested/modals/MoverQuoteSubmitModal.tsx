@@ -1,22 +1,23 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import CommonButton from '../../common/commonBtn/commonBtn';
 import ModalWrapper from '../../modal/ModalWrapper';
 import CustomerInfo from '../../common/customerInfo/templates/customerInfo';
 import FormInput from '../../common/inputSection/atoms/customInput/inputs/formInput';
 import { CustomerRequest } from '@/services/types/allQuotes/allQuoteRequests.types';
-import { useQueryClient } from '@tanstack/react-query';
 import { useSubmitQuoteByMoverMutation } from '@/hooks/useSubmitQuoteByMoverMutation';
 import { useSessionStorage } from '@/hooks/useStorage';
 
 interface MoverQuoteSubmitModalProps {
   selectedCustomer: CustomerRequest | null;
   setShowSubmitModal: Dispatch<SetStateAction<boolean>>;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 export default function MoverQuoteSubmitModal({
   selectedCustomer,
   setShowSubmitModal,
+  setQuery,
 }: MoverQuoteSubmitModalProps) {
   const draftStorageKey = selectedCustomer?.quoteId
     ? `quote_draft_${selectedCustomer.quoteId}`
@@ -46,9 +47,9 @@ export default function MoverQuoteSubmitModal({
   }, [draftStorageKey, quotePrice, quoteComment]);
 
   const submitMutation = useSubmitQuoteByMoverMutation(() => {
-    // 제출 성공 시 임시 저장 데이터 삭제
-    removeDraftData();
-    setShowSubmitModal(false);
+    removeDraftData(); // 제출 성공 시 임시 저장 데이터 삭제
+    setQuery(''); // 제출 후 검색어 초기화
+    setShowSubmitModal(false); // 제출 후 모달 닫기
   });
 
   const onSubmit = (data: FieldValues) => {
