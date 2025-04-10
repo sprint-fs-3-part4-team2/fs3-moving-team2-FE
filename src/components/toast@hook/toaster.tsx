@@ -29,7 +29,7 @@ export function Toast({ type, message, onClick }: ToastProps) {
   return (
     <div
       className={cn(
-        'flex rounded-md text-white pt-[10px] pr-4 pb-[10px] pl-[12px] justify-center items-center gap-2 relative -top-2 opacity-0 transition-[top,opacity] duration-100 ease-in-out',
+        'flex rounded-md keep-all text-white pt-[10px] pr-4 pb-[10px] pl-[12px] justify-center items-center gap-2 relative -top-2 opacity-0 transition-[top,opacity] duration-100 ease-in-out',
         isMounted && 'top-0 opacity-1',
         type === 'info'
           ? 'bg-primary-blue-200'
