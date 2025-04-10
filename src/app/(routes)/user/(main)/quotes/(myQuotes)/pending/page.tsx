@@ -6,6 +6,7 @@ import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
 import Pagination from '@/components/pagination/molecule/pagination';
 import axiosInstance from '@/lib/axiosInstance';
 import NoData from '@/components/noData/NoData';
+import { useToaster } from '@/hooks/useToaster';
 
 interface Address {
   id: string;
@@ -100,6 +101,7 @@ interface MoverInfoTemplateProps {
 
 export default function Page() {
   const router = useRouter();
+  const toaster = useToaster();
   const [movers, setMovers] = useState<MoverInfoTemplateProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -182,16 +184,35 @@ export default function Page() {
   }, []);
 
   const handleConfirmClick = async (quoteId: string) => {
-    const response = await axiosInstance.post(
-      `/quote/confirm-quote/${quoteId}`,
-    );
-    if (response.status === 200) {
-      alert('견적이 확정되었습니다.');
-      setMovers((prevMovers) =>
-        prevMovers.filter((mover) => mover.quoteId !== quoteId),
+    try {
+      const response = await axiosInstance.post(
+        `/quote/confirm-quote/${quoteId}`,
       );
-    } else {
-      alert('견적 확정에 실패했습니다.');
+
+      if (response.status === 200) {
+        toaster('info', '견적이 확정되었습니다.');
+        setMovers((prevMovers) =>
+          prevMovers.filter((mover) => mover.quoteId !== quoteId),
+        );
+      } else {
+        toaster('warn', '견적 확정에 실패했습니다.');
+      }
+    } catch (error: any) {
+      console.error('Confirm Quote Error:', error);
+
+      const status = error?.response?.status;
+      const serverMessage = error?.response?.data?.message;
+
+      if (status === 409) {
+        toaster('warn', serverMessage || '이미 확정된 견적입니다.');
+      } else if (status === 404) {
+        toaster('warn', serverMessage || '견적 정보를 찾을 수 없습니다.');
+      } else {
+        toaster(
+          'warn',
+          serverMessage || '서버 오류로 인해 견적 확정에 실패했습니다.',
+        );
+      }
     }
   };
 
