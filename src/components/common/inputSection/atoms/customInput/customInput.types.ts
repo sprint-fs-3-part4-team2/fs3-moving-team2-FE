@@ -16,6 +16,7 @@ interface InputBaseProps {
 export interface SearchTypeProps extends InputBaseProps {
   inputVariant: 'search';
   onSearch: () => void;
+  value?: string;
 }
 
 export interface FormTypeProps<T extends FieldValues> extends InputBaseProps {

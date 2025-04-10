@@ -103,6 +103,7 @@ export default function RequestedQuotesPage() {
             styleVariant='secondary'
             inputVariant={'search'}
             onChange={(e) => setQuery(e.target.value)}
+            value={query}
           />
           <div className='flex justify-between items-center mt-6 mb-8'>
             <h3 className='font-semibold'>전체 {totalCustomerRequests}건</h3>
@@ -146,12 +147,14 @@ export default function RequestedQuotesPage() {
         <MoverQuoteSubmitModal
           selectedCustomer={selectedCustomer}
           setShowSubmitModal={setShowSubmitModal}
+          setQuery={setQuery}
         />
       )}
       {showDeclineModal && (
         <MoverQuoteDeclineModal
           selectedCustomer={selectedCustomer}
           setShowDeclineModal={setShowDeclineModal}
+          setQuery={setQuery}
         />
       )}
       {showFilterModal && (

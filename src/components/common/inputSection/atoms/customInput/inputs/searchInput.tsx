@@ -2,7 +2,7 @@ import cn from '@/utils/cn';
 import { SearchTypeProps } from '../customInput.types';
 import { INPUT_STYLES } from '../constants';
 import SearchButton from '../buttons/searchButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function SearchInput({
   placeholder,
@@ -10,8 +10,15 @@ export default function SearchInput({
   styleVariant: inputStyle,
   inputClassName,
   onChange,
+  value, // 부모에서 값을 전달받는 경우
 }: SearchTypeProps) {
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>(value || ''); // 부모에서 값을 전달받지 않으면 내부 상태로 관리
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setSearchValue(value);
+    }
+  }, [value]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
