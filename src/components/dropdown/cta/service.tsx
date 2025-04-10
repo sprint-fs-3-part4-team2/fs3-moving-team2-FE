@@ -7,6 +7,7 @@ export default function Service({
   className,
   isOpen,
   dispatch,
+  currentValue,
 }: Omit<DropdownCtaProps, 'data'>) {
   return (
     <DropdownCta
@@ -14,6 +15,7 @@ export default function Service({
       className={cn(className && className)}
       isOpen={isOpen}
       labelName='서비스'
+      currentValue={currentValue}
       data={service}
       dispatch={dispatch}
       dropClassName={cn('max-h-[142px] lg:max-h-[256px]')}
