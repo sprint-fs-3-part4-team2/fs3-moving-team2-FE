@@ -70,8 +70,8 @@ export default function MyPage() {
 
   return (
     <div>
-      <div className='max-w-[1920px]'></div>
-      <div className='max-w-[1400px] mx-auto w-full'>
+      <div className='max-w-[1920px] '></div>
+      <div className='max-w-[1400px] mx-auto w-full px-4 sm:px-6 md:px-8 xl:px-[72px]'>
         <MoverStatInfo
           imageUrl={profileData.imageUrl}
           rating={reviewsData.averageRating}

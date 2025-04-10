@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import cn from '@/utils/cn';
 import MoverStat from '@/components/common/moverStat/organisms/moverStat';
 import ProfileImage from '@/components/common/shared/atoms/profileImage';
@@ -27,7 +26,6 @@ export default function MoverStatInfo({
   onEditClick,
   onInfoEdit,
 }: MoverProfileProps) {
-  const router = useRouter();
   return (
     <div className=''>
       <PageHeader>마이페이지</PageHeader>
