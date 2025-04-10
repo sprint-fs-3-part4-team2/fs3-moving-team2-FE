@@ -82,12 +82,18 @@ export default function MoverFilters({
 
         <div className='flex flex-col w-full gap-4'>
           <p className='text-2lg font-semibold'>지역을 선택해주세요</p>
-          <Area dispatch={(value) => onAreaChange(value as string)} />
+          <Area
+            dispatch={(value) => onAreaChange(value as string)}
+            currentValue={selectedArea}
+          />
         </div>
 
         <div className='flex flex-col w-full gap-4'>
           <p className='text-2lg font-semibold'>어떤 서비스가 필요하세요?</p>
-          <Service dispatch={(value) => onServiceChange(value as string)} />
+          <Service
+            dispatch={(value) => onServiceChange(value as string)}
+            currentValue={selectedService}
+          />
         </div>
       </div>
     </div>

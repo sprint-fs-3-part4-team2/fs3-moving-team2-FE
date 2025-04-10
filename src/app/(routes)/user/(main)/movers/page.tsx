@@ -51,6 +51,9 @@ export default function Page() {
 
   // 목록 초기화
   const handleReset = () => {
+    setSelectedArea('지역');
+    setSelectedService('서비스');
+    setSelectedSort('reviews');
     fetchMovers();
     setSearchQuery('');
   };

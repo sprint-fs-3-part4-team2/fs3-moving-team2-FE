@@ -40,6 +40,7 @@ export interface DropdownCtaProps
   allbtn?: boolean;
   border?: boolean;
   labelName?: string;
+  currentValue?: string;
 }
 
 export function DropdownCta({
@@ -53,6 +54,7 @@ export function DropdownCta({
   allbtn = true,
   name,
   labelName = '전체',
+  currentValue,
 }: DropdownCtaProps) {
   const [open, setOpen] = useState<boolean>(isOpen || false);
   const [value, setValue] = useState<string>(
@@ -82,6 +84,13 @@ export function DropdownCta({
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (currentValue !== undefined) {
+      setValue(currentValue);
+    }
+  }, [currentValue]);
+
   return (
     <div
       className={cn(
