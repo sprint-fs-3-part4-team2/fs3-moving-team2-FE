@@ -30,6 +30,19 @@ export default function SideNavigationBar({
     }
   }, [pathname, setIsOpen]);
 
+  // 사이드바 열릴 때 body 스크롤 방지
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   return (
     <div>
       {isOpen && (
