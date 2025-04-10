@@ -11,9 +11,9 @@ import { useRouter } from 'next/navigation';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
 import Loading from '@/app/loading';
+import HiddenButton from '@/components/moverMypage/buttonComponent';
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
-import HiddenButton from '@/components/moverMypage/buttonComponent';
 
 export default function MyPage() {
   const [currentPage, setCurrentPage] = useState(1);
