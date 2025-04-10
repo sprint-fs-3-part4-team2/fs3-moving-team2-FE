@@ -7,6 +7,7 @@ export default function Area({
   className,
   isOpen,
   dispatch,
+  currentValue,
 }: Omit<DropdownCtaProps, 'data'>) {
   return (
     <DropdownCta
@@ -16,6 +17,7 @@ export default function Area({
       data={area}
       dispatch={dispatch}
       labelName='지역'
+      currentValue={currentValue}
       dropClassName={cn(
         'flex overflow-auto max-h-[180px]',
         'w-[150px] xl:w-full xl:max-h-[320px]',

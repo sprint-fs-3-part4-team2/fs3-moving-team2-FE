@@ -21,6 +21,7 @@ export interface Mover {
   favoriteCount?: number;
   isFavoriteMoverList?: boolean;
   description?: string;
+  introduction?: string;
 }
 
 export interface MoverDetail extends Mover {
