@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
 import Loading from '@/app/loading';
+import HiddenButton from '@/components/moverMypage/hiddenButtonComponent';
+
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
 
@@ -70,8 +72,8 @@ export default function MyPage() {
 
   return (
     <div>
-      <div className='max-w-[1920px]'></div>
-      <div className='max-w-[1400px] mx-auto w-full'>
+      <div className='max-w-[1920px] '></div>
+      <div className='max-w-[1400px] mx-auto w-full px-4 sm:px-6 md:px-8 xl:px-[72px]'>
         <MoverStatInfo
           imageUrl={profileData.imageUrl}
           rating={reviewsData.averageRating}
@@ -89,7 +91,9 @@ export default function MyPage() {
           onEditClick={() => router.push('/mover/profile/edit')}
           onInfoEdit={() => router.push('/mover/info/edit')}
         />
-
+        <div>
+          <HiddenButton />
+        </div>
         <div className='border-t border-gray-300 my-10 '></div>
 
         <RatingStat
