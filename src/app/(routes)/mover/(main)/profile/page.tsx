@@ -13,6 +13,7 @@ import RatingStat from '@/components/common/ratingStat/templates/ratingStat';
 import Loading from '@/app/loading';
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 export type MovingTypeValue = (typeof MOVING_TYPES)[MovingTypeKey];
+import HiddenButton from '@/components/moverMypage/buttonComponent';
 
 export default function MyPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,7 +90,9 @@ export default function MyPage() {
           onEditClick={() => router.push('/mover/profile/edit')}
           onInfoEdit={() => router.push('/mover/info/edit')}
         />
-
+        <div>
+          <HiddenButton />
+        </div>
         <div className='border-t border-gray-300 my-10 '></div>
 
         <RatingStat

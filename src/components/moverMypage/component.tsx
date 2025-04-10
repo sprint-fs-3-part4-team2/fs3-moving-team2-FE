@@ -31,7 +31,16 @@ export default function MoverStatInfo({
       <PageHeader>마이페이지</PageHeader>
       <div className='bg-background-100 border border-grayscale-100 p-[24px] rounded-[16px]'>
         <div className='flex justify-between gap-y-[24px] '>
-          <div className='flex flex-col'>
+          <div>
+            <ProfileImage
+              imageUrl={imageUrl}
+              className={cn(
+                'flex md:hidden w-[46px] h-[46px] ',
+                !isFavoriteMoverList && 'xl:w-[56px] xl:h-[56px] ',
+              )}
+            />
+          </div>
+          <div className='w-full flex flex-col px-[16px]'>
             <MoverName
               moverName={moverName}
               sizeVariant='primary'
@@ -40,7 +49,7 @@ export default function MoverStatInfo({
               <span>{introduction}</span>
             </div>
           </div>
-          <div className='flex gap-[16px] w-[576px] '>
+          <div className='hidden md:flex gap-[16px] w-[576px]'>
             <CommonButton
               widthType='half'
               heightType='secondary'
@@ -97,13 +106,13 @@ export default function MoverStatInfo({
           <ProfileImage
             imageUrl={imageUrl}
             className={cn(
-              'w-[46px]  h-[46px]',
+              'w-[46px]  h-[46px] hidden md:flex',
               !isFavoriteMoverList &&
                 'md:w-[46px] xl:w-[56px] md:h-[46px] xl:h-[56px]',
             )}
           />
           <div className='flex flex-col gap-2 w-full border-line-200'>
-            <div className='flex justify-between items-center'>
+            <div className='flex flex-col sm:flex-row justify-between items-center gap-2'>
               <MoverStat
                 rating={rating}
                 ratingCount={ratingCount}
@@ -123,15 +132,15 @@ export default function MoverStatInfo({
                 }
               />
             </div>
-            <div className='flex flex-row items-center gap-4'>
+            <div className='flex flex-col sm:flex-row items-start sm:items-center gap-4'>
               <div className='flex items-center space-x-2'>
                 <ListInfoTitle>제공 서비스</ListInfoTitle>
-                <span className='font-medium'>{movingType} </span>
+                <span className='font-medium'>{movingType}</span>
               </div>
-              <span className='text-gray-300'>|</span>
+              <span className='text-gray-300 hidden sm:inline'>|</span>
               <div className='flex items-center space-x-2'>
                 <ListInfoTitle>지역</ListInfoTitle>
-                <span className='font-medium'>{[regions]}</span>
+                <span className='font-medium'>{regions}</span>
               </div>
             </div>
           </div>
