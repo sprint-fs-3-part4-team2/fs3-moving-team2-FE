@@ -59,7 +59,7 @@
    스토리북을 통해 사용성의 편리함을 제공
  <img width="1622" alt="스크린샷 2025-04-14 오전 10 28 00" src="https://github.com/user-attachments/assets/018616af-afa2-4ad7-a3e8-d58357b5a166" />
 <img width="1097" alt="스크린샷 2025-04-14 오전 10 28 42" src="https://github.com/user-attachments/assets/a60c29f5-9d32-4933-be2f-fbcfed6b25b7" />
-widthType, heightType, backgroundColorType, textColorType, borderColorsType, children 을 통해 자유롭게 커스텀 가능
+- widthType, heightType, backgroundColorType, textColorType, borderColorsType, children 을 통해 자유롭게 커스텀 가능
 
 <img width="1259" alt="스크린샷 2025-04-14 오전 10 30 21" src="https://github.com/user-attachments/assets/2add30b9-a815-416a-b0b8-d80dc06faffc" />
 <img width="795" alt="스크린샷 2025-04-14 오전 10 30 54" src="https://github.com/user-attachments/assets/1d487e3f-c41e-4769-a97e-cca867a5c575" />
