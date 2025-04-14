@@ -55,7 +55,7 @@
    - storybook
  
  - 공통 컴포넌트 분석 및 구현 
-   아토믹디자인패턴을 적용한 공통컴포넌트를 만들기 위한 회의 후 구현
+   아토믹디자인패턴을 적용한 공통컴포넌트를 만들기 위한 회의 후 구현,
    스토리북을 통해 사용성의 편리함을 제공
  <img width="1622" alt="스크린샷 2025-04-14 오전 10 28 00" src="https://github.com/user-attachments/assets/018616af-afa2-4ad7-a3e8-d58357b5a166" />
 <img width="1097" alt="스크린샷 2025-04-14 오전 10 28 42" src="https://github.com/user-attachments/assets/a60c29f5-9d32-4933-be2f-fbcfed6b25b7" />
@@ -71,7 +71,7 @@
 000" alt="스크린샷 2025-04-14 오전 10 35 45" src="https://github.com/user-attachments/assets/e5338206-c797-4dfa-8fcd-ad78f86600f3" />
 
    - 백엔드
-     API
+     API service, controller, routes
 
  - 기사님 마이페이지 
     - 프론트
@@ -79,7 +79,7 @@
 <img width="1003" alt="스크린샷 2025-04-14 오전 10 35 08" src="https://github.com/user-attachments/assets/9431234f-73fe-4f57-a430-39b183d68e1c" />
 
     -백엔드
-      API
+      API service, controller, routes
 
 ### 김현묵
 
