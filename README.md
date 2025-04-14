@@ -45,7 +45,39 @@
 
 
 ### 김태훈
+- 프론트엔드 프로젝트 세팅
+   프로젝트에 필요한 라이브러리와 프레임워크들을 설치 및 깃허브와 연동
+   - github
+   - tailwind.config
+   - global.css 
+   - prettier
+   - husky
+   - storybook
+ 
+ - 공통 컴포넌트 분석 및 구현 
+   아토믹디자인패턴을 적용한 공통컴포넌트를 만들기 위한 회의 후 구현
+   스토리북을 통해 사용성의 편리함을 제공
+ <img width="1622" alt="스크린샷 2025-04-14 오전 10 28 00" src="https://github.com/user-attachments/assets/018616af-afa2-4ad7-a3e8-d58357b5a166" />
+<img width="1097" alt="스크린샷 2025-04-14 오전 10 28 42" src="https://github.com/user-attachments/assets/a60c29f5-9d32-4933-be2f-fbcfed6b25b7" />
+<img width="1259" alt="스크린샷 2025-04-14 오전 10 30 21" src="https://github.com/user-attachments/assets/2add30b9-a815-416a-b0b8-d80dc06faffc" />
+<img width="795" alt="스크린샷 2025-04-14 오전 10 30 54" src="https://github.com/user-attachments/assets/1d487e3f-c41e-4769-a97e-cca867a5c575" />
 
+ - 작성된 리뷰 페이지
+   - 프론트
+     UI작업, TanstackQuery를 통한 상태관리, 반응형 페이지, API
+<img width="1<img width="927" alt="스크린샷 2025-04-14 오전 10 36 28" src="https://github.com/user-attachments/assets/0c6e8767-1686-4479-a703-341f5618a947" />
+000" alt="스크린샷 2025-04-14 오전 10 35 45" src="https://github.com/user-attachments/assets/e5338206-c797-4dfa-8fcd-ad78f86600f3" />
+
+   - 백엔드
+     API
+
+ - 기사님 마이페이지 
+    - 프론트
+      UI작업, TanstackQuery를 통한 상태관리, 반응형 페이지, API
+<img width="1003" alt="스크린샷 2025-04-14 오전 10 35 08" src="https://github.com/user-attachments/assets/9431234f-73fe-4f57-a430-39b183d68e1c" />
+
+    -백엔드
+      API
 
 ### 김현묵
 
