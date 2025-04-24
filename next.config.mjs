@@ -8,8 +8,9 @@ const nextConfig = {
       },
     ];
   },
-  // reactStrictMode: false, // Strict Mode 비활성화
+  reactStrictMode: false, // Strict Mode 비활성화
   images : {
+    domains: ['moving-app.site', 'd3h2ixicz4w2p.cloudfront.net'],
     remotePatterns : [
         {
             protocol : 'https',
@@ -18,6 +19,21 @@ const nextConfig = {
             pathname : '/**',
         }
     ]
+  },
+
+  // 보안 헤더 
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          }
+        ]
+      },
+    ];
   }
 };
 
