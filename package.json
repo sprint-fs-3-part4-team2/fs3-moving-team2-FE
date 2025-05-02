@@ -34,7 +34,7 @@
     "esbuild": "^0.25.2",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.479.0",
-    "next": "14.2.24",
+    "next": "14.2.25",
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
