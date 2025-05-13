@@ -1,3 +1,4 @@
+import { getCSRFTokenFromCookie } from '@/utils/getCSRFTokenFromCookie';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -23,6 +24,25 @@ const onRefreshError = (error: Error) => {
   refreshSubscribers.forEach((callback) => callback(error));
   refreshSubscribers = [];
 };
+
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    let csrfToken = getCSRFTokenFromCookie();
+    if (!csrfToken) {
+      await fetch('/api/csrf-token', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      csrfToken = getCSRFTokenFromCookie();
+    }
+    if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken;
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 axiosInstance.interceptors.response.use(
   async (response) => {
