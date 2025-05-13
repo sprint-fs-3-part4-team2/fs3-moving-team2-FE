@@ -12,6 +12,7 @@ export async function GET() {
     sameSite: 'strict',
     maxAge: 1000 * 60 * 5,
     path: '/',
+    domain: process.env.COOKIE_DOMAIN,
   });
 
   return response;
