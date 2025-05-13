@@ -13,4 +13,5 @@ export const WARNING_MESSAGES = {
   signUpEmail: '중복된 이메일이 존재합니다.', // error message
   signUpPhoneNumber: '중복된 전화번호가 존재합니다.', // error message
   signUpDefault: '고객/기사님 유형을 확인해주세요.', // default error message
+  invalidRequest: '잘못된 요청입니다.',
 } as const;
