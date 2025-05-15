@@ -18,15 +18,16 @@ import {
 
 export default function Home(): JSX.Element {
   return (
-    <div className={cn(LANDING_PAGE_LAYOUT_STYLES)}>
-      <h1 className={cn(LANDING_DESCRIPTION_STYLES)}>
-        원하는 이사 서비스를 요청하고 견적을 받아보세요
-      </h1>
+    <main className={cn(LANDING_PAGE_LAYOUT_STYLES)}>
+      <section>
+        <h1 className={cn(LANDING_DESCRIPTION_STYLES)}>
+          원하는 이사 서비스를 요청하고 견적을 받아보세요
+        </h1>
+      </section>
 
       {/* Main Grid */}
-      <div className={cn(GRID_BOX_STYLES)}>
+      <section className={cn(GRID_BOX_STYLES)}>
         {/* 세로 박스 */}
-
         <div
           className={cn(
             LANDING_CARDS_COMMON_STYLES,
@@ -102,7 +103,7 @@ export default function Home(): JSX.Element {
             />
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
