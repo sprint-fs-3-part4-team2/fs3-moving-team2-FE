@@ -35,7 +35,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const commitMessage = context.payload.head_commit?.message || context.payload.pull_request?.title || "N/A";
+            const { data: commit } = await github.rest.repos.getCommit({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: context.sha
+            });
+            
+            const commitMessage = commit.commit.message;
             const commitHash = context.sha.substring(0,7);
             const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha}`;
 
@@ -58,7 +64,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const commitMessage = context.payload.head_commit?.message || context.payload.pull_request?.title || "N/A";
+            const { data: commit } = await github.rest.repos.getCommit({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: context.sha
+            });
+            
+            const commitMessage = commit.commit.message;
             const commitHash = context.sha.substring(0,7);
             const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha}`;
 
