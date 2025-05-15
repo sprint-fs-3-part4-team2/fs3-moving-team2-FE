@@ -43,7 +43,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✅ 빌드,단위 테스트 성공!
+              body: `✅ 빌드 테스트 성공!
 
             📝 **커밋 정보**
             - **메시지**: ${commitMessage}
@@ -66,7 +66,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `❌ 빌드,단위 테스트 실패!
+              body: `❌ 빌드 테스트 실패!
 
             📝 **커밋 정보**
             - **메시지**: ${commitMessage}
