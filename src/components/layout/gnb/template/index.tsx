@@ -37,7 +37,7 @@ export default function GNB() {
     <header className={GNB_STYLES}>
       <GNBLayout>
         <div className={GNB_LOGO_MENU_STYLES}>
-          <GNBLogo isAuthorized={true} />
+          <GNBLogo />
           <GNBMenu userType={userType} />
         </div>
         {isFetched && (
