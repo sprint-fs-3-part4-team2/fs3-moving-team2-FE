@@ -97,15 +97,6 @@ export default function Page() {
     return true;
   };
 
-  // 프로필 등록 상태 체크
-  const checkProfileStatus = () => {
-    if (!profile?.isProfileRegistered) {
-      setShowProfileModal(true);
-      return false;
-    }
-    return true;
-  };
-
   // 찜하기 상태 체크
   const checkFavoriteStatus = async () => {
     try {
@@ -131,7 +122,7 @@ export default function Page() {
   // 찜하기 토글
   const handleToggleFavorite = async () => {
     if (!checkLoginStatus()) return;
-    if (!profile?.isProfileRegistered) {
+    if (!profile?.profile) {
       setShowProfileModal(true);
       return;
     }
