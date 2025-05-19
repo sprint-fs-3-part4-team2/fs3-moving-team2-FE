@@ -11,6 +11,7 @@ import MoverFilters from '@/components/movers/MoverFilters';
 import FavoriteMovers from '@/components/movers/FavoriteMovers';
 import useUserProfile from '@/hooks/auth/useUserProfile';
 import { useToaster } from '@/hooks/useToaster';
+import { useQuery } from '@tanstack/react-query';
 
 export type MovingTypeKey = keyof typeof MOVING_TYPES;
 
