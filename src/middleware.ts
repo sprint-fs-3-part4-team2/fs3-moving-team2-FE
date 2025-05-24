@@ -10,6 +10,7 @@ import type { NextRequest } from 'next/server';
 import { verifyToken } from './lib/server/auth/jwt';
 import {
   handleTokenRefresh,
+  isAuthPath,
   isVisitorAllowedPath,
 } from './lib/server/auth/utils';
 import { PROTECT } from './lib/server/auth/constants';
@@ -18,22 +19,26 @@ import { CustomJWTPayload } from './lib/server/auth/types';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const visitorAllowed = isVisitorAllowedPath(pathname);
-  if (visitorAllowed) return NextResponse.next();
+  let response = NextResponse.next();
 
+  // 접근 가능한 경로일 경우 토큰 검증 없이 통과
+  if (visitorAllowed) return response;
+
+  const isAuthPathBool = isAuthPath(pathname);
   const token = request.cookies.get('accessToken')?.value;
   const reToken = request.cookies.get('refreshToken')?.value;
   const verifiedAccessToken = token
     ? await verifyToken<CustomJWTPayload>(token)
     : null;
+  const loginUrl = new URL('/select-role', request.url);
+  loginUrl.searchParams.set('warn', 'login');
 
   if (!verifiedAccessToken && !reToken) {
-    return NextResponse.redirect(
-      new URL('/select-role?warn=login', request.url),
-    );
+    return NextResponse.redirect(loginUrl);
   }
 
-  let currentUserData: CustomJWTPayload | null = null;
-  let response = NextResponse.next();
+  let currentUserData: CustomJWTPayload | null =
+    verifiedAccessToken?.payload || null;
 
   // 토큰 리프레쉬
   if (!verifiedAccessToken && reToken) {
@@ -41,34 +46,35 @@ export async function middleware(request: NextRequest) {
       const refreshResult = await handleTokenRefresh(reToken);
       response = refreshResult.response;
       currentUserData = refreshResult.refreshedToken;
-      if (!currentUserData) {
-        return NextResponse.redirect(
-          new URL('/select-role?warn=login', request.url),
-        );
-      }
     } catch (error) {
       console.error('Token refresh failed:', error);
-      return NextResponse.redirect(
-        new URL('/select-role?warn=login', request.url),
-      );
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      redirectResponse.cookies.delete('refreshToken');
+      return redirectResponse;
     }
-  } else if (verifiedAccessToken) {
-    currentUserData = verifiedAccessToken.payload;
   }
 
   const roleId = currentUserData?.roleId;
   const type = currentUserData?.type;
 
+  // 프로필 등록이 필요할 때
   if (!roleId) {
     const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
-    return NextResponse.redirect(new URL(urlPath, request.url));
+    const redirectUrl = new URL(urlPath, request.url);
+    redirectUrl.searchParams.set('warn', 'profileRegister');
+    return NextResponse.redirect(redirectUrl);
   }
 
   const protectType = type === 'customer' ? PROTECT.CUSTOMER : PROTECT.MOVER;
-  const authUserProtected = protectType.some((path) => pathname.includes(path));
+  const authUserProtected = protectType.some((path) =>
+    pathname.startsWith(path),
+  );
 
-  if (authUserProtected) {
-    return NextResponse.redirect(new URL('/?warn=noAccess', request.url));
+  // 권한 없는 페이지 접근 또는 로그인한 상태에서 로그인/회원가입 페이지 이동 시
+  if (authUserProtected || (currentUserData && isAuthPathBool)) {
+    const redirectUrl = new URL('/', request.url);
+    redirectUrl.searchParams.set('warn', 'noAccess');
+    return NextResponse.redirect(redirectUrl);
   }
 
   return response;

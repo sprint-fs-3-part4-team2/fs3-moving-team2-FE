@@ -1,6 +1,7 @@
-export const VISITOR_ALLOWED_PATHS = [
+export const VISITOR_ALLOWED_PATHS = ['/user/movers'];
+
+export const AUTH_PATHS = [
   '/select-role',
-  '/user/movers',
   '/user/sign-in',
   '/user/sign-up',
   '/mover/sign-in',

@@ -1,4 +1,4 @@
-import { COOKIE_OPTIONS, VISITOR_ALLOWED_PATHS } from './constants';
+import { AUTH_PATHS, COOKIE_OPTIONS, VISITOR_ALLOWED_PATHS } from './constants';
 import { NextResponse } from 'next/server';
 import { jwtDecode } from 'jwt-decode';
 import { refreshToken } from './jwt';
@@ -40,4 +40,8 @@ export const isVisitorAllowedPath = (pathname: string) => {
   return VISITOR_ALLOWED_PATHS.some(
     (path) => pathname.startsWith(path) || pathname === '/',
   );
+};
+
+export const isAuthPath = (pathname: string) => {
+  return AUTH_PATHS.some((path) => pathname.startsWith(path));
 };
