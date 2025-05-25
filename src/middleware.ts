@@ -20,10 +20,11 @@ import { CustomJWTPayload } from './lib/server/auth/types';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isVisitorAllowedPath = checkVisitorAllowedPath(pathname);
+  const isApiPath = pathname.startsWith('/api');
   let response = NextResponse.next();
 
-  // 접근 가능한 경로일 경우 토큰 검증 없이 통과
-  if (isVisitorAllowedPath) return response;
+  // 접근 가능한 경로거나 API 경로일 경우 토큰 검증 없이 통과
+  if (isVisitorAllowedPath || isApiPath) return response;
 
   const isAuthPath = checkAuthPath(pathname);
   const isProfileRegisterPath = checkProfileRegisterPath(pathname);
