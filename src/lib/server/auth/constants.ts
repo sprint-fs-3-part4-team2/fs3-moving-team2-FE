@@ -8,6 +8,11 @@ export const AUTH_PATHS = [
   '/mover/sign-up',
 ];
 
+export const PROFILE_REGISTER_PATHS = [
+  '/user/profile/register',
+  '/mover/profile/register',
+];
+
 export const PROTECT = {
   NO_USER: [
     '/mover/',

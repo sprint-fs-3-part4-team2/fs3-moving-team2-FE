@@ -1,4 +1,9 @@
-import { AUTH_PATHS, COOKIE_OPTIONS, VISITOR_ALLOWED_PATHS } from './constants';
+import {
+  AUTH_PATHS,
+  COOKIE_OPTIONS,
+  PROFILE_REGISTER_PATHS,
+  VISITOR_ALLOWED_PATHS,
+} from './constants';
 import { NextResponse } from 'next/server';
 import { jwtDecode } from 'jwt-decode';
 import { refreshToken } from './jwt';
@@ -36,12 +41,16 @@ export const handleTokenRefresh = async (reToken: string) => {
   return { response, refreshedToken };
 };
 
-export const isVisitorAllowedPath = (pathname: string) => {
+export const checkVisitorAllowedPath = (pathname: string) => {
   return VISITOR_ALLOWED_PATHS.some(
     (path) => pathname.startsWith(path) || pathname === '/',
   );
 };
 
-export const isAuthPath = (pathname: string) => {
+export const checkAuthPath = (pathname: string) => {
   return AUTH_PATHS.some((path) => pathname.startsWith(path));
+};
+
+export const checkProfileRegisterPath = (pathname: string) => {
+  return PROFILE_REGISTER_PATHS.some((path) => pathname.startsWith(path));
 };

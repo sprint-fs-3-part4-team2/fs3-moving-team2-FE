@@ -9,22 +9,24 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyToken } from './lib/server/auth/jwt';
 import {
+  checkProfileRegisterPath,
   handleTokenRefresh,
-  isAuthPath,
-  isVisitorAllowedPath,
+  checkAuthPath,
+  checkVisitorAllowedPath,
 } from './lib/server/auth/utils';
 import { PROTECT } from './lib/server/auth/constants';
 import { CustomJWTPayload } from './lib/server/auth/types';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const visitorAllowed = isVisitorAllowedPath(pathname);
+  const isVisitorAllowedPath = checkVisitorAllowedPath(pathname);
   let response = NextResponse.next();
 
   // 접근 가능한 경로일 경우 토큰 검증 없이 통과
-  if (visitorAllowed) return response;
+  if (isVisitorAllowedPath) return response;
 
-  const isAuthPathBool = isAuthPath(pathname);
+  const isAuthPath = checkAuthPath(pathname);
+  const isProfileRegisterPath = checkProfileRegisterPath(pathname);
   const token = request.cookies.get('accessToken')?.value;
   const reToken = request.cookies.get('refreshToken')?.value;
   const verifiedAccessToken = token
@@ -33,7 +35,8 @@ export async function middleware(request: NextRequest) {
   const loginUrl = new URL('/select-role', request.url);
   loginUrl.searchParams.set('warn', 'login');
 
-  if (!verifiedAccessToken && !reToken) {
+  // 로그인이 안된 상태로 로그인 페이지가 아닌 페이지 접근 시
+  if (!verifiedAccessToken && !reToken && !isAuthPath) {
     return NextResponse.redirect(loginUrl);
   }
 
@@ -58,7 +61,7 @@ export async function middleware(request: NextRequest) {
   const type = currentUserData?.type;
 
   // 프로필 등록이 필요할 때
-  if (!roleId) {
+  if (!roleId && !isAuthPath && !isProfileRegisterPath) {
     const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
     const redirectUrl = new URL(urlPath, request.url);
     redirectUrl.searchParams.set('warn', 'profileRegister');
@@ -71,7 +74,7 @@ export async function middleware(request: NextRequest) {
   );
 
   // 권한 없는 페이지 접근 또는 로그인한 상태에서 로그인/회원가입 페이지 이동 시
-  if (authUserProtected || (currentUserData && isAuthPathBool)) {
+  if (currentUserData && (authUserProtected || isAuthPath)) {
     const redirectUrl = new URL('/', request.url);
     redirectUrl.searchParams.set('warn', 'noAccess');
     return NextResponse.redirect(redirectUrl);
