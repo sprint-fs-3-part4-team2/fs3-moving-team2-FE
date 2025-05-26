@@ -6,6 +6,9 @@ import { MovingInfoProps } from '@/components/common/movingInfo/organisms/moving
 import ModalWrapper from '@/components/modal/ModalWrapper';
 import CancelRequestModalContent from '../../molecules/cancelRequestModalContent';
 import { useHandleModalOpen } from '@/hooks/useHandleModalOpen';
+import { memo } from 'react';
+
+const MemoizedMovingInfo = memo(MovingInfo);
 
 export default function QuoteRequestExist(
   props: MovingInfoProps & { id: string; status: string },
@@ -30,7 +33,7 @@ export default function QuoteRequestExist(
       )}
       <div className='w-full max-w-[1400px] px-6 md:px-[72.5px] xl:px-0 flex justify-between gap-[127px] mt-8 md:mt-8 xl:mt-10'>
         <div className='w-full'>
-          <MovingInfo {...props} />
+          <MemoizedMovingInfo {...props} />
         </div>
         <div className='w-[328px] hidden md:hidden xl:block'>
           <CommonButton
