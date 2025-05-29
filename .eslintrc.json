@@ -5,6 +5,9 @@
     "es6": true,
     "node": true
   },
+  "includes": [
+    "src/**/*.{ts,tsx}"
+  ],
   "extends": [
     "next",
     "next/core-web-vitals",
