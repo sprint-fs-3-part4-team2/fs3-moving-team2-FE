@@ -1,3 +1,5 @@
+import { queryClient } from '@/providers/queryProvider';
+import { getCSRFTokenFromCookie } from '@/utils/getCSRFTokenFromCookie';
 import axios from 'axios';
 
 const axiosInstance = axios.create({
@@ -24,6 +26,25 @@ const onRefreshError = (error: Error) => {
   refreshSubscribers = [];
 };
 
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    let csrfToken = getCSRFTokenFromCookie();
+    if (!csrfToken) {
+      await fetch('/api/csrf-token', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      csrfToken = getCSRFTokenFromCookie();
+    }
+    if (csrfToken) config.headers['X-CSRF-Token'] = csrfToken;
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
 axiosInstance.interceptors.response.use(
   async (response) => {
     if (
@@ -35,7 +56,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         const refreshResponse = await axiosInstance.post(
-          'auth/refresh-token',
+          '/auth/refresh-token',
           {},
           { withCredentials: true },
         );
@@ -47,6 +68,9 @@ axiosInstance.interceptors.response.use(
         return response;
       } catch (error) {
         console.error('토큰 리프레쉬 실패', error);
+        queryClient.invalidateQueries({
+          queryKey: ['profile'],
+        });
         refreshAttempted = false;
         return response;
       }
@@ -57,10 +81,10 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
 
     const skipRefreshUrls = [
-      'auth/sign-in/customer',
-      'auth/sign-in/mover',
-      'auth/sign-up/customer',
-      'auth/sign-up/mover',
+      '/auth/sign-in/customer',
+      '/auth/sign-in/mover',
+      '/auth/sign-up/customer',
+      '/auth/sign-up/mover',
     ];
     if (skipRefreshUrls.includes(originalRequest.url)) {
       return Promise.reject(error);

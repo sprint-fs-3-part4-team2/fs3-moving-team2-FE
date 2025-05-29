@@ -20,20 +20,9 @@ const nextConfig = {
         }
     ]
   },
-
-  // 보안 헤더 
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          }
-        ]
-      },
-    ];
+  env:{
+    JWT_SECRET: process.env.JWT_SECRET,
+    COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
   }
 };
 

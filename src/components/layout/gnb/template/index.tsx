@@ -34,10 +34,10 @@ export default function GNB() {
   }
 
   return (
-    <div className={GNB_STYLES}>
+    <header className={GNB_STYLES}>
       <GNBLayout>
         <div className={GNB_LOGO_MENU_STYLES}>
-          <GNBLogo isAuthorized={true} />
+          <GNBLogo />
           <GNBMenu userType={userType} />
         </div>
         {isFetched && (
@@ -49,6 +49,6 @@ export default function GNB() {
           />
         )}
       </GNBLayout>
-    </div>
+    </header>
   );
 }

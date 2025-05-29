@@ -56,7 +56,7 @@ export default function MoverDetailSidebar({
       </CommonButton>
 
       <HorizontalDivider />
-      <ShareButtons text='견적서 공유하기' />
+      <ShareButtons text='나만 알기엔 아쉬운 기사님인가요?' />
     </div>
   );
 }

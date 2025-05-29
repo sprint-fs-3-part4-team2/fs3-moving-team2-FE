@@ -7,153 +7,79 @@ export const config = {
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtDecode } from 'jwt-decode';
-import { UserType } from '@/components/authPage/common.types';
+import { verifyToken } from './lib/server/auth/jwt';
+import {
+  checkProfileRegisterPath,
+  handleTokenRefresh,
+  checkAuthPath,
+  checkVisitorAllowedPath,
+} from './lib/server/auth/utils';
+import { PROTECT } from './lib/server/auth/constants';
+import { CustomJWTPayload } from './lib/server/auth/types';
 
-const PROTECT = {
-  NO_USER: [
-    '/mover/',
-    '/user/quotes/request',
-    '/user/quotes/',
-    '/user/profile',
-    '/user/reviews',
-  ], // 로그인 안 했을 때
-  CUSTOMER: ['/mover/'], // 고객이 권한 없는 페이지
-  MOVER: ['/user/'], // 기사가 권한 없는 페이지
-};
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const isVisitorAllowedPath = checkVisitorAllowedPath(pathname);
+  const isApiPath = pathname.startsWith('/api');
+  let response = NextResponse.next();
 
-export function middleware(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
-  const { cookies, url, headers } = request;
-  const token = cookies.get('accessToken')?.value;
-  const reToken = cookies.get('refreshToken')?.value;
-  const requestHeaders = new Headers(headers);
-  const referer = request.headers.get('referer');
+  // 접근 가능한 경로거나 API 경로일 경우 토큰 검증 없이 통과
+  if (isVisitorAllowedPath || isApiPath) return response;
 
-  const res = NextResponse.next();
+  const isAuthPath = checkAuthPath(pathname);
+  const isProfileRegisterPath = checkProfileRegisterPath(pathname);
+  const token = request.cookies.get('accessToken')?.value;
+  const reToken = request.cookies.get('refreshToken')?.value;
+  const verifiedAccessToken = token
+    ? await verifyToken<CustomJWTPayload>(token)
+    : null;
+  const loginUrl = new URL('/select-role', request.url);
+  loginUrl.searchParams.set('warn', 'login');
 
-  const authQuery = '?warn=login';
-  const noAccess = '?warn=noAccess';
-
-  if (!process.env.NEXT_PUBLIC_SSR) {
-    console.error('🚨 [ERROR] SSR 환경 설정 필요');
-    // return res; // env 처리 전까지 주석
+  // 로그인이 안된 상태로 로그인 페이지가 아닌 페이지 접근 시
+  if (!verifiedAccessToken && !reToken && !isAuthPath) {
+    return NextResponse.redirect(loginUrl);
   }
 
-  // dev 환경에선 미들웨어 막기
-  // 미들웨어 사용안하실거면 여기 주석처리 해주세요
-  // if (process.env.NODE_ENV === 'development') return res;
+  let currentUserData: CustomJWTPayload | null =
+    verifiedAccessToken?.payload || null;
 
-  // 비 로그인
-  if (!token && !reToken) {
-    requestHeaders.delete(process.env.NEXT_PUBLIC_SSR || 'ssr-token');
-    const nouserProtected =
-      PROTECT.NO_USER.some((path) => pathname.startsWith(path)) &&
-      !pathname.includes('sign-in') &&
-      !pathname.includes('sign-up');
-
-    if (nouserProtected) {
-      const loginUrl = new URL('/select-role' + authQuery, url);
-      return NextResponse.redirect(loginUrl);
-    }
-    return res;
-  }
-
-  // 토큰 만료 시 엑세스 토큰 재발급 할 때 이동
-  if (reToken && !token) {
-    if (!token) {
-      if (referer)
-        setTimeout(() => {
-          return NextResponse.redirect(new URL(referer, url));
-        }, 1000);
-      else
-        setTimeout(() => {
-          return NextResponse.redirect(new URL('/', url));
-        }, 1000);
+  // 토큰 리프레쉬
+  if (!verifiedAccessToken && reToken) {
+    try {
+      const refreshResult = await handleTokenRefresh(reToken);
+      response = refreshResult.response;
+      currentUserData = refreshResult.refreshedToken;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      redirectResponse.cookies.delete('refreshToken');
+      return redirectResponse;
     }
   }
 
-  // 로그인
-  if (token) {
-    const decode = jwtDecode(token) as CustomJWTPayload;
-    const ssrToken = request.headers.get(
-      process.env.NEXT_PUBLIC_SSR || 'ssr-token',
-    );
-    if (!decode) return res;
+  const roleId = currentUserData?.roleId;
+  const type = currentUserData?.type;
 
-    const { roleId, type } = decode;
-    //ssr 용 token
-    if (roleId && !ssrToken)
-      requestHeaders.set(
-        process.env.NEXT_PUBLIC_SSR || 'ssr-token',
-        'accessToken=' + token,
-      );
-
-    //프로필 미등록 유저 블럭
-    if (
-      !roleId &&
-      !pathname.includes('/profile/register') &&
-      !pathname.includes('/user/movers') &&
-      !searchParams.has('register')
-    ) {
-      const referer = request.headers.get('referer');
-      const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
-      if (!referer) return NextResponse.redirect(new URL(urlPath, url));
-
-      if (referer.includes('/profile/register'))
-        return NextResponse.redirect(
-          new URL(urlPath + '?warn=profileRegister', url),
-        );
-
-      return NextResponse.redirect(new URL(urlPath + '?register', url));
-    }
-
-    // 프로필 등록 유저 블럭
-    if (roleId && pathname.includes('/profile/register')) {
-      if (type === 'customer') {
-        return NextResponse.redirect(
-          new URL('/user/quotes/request' + noAccess, url),
-        );
-      } else {
-        return NextResponse.redirect(
-          new URL('/mover/quotes/requested' + noAccess, url),
-        );
-      }
-    }
-
-    const protectType = type === 'customer' ? PROTECT.CUSTOMER : PROTECT.MOVER;
-    const authUserProtected = protectType.some((path) =>
-      pathname.includes(path),
-    );
-
-    if (
-      pathname.includes('sign-in') ||
-      pathname.includes('sign-up') ||
-      pathname.includes('select-role')
-    ) {
-      return NextResponse.redirect(new URL('/' + noAccess, url));
-    }
-
-    if (authUserProtected) {
-      if (referer) {
-        return NextResponse.redirect(new URL(referer + noAccess, url));
-      } else {
-        return NextResponse.redirect(new URL('/' + noAccess, url));
-      }
-    }
+  // 프로필 등록이 필요할 때
+  if (!roleId && !isAuthPath && !isProfileRegisterPath) {
+    const urlPath = `/${type === 'customer' ? 'user' : 'mover'}/profile/register`;
+    const redirectUrl = new URL(urlPath, request.url);
+    redirectUrl.searchParams.set('warn', 'profileRegister');
+    return NextResponse.redirect(redirectUrl);
   }
 
-  return NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-}
+  const protectType = type === 'customer' ? PROTECT.CUSTOMER : PROTECT.MOVER;
+  const authUserProtected = protectType.some((path) =>
+    pathname.startsWith(path),
+  );
 
-interface CustomJWTPayload {
-  userId: string;
-  type: UserType;
-  roleId: string;
-  iat: number;
-  exp: number;
+  // 권한 없는 페이지 접근 또는 로그인한 상태에서 로그인/회원가입 페이지 이동 시
+  if (currentUserData && (authUserProtected || isAuthPath)) {
+    const redirectUrl = new URL('/', request.url);
+    redirectUrl.searchParams.set('warn', 'noAccess');
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  return response;
 }

@@ -105,6 +105,47 @@
 
 ### 배진한
 
+#### Page
+##### SignIn, SignUp Page
+- **JWT 토큰을 쿠키에 저장**하여 사용자 인증 플로우 구현
+- **React Query의 Mutation**을 활용하여 서버 상태를 효과적으로 관리
+- **React Query를 사용**하여 사용자 데이터 패칭 및 비동기 상태를 최적화
+- **React Hook Form 라이브러리** 사용
+- 이름, 이메일, 비밀번호, 비밀번호 확인 필드에 대한 **유효성 검사 메시지 구현**
+- 모든 입력 필드의 유효성 검사를 통과하지 못한 상태에서 제출 버튼을 누르면, **미통과한 입력 필드로 포커스가 이동**하도록 구현
+- 제출 성공 및 실패에 따라 **Toast 팝업을 통해 알림을 표시**하도록 구현
+
+![moving-signIn-page-img](https://github.com/user-attachments/assets/8fea2cf8-084f-4a43-948d-0dc0eb1fdd0a)
+![moving-signUp-page-img](https://github.com/user-attachments/assets/cac15dd6-6cc8-4af0-8792-a977ee46113b)
+
+##### Landing Page
+![moving-landing-page-img](https://github.com/user-attachments/assets/8635c66c-37e0-4c83-93be-894d20ba2719)
+- 시각적 몰입감 및 사용자 경험 향상을 위한 페이지 **애니메이션**을 구상하여 적용
+
+#### 공통 컴포넌트
+- **아토믹 디자인 패턴**으로 구현
+- **Storybook**으로 공통 컴포넌트 문서화 및 팀원 접근성 고려
+- `useEscapeKey()` 커스텀 훅을 구현하여 모달 및 팝업 컴포넌트에서 `ESC` 키로 상태를 관리할 수 있도록 함
+
+##### GNB
+![moving-gnb-imb](https://github.com/user-attachments/assets/8d0ffded-3e32-40df-92cb-dc43a285713a)
+
+##### 알림
+![image](https://github.com/user-attachments/assets/42ac26c8-ca41-4d39-a96e-e5fb467acbc0)
+- 사용자 경험 향상을 위해 알림이 1개 이상 있을 때, 빨간 점 컴포넌트가 표시되도록 구현
+  
+###### storybook
+![moving-GNB-storybook-img](https://github.com/user-attachments/assets/8d2b512d-6d50-4fdb-9224-6919a799f614)
+
+##### Side Menu Bar
+![moving-sidebar-component](https://github.com/user-attachments/assets/880d8795-6f6c-45e2-bef4-fe3d501eafc9)
+
+##### 리뷰 상세
+![Card-list-review](https://github.com/user-attachments/assets/4b6040fe-ecab-45b3-91e1-f3b10f9c33ce)
+
+###### Storybook
+![moving-review-component-img](https://github.com/user-attachments/assets/3259185d-9a48-44fa-8939-7df3552cb010)
+
 
 ### 전준기
 
