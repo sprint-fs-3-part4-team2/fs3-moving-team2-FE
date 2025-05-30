@@ -12,8 +12,6 @@ export default function MoverStat({
   ratingCount,
   isFavoriteMoverInfo,
 }: MoverStatProps) {
-  const variant = isFavoriteMoverInfo ? 'secondary' : 'primary';
-
   return (
     <div
       className={cn(

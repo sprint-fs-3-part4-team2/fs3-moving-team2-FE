@@ -1,7 +1,6 @@
 'use client';
 
 import MoverInfo from '@/components/common/moverInfo/templates/moverInfo';
-import CommonBtn from '@/components/common/commonBtn/commonBtn';
 import HorizontalDivider from '@/components/common/customerInfo/atoms/horizontalDivider';
 import MovingInfo from '@/components/common/movingInfo/organisms/movingInfo';
 import PageHeader from '@/components/common/shared/atoms/pageHeader';
@@ -9,16 +8,13 @@ import ShareButtons from '@/components/common/ShareButtons';
 import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { useQuoteDetailByCustomerQuery } from '@/hooks/useQuoteDetailByCustomerQuery';
-import ModalWrapper from '@/components/modal/ModalWrapper';
-import ConfirmQuoteModalContent from '@/components/common/confirmQuoteModalContent';
-import { useHandleModalOpen } from '@/hooks/useHandleModalOpen';
 import useUserProfile from '@/hooks/auth/useUserProfile';
+import ModalContainer from './modalContainer';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const { data } = useQuoteDetailByCustomerQuery(id);
   const { data: profile } = useUserProfile();
-  const { modalOpen, openModal, closeModal } = useHandleModalOpen();
   const movingType = data?.request.moveType as keyof typeof MOVING_TYPES;
   const notMatched = data?.matched === false;
   const isRequestedStatus = data?.request.currentStatus === 'QUOTE_REQUESTED';
@@ -28,18 +24,6 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     data && (
       <div className='relative flex flex-col mx-auto w-full items-center overflow-auto pb-24'>
-        {modalOpen && (
-          <ModalWrapper
-            onClose={closeModal}
-            title='견적 확정하기'
-            className='xl:w-[608px]'
-          >
-            <ConfirmQuoteModalContent
-              onClose={closeModal}
-              moverQuoteId={id}
-            />
-          </ModalWrapper>
-        )}
         <div className='flex w-full px-6 md:px-[72px] xl:px-0 max-w-[1400px]'>
           <PageHeader>견적 상세</PageHeader>
         </div>
@@ -84,15 +68,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className='w-[328px] gap-[40px] hidden md:hidden xl:flex flex-col'>
             {showConfirmButton && (
               <>
-                <CommonBtn
-                  widthType='full'
-                  heightType='primary'
-                  backgroundColorType='blue'
-                  textColorType='white'
-                  onClick={openModal}
-                >
-                  견적 확정하기
-                </CommonBtn>
+                <ModalContainer id={id} />
                 <HorizontalDivider />
               </>
             )}
@@ -101,15 +77,7 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
         {showConfirmButton && (
           <div className='fixed md:fixed xl:hidden bottom-0 left-0 right-0 w-full px-6 md:px-[72px] max-w-[1400px] mx-auto py-[10px] border-t border-t-gray-50 bg-white'>
-            <CommonBtn
-              widthType='full'
-              heightType='primary'
-              backgroundColorType='blue'
-              textColorType='white'
-              onClick={openModal}
-            >
-              견적 확정하기
-            </CommonBtn>
+            <ModalContainer id={id} />
           </div>
         )}
       </div>
