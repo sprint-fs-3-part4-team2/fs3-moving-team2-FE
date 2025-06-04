@@ -9,7 +9,7 @@ import QuoteCard from '@/components/quoteCard/molecules/quoteCard';
 import { MOVING_TYPES } from '@/constants/movingTypes';
 import { useQuoteDetailByCustomerQuery } from '@/hooks/useQuoteDetailByCustomerQuery';
 import useUserProfile from '@/hooks/auth/useUserProfile';
-import ModalContainer from './modalContainer';
+import ModalContainer from '@/components/common/confirmQuoteModalContent/modalContainer';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;

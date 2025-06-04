@@ -1,12 +1,10 @@
 import CommonButton from '@/components/common/commonBtn/commonBtn';
 import ConfirmQuoteModalContent from '@/components/common/confirmQuoteModalContent';
 import ModalWrapper from '@/components/modal/ModalWrapper';
-import { useState } from 'react';
+import { useHandleModalOpen } from '@/hooks/useHandleModalOpen';
 
 export default function ModalContainer({ id }: { id: string }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const { openModal, closeModal, modalOpen } = useHandleModalOpen();
 
   return (
     <>
